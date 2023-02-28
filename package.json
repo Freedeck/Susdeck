@@ -3,6 +3,7 @@
   "version": "1.2.3",
   "description": "Susdeck is love. Susdeck is life. Susdeck is not a Stream Deck.",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "express": "^4.17.1",
     "jslint": "^0.12.1",
     "nodemon": "^2.0.20",

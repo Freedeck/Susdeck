@@ -3,7 +3,7 @@
 
 const Settings = {
   UseAuthentication: true, // Turn on authentication (every session/restart will require password)
-  Password: '', // If you are using authentication, you will log in with this password.
+  Password: 'Susdeck!123', // If you are using authentication, you will log in with this password.
   LoginMessage: 'Hey there, please login', // This message will show for users when they try to login (below "Login to Susdeck")
   YourName: 'John Mangoseed' // Shows alongside your login message
 }

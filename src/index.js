@@ -12,26 +12,11 @@ const getNetworkInterfaces = require('./network')
 const loginList = []
 const sessions = []
 const events = new Map()
-const companionEvents = new Map()
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use('/', ex.static('./src/app'))
-
-// Companion compatibility, don't touch
-app.post('/companion', (req, res) => {
-  const data = req.body
-  const event = data.event
-  companionEvents.get(event).callback(req, res)
-})
-
-fs.readdirSync('./src/events/companion').forEach(function (file) {
-  file = 'events/companion/' + file
-  const query = require('./' + file)
-  companionEvents.set(query.event, { callback: query.callback, event: query.event })
-  console.log('Added companion event', query.event)
-})
 
 fs.readdirSync('./src/events').forEach(function (file) {
   if (file.includes('companion')) return

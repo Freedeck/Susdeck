@@ -5,7 +5,7 @@ let keyList = []
 let loaded = false
 let currentPage = 0
 
-addToHTMLlog('Waiting for server...')
+addToHTMLlog('Waiting for host...')
 
 socket.on('server_connected', function () {
   // _sdsession is session id

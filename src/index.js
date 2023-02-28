@@ -67,7 +67,7 @@ io.on('connection', function (socket) {
 module.exports = loginList
 
 http.listen(port, function () {
-  console.log('Susdeck Companion is running!')
+  console.log('Susdeck Host is running!')
   if (getNetworkInterfaces().Ethernet) { console.log('Go to ' + getNetworkInterfaces().Ethernet[0] + ':3000 on your mobile device ') }
   if (getNetworkInterfaces()['Wi-Fi']) { console.log('Go to ' + getNetworkInterfaces()['Wi-Fi'][0] + ':3000 on your mobile device ') }
 })

@@ -11,7 +11,7 @@ function createWindow () {
     height: 720
   })
 
-  window.loadFile('app/index.html')
+  window.loadURL('http://localhost:3000/assets/companion/index.html')
 }
 
 app.whenReady().then(() => {

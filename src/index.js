@@ -18,6 +18,16 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use('/', ex.static('./src/app'))
 
+console.log('Initializing: Adding your sounds to the app')
+
+// Section Start: Sound config
+// SoundOnPress, ScreenSaverActivationTime, Sounds
+const soundFile = require('./sounds')
+fs.writeFileSync('./src/app/sounds.js', `const SoundOnPress = ${soundFile.SoundOnPress}
+const ScreenSaverActivationTime = ${soundFile.ScreenSaverActivationTime}
+const Sounds = ${JSON.stringify(soundFile.Sounds)}`)
+// Section End: Sound config
+
 fs.readdirSync('./src/events').forEach(function (file) {
   if (file.includes('companion')) return
   file = 'events/' + file
@@ -66,6 +76,9 @@ io.on('connection', function (socket) {
       console.log(sessionID, 'is invalid, kicking out user..')
       socket.emit('banish')
     }
+  })
+  socket.on('im companion', () => {
+    console.log('Companion is connected to server')
   })
 })
 

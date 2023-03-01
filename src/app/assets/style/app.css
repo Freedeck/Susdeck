@@ -98,3 +98,9 @@ button {
 .btxt {
     color: #FFFFFF;
 }
+.info {
+    border: solid 5px black;
+    border-radius: 8px;
+    padding: 5rem;
+    width: 75%;
+}

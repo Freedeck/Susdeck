@@ -10,9 +10,11 @@
     "socket.io": "^4.1.2"
   },
   "scripts": {
-    "start": "nodemon src/index.js"
+    "start": "nodemon src/index.js",
+    "companion_start": "npx electron src/companion"
   },
   "devDependencies": {
+    "electron": "^23.1.1",
     "eslint": "^8.34.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",

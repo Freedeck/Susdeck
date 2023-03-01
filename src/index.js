@@ -72,7 +72,8 @@ io.on('connection', function (socket) {
 module.exports = loginList
 
 http.listen(port, function () {
-  console.log('Susdeck Host is running!')
+  console.log('Susdeck Host is running - starting Companion')
+  require('child_process').exec('npx electron src/companion')
   if (getNetworkInterfaces().Ethernet) { console.log('Go to ' + getNetworkInterfaces().Ethernet[0] + ':3000 on your mobile device ') }
   if (getNetworkInterfaces()['Wi-Fi']) { console.log('Go to ' + getNetworkInterfaces()['Wi-Fi'][0] + ':3000 on your mobile device ') }
 })

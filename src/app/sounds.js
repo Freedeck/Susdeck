@@ -9,6 +9,9 @@
 const SoundOnPress = true
 // true for yes, false for no.
 
+// Cool, in seconds, when do you want the screensaver to be activated?
+const ScreenSaverActivationTime = 4
+
 const Sounds = [
   {
     name: 'Shooting',

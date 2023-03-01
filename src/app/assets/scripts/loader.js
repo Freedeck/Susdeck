@@ -3,6 +3,8 @@ const socket = io()
 const keys = document.getElementById('keys')
 let keyList = []
 let loaded = false
+let userAlive = true
+let screensaverStatus = false
 let currentPage = 0
 
 addToHTMLlog('Waiting for host...')
@@ -50,6 +52,29 @@ setInterval(function () {
   window.location.reload()
 }, 500)
 
+document.addEventListener('click', () => {
+  if (userAlive === false) keys.style.opacity = '1'; screensaverStatus = false
+  userAlive = true
+})
+
+// eslint-disable-next-line no-undef
+setInterval(function () { userAlive = false }, ScreenSaverActivationTime * 1000)
+
+setInterval(function () {
+  if (!userAlive && !screensaverStatus) {
+    keys.style.opacity = '0.125'
+  }
+// eslint-disable-next-line no-undef
+}, ScreenSaverActivationTime * 1000 + 600)
+
+setInterval(function () {
+  if (!userAlive) {
+    keys.style.opacity = '0'
+    screensaverStatus = true
+  }
+// eslint-disable-next-line no-undef
+}, ScreenSaverActivationTime * 1000 + 2 * 1000)
+
 function addToHTMLlog (text) {
   document.getElementById('console').innerText += text + '\n'
 }
@@ -61,11 +86,6 @@ function loadPage (pageNumber) {
   while (myNode.firstChild) {
     myNode.removeChild(myNode.lastChild)
   }
-  // eslint-disable-next-line no-undef
-  Pages[pageNumber].push({
-    name: 'Stop All',
-    key: 'f19'
-  })
   // eslint-disable-next-line no-undef
   Pages[pageNumber].forEach(sound => {
     keyList.push(sound)
@@ -87,6 +107,11 @@ function loadPage (pageNumber) {
     keys.appendChild(btn)
   })
 
+  const stopall = document.createElement('button')
+  stopall.onclick = () => { window.location.reload() }
+  stopall.className = 'keypress btxt'
+  stopall.innerText = 'Stop All'
+  stopall.setAttribute('data-key', 'f19')
   const reloadbtn = document.createElement('button')
   reloadbtn.onclick = () => { window.location.reload() }
   reloadbtn.className = 'btxt'
@@ -94,13 +119,14 @@ function loadPage (pageNumber) {
   const susdeck = document.createElement('a')
   susdeck.className = 'button'
   susdeck.style.backgroundImage = "url('assets/icons/susdeck.png')"
+  keys.appendChild(stopall)
   keys.appendChild(reloadbtn)
   keys.appendChild(susdeck)
   const allKeypress = document.getElementsByClassName('keypress')
   for (let i = 0; i < allKeypress.length; i++) {
     allKeypress[i].onclick = (ev) => {
       // eslint-disable-next-line no-undef
-      if (SoundOnPress) new Audio('press.mp3').play()
+      if (SoundOnPress) new Audio('assets/sounds/press.mp3').play()
       socket.emit('keypress', allKeypress[i].getAttribute('data-key'))
     }
   }

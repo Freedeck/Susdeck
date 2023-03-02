@@ -97,10 +97,18 @@ function loadPage (pageNumber) {
       <label for="newkey">Key:</label><input type="text" value='${allKeypress[i].getAttribute('data-key')}'id="newkey"/>
       <p>Icon Preview</p>
       <button style='background-image: ${allKeypress[i].style.backgroundImage.replace()}'></button>
+      <button onclick="DeleteKey({name:'${allKeypress[i].innerText}',key:'${allKeypress[i].getAttribute('data-key')}'})">Delete</button>
       <button onclick="Changeifo('${allKeypress[i].getAttribute('data-key')}')" class="btxt">Change</button>`
       modal.style.display = 'block'
     }
   }
+}
+
+// eslint-disable-next-line no-unused-vars
+function DeleteKey (key) {
+  // eslint-disable-next-line no-undef
+  Sounds.splice(Sounds.indexOf({ name: key.name, key: key.key }), 1)
+  socket.emit('c-delkey', { name: key.name, key: key.key })
 }
 
 // eslint-disable-next-line no-unused-vars

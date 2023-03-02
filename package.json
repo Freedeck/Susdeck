@@ -10,7 +10,7 @@
     "socket.io": "^4.1.2"
   },
   "scripts": {
-    "start": "nodemon src/index.js",
+    "start": "node src/index.js",
     "companion_start": "npx electron src/companion"
   },
   "devDependencies": {

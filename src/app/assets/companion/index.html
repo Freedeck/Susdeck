@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,16 +8,40 @@
     <title>Susdeck Companion</title>
     <link rel="stylesheet" href="../style/app.css">
 </head>
+
 <body>
     <h1>Susdeck Companion</h1>
     <h2>Here you can manage everything Susdeck, from sounds to icons.</h2>
+    <input type="range" min="5" step="5" max="120" value="5" id="ssat"> <label for="ssat">Screensaver activation time:
+    </label> <label for="ssat" id="amt">5</label>
+    <br />
+    <input type="checkbox" value="" id="soc"> <label for="soc">Play sound on click</label>
+    <button onclick="setSet()">Set</button>
+    <button onclick="socket.emit('c-change')">Remote Reload</button>
     <div id="console"></div>
-    <h2>Click any of your icons to get started.</h2>
-    <div id="selected" class="info"></div>
+    <h2 >Click any of your icons to get started.</h2>
+    <div id="myModal" class="modal">
+
+        <div class="modal-content">
+            <div class="modal-header" id="mh">
+
+            </div>
+            <div class="modal-body" id="mc">
+
+            </div>
+            <div class="modal-footer">
+                <h3>Susdeck Companion</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <br />
     <div id="keys">
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="../../sounds.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>

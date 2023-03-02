@@ -18,14 +18,14 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use('/', ex.static('./src/app'))
 
+app.get('/sounds.js', (e, r) => { r.sendFile(path.join(__dirname, '\\sounds.js')) })
+
 console.log('Initializing: Adding your sounds to the app')
 
 // Section Start: Sound config
 // SoundOnPress, ScreenSaverActivationTime, Sounds
 const soundFile = require('./sounds')
-fs.writeFileSync('./src/app/sounds.js', `const SoundOnPress = ${soundFile.SoundOnPress}
-const ScreenSaverActivationTime = ${soundFile.ScreenSaverActivationTime}
-const Sounds = ${JSON.stringify(soundFile.Sounds)}`)
+const path = require('path')
 // Section End: Sound config
 
 fs.readdirSync('./src/events').forEach(function (file) {
@@ -56,6 +56,7 @@ io.on('connection', function (socket) {
       rob.keyTap(keys)
     }
   })
+  socket.on('c-change', function () { io.emit('c-change') })
   events.forEach(function (event) {
     socket.on(event.event, function (args) {
       const callback = event.callback(socket, args, loginList)
@@ -63,6 +64,9 @@ io.on('connection', function (socket) {
       if (callback.startsWith('ValidateSession:')) {
         const person = callback.split(':')[1]
         sessions.push(person)
+      }
+      if (callback.startsWith('c-change')) {
+        io.emit('c-change')
       }
     })
   })
@@ -79,6 +83,7 @@ io.on('connection', function (socket) {
   })
   socket.on('im companion', () => {
     console.log('Companion is connected to server')
+    socket.emit('hic', soundFile.ScreenSaverActivationTime, soundFile.SoundOnPress)
   })
 })
 

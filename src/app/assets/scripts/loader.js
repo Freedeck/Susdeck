@@ -137,3 +137,5 @@ window.addEventListener('load', () => {
     navigator.serviceWorker.register('assets/scripts/service-worker.js')
   }
 })
+
+socket.on('c-change', () => { window.location.replace(window.location.href) })

@@ -1,32 +1,26 @@
 const ex = require('express')
-const bodyParser = require('body-parser')
-const app = ex()
+const path = require('path')
 const httpLib = require('http')
-const http = new httpLib.Server(app)
 const rob = require('robotjs')
 const fs = require('fs')
+const bodyParser = require('body-parser')
+const app = ex()
+const http = new httpLib.Server(app)
 const io = require('socket.io')(http)
+
 const port = process.env.PORT || 3000
 const getNetworkInterfaces = require('./network')
-
 const loginList = []
 const sessions = []
 const events = new Map()
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-
 app.use('/', ex.static('./src/app'))
 
 app.get('/sounds.js', (e, r) => { r.sendFile(path.join(__dirname, '\\sounds.js')) })
 
 console.log('Initializing: Adding your sounds to the app')
-
-// Section Start: Sound config
-// SoundOnPress, ScreenSaverActivationTime, Sounds
-const soundFile = require('./sounds')
-const path = require('path')
-// Section End: Sound config
 
 fs.readdirSync('./src/events').forEach(function (file) {
   if (file.includes('companion')) return
@@ -84,8 +78,8 @@ io.on('connection', function (socket) {
   socket.on('im companion', () => {
     console.log('Companion is connected to server')
     delete require.cache[require.resolve('./sounds.js')]
-    const soundFile2 = require('./sounds')
-    socket.emit('hic', soundFile2.ScreenSaverActivationTime, soundFile2.SoundOnPress)
+    const soundFile = require('./sounds')
+    socket.emit('hic', soundFile.ScreenSaverActivationTime, soundFile.SoundOnPress)
   })
 })
 

@@ -83,7 +83,9 @@ io.on('connection', function (socket) {
   })
   socket.on('im companion', () => {
     console.log('Companion is connected to server')
-    socket.emit('hic', soundFile.ScreenSaverActivationTime, soundFile.SoundOnPress)
+    delete require.cache[require.resolve('./sounds.js')]
+    const soundFile2 = require('./sounds')
+    socket.emit('hic', soundFile2.ScreenSaverActivationTime, soundFile2.SoundOnPress)
   })
 })
 

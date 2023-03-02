@@ -1,6 +1,9 @@
 // eslint-disable-next-line no-undef
 const socket = io()
 const keys = document.getElementById('keys')
+const Pages = {}
+const countOnEachPage = 8
+let currentPage = 0
 let keyList = []
 
 addToHTMLlog('Waiting for host...')
@@ -26,26 +29,9 @@ function removeFromHTMLlog (text) {
   document.getElementById('console').removeChild(document.getElementById(text))
 }
 
-const Pages = {}
-const countOnEachPage = 8
-// eslint-disable-next-line no-undef
-const pagesAmount = Sounds.length / countOnEachPage
-for (let i = 0; i < pagesAmount; i++) {
-  Pages[i] = []
-}
-let pageCounter = 0
-let index = 0
-// eslint-disable-next-line no-undef
-Sounds.forEach(sound => {
-  Pages[pageCounter].push(sound)
-  if (index === countOnEachPage) {
-    pageCounter++
-    index = 0
-  }
-  index++
-})
-
 function loadPage (pageNumber) {
+  autosort()
+  currentPage = pageNumber
   keyList = []
   const myNode = document.getElementById('keys')
   while (myNode.firstChild) {
@@ -117,6 +103,17 @@ function loadPage (pageNumber) {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
+function createNewSound () {
+  // eslint-disable-next-line no-undef
+  Sounds.push({
+    name: 'New Key',
+    key: 'enter'
+  })
+  socket.emit('c-newkey', { name: 'New Key', key: 'enter' })
+  loadPage(0)
+}
+
 // Get the modal
 const modal = document.getElementById('myModal')
 // When the user clicks anywhere outside of the modal, close it
@@ -149,7 +146,41 @@ function setSet () {
 socket.on('c-change', () => { window.location.replace(window.location.href) })
 
 socket.on('hic', function (ssat, soc) {
+  console.log(ssat)
   document.getElementById('soc').checked = soc
   document.getElementById('ssat').value = ssat
   document.getElementById('amt').innerText = document.getElementById('ssat').value + ' seconds'
 })
+
+function autosort () {
+  // eslint-disable-next-line no-undef
+  const pagesAmount = Sounds.length / countOnEachPage
+  for (let i = 0; i < pagesAmount; i++) {
+    Pages[i] = []
+  }
+  let pageCounter = 0
+  let index = 0
+  // eslint-disable-next-line no-undef
+  Sounds.forEach(sound => {
+    Pages[pageCounter].push(sound)
+    if (index === countOnEachPage) {
+      pageCounter++
+      index = 0
+    }
+    index++
+  })
+}
+
+// eslint-disable-next-line no-unused-vars
+function np () {
+  if (Pages[currentPage + 1]) {
+    loadPage(currentPage + 1)
+  }
+}
+
+// eslint-disable-next-line no-unused-vars
+function bp () {
+  if (Pages[currentPage - 1]) {
+    loadPage(currentPage - 1)
+  }
+}

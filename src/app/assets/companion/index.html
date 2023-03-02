@@ -12,12 +12,15 @@
 <body>
     <h1>Susdeck Companion</h1>
     <h2>Here you can manage everything Susdeck, from sounds to icons.</h2>
-    <input type="range" min="5" step="5" max="120" value="5" id="ssat"> <label for="ssat">Screensaver activation time:
+    <input type="range" min="5" step="5" max="120" id="ssat"> <label for="ssat">Screensaver activation time:
     </label> <label for="ssat" id="amt">5</label>
     <br />
     <input type="checkbox" value="" id="soc"> <label for="soc">Play sound on click</label>
     <button onclick="setSet()">Set</button>
     <button onclick="socket.emit('c-change')">Remote Reload</button>
+    <button onclick="createNewSound()">New Sound</button>
+    <button onclick="np()">Next Page</button>
+    <button onclick="bp()">Back</button>
     <div id="console"></div>
     <h2 >Click any of your icons to get started.</h2>
     <div id="myModal" class="modal">

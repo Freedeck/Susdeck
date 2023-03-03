@@ -1,6 +1,6 @@
 {
   "name": "susdeck",
-  "version": "1.2.3",
+  "version": "2.1.0",
   "description": "Susdeck is love. Susdeck is life. Susdeck is not a Stream Deck.",
   "dependencies": {
     "body-parser": "^1.20.2",
@@ -11,7 +11,8 @@
   },
   "scripts": {
     "start": "node src/index.js",
-    "companion_start": "npx electron src/companion"
+    "headless": "node src/index.js -nocompanion",
+    "companion": "npx electron src/companion"
   },
   "devDependencies": {
     "electron": "^23.1.1",

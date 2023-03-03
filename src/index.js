@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 const app = ex()
 const http = new httpLib.Server(app)
 const io = require('socket.io')(http)
+const debug = { is: false, log: function (s) { if (this.is) { console.log('[DEBUG] ' + s) } } }
 
 const port = process.env.PORT || 3000
 const getNetworkInterfaces = require('./network')
@@ -20,21 +21,21 @@ app.use('/', ex.static('./src/app'))
 
 app.get('/sounds.js', (e, r) => { r.sendFile(path.join(__dirname, '\\sounds.js')) })
 
-console.log('Initializing: Adding your sounds to the app')
+debug.log('Adding sounds to app')
 
 fs.readdirSync('./src/events').forEach(function (file) {
   if (file.includes('companion')) return
   file = 'events/' + file
   const query = require('./' + file)
   events.set(query.event, { callback: query.callback, event: query.event })
-  console.log('Added event', query.event)
+  debug.log('Added event ' + query.event)
 })
 
 io.on('connection', function (socket) {
   console.log('Connected to client @ ' + new Date())
   setTimeout(function () {
     socket.emit('server_connected')
-    console.log('Sent user connection success message')
+    debug.log('Sent user connection success message')
   }, 150)
   socket.on('keypress', function (keys) {
     if (keys.includes('{')) {
@@ -68,15 +69,15 @@ io.on('connection', function (socket) {
   socket.on('Authenticated', function (sessionID) {
     console.log('Recieved ' + sessionID, ', checking..')
     if (sessions.includes(sessionID)) {
-      console.log(sessionID, 'is valid!')
+      debug.log(sessionID + ' is valid!')
       socket.emit('greenlight')
     } else {
-      console.log(sessionID, 'is invalid, kicking out user..')
+      debug.log(sessionID + ' is invalid, kicking out user..')
       socket.emit('banish')
     }
   })
   socket.on('im companion', () => {
-    console.log('Companion is connected to server')
+    debug.log('Companion is connected to server')
     delete require.cache[require.resolve('./sounds.js')]
     const soundFile = require('./sounds')
     socket.emit('hic', soundFile.ScreenSaverActivationTime, soundFile.SoundOnPress)
@@ -86,8 +87,8 @@ io.on('connection', function (socket) {
 module.exports = loginList
 
 http.listen(port, function () {
-  console.log('Susdeck Host is running - starting Companion')
-  require('child_process').exec('npx electron src/companion')
+  console.log('Susdeck is started!')
+  if (process.argv[2] !== '-nocompanion') { console.log('Susdeck Host is running - starting Companion'); require('child_process').exec('npx electron src/companion') }
   if (getNetworkInterfaces().Ethernet) { console.log('Go to ' + getNetworkInterfaces().Ethernet[0] + ':3000 on your mobile device ') }
   if (getNetworkInterfaces()['Wi-Fi']) { console.log('Go to ' + getNetworkInterfaces()['Wi-Fi'][0] + ':3000 on your mobile device ') }
 })

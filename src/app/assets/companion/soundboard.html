@@ -13,29 +13,29 @@
 
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#" class="snactive">Home/Config</a>
+        <a href="index.html">Home/Config</a>
         <a href="iconEditor.html">Icon Editor</a>
-        <a href="soundboard.html">Soundboard</a>
+        <a href="#" class="snactive">Soundboard</a>
     </div>
 
     <div id="main">
-        <h2>Home/Configuration</h2>
+        <h2>Soundboard</h2>
         <button onclick="openNav()" class="opn" style='background-image:url("../icons/comp.png")'></button>
-        <br />
-        <h3>Click on the Susdeck icon to get started.</h3>
-        <input type="range" min="5" step="5" max="120" id="ssat">
-        <label for="ssat">Screensaver activation time:</label>
-        <label for="ssat" id="amt">5</label>
-        <br />
-        <input type="checkbox" value="" id="soc"> <label for="soc">Play sound on click</label>
-        <br /> <br />
-        <button onclick="setSet()">Set</button>
         <button onclick="socket.emit('c-change')">Remote Reload</button>
+        <button onclick="createNewSound()">New Sound</button>
+        <button onclick="np()">Next Page</button>
+        <button onclick="bp()">Back</button>
+        <div id="console"></div>
+        <h2>Welcome to the Susdeck Soundboard.</h2>
+
+        <br />
+        <div id="keys">
+        </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="../../sounds.js"></script>
-    <script src="script.js"></script>
+    <script src="soundboardScript.js"
 </body>
 
 </html>

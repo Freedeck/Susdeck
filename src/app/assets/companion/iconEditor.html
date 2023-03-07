@@ -13,23 +13,38 @@
 
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#" class="snactive">Home/Config</a>
-        <a href="iconEditor.html">Icon Editor</a>
+        <a href="index.html">Home/Config</a>
+        <a href="#" class="snactive">Icon Editor</a>
     </div>
 
     <div id="main">
-        <h2>Home/Configuration</h2>
+        <h2>Icon Editor</h2>
         <button onclick="openNav()" class="opn" style='background-image:url("../icons/comp.png")'></button>
-        <br />
-        <h3>Click on the Susdeck icon to get started.</h3>
-        <input type="range" min="5" step="5" max="120" id="ssat">
-        <label for="ssat">Screensaver activation time:</label>
-        <label for="ssat" id="amt">5</label>
-        <br />
-        <input type="checkbox" value="" id="soc"> <label for="soc">Play sound on click</label>
-        <br /> <br />
-        <button onclick="setSet()">Set</button>
         <button onclick="socket.emit('c-change')">Remote Reload</button>
+        <button onclick="createNewSound()">New Sound</button>
+        <button onclick="np()">Next Page</button>
+        <button onclick="bp()">Back</button>
+        <div id="console"></div>
+        <h2>Click any of your icons to get started.</h2>
+        <div id="myModal" class="modal">
+
+            <div class="modal-content">
+                <div class="modal-header" id="mh">
+
+                </div>
+                <div class="modal-body" id="mc">
+
+                </div>
+                <div class="modal-footer">
+                    <h3>Susdeck Companion</h3>
+                </div>
+            </div>
+
+        </div>
+
+        <br />
+        <div id="keys">
+        </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>

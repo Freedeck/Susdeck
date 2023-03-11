@@ -79,27 +79,7 @@ function loadPage (pageNumber) {
   const allKeypress = document.getElementsByClassName('keypress')
   for (let i = 0; i < allKeypress.length; i++) {
     allKeypress[i].onclick = (ev) => {
-      if (allKeypress[i].getAttribute('data-multi')) {
-        document.getElementById('mh').innerHTML = `<span class="close" onclick="modal.style.display = 'none'">&times;</span><h2>Editing ${allKeypress[i].innerText} - Uneditable Key (for now...)</h2>`
-        document.getElementById('mc').innerHTML = `
-      <label for="newname">Name:</label><input type="text" value="${allKeypress[i].innerText}" disabled />
-      <br /> <br />
-      <label for="newkey">Key:</label><input type="text" value='${allKeypress[i].getAttribute('data-key')}' disabled/>
-      <p>Icon Preview</p>
-      <button style='background-image: ${allKeypress[i].style.backgroundImage.replace()}'></button>`
-        modal.style.display = 'block'
-        return
-      }
-      document.getElementById('mh').innerHTML = `<span class="close" onclick="modal.style.display = 'none'">&times;</span><h2>Editing ${allKeypress[i].innerText}</h2>`
-      document.getElementById('mc').innerHTML = `
-      <label for="newname">Name:</label><input type="text" id="newname" value="${allKeypress[i].innerText}" />
-      <br /> <br />
-      <label for="newkey">Key:</label><input type="text" value='${allKeypress[i].getAttribute('data-key')}'id="newkey"/>
-      <p>Icon Preview</p>
-      <button style='background-image: ${allKeypress[i].style.backgroundImage.replace()}'></button>
-      <button onclick="DeleteKey({name:'${allKeypress[i].innerText}',key:'${allKeypress[i].getAttribute('data-key')}'})">Delete</button>
-      <button onclick="Changeifo('${allKeypress[i].getAttribute('data-key')}')" class="btxt">Change</button>`
-      modal.style.display = 'block'
+      socket.emit('cs-playsound', { name: allKeypress[i].innerText, key: allKeypress[i].getAttribute('data-key') })
     }
   }
 }
@@ -188,13 +168,13 @@ function bp () {
   }
 }
 
-function openNav() {
-  document.getElementById("mySidenav").style.width = "250px";
-  document.getElementById("main").style.marginLeft = "250px";
+function openNav () {
+  document.getElementById('mySidenav').style.width = '250px'
+  document.getElementById('main').style.marginLeft = '250px'
 }
 
 /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
-function closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
-  document.getElementById("main").style.marginLeft = "0";
-} 
+function closeNav () {
+  document.getElementById('mySidenav').style.width = '0'
+  document.getElementById('main').style.marginLeft = '0'
+}

@@ -5,7 +5,7 @@ module.exports = {
   callback: (socket, args) => {
     const password = args[0]
     console.log('Recieved password request!')
-    if (password === settings.Password) {
+    if (atob(password) === settings.Password) {
       console.log('Password is valid!')
       // Congratulations, now let's assign a session id.
       const sid = require('crypto').randomBytes(8).toString('hex')

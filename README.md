@@ -14,8 +14,14 @@ So far, Susdeck only officially supports iOS.
 
 ## What does it look like?
 ![Susdeck UI preview](https://github.com/susdeck/susdeck/blob/master/demo/preview.png?raw=true)
-and here's a preview of the login screen:
+here's a preview of the login screen:
 ![Susdeck Login preview](https://github.com/susdeck/susdeck/blob/master/demo/login.png?raw=true)
+here's a preview of the companion home screen:
+![Susdeck Companion Home preview](https://github.com/susdeck/susdeck/blob/master/demo/c-home.png?raw=true)
+here's a preview of the companion icon editor:
+![Susdeck Companion Home preview](https://github.com/susdeck/susdeck/blob/master/demo/c-ie.png?raw=true)
+and finally, here's a preview of the companion icon editor editing.
+![Susdeck Companion Home preview](https://github.com/susdeck/susdeck/blob/master/demo/c-ie-e.png?raw=true)
 
 ## How do I use Susdeck?
 Clone the repo, then change `Settings.js.default` to only have it's extension `.js`.  

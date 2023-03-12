@@ -9,6 +9,8 @@ const http = new httpLib.Server(app)
 const io = require('socket.io')(http)
 const debug = { is: false, log: function (s) { if (this.is) { console.log('[DEBUG] ' + s) } } }
 
+if (process.argv[3] === '-dbg') { debug.is = true }
+
 const port = process.env.PORT || 3000
 const getNetworkInterfaces = require('./network')
 const loginList = []
@@ -21,14 +23,25 @@ app.use('/', ex.static('./src/app'))
 
 app.get('/sounds.js', (e, r) => { r.sendFile(path.join(__dirname, '\\sounds.js')) })
 
-debug.log('Adding sounds to app')
+debug.log('Adding events to app')
 
 fs.readdirSync('./src/events').forEach(function (file) {
-  if (file.includes('companion')) return
-  file = 'events/' + file
-  const query = require('./' + file)
-  events.set(query.event, { callback: query.callback, event: query.event })
-  debug.log('Added event ' + query.event)
+  if (file === 'companion') {
+    fs.readdirSync('./src/events/companion').forEach(cEvent => {
+      cEvent = 'events/companion/' + cEvent
+      const query = require('./' + cEvent)
+      events.set(query.event, { callback: query.callback, event: query.event })
+      debug.log('Added companion event ' + query.event + ' from file ' + cEvent)
+    })
+  }
+  if (file === 'c2s') {
+    fs.readdirSync('./src/events/c2s').forEach(cEvent => {
+      cEvent = 'events/c2s/' + cEvent
+      const query = require('./' + cEvent)
+      events.set(query.event, { callback: query.callback, event: query.event })
+      debug.log('Added c2s event ' + query.event + ' from file ' + cEvent)
+    })
+  }
 })
 
 io.on('connection', function (socket) {
@@ -58,7 +71,7 @@ io.on('connection', function (socket) {
         await event.callback(socket, args, loginList)
       } else {
         const callback = event.callback(socket, args, loginList)
-        if (!callback || typeof callback !== "string") { return }
+        if (!callback || typeof callback !== 'string') { return }
         if (callback.startsWith('ValidateSession:')) {
           const person = callback.split(':')[1]
           sessions.push(person)

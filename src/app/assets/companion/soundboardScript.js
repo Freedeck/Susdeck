@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // eslint-disable-next-line no-undef
 const socket = io()
 const keys = document.getElementById('keys')
@@ -84,14 +85,12 @@ function loadPage (pageNumber) {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
 function DeleteKey (key) {
   // eslint-disable-next-line no-undef
   Sounds.splice(Sounds.indexOf({ name: key.name, key: key.key }), 1)
   socket.emit('c-delkey', { name: key.name, key: key.key })
 }
 
-// eslint-disable-next-line no-unused-vars
 function createNewSound () {
   // eslint-disable-next-line no-undef
   loadPage(0)
@@ -110,7 +109,6 @@ document.getElementById('ssat').oninput = () => {
   document.getElementById('amt').innerText = document.getElementById('ssat').value + ' seconds'
 }
 
-// eslint-disable-next-line no-unused-vars
 function Changeifo (key) {
   const newkey = document.getElementById('newkey').value
   const newname = document.getElementById('newname').value
@@ -118,7 +116,6 @@ function Changeifo (key) {
   loadPage(0)
 }
 
-// eslint-disable-next-line no-unused-vars
 function setSet () {
   const soc = document.getElementById('soc').checked
   const ssat = document.getElementById('ssat').value
@@ -154,14 +151,12 @@ function autosort () {
   })
 }
 
-// eslint-disable-next-line no-unused-vars
 function np () {
   if (Pages[currentPage + 1]) {
     loadPage(currentPage + 1)
   }
 }
 
-// eslint-disable-next-line no-unused-vars
 function bp () {
   if (Pages[currentPage - 1]) {
     loadPage(currentPage - 1)

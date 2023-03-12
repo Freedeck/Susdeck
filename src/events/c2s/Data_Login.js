@@ -1,4 +1,4 @@
-const settings = require('../../Settings')
+const settings = require('../../../Settings')
 
 module.exports = {
   event: 'c2sd_login',

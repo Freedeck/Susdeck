@@ -3,7 +3,6 @@ const path = require('path')
 const httpLib = require('http')
 const rob = require('robotjs')
 const fs = require('fs')
-const bodyParser = require('body-parser')
 const app = ex()
 const http = new httpLib.Server(app)
 const io = require('socket.io')(http)
@@ -17,8 +16,6 @@ const loginList = []
 const sessions = []
 const events = new Map()
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
 app.use('/', ex.static('./src/app'))
 
 app.get('/sounds.js', (e, r) => { r.sendFile(path.join(__dirname, '\\sounds.js')) })

@@ -3,10 +3,8 @@
   "version": "2.2.0",
   "description": "Susdeck is love. Susdeck is life. Susdeck is not a Stream Deck.",
   "dependencies": {
-    "audic": "^3.0.1",
     "body-parser": "^1.20.2",
     "express": "^4.17.1",
-    "nodemon": "^2.0.20",
     "robotjs": "^0.6.0",
     "socket.io": "^4.1.2"
   },

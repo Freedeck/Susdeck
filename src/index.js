@@ -53,15 +53,19 @@ io.on('connection', function (socket) {
   })
   socket.on('c-change', function () { io.emit('c-change') })
   events.forEach(function (event) {
-    socket.on(event.event, function (args) {
-      const callback = event.callback(socket, args, loginList)
-      if (!callback) { return }
-      if (callback.startsWith('ValidateSession:')) {
-        const person = callback.split(':')[1]
-        sessions.push(person)
-      }
-      if (callback.startsWith('c-change')) {
-        io.emit('c-change')
+    socket.on(event.event, async function (args) {
+      if (event.async) {
+        await event.callback(socket, args, loginList)
+      } else {
+        const callback = event.callback(socket, args, loginList)
+        if (!callback || typeof callback !== "string") { return }
+        if (callback.startsWith('ValidateSession:')) {
+          const person = callback.split(':')[1]
+          sessions.push(person)
+        }
+        if (callback.startsWith('c-change')) {
+          io.emit('c-change')
+        }
       }
     })
   })

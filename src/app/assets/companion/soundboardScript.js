@@ -79,7 +79,7 @@ function loadPage (pageNumber) {
   const allKeypress = document.getElementsByClassName('keypress')
   for (let i = 0; i < allKeypress.length; i++) {
     allKeypress[i].onclick = (ev) => {
-      socket.emit('cs-playsound', { name: allKeypress[i].innerText, key: allKeypress[i].getAttribute('data-key') })
+      socket.emit('cs-playsound', allKeypress[i].innerText)
     }
   }
 }

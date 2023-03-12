@@ -1,8 +1,9 @@
+const sounds = require('../soundboard')
 
 module.exports = {
   event: 'cs-playsound',
-  callback: (socket, args) => {
-    const sid = args
-    console.log(sid)
+  async: true,
+  callback: async (socket, name) => {
+    //TODO: Implement this bruh
   }
 }

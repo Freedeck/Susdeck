@@ -3,9 +3,9 @@
  * TODO: implement
  */
 
-const sounds = [
-    {
-        path: 'C:/Users/aiden/Documents/Sounds/bigges t birt.wav',
-        name: 'Biggest Bird'
-    }
-]
+const soundDir = 'C:/Users/aiden/Documents/Sounds/'
+const sounds = {
+  'Biggest Bird': 'bigges t birt.wav'
+}
+
+module.exports = { sounds, soundDir }

@@ -93,7 +93,7 @@ function loadPage (pageNumber) {
     btn.className = 'keypress btxt'
     if (sound.key) {
       btn.setAttribute('data-key', sound.key)
-    } else {
+    } else if (sound.keys) {
       let txt = ''
       sound.keys.forEach(key => {
         txt += `{${key}}`
@@ -127,7 +127,11 @@ function loadPage (pageNumber) {
     allKeypress[i].onclick = (ev) => {
       // eslint-disable-next-line no-undef
       if (SoundOnPress) new Audio('assets/sounds/press.mp3').play()
-      socket.emit('keypress', allKeypress[i].getAttribute('data-key'))
+      if (allKeypress[i].getAttribute('data-key')) {
+        socket.emit('keypress', { macro: true, key: allKeypress[i].getAttribute('data-key') })
+      } else {
+        socket.emit('keypress', { macro: false, name: allKeypress[i].innerHTML })
+      }
     }
   }
 }

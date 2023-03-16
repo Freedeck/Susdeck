@@ -20,7 +20,11 @@ socket.on('server_connected', function (ssatt, socs) {
 })
 
 socket.on('press-sound', (sound, name) => {
-  document.getElementById('now-playing').innerText = 'Now playing '+name
+  document.getElementById('now-playing').innerText = 'Now playing ' + name
+  if (sound.includes('--Stop_all')) {
+    // eslint-disable-next-line no-undef
+    Susaudio.stopAll()
+  }
   // eslint-disable-next-line no-undef
   Susaudio.playSound(sound)
 })

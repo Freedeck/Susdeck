@@ -73,7 +73,7 @@ button {
 #keys {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-column-gap: 5px;
+    grid-column-gap: 7px;
     grid-row-gap: 2px;
 }
 

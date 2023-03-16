@@ -52,8 +52,11 @@ io.on('connection', function (socket) {
   socket.on('keypress', function (keys) {
     if (Settings.Experiments.SBC) {
       sbc.sounds.forEach(a => {
-        socket.emit('press-sound', sbc.soundDir + a.path)
+        if (a.key === keys.key) {
+          socket.emit('press-sound', sbc.soundDir + a.path)
+        }
       })
+      return
     }
     if (keys.includes('{')) {
       keys.split('{').forEach(function (key) {

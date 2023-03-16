@@ -49,16 +49,16 @@ io.on('connection', function (socket) {
     socket.emit('server_connected')
     debug.log('Sent user connection success message')
   }, 150)
-  socket.on('keypress', function (keys) {
-    if (keys.name) {
+  socket.on('keypress', function (keyInput) {
+    if (keyInput.name) {
       sbc.sounds.forEach(sound => {
-        if (sound.name === keys.name) {
+        if (sound.name === keyInput.name) {
           io.emit('press-sound', sbc.soundDir + sound.path, sound.name)
         }
       })
       return
     }
-    keys = keys.keys // So ew. Will fix later.
+    const keys = keyInput.keys
     if (keys.includes('{')) {
       keys.split('{').forEach(function (key) {
         if (key === '') { return }

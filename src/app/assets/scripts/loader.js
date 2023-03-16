@@ -111,7 +111,6 @@ function loadPage (pageNumber) {
   stopall.onclick = () => { window.location.reload() }
   stopall.className = 'keypress btxt'
   stopall.innerText = 'Stop All'
-  stopall.setAttribute('data-key', 'f19')
   const reloadbtn = document.createElement('button')
   reloadbtn.onclick = () => { window.location.reload() }
   reloadbtn.className = 'btxt'

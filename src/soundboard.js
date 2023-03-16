@@ -14,7 +14,7 @@ const sounds = [
   { name: 'Vine Boom', key: 'f16', path: 'vineboom.mp3' },
   { name: 'Semtex', key: 'f17', path: 'semtex.mp3' },
   { name: 'Whoppah Remix', key: 'f15', path: 'DSJSJSK.wav' },
-  { name: 'Stopping All', key: 'f19', path: '--Stop_all' }
+  { name: 'Stop All', key: 'f19', path: '--Stop_all' }
 ]
 
 module.exports = { sounds, soundDir }

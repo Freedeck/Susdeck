@@ -21,6 +21,7 @@ const events = new Map()
 app.use('/', ex.static('./src/app'))
 
 app.get('/sounds.js', (e, r) => { r.sendFile(path.join(__dirname, '\\sounds.js')) })
+app.get('/soundboard.js', (e, r) => { r.sendFile(path.join(__dirname, '\\soundboard.js')) })
 
 debug.log('Adding events to app')
 
@@ -50,12 +51,9 @@ io.on('connection', function (socket) {
     debug.log('Sent user connection success message')
   }, 150)
   socket.on('keypress', function (keys) {
-    console.log(keys)
-    if (Settings.Experiments.SBC) {
+    if (keys.name) {
       sbc.sounds.forEach(sound => {
-        console.log(sound.key, keys)
-        if (sound.key === keys) {
-          console.log('emitting ' + sbc.soundDir + sound.path)
+        if (sound.name === keys.name) {
           io.emit('press-sound', sbc.soundDir + sound.path, sound.name)
         }
       })

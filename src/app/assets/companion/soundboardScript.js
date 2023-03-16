@@ -13,7 +13,6 @@ socket.on('server_connected', function (ssatt, socs) {
   removeFromHTMLlog('Waiting for host...')
   addToHTMLlog('Companion connected!')
   socket.emit('im companion')
-  loadPage(0)
   setTimeout(() => {
     document.getElementById('console').style.display = 'none'
   }, 1000)
@@ -29,6 +28,12 @@ socket.on('press-sound', (sound, name) => {
   Susaudio.playSound(sound)
 })
 
+// eslint-disable-next-line no-undef
+sounds.forEach(function (s) {
+  // eslint-disable-next-line no-undef
+  document.getElementById('keys').innerHTML += `<div><h3>${s.name}</h3><h4>${soundDir + s.path}</h4></div>`
+})
+
 function addToHTMLlog (text) {
   const txt = document.createElement('h2')
   txt.id = text
@@ -38,34 +43,6 @@ function addToHTMLlog (text) {
 
 function removeFromHTMLlog (text) {
   document.getElementById('console').removeChild(document.getElementById(text))
-}
-
-function loadPage (pageNumber) {
-  currentPage = pageNumber
-  keyList = []
-  const myNode = document.getElementById('keys')
-  while (myNode.firstChild) {
-    myNode.removeChild(myNode.lastChild)
-  }
-
-  const stopall = document.createElement('button')
-  stopall.onclick = () => { window.location.reload() }
-  stopall.className = 'keypress btxt'
-  stopall.innerText = 'Stop All'
-  stopall.setAttribute('data-key', 'f19')
-  const reloadbtn = document.createElement('button')
-  reloadbtn.onclick = () => { window.location.reload() }
-  reloadbtn.className = 'btxt'
-  reloadbtn.innerText = 'Reload'
-  keys.appendChild(stopall)
-  keys.appendChild(reloadbtn)
-
-  const allKeypress = document.getElementsByClassName('keypress')
-  for (let i = 0; i < allKeypress.length; i++) {
-    allKeypress[i].onclick = (ev) => {
-      socket.emit('cs-playsound', allKeypress[i].innerText)
-    }
-  }
 }
 
 function DeleteKey (key) {

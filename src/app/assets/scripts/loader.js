@@ -127,7 +127,7 @@ function loadPage (pageNumber) {
       // eslint-disable-next-line no-undef
       if (SoundOnPress) new Audio('assets/sounds/press.mp3').play()
       if (allKeypress[i].getAttribute('data-key')) {
-        socket.emit('keypress', { macro: true, key: allKeypress[i].getAttribute('data-key') })
+        socket.emit('keypress', { macro: true, keys: allKeypress[i].getAttribute('data-key') })
       } else {
         socket.emit('keypress', { macro: false, name: allKeypress[i].innerHTML })
       }

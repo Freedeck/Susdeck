@@ -6,11 +6,12 @@ const Susaudio = {
     autotuned: false,
     queue: []
   },
-  playSound: (audioSource) => {
+  playSound: (audioSource, audioName) => {
     const audio = new Audio(audioSource)
     audio.preservesPitch = Susaudio._player.preservesPitch
     audio.playbackRate = Susaudio._player.pitch
     audio.isSusaudio = true
+    audio.saName = audioName
     audio.play()
     audio.onended = () => {
       Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, audio)

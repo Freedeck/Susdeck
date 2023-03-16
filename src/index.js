@@ -13,7 +13,6 @@ if (process.argv[3] === '-dbg') { debug.is = true }
 
 const port = process.env.PORT || 3000
 const getNetworkInterfaces = require('./network')
-const Settings = require('../Settings')
 const loginList = []
 const sessions = []
 const events = new Map()
@@ -59,6 +58,7 @@ io.on('connection', function (socket) {
       })
       return
     }
+    keys = keys.keys // So ew. Will fix later.
     if (keys.includes('{')) {
       keys.split('{').forEach(function (key) {
         if (key === '') { return }

@@ -3,6 +3,7 @@
 const socket = io()
 const keys = document.getElementById('keys')
 const Pages = {}
+const q = []
 const countOnEachPage = 8
 
 addToHTMLlog('Waiting for host...')
@@ -16,14 +17,23 @@ socket.on('server_connected', function (ssatt, socs) {
   }, 1000)
 })
 
+setInterval(() => {
+  q.splice(0, q.length)
+  // eslint-disable-next-line no-undef
+  Susaudio._player.queue.forEach(audio => {
+    q.push(audio.saName)
+  })
+  document.getElementById('now-playing').innerText = 'Playing: ' + q.join(', ')
+}, 250)
+
 socket.on('press-sound', (sound, name) => {
-  document.getElementById('now-playing').innerText = 'Now playing ' + name
   if (sound.includes('--Stop_all')) {
     // eslint-disable-next-line no-undef
     Susaudio.stopAll()
+    return
   }
   // eslint-disable-next-line no-undef
-  Susaudio.playSound(sound)
+  Susaudio.playSound(sound, name)
 })
 
 // eslint-disable-next-line no-undef
@@ -41,34 +51,6 @@ function addToHTMLlog (text) {
 
 function removeFromHTMLlog (text) {
   document.getElementById('console').removeChild(document.getElementById(text))
-}
-
-function DeleteKey (key) {
-  // eslint-disable-next-line no-undef
-  Sounds.splice(Sounds.indexOf({ name: key.name, key: key.key }), 1)
-  socket.emit('c-delkey', { name: key.name, key: key.key })
-}
-
-// Get the modal
-const modal = document.getElementById('myModal')
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-  if (event.target === modal) {
-    modal.style.display = 'none'
-  }
-}
-
-function Changeifo (key) {
-  const newkey = document.getElementById('newkey').value
-  const newname = document.getElementById('newname').value
-  socket.emit('c-info-change', `SETKEY:${key}:${newkey}:${newname}`)
-}
-
-function setSet () {
-  const soc = document.getElementById('soc').checked
-  const ssat = document.getElementById('ssat').value
-  socket.emit('c-info-change', 'SSAT:' + ssat + ',SOC:' + soc)
-  socket.emit('c-change')
 }
 
 socket.on('c-change', () => { window.location.replace(window.location.href) })

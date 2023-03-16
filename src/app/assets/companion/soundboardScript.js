@@ -4,8 +4,6 @@ const socket = io()
 const keys = document.getElementById('keys')
 const Pages = {}
 const countOnEachPage = 8
-let currentPage = 0
-let keyList = []
 
 addToHTMLlog('Waiting for host...')
 
@@ -51,11 +49,6 @@ function DeleteKey (key) {
   socket.emit('c-delkey', { name: key.name, key: key.key })
 }
 
-function createNewSound () {
-  // eslint-disable-next-line no-undef
-  loadPage(0)
-}
-
 // Get the modal
 const modal = document.getElementById('myModal')
 // When the user clicks anywhere outside of the modal, close it
@@ -69,7 +62,6 @@ function Changeifo (key) {
   const newkey = document.getElementById('newkey').value
   const newname = document.getElementById('newname').value
   socket.emit('c-info-change', `SETKEY:${key}:${newkey}:${newname}`)
-  loadPage(0)
 }
 
 function setSet () {

@@ -19,8 +19,10 @@ socket.on('server_connected', function (ssatt, socs) {
   }, 1000)
 })
 
-socket.on('press-sound', (sound) => {
-  document.getElementById('audio').src = sound
+socket.on('press-sound', (sound, name) => {
+  document.getElementById('now-playing').innerText = 'Now playing '+name
+  // eslint-disable-next-line no-undef
+  Susaudio.playSound(sound)
 })
 
 function addToHTMLlog (text) {
@@ -35,39 +37,12 @@ function removeFromHTMLlog (text) {
 }
 
 function loadPage (pageNumber) {
-  autosort()
   currentPage = pageNumber
   keyList = []
   const myNode = document.getElementById('keys')
   while (myNode.firstChild) {
     myNode.removeChild(myNode.lastChild)
   }
-  // eslint-disable-next-line no-undef
-  Pages[pageNumber].forEach(sound => {
-    keyList.push(sound)
-    const btn = document.createElement('button')
-    const key = document.createElement('p')
-    btn.className = 'keypress btxt'
-    if (sound.keys) {
-      btn.setAttribute('data-multi', true)
-    }
-    if (sound.key) {
-      btn.setAttribute('data-key', sound.key)
-      key.innerText = sound.key
-    } else {
-      let txt = ''
-      sound.keys.forEach(key => {
-        txt += `{${key}}`
-      })
-      key.innerText += txt
-      btn.setAttribute('data-key', txt)
-    }
-    if (sound.icon) {
-      btn.style.backgroundImage = "url('../icons/" + sound.icon + "')"
-    }
-    btn.innerText = sound.name
-    keys.appendChild(btn)
-  })
 
   const stopall = document.createElement('button')
   stopall.onclick = () => { window.location.reload() }
@@ -109,10 +84,6 @@ window.onclick = function (event) {
   }
 }
 
-document.getElementById('ssat').oninput = () => {
-  document.getElementById('amt').innerText = document.getElementById('ssat').value + ' seconds'
-}
-
 function Changeifo (key) {
   const newkey = document.getElementById('newkey').value
   const newname = document.getElementById('newname').value
@@ -128,44 +99,6 @@ function setSet () {
 }
 
 socket.on('c-change', () => { window.location.replace(window.location.href) })
-
-socket.on('hic', function (ssat, soc) {
-  console.log(ssat)
-  document.getElementById('soc').checked = soc
-  document.getElementById('ssat').value = ssat
-  document.getElementById('amt').innerText = document.getElementById('ssat').value + ' seconds'
-})
-
-function autosort () {
-  // eslint-disable-next-line no-undef
-  const pagesAmount = Sounds.length / countOnEachPage
-  for (let i = 0; i < pagesAmount; i++) {
-    Pages[i] = []
-  }
-  let pageCounter = 0
-  let index = 0
-  // eslint-disable-next-line no-undef
-  Sounds.forEach(sound => {
-    Pages[pageCounter].push(sound)
-    if (index === countOnEachPage) {
-      pageCounter++
-      index = 0
-    }
-    index++
-  })
-}
-
-function np () {
-  if (Pages[currentPage + 1]) {
-    loadPage(currentPage + 1)
-  }
-}
-
-function bp () {
-  if (Pages[currentPage - 1]) {
-    loadPage(currentPage - 1)
-  }
-}
 
 function openNav () {
   document.getElementById('mySidenav').style.width = '250px'

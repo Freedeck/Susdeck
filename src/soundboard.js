@@ -3,11 +3,11 @@
  * TODO: implement
  */
 
-const soundDir = 'C:/Users/aiden/Documents/Sounds/'
+const soundDir = './s/'
 const sounds = [
   {
     name: 'Biggest Bird',
-    path: 'bigges t birt.wav',
+    path: 'biggestbird.wav',
     key: 'f21'
   }
 ]

@@ -7,11 +7,13 @@ const app = ex()
 const http = new httpLib.Server(app)
 const io = require('socket.io')(http)
 const debug = { is: false, log: function (s) { if (this.is) { console.log('[DEBUG] ' + s) } } }
+const sbc = require('./soundboard')
 
 if (process.argv[3] === '-dbg') { debug.is = true }
 
 const port = process.env.PORT || 3000
 const getNetworkInterfaces = require('./network')
+const Settings = require('../Settings')
 const loginList = []
 const sessions = []
 const events = new Map()
@@ -48,6 +50,11 @@ io.on('connection', function (socket) {
     debug.log('Sent user connection success message')
   }, 150)
   socket.on('keypress', function (keys) {
+    if (Settings.Experiments.SBC) {
+      sbc.sounds.forEach(a => {
+        socket.emit('press-sound', sbc.soundDir + a.path)
+      })
+    }
     if (keys.includes('{')) {
       keys.split('{').forEach(function (key) {
         if (key === '') { return }

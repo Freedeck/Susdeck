@@ -4,8 +4,12 @@
  */
 
 const soundDir = 'C:/Users/aiden/Documents/Sounds/'
-const sounds = {
-  'Biggest Bird': 'bigges t birt.wav'
-}
+const sounds = [
+  {
+    name: 'Biggest Bird',
+    path: 'bigges t birt.wav',
+    key: 'f21'
+  }
+]
 
 module.exports = { sounds, soundDir }

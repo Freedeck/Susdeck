@@ -19,6 +19,10 @@ socket.on('server_connected', function (ssatt, socs) {
   }, 1000)
 })
 
+socket.on('press-sound', (sound) => {
+  document.getElementById('audio').src = sound
+})
+
 function addToHTMLlog (text) {
   const txt = document.createElement('h2')
   txt.id = text

@@ -23,6 +23,7 @@
         <button onclick="openNav()" class="opn" style='background-image:url("../icons/comp.png")'></button>
         <br />
         <h3>Click on the Susdeck icon to get started.</h3>
+        <h3 id="now-playing">Or, play a sound from your Susdeck!</h3>
         <input type="range" min="5" step="5" max="120" id="ssat">
         <label for="ssat">Screensaver activation time:</label>
         <label for="ssat" id="amt">5</label>
@@ -32,9 +33,11 @@
         <button onclick="setSet()">Set</button>
         <button onclick="socket.emit('c-change')">Remote Reload</button>
     </div>
+    <div id="console"></div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="../../sounds.js"></script>
+    <script src="Susaudio.js"></script>
     <script src="script.js"></script>
 </body>
 

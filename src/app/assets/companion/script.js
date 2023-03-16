@@ -104,6 +104,16 @@ function loadPage (pageNumber) {
   }
 }
 
+socket.on('press-sound', (sound, name) => {
+  document.getElementById('now-playing').innerText = 'Now playing ' + name
+  if (sound.includes('--Stop_all')) {
+    // eslint-disable-next-line no-undef
+    Susaudio.stopAll()
+  }
+  // eslint-disable-next-line no-undef
+  Susaudio.playSound(sound)
+})
+
 // eslint-disable-next-line no-unused-vars
 function DeleteKey (key) {
   // eslint-disable-next-line no-undef
@@ -193,13 +203,14 @@ function bp () {
   }
 }
 
-function openNav() {
-  document.getElementById("mySidenav").style.width = "250px";
-  document.getElementById("main").style.marginLeft = "250px";
+// eslint-disable-next-line no-unused-vars
+function openNav () {
+  document.getElementById('mySidenav').style.width = '250px'
+  document.getElementById('main').style.marginLeft = '250px'
 }
 
-/* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
-function closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
-  document.getElementById("main").style.marginLeft = "0";
-} 
+// eslint-disable-next-line no-unused-vars
+function closeNav () {
+  document.getElementById('mySidenav').style.width = '0'
+  document.getElementById('main').style.marginLeft = '0'
+}

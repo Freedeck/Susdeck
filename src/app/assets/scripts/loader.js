@@ -108,7 +108,6 @@ function loadPage (pageNumber) {
   })
 
   const stopall = document.createElement('button')
-  stopall.onclick = () => { window.location.reload() }
   stopall.className = 'keypress btxt'
   stopall.innerText = 'Stop All'
   const reloadbtn = document.createElement('button')
@@ -123,7 +122,7 @@ function loadPage (pageNumber) {
   keys.appendChild(susdeck)
   const allKeypress = document.getElementsByClassName('keypress')
   for (let i = 0; i < allKeypress.length; i++) {
-    allKeypress[i].onclick = (ev) => {
+    allKeypress[i].onmouseup = (ev) => {
       // eslint-disable-next-line no-undef
       if (SoundOnPress) new Audio('assets/sounds/press.mp3').play()
       if (allKeypress[i].getAttribute('data-key')) {

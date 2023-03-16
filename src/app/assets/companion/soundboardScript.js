@@ -1,10 +1,10 @@
-/* eslint-disable no-unused-vars */
-// eslint-disable-next-line no-undef
+/* eslint-disable no-unused-vars, no-undef */
 const socket = io()
 const keys = document.getElementById('keys')
 const Pages = {}
 const q = []
 const countOnEachPage = 8
+let tslr = 0
 
 addToHTMLlog('Waiting for host...')
 
@@ -26,7 +26,10 @@ setInterval(() => {
   document.getElementById('now-playing').innerText = 'Playing: ' + q.join(', ')
 }, 250)
 
+setInterval(() => { tslr++ }, 1)
+
 socket.on('press-sound', (sound, name) => {
+  if (tslr < 2) return
   if (sound.includes('--Stop_all')) {
     // eslint-disable-next-line no-undef
     Susaudio.stopAll()
@@ -34,6 +37,7 @@ socket.on('press-sound', (sound, name) => {
   }
   // eslint-disable-next-line no-undef
   Susaudio.playSound(sound, name)
+  tslr = 0
 })
 
 // eslint-disable-next-line no-undef

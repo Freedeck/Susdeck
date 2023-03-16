@@ -50,6 +50,7 @@ io.on('connection', function (socket) {
     debug.log('Sent user connection success message')
   }, 150)
   socket.on('keypress', function (keyInput) {
+    debug.log(JSON.stringify(keyInput))
     if (keyInput.name) {
       sbc.sounds.forEach(sound => {
         if (sound.name === keyInput.name) {

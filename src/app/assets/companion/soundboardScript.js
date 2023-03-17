@@ -22,6 +22,7 @@ setInterval(() => {
   q.splice(0, q.length)
   // eslint-disable-next-line no-undef
   Susaudio._player.queue.forEach(audio => {
+    if (audio.isSusaudioFB) return
     q.push(audio.saName)
   })
   document.getElementById('now-playing').innerText = 'Playing: ' + q.join(', ')

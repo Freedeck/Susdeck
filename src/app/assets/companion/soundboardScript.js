@@ -7,6 +7,7 @@ const countOnEachPage = 8
 let tslr = 0
 
 addToHTMLlog('Waiting for host...')
+Susaudio.init()
 
 socket.on('server_connected', function (ssatt, socs) {
   removeFromHTMLlog('Waiting for host...')

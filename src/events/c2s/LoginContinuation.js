@@ -1,4 +1,3 @@
-
 module.exports = {
   event: 'c2sr_login_cont',
   callback: (socket, args, loginList) => {

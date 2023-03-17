@@ -40,5 +40,5 @@ function addToHTMLlog (text) {
 
 // eslint-disable-next-line no-unused-vars
 function submit () {
-  socket.emit('c2sd_login', btoa(document.getElementById('password').value))
+  socket.emit('c2sd_login', document.getElementById('password').value)
 }

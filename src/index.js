@@ -6,10 +6,8 @@ const fs = require('fs')
 const app = ex()
 const http = new httpLib.Server(app)
 const io = require('socket.io')(http)
-const debug = { is: false, log: function (s) { if (this.is) { console.log('[DEBUG] ' + s) } } }
+const debug = require('./cliUtil')
 const sbc = require('./soundboard')
-
-if (process.argv[3] === '-dbg') { debug.is = true }
 
 const port = process.env.PORT || 3000
 const getNetworkInterfaces = require('./network')

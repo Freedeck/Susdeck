@@ -20,7 +20,6 @@ module.exports = {
         }
       })
       Object.assign(found, newObject)
-      console.log(newObject)
       fs.writeFileSync('./src/sounds.js', `const SoundOnPress = ${sounds.SoundOnPress}
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime}
 const Sounds = ${JSON.stringify(sounds.Sounds)}

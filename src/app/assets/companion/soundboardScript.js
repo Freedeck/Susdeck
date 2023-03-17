@@ -29,6 +29,7 @@ setInterval(() => {
 
 function volChanged () {
   const volumeSlider = document.getElementById('out-vol')
+  console.log(volumeSlider.value)
   Susaudio._player.volume = volumeSlider.value
 }
 

@@ -91,14 +91,12 @@ function loadPage (pageNumber) {
     keyList.push(sound)
     const btn = document.createElement('button')
     btn.className = 'keypress btxt'
+    if (sound.keys) {
+      btn.setAttribute('data-multi', true)
+      btn.setAttribute('data-key', sound.keys)
+    }
     if (sound.key) {
       btn.setAttribute('data-key', sound.key)
-    } else if (sound.keys) {
-      let txt = ''
-      sound.keys.forEach(key => {
-        txt += `{${key}}`
-      })
-      btn.setAttribute('data-key', txt)
     }
     if (sound.icon) {
       btn.style.backgroundImage = "url('assets/icons/" + sound.icon + "')"

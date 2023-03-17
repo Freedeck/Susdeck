@@ -71,6 +71,7 @@ io.on('connection', function (socket) {
       rob.keyTap(keys)
     }
   })
+  socket.on('still-alive', function () { socket.emit('still-alive') })
   socket.on('c-change', function () { io.emit('c-change') })
   events.forEach(function (event) {
     socket.on(event.event, async function (args) {

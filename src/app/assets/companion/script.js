@@ -6,6 +6,9 @@ const countOnEachPage = 8
 let currentPage = 0
 let keyList = []
 
+// eslint-disable-next-line no-undef
+Susaudio.init()
+
 addToHTMLlog('Waiting for host...')
 
 socket.on('server_connected', function (ssatt, socs) {
@@ -105,13 +108,13 @@ function loadPage (pageNumber) {
 }
 
 socket.on('press-sound', (sound, name) => {
-  document.getElementById('now-playing').innerText = 'Now playing ' + name
   if (sound.includes('--Stop_all')) {
     // eslint-disable-next-line no-undef
     Susaudio.stopAll()
+    return
   }
   // eslint-disable-next-line no-undef
-  Susaudio.playSound(sound)
+  Susaudio.playSound(sound, name)
 })
 
 // eslint-disable-next-line no-unused-vars

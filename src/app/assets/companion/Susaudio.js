@@ -5,6 +5,7 @@ const Susaudio = {
     preservesPitch: true,
     autotuned: false,
     sinkId: null,
+    timeSinceLastRequest: 0,
     queue: []
   },
   init: async () => {
@@ -20,6 +21,7 @@ const Susaudio = {
     })
   },
   playSound: async (audioSource, audioName) => {
+    if (Susaudio._player.timeSinceLastRequest < 2) return
     const audio = new Audio(audioSource)
     audio.preservesPitch = Susaudio._player.preservesPitch
     audio.playbackRate = Susaudio._player.pitch
@@ -31,6 +33,7 @@ const Susaudio = {
       Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, audio)
     }
     Susaudio._player.queue.push(audio)
+    Susaudio._player.timeSinceLastRequest = 0
   },
   stopAll: () => {
     Susaudio._player.queue.forEach(audio => {
@@ -55,3 +58,7 @@ function _sa_removeFromArray (arr, value) {
     return ele !== value
   })
 }
+
+setInterval(() => {
+  Susaudio._player.timeSinceLastRequest++
+}, 1)

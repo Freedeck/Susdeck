@@ -5,6 +5,7 @@ const Pages = {}
 const countOnEachPage = 8
 let currentPage = 0
 let keyList = []
+let klD = []
 
 // eslint-disable-next-line no-undef
 Susaudio.init()
@@ -48,17 +49,11 @@ function loadPage (pageNumber) {
     btn.className = 'keypress btxt'
     if (sound.keys) {
       btn.setAttribute('data-multi', true)
+      btn.setAttribute('data-key', sound.keys)
     }
     if (sound.key) {
       btn.setAttribute('data-key', sound.key)
       key.innerText = sound.key
-    } else {
-      let txt = ''
-      sound.keys.forEach(key => {
-        txt += `{${key}}`
-      })
-      key.innerText += txt
-      btn.setAttribute('data-key', txt)
     }
     if (sound.icon) {
       btn.style.backgroundImage = "url('../icons/" + sound.icon + "')"
@@ -82,12 +77,17 @@ function loadPage (pageNumber) {
   const allKeypress = document.getElementsByClassName('keypress')
   for (let i = 0; i < allKeypress.length; i++) {
     allKeypress[i].onclick = (ev) => {
-      if (allKeypress[i].getAttribute('data-multi')) {
-        document.getElementById('mh').innerHTML = `<span class="close" onclick="modal.style.display = 'none'">&times;</span><h2>Editing ${allKeypress[i].innerText} - Uneditable Key (for now...)</h2>`
+      if (allKeypress[i].getAttribute('data-multi') && allKeypress[i].getAttribute('data-key')) {
+        let i = 0
+        JSON.parse(allKeypress[i].getAttribute('data-key')).forEach(key => {
+          klD.push(`<label for="newkey">Key:</label><input type="text" value='${key}' data-key-num="${i}" disabled/>`)
+          i++
+        })
+        document.getElementById('mh').innerHTML = `<span class="close" onclick="modal.style.display = 'none'">&times;</span><h2>Editing ${allKeypress[i].innerText} - Multikey Macro</h2>`
         document.getElementById('mc').innerHTML = `
       <label for="newname">Name:</label><input type="text" value="${allKeypress[i].innerText}" disabled />
       <br /> <br />
-      <label for="newkey">Key:</label><input type="text" value='${allKeypress[i].getAttribute('data-key')}' disabled/>
+      ${klD.join('\n')}
       <p>Icon Preview</p>
       <button style='background-image: ${allKeypress[i].style.backgroundImage.replace()}'></button>`
         modal.style.display = 'block'

@@ -27,6 +27,11 @@ setInterval(() => {
   document.getElementById('now-playing').innerText = 'Playing: ' + q.join(', ')
 }, 250)
 
+function volChanged () {
+  const volumeSlider = document.getElementById('out-vol')
+  Susaudio._player.volume = volumeSlider.value
+}
+
 socket.on('press-sound', (sound, name) => {
   if (sound.includes('--Stop_all')) {
     // eslint-disable-next-line no-undef

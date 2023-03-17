@@ -3,6 +3,7 @@ const Susaudio = {
   _player: {
     pitch: 1.0,
     preservesPitch: true,
+    volume: 1.0,
     autotuned: false,
     paused: false,
     sinkId: null,
@@ -26,6 +27,7 @@ const Susaudio = {
     const audio = new Audio(audioSource)
     audio.preservesPitch = Susaudio._player.preservesPitch
     audio.playbackRate = Susaudio._player.pitch
+    audio.volume = Susaudio._player.volume
     audio.isSusaudio = true
     audio.saName = audioName
     await audio.setSinkId(Susaudio._player.sinkId)

@@ -73,7 +73,7 @@ Audio.prototype.stop = function () {
   Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this)
 }
 // other functions
-function _sa_removeFromArray(arr, value) {
+function _sa_removeFromArray (arr, value) {
   return arr.filter(function (ele) {
     return ele !== value
   })

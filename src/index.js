@@ -57,19 +57,14 @@ io.on('connection', function (socket) {
       })
       return
     }
-    const keys = keyInput.keys
-    if (keys.includes('{')) {
-      keys.split('{').forEach(function (key) {
-        if (key === '') { return }
-        key = key.split('}')[0]
-        rob.keyToggle(key, 'down')
-        setTimeout(function () {
-          rob.keyToggle(key, 'up')
-        }, 150)
-      })
-    } else {
-      rob.keyTap(keys)
-    }
+    const keys = JSON.parse(keyInput.keys)
+    keys.forEach(function (key) {
+      key = key.split('}')[0]
+      rob.keyToggle(key, 'down')
+      setTimeout(function () {
+        rob.keyToggle(key, 'up')
+      }, 50)
+    })
   })
   socket.on('still-alive', function () { socket.emit('still-alive') })
   socket.on('c-change', function () { io.emit('c-change') })

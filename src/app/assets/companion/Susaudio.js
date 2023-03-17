@@ -4,6 +4,7 @@ const Susaudio = {
     pitch: 1.0,
     preservesPitch: true,
     autotuned: false,
+    paused: false,
     sinkId: null,
     timeSinceLastRequest: 0,
     queue: []
@@ -46,12 +47,12 @@ const Susaudio = {
   },
   playPause: () => {
     Susaudio._player.queue.forEach(audio => {
-      if (paused == true) {
-        paused = false
+      if (Susaudio._player.paused === true) {
         audio.play()
+        Susaudio._player.paused = !Susaudio._player.paused
       } else {
-        paused = true
         audio.pause()
+        Susaudio._player.paused = !Susaudio._player.paused
       }
     })
   },
@@ -72,7 +73,7 @@ Audio.prototype.stop = function () {
   Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this)
 }
 // other functions
-function _sa_removeFromArray (arr, value) {
+function _sa_removeFromArray(arr, value) {
   return arr.filter(function (ele) {
     return ele !== value
   })

@@ -39,3 +39,16 @@ userTheme.forEach(property => {
     rootElem.style.setProperty(`--sd-${key}`, property[key])
   })
 })
+
+document.body.onload = () => {
+  const footer = document.createElement('footer')
+  footer.innerHTML = '<h3>Please wait</h3>'
+  document.body.appendChild(footer)
+  setTimeout(() => {
+    if (susdeckUniversal.isInDebug) {
+      footer.innerHTML = '<h3>Susdeck is in debug mode</h3>'
+    } else {
+      footer.style.display = 'none'
+    }
+  }, 150)
+}

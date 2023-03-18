@@ -14,6 +14,13 @@ socket.on('server_connected', function (ssatt, socs) {
   socket.emit('im companion')
   setTimeout(() => {
     document.getElementById('console').style.display = 'none'
+    if (susdeckUniversal.isInDebug === true) {
+      // eslint-disable-next-line no-undef
+      sounds.forEach(function (s) {
+        // eslint-disable-next-line no-undef
+        document.getElementById('keys').innerHTML += `<div><h3>${s.name}</h3><h4>${soundDir + s.path}</h4></div>`
+      })
+    }
   }, 1000)
 })
 
@@ -42,14 +49,6 @@ socket.on('press-sound', (sound, name) => {
   // eslint-disable-next-line no-undef
   Susaudio.playSound(sound, name)
 })
-
-if (susdeckUniversal.isInDebug) {
-// eslint-disable-next-line no-undef
-  sounds.forEach(function (s) {
-  // eslint-disable-next-line no-undef
-    document.getElementById('keys').innerHTML += `<div><h3>${s.name}</h3><h4>${soundDir + s.path}</h4></div>`
-  })
-}
 
 function addToHTMLlog (text) {
   const txt = document.createElement('h2')

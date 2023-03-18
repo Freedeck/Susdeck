@@ -21,6 +21,16 @@ body {
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 25%;
+  background-color: red;
+  color: white;
+  text-align: center;
+}
+
 * {
     font-family: var(--sd-font-family);
 }

@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Rubik&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Inter&family=Rubik&display=swap');
+
+:root {
+  --sd-template-columns: repeat(4,1fr);
+  --sd-font-family: 'Inter';
+}
 
 body {
     background: rgba(255, 0, 89, 1);
@@ -17,7 +22,7 @@ body {
 }
 
 * {
-    font-family: 'Rubik';
+    font-family: var(--sd-font-family);
 }
 
 html,
@@ -72,7 +77,7 @@ button {
 
 #keys {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: var(--sd-template-columns);
     grid-column-gap: 7px;
     grid-row-gap: 2px;
 }

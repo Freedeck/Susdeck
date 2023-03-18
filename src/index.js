@@ -19,6 +19,7 @@ app.use('/', ex.static('./src/app'))
 
 app.get('/sounds.js', (e, r) => { r.sendFile(path.join(__dirname, '\\sounds.js')) })
 app.get('/soundboard.js', (e, r) => { r.sendFile(path.join(__dirname, '\\soundboard.js')) })
+app.get('/api/dbg', (e, r) => { r.send({ status: debug.is }) })
 
 debug.log('Adding events to app')
 
@@ -68,6 +69,7 @@ io.on('connection', function (socket) {
   })
   socket.on('still-alive', function () { socket.emit('still-alive') })
   socket.on('c-change', function () { io.emit('c-change') })
+  socket.on('Reloadme', function () { socket.emit('c-change') })
   events.forEach(function (event) {
     socket.on(event.event, async function (args) {
       if (event.async) {

@@ -21,4 +21,6 @@ const sounds = [
   { name: 'Stop All', path: '--Stop_all' }
 ]
 
-module.exports = { sounds, soundDir }
+if (typeof module !== 'undefined') {
+  module.exports = { sounds, soundDir }
+}

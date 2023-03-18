@@ -7,13 +7,21 @@ const susdeckUniversal = {
       { 'font-family': 'Inter' }
     ]
   },
+  socket: io(),
+  isInDebug: false,
   hasConnected: false
 }
 
-socket.on('server_connected', () => {
+susdeckUniversal.socket.on('server_connected', () => {
   if (susdeckUniversal.hasConnected) { socket.emit('Reloadme') }
   susdeckUniversal.hasConnected = true
 })
+fetch('/api/dbg')
+  .then(data =>
+    data.json())
+  .then(data => {
+    susdeckUniversal.isInDebug = true
+  })
 
 const rootElem = document.querySelector(':root')
 

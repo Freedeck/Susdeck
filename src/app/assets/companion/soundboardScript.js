@@ -43,11 +43,13 @@ socket.on('press-sound', (sound, name) => {
   Susaudio.playSound(sound, name)
 })
 
+if (susdeckUniversal.isInDebug) {
 // eslint-disable-next-line no-undef
-sounds.forEach(function (s) {
+  sounds.forEach(function (s) {
   // eslint-disable-next-line no-undef
-  document.getElementById('keys').innerHTML += `<div><h3>${s.name}</h3><h4>${soundDir + s.path}</h4></div>`
-})
+    document.getElementById('keys').innerHTML += `<div><h3>${s.name}</h3><h4>${soundDir + s.path}</h4></div>`
+  })
+}
 
 function addToHTMLlog (text) {
   const txt = document.createElement('h2')

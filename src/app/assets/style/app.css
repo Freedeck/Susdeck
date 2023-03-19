@@ -3,6 +3,7 @@
 :root {
   --sd-template-columns: repeat(4,1fr);
   --sd-font-family: 'Inter';
+  --sd-background-size: 400% 400%;
 }
 
 body {
@@ -12,7 +13,7 @@ body {
     background: -ms-linear-gradient(45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
     background: -o-linear-gradient(45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
     background: linear-gradient(45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
-    background-size: 400% 400%;
+    background-size: var(--sd-background-size);
     -webkit-animation: errorBg 5s linear infinite;
     -moz-animation: errorBg 5s linear infinite;
     animation: errorBg 5s linear infinite;

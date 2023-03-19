@@ -4,6 +4,7 @@ const susdeckUniversal = {
     // Built-in themes.
     Default: [
       { 'template-columns': 'repeat(4,1fr)' },
+      { 'background-size': '400% 400%' },
       { 'font-family': 'Inter' }
     ]
   },
@@ -20,7 +21,7 @@ fetch('/api/dbg')
   .then(data =>
     data.json())
   .then(data => {
-    susdeckUniversal.isInDebug = true
+    susdeckUniversal.isInDebug = data.status
   })
 
 const rootElem = document.querySelector(':root')
@@ -29,7 +30,6 @@ const rootElem = document.querySelector(':root')
 if (!localStorage.getItem('sd-theme')) {
   localStorage.setItem('sd-theme', JSON.stringify(susdeckUniversal.themes.Default))
 }
-localStorage.setItem('sd-theme', JSON.stringify(susdeckUniversal.themes.Default))
 
 const userTheme = JSON.parse(localStorage.getItem('sd-theme'))
 
@@ -42,7 +42,7 @@ userTheme.forEach(property => {
 
 document.body.onload = () => {
   const footer = document.createElement('footer')
-  footer.innerHTML = '<h3>Please wait</h3>'
+  footer.innerHTML = '<h3>Checking if Susdeck is in debug mode - this shouldn\'t be visible.</h3>'
   document.body.appendChild(footer)
   setTimeout(() => {
     if (susdeckUniversal.isInDebug) {

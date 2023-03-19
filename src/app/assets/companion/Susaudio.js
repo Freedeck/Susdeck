@@ -2,7 +2,7 @@
 const Susaudio = {
   _player: {
     pitch: 1.0,
-    preservesPitch: true,
+    preservesPitch: false,
     volume: 1.0,
     autotuned: false,
     paused: false,
@@ -22,7 +22,7 @@ const Susaudio = {
       }
     })
   },
-  playSound: async (audioSource, audioName) => {
+  playSound: async (audioSource, audioName, sa_isNotVB = false) => {
     if (Susaudio._player.timeSinceLastRequest < 2) return
     const audio = new Audio(audioSource)
     audio.preservesPitch = Susaudio._player.preservesPitch
@@ -30,7 +30,8 @@ const Susaudio = {
     audio.volume = Susaudio._player.volume
     audio.isSusaudio = true
     audio.saName = audioName
-    await audio.setSinkId(Susaudio._player.sinkId)
+    audio.isNotVB = sa_isNotVB
+    if (!audio.isNotVB) await audio.setSinkId(Susaudio._player.sinkId)
     audio.play()
     audio.onended = () => {
       Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, audio)

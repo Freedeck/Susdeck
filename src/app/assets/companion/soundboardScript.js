@@ -29,6 +29,7 @@ setInterval(() => {
   // eslint-disable-next-line no-undef
   Susaudio._player.queue.forEach(audio => {
     if (audio.isSusaudioFB) return
+    if (!audio.isNotVB) return
     q.push(audio.saName)
   })
   document.getElementById('now-playing').innerText = 'Playing: ' + q.join(', ')
@@ -37,8 +38,21 @@ setInterval(() => {
 function volChanged () {
   const volumeSlider = document.getElementById('out-vol')
   console.log(volumeSlider.value)
-  Susaudio._player.volume = volumeSlider.value
+  Susaudio._player.queue.forEach(audio => {
+    Susaudio._player.volume = volumeSlider.value
+    audio.volume = Susaudio._player.volume
+  })
 }
+
+function pbrChanged () {
+  const volumeSlider = document.getElementById('out-pbr')
+  console.log(volumeSlider.value)
+  Susaudio._player.queue.forEach(audio => {
+    Susaudio._player.pitch = volumeSlider.value
+    audio.playbackRate = Susaudio._player.pitch
+  })
+}
+
 
 socket.on('press-sound', (sound, name) => {
   if (sound.includes('--Stop_all')) {
@@ -48,6 +62,7 @@ socket.on('press-sound', (sound, name) => {
   }
   // eslint-disable-next-line no-undef
   Susaudio.playSound(sound, name)
+  Susaudio.playSound(sound, name, true)
 })
 
 function addToHTMLlog (text) {

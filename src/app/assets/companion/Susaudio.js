@@ -8,17 +8,18 @@ const Susaudio = {
     paused: false,
     sinkId: null,
     timeSinceLastRequest: 0,
-    queue: []
+    queue: [],
+    audioEndedCallback: function () {
+      Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this)
+    }
   },
   init: async () => {
     const devices = await navigator.mediaDevices.enumerateDevices()
     devices.forEach(device => {
       if (device.label === 'CABLE Input (VB-Audio Virtual Cable)') {
-        console.log('Found CABLE Input')
         const audio = new Audio()
         audio.setSinkId(device.deviceId)
         Susaudio._player.sinkId = device.deviceId
-        console.log('Set sink ID -', device.deviceId)
       }
     })
   },
@@ -33,10 +34,9 @@ const Susaudio = {
     audio.isNotVB = sa_isNotVB
     if (audio.isNotVB === false) await audio.setSinkId(Susaudio._player.sinkId)
     audio.play()
-    audio.onended = () => {
-      Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, audio)
-    }
+    audio.onended = Susaudio._player.audioEndedCallback
     Susaudio._player.queue.push(audio)
+    localStorage.setItem('_susaudio_playlist', localStorage.getItem('_susaudio_playlist') + ',' + audio.saName)
     Susaudio._player.timeSinceLastRequest = 0
   },
   stopAll: () => {

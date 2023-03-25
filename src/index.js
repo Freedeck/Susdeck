@@ -72,6 +72,7 @@ io.on('connection', function (socket) {
   socket.on('Reloadme', function () { socket.emit('c-change') })
   events.forEach(function (event) {
     socket.on(event.event, async function (args) {
+      console.log(event.event)
       if (event.async) {
         await event.callback(socket, args, loginList)
       } else {

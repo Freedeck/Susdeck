@@ -53,7 +53,6 @@ function pbrChanged () {
   })
 }
 
-
 socket.on('press-sound', (sound, name) => {
   if (sound.includes('--Stop_all')) {
     // eslint-disable-next-line no-undef

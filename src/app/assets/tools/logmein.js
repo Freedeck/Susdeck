@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // eslint-disable-next-line no-undef
 const socket = io()
 
@@ -17,8 +18,8 @@ socket.on('hiuser', function (s) {
   addToHTMLlog('Loading login form..')
   setTimeout(() => {
     document.getElementById('loading').style.display = 'none'
-    document.getElementById('sdl').innerText = localStorage.getItem('_sdl')
-    document.getElementById('yn').innerText = localStorage.getItem('_sdyn')
+    document.getElementById('sdl').innerText = susdeckUniversal.load('login_msg')
+    document.getElementById('yn').innerText = susdeckUniversal.load('owner_name')
     document.getElementById('login').style.display = 'block'
   }, 500)
 })

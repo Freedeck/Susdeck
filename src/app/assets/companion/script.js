@@ -5,7 +5,7 @@ const Pages = {}
 const countOnEachPage = 8
 let currentPage = 0
 let keyList = []
-let klD = []
+const klD = []
 
 // eslint-disable-next-line no-undef
 Susaudio.init()
@@ -16,7 +16,7 @@ socket.on('server_connected', function (ssatt, socs) {
   removeFromHTMLlog('Waiting for host...')
   addToHTMLlog('Companion connected!')
   socket.emit('im companion')
-  loadPage(0)
+  if (document.getElementById('keys')) loadPage(0)
   setTimeout(() => {
     document.getElementById('console').style.display = 'none'
   }, 1000)
@@ -167,7 +167,6 @@ function setSet () {
 socket.on('c-change', () => { window.location.replace(window.location.href) })
 
 socket.on('hic', function (ssat, soc) {
-  console.log(ssat)
   document.getElementById('soc').checked = soc
   document.getElementById('ssat').value = ssat
   document.getElementById('amt').innerText = document.getElementById('ssat').value + ' seconds'

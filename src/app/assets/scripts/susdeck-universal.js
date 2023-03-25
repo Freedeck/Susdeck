@@ -8,15 +8,31 @@ const susdeckUniversal = {
       { 'font-family': 'Inter' }
     ]
   },
+  retrieveSession: function () {
+    return atob(localStorage.getItem('_sdsession'))
+  },
+  createTempHWID: function () {
+    return Math.random().toString().substring(2, 5)
+  },
+  save: function (name, value) {
+    localStorage.setItem('_sd' + name, value)
+  },
+  load: function (name) {
+    return localStorage.getItem('_sd' + name)
+  },
   socket: io(),
+  connectionOn: function (event, callback) {
+    susdeckUniversal.socket.on(event, callback)
+  },
   isInDebug: false,
   hasConnected: false
 }
 
 susdeckUniversal.socket.on('server_connected', () => {
-  if (susdeckUniversal.hasConnected) { socket.emit('Reloadme') }
+  if (!susdeckUniversal.hasConnected) { socket.emit('Reloadme') }
   susdeckUniversal.hasConnected = true
 })
+
 fetch('/api/dbg')
   .then(data =>
     data.json())

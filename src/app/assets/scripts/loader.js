@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // eslint-disable-next-line no-undef
 const socket = io()
 const keys = document.getElementById('keys')
@@ -12,22 +13,22 @@ addToHTMLlog('Waiting for host...')
 socket.on('server_connected', function () {
   // _sdsession is session id
   addToHTMLlog('Connected! Checking for login status..')
-  if (localStorage.getItem('_sdsession')) {
-    socket.emit('Authenticated', localStorage.getItem('_sdsession'))
+  if (susdeckUniversal.load('session')) {
+    socket.emit('Authenticated', susdeckUniversal.load('session'))
     addToHTMLlog('Success! You\'re logged in.')
     loaded = true
   } else {
     addToHTMLlog('Not logged in, requesting login')
     loaded = true
-    localStorage.setItem('_sdsid', Math.random().toString().substring(2, 5))
-    socket.emit('c2sr_login', localStorage.getItem('_sdsid'))
+    susdeckUniversal.save('sid', susdeckUniversal.createTempHWID())
+    socket.emit('c2sr_login', susdeckUniversal.load('sid'))
   }
 })
 
 socket.on('s2ca_login', function (s, c, n) {
   addToHTMLlog('Request received by server, let\'s log in.')
-  localStorage.setItem('_sdl', c)
-  localStorage.setItem('_sdyn', n)
+  susdeckUniversal.save('login_msg', c)
+  susdeckUniversal.save('owner_name', n)
   window.location.href = s
 })
 
@@ -50,7 +51,7 @@ setInterval(function () {
   if (loaded) return
   addToHTMLlog('Connection attempt timed out. Retrying...')
   window.location.reload()
-}, 500)
+}, 1500)
 
 document.addEventListener('click', () => {
   if (userAlive === false) keys.style.opacity = '1'; screensaverStatus = false
@@ -80,7 +81,7 @@ function addToHTMLlog (text) {
 }
 function loadPage (pageNumber) {
   currentPage = pageNumber
-  localStorage.setItem('_sdpage', currentPage)
+  susdeckUniversal.save('page', currentPage)
   keyList = []
   const myNode = document.getElementById('keys')
   while (myNode.firstChild) {

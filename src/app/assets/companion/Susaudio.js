@@ -32,12 +32,17 @@ const Susaudio = {
     audio.isSusaudio = true
     audio.saName = audioName
     audio.isNotVB = sa_isNotVB
-    if (audio.isNotVB === false) await audio.setSinkId(Susaudio._player.sinkId)
+    if (audio.isNotVB === false) {
+      await audio.setSinkId(Susaudio._player.sinkId)
+      localStorage.setItem('_susaudio_playlist', localStorage.getItem('_susaudio_playlist') + ',' + audio.saName)
+    }
     audio.play()
     audio.onended = Susaudio._player.audioEndedCallback
     Susaudio._player.queue.push(audio)
-    localStorage.setItem('_susaudio_playlist', localStorage.getItem('_susaudio_playlist') + ',' + audio.saName)
     Susaudio._player.timeSinceLastRequest = 0
+  },
+  clearPlaylist: function () {
+    localStorage.setItem('_susaudio_playlist', '')
   },
   stopAll: () => {
     Susaudio._player.queue.forEach(audio => {

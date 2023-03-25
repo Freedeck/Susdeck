@@ -13,12 +13,12 @@ const Susaudio = {
   init: async () => {
     const devices = await navigator.mediaDevices.enumerateDevices()
     devices.forEach(device => {
-      if (device.kind === 'audiooutput') {
-        if (device.label === 'CABLE Input (VB-Audio Virtual Cable)') {
-          const audio = new Audio()
-          audio.setSinkId(device.deviceId)
-          Susaudio._player.sinkId = device.deviceId
-        }
+      if (device.label === 'CABLE Input (VB-Audio Virtual Cable)') {
+        console.log('Found CABLE Input')
+        const audio = new Audio()
+        audio.setSinkId(device.deviceId)
+        Susaudio._player.sinkId = device.deviceId
+        console.log('Set sink ID -', device.deviceId)
       }
     })
   },
@@ -31,7 +31,7 @@ const Susaudio = {
     audio.isSusaudio = true
     audio.saName = audioName
     audio.isNotVB = sa_isNotVB
-    if (!audio.isNotVB) await audio.setSinkId(Susaudio._player.sinkId)
+    if (audio.isNotVB === false) await audio.setSinkId(Susaudio._player.sinkId)
     audio.play()
     audio.onended = () => {
       Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, audio)

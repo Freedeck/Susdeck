@@ -29,8 +29,8 @@ const susdeckUniversal = {
 }
 
 susdeckUniversal.socket.on('server_connected', () => {
-  if (!susdeckUniversal.hasConnected) { socket.emit('Reloadme') }
   susdeckUniversal.hasConnected = true
+  if (!susdeckUniversal.hasConnected) { socket.emit('Reloadme') }
 })
 
 fetch('/api/dbg')

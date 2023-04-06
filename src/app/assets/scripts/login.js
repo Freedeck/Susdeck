@@ -1,14 +1,11 @@
 /* eslint-disable no-undef */
-// eslint-disable-next-line no-undef
 const socket = io()
 
 addToHTMLlog('Waiting for host to respond to login request continuation')
 socket.on('server_connected', function () {
   addToHTMLlog('Connected to Susdeck host')
-  // eslint-disable-next-line no-undef
   loaded = true
   socket.emit('c2sr_login_cont', localStorage.getItem('_sdsid'))
-  // document.getElementById('loading').style.display = "none"
 })
 socket.on('hiuser', function (s) {
   if (s === 'uhhhlol') {

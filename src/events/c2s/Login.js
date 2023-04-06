@@ -9,7 +9,7 @@ module.exports = {
     loginList.push(sid)
 
     // We'll confirm that we want to take user to the login page.
-    socket.emit('s2ca_login', 'assets/tools/Login.html', settings.LoginMessage, settings.YourName)
+    socket.emit('s2ca_login', 'assets/tools/login.html', settings.LoginMessage, settings.YourName)
     return 'User ' + sid + ' requested login!'
   }
 }

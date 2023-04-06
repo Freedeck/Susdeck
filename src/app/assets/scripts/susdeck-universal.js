@@ -57,20 +57,22 @@ userTheme.forEach(property => {
   })
 })
 
-setInterval(function () { userAlive = false }, ScreenSaverActivationTime * 1000)
+if (typeof ScreenSaverActivationTime === 'number') {
+  setInterval(function () { userAlive = false }, ScreenSaverActivationTime * 1000)
 
-setInterval(function () {
-  if (!userAlive && !susdeckUniversal.screensaverStatus) {
-    keys.style.opacity = '0.125'
-  }
-}, ScreenSaverActivationTime * 1000 + 600)
+  setInterval(function () {
+    if (!userAlive && !susdeckUniversal.screensaverStatus) {
+      keys.style.opacity = '0.125'
+    }
+  }, ScreenSaverActivationTime * 1000 + 600)
 
-setInterval(function () {
-  if (!userAlive) {
-    keys.style.opacity = '0'
-    screensaverStatus = true
-  }
-}, ScreenSaverActivationTime * 1000 + 2 * 1000)
+  setInterval(function () {
+    if (!userAlive) {
+      keys.style.opacity = '0'
+      screensaverStatus = true
+    }
+  }, ScreenSaverActivationTime * 1000 + 2 * 1000)
+}
 
 document.body.onload = () => {
   const footer = document.createElement('footer')

@@ -60,12 +60,14 @@ socket.on('press-sound', (sound, name) => {
   // eslint-disable-next-line no-undef
   Susaudio.playSound(sound, name)
   Susaudio.playSound(sound, name, true)
+  susdeckUniversal.socket.emit('c2s_log', '[COMPANIONSB] Playing ' + name)
 })
 
 function addToHTMLlog (text) {
   const txt = document.createElement('h2')
   txt.id = text
   txt.innerText = text
+  susdeckUniversal.socket.emit('c2s_log', '[COMPANIONSB] ' + text)
   document.getElementById('console').appendChild(txt)
 }
 

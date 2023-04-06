@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const susdeckUniversal = {
+  screensaverStatus: false,
   themes: {
     // Built-in themes.
     Default: [
@@ -55,6 +56,21 @@ userTheme.forEach(property => {
     rootElem.style.setProperty(`--sd-${key}`, property[key])
   })
 })
+
+setInterval(function () { userAlive = false }, ScreenSaverActivationTime * 1000)
+
+setInterval(function () {
+  if (!userAlive && !susdeckUniversal.screensaverStatus) {
+    keys.style.opacity = '0.125'
+  }
+}, ScreenSaverActivationTime * 1000 + 600)
+
+setInterval(function () {
+  if (!userAlive) {
+    keys.style.opacity = '0'
+    screensaverStatus = true
+  }
+}, ScreenSaverActivationTime * 1000 + 2 * 1000)
 
 document.body.onload = () => {
   const footer = document.createElement('footer')

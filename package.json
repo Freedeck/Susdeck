@@ -1,6 +1,6 @@
 {
   "name": "susdeck",
-  "version": "2.2.0",
+  "version": "3.1.0",
   "description": "Susdeck is love. Susdeck is life. Susdeck is not a Stream Deck.",
   "dependencies": {
     "express": "^4.17.1",

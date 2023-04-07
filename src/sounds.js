@@ -1,4 +1,4 @@
 const SoundOnPress = false
-const ScreenSaverActivationTime = 120
+const ScreenSaverActivationTime = 12
 const Sounds = [{"name":"Shooting","icon":"shooting.png"},{"name":"Footsteps","icon":"footsteps.png"},{"name":"Whoppah","icon":"whopper.png"},{"name":"Didn't I Do It","icon":"borzoi.png"},{"name":"Biggest Bird","icon":"bird.png"},{"name":"Disconnect","icon":"disconnect.png"},{"name":"Vine Boom","icon":"boom.png"},{"name":"Semtex","icon":"semtex.png"},{"name":"Alt Tab","keys":"[\"alt\",\"tab\"]","icon":"alt_tab.png"},{"name":"Starting OBS","keys":"[\"alt\",\"f24\"]","icon":"alt_tab.png"},{"name":"Main OBS","keys":"[\"alt\",\"f23\"]","icon":"alt_tab.png"},{"name":"Start Stream OBS","keys":"[\"alt\",\"f21\"]","icon":"alt_tab.png"},{"name":"End Stream OBS","keys":"[\"alt\",\"f22\"]","icon":"alt_tab.png"},{"name":"Ohio Sound","icon":"ohio.png"},{"name":"Whoppah Remix"}]
-if(typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, Sounds }
+if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, Sounds }

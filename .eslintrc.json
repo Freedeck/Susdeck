@@ -7,6 +7,9 @@
     },
     "extends": "standard",
     "overrides": [
+        {
+            "excludedFiles": "sounds.js"
+        }
     ],
     "parserOptions": {
         "ecmaVersion": "latest"

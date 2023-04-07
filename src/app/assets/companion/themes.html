@@ -13,27 +13,22 @@
 
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#" class="snactive">Home/Config</a>
+        <a href="index.html">Home/Config</a>
         <a href="iconEditor.html">Icon Editor</a>
-        <a href="themes.html">Themes</a>
+        <a href="#" class="snactive">Themes</a>
         <a href="soundboard.html">Soundboard</a>
     </div>
 
     <div id="main">
-        <h2>Home/Configuration</h2>
+        <h2>Themes</h2>
+        <h3 id="now-playing"></h3>
         <button onclick="openNav()" class="opn" style='background-image:url("../icons/comp.png")'></button>
         <br />
-        <h3>Click on the Susdeck icon to get started.</h3>
-        <h3 id="now-playing">Or, play a sound from your Susdeck!</h3>
-        <h4 id="conn-amount"></h4>
-        <input type="range" min="5" step="5" max="120" id="ssat">
-        <label for="ssat">Screensaver activation time:</label>
-        <label for="ssat" id="amt">5</label>
-        <br />
-        <input type="checkbox" value="" id="soc"> <label for="soc">Play sound on click</label>
-        <br /> <br />
-        <button onclick="setSet()">Set</button>
-        <button onclick="socket.emit('c-change')">Remote Reload</button>
+        <h3>Themes are in beta, and may not work!</h3>
+        <button onclick="setTheme('Default')">Default Theme</button>
+        <button onclick="setTheme('Blue')">Blue Theme</button>
+        <button onclick="setTheme('Dark')">Dark Theme</button>
+        <button onclick="socket.emit('c-change')">Reload all Susdeck Sessions</button>
         <div id="console"></div>
     </div>
     
@@ -42,6 +37,7 @@
     <script src="../../sounds.js"></script>
     <script src="../scripts/Susaudio.js"></script>
     <script src="../scripts/Companion.js"></script>
+    <script src="../scripts/CompanionTheming.js"></script>
     <script src="../scripts/susdeck-universal.js"></script>
     <script src="../scripts/CompanionSlimSB.js"></script>
 </body>

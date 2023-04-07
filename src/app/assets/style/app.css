@@ -4,15 +4,16 @@
   --sd-template-columns: repeat(4,1fr);
   --sd-font-family: 'Rubik';
   --sd-background-size: 400% 400%;
+  --sd-background: 45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%;
 }
 
 body {
     background: rgba(255, 0, 89, 1);
-    background: -webkit-linear-gradient(45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
-    background: -moz-linear-gradient(45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
-    background: -ms-linear-gradient(45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
-    background: -o-linear-gradient(45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
-    background: linear-gradient(45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
+    background: -webkit-linear-gradient(var(--sd-background));
+    background: -moz-linear-gradient(var(--sd-background));
+    background: -ms-linear-gradient(var(--sd-background));
+    background: -o-linear-gradient(var(--sd-background));
+    background: linear-gradient(var(--sd-background));
     background-size: var(--sd-background-size);
     -webkit-animation: errorBg 5s linear infinite;
     -moz-animation: errorBg 5s linear infinite;

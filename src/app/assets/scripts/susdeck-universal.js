@@ -3,10 +3,23 @@ const susdeckUniversal = {
   screensaverStatus: false,
   themes: {
     // Built-in themes.
-    Default: [
+    Dark: [
       { 'template-columns': 'repeat(4,1fr)' },
       { 'background-size': '400% 400%' },
-      { 'font-family': 'Inter' }
+      { 'font-family': 'Rubik' },
+      { background: '45deg, rgba(59, 59, 59, 1) 0%, rgba(87, 87, 87, 1) 33%, rgba(59, 59, 59, 1) 66%, rgba(87, 87, 87, 1) 100%' }
+    ],
+    Blue: [
+      { 'template-columns': 'repeat(4,1fr)' },
+      { 'background-size': '400% 400%' },
+      { 'font-family': 'Inter' },
+      { background: '45deg, rgba(0, 183, 255, 1) 0%, rgba(33, 192, 255, 1) 33%, rgba(0, 183, 255, 1) 66%, rgba(33, 192, 255, 1) 100%' }
+    ],
+    Default: [
+      { 'template-columns': 'repeat(4,1fr)' },
+      { 'bac  kground-size': '400% 400%' },
+      { 'font-family': 'Inter' },
+      { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' }
     ]
   },
   retrieveSession: function () {
@@ -34,6 +47,10 @@ susdeckUniversal.socket.on('server_connected', () => {
   if (!susdeckUniversal.hasConnected) { socket.emit('Reloadme') }
 })
 
+susdeckUniversal.socket.on('set-theme', (theme) => {
+  susdeckUniversal.save('theme', theme)
+})
+
 fetch('/api/dbg')
   .then(data =>
     data.json())
@@ -44,13 +61,13 @@ fetch('/api/dbg')
 const rootElem = document.querySelector(':root')
 
 // because theming is cool
-if (!localStorage.getItem('sd-theme')) {
-  localStorage.setItem('sd-theme', JSON.stringify(susdeckUniversal.themes.Default))
+if (!susdeckUniversal.load('theme')) {
+  susdeckUniversal.save('theme', 'Default')
 }
 
-const userTheme = JSON.parse(localStorage.getItem('sd-theme'))
-
 // Setup the user's theme
+const userTheme = susdeckUniversal.themes[susdeckUniversal.load('theme')]
+
 userTheme.forEach(property => {
   Object.keys(property).forEach(key => {
     rootElem.style.setProperty(`--sd-${key}`, property[key])
@@ -84,5 +101,5 @@ document.body.onload = () => {
     } else {
       footer.style.display = 'none'
     }
-  }, 150)
+  }, 12)
 }

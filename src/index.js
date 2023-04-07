@@ -46,6 +46,7 @@ io.on('connection', function (socket) {
   console.log('Connected to client @ ' + new Date())
   setTimeout(function () {
     socket.emit('server_connected')
+    socket.emit('set-theme', fs.readFileSync('./src/persistent/theme.sd').toString())
     debug.log('Sent user connection success message')
   }, 150)
   socket.on('keypress', function (keyInput) {

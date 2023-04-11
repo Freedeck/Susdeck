@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const debug = require('../../../cliUtil')
+const debug = require('../../../util/debug')
 
 module.exports = {
   event: 'c-theme',

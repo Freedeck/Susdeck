@@ -1,4 +1,3 @@
-const ex = require('express')
 const path = require('path')
 const debug = require('../cliUtil')
 const fs = require('fs')
@@ -28,12 +27,14 @@ const init = (io) => {
     })
 
     io.on('connection', function (socket) {
+        // Initial connection
         console.log('Connected to client @ ' + new Date())
         setTimeout(function () {
-            socket.emit('server_connected')
-            socket.emit('set-theme', fs.readFileSync('./src/persistent/theme.sd').toString())
+            socket.emit('server_connected') // Send user confirmation: connected to server
+            socket.emit('set-theme', fs.readFileSync(path.join(__dirname+"/persistent/theme.sd")).toString()) // Tell client to set the theme
             debug.log('Sent user connection success message')
         }, 150)
+        
         socket.on('keypress', function (keyInput) {
             debug.log(JSON.stringify(keyInput))
             if (keyInput.name) {
@@ -56,6 +57,23 @@ const init = (io) => {
         socket.on('still-alive', function () { socket.emit('still-alive') })
         socket.on('c-change', function () { io.emit('c-change') })
         socket.on('Reloadme', function () { socket.emit('c-change') })
+        socket.on('keepalive', () => { socket.emit('keepalive') })
+        socket.on('Authenticated', function (sessionID) {
+            console.log('Recieved ' + sessionID, ', checking..')
+            if (sessions.includes(sessionID)) {
+                debug.log(sessionID + ' is valid!')
+                socket.emit('greenlight')
+            } else {
+                debug.log(sessionID + ' is invalid, kicking out user..')
+                socket.emit('banish')
+            }
+        })
+        socket.on('im companion', () => {
+            debug.log('Companion is connected to server')
+            delete require.cache[require.resolve('../sounds.js')]
+            const soundFile = require('../sounds')
+            socket.emit('hic', soundFile.ScreenSaverActivationTime, soundFile.SoundOnPress)
+        })
         events.forEach(function (event) {
             socket.on(event.event, async function (args) {
                 debug.log(event.event + ' ran')
@@ -73,23 +91,6 @@ const init = (io) => {
                     }
                 }
             })
-        })
-        socket.on('keepalive', () => { socket.emit('keepalive') })
-        socket.on('Authenticated', function (sessionID) {
-            console.log('Recieved ' + sessionID, ', checking..')
-            if (sessions.includes(sessionID)) {
-                debug.log(sessionID + ' is valid!')
-                socket.emit('greenlight')
-            } else {
-                debug.log(sessionID + ' is invalid, kicking out user..')
-                socket.emit('banish')
-            }
-        })
-        socket.on('im companion', () => {
-            debug.log('Companion is connected to server')
-            delete require.cache[require.resolve('../sounds.js')]
-            const soundFile = require('../sounds')
-            socket.emit('hic', soundFile.ScreenSaverActivationTime, soundFile.SoundOnPress)
         })
     })
 

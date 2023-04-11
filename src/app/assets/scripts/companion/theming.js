@@ -3,6 +3,6 @@ function setTheme (t) {
   susdeckUniversal.save('theme', t)
   susdeckUniversal.socket.emit('c-theme', t)
   setTimeout(() => {
-    susdeckUniversal.socket.emit('reloadme') // Give the computer time to write theme.sd
-  }, 50)
+    susdeckUniversal.socket.emit('c-change')
+  },200)
 }

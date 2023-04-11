@@ -28,16 +28,16 @@
         <button onclick="setTheme('Default')">Default Theme</button>
         <button onclick="setTheme('Blue')">Blue Theme</button>
         <button onclick="setTheme('Dark')">Dark Theme</button>
-        <button onclick="socket.emit('c-change')">Reload all Susdeck Sessions</button>
+        <button onclick="susdeckUniversal.socket.emit('c-change')">Reload all Susdeck Sessions</button>
         <div id="console"></div>
     </div>
     
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="../../sounds.js"></script>
+    <script src="../scripts/susdeck-universal.js"></script>
     <script src="../scripts/Susaudio.js"></script>
     <script src="../scripts/companion/soundboard-universal.js"></script>
-    <script src="../scripts/susdeck-universal.js"></script>
     <script src="../scripts/companion/theming.js"></script>
 </body>
 

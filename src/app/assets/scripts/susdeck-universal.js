@@ -49,6 +49,13 @@ susdeckUniversal.socket.on('server_connected', () => {
 
 susdeckUniversal.socket.on('set-theme', (theme) => {
   susdeckUniversal.save('theme', theme)
+  const userTheme = susdeckUniversal.themes[susdeckUniversal.load('theme')]
+
+userTheme.forEach(property => {
+  Object.keys(property).forEach(key => {
+    rootElem.style.setProperty(`--sd-${key}`, property[key])
+  })
+})
 })
 
 fetch('/api/dbg')

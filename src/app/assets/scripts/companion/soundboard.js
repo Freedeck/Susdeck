@@ -8,7 +8,7 @@ const countOnEachPage = 8
 addToHTMLlog('Waiting for host...')
 Susaudio.init()
 
-socket.on('server_connected', function (ssatt, socs) {
+susdeckUniversal.socket.on('server_connected', function (ssatt, socs) {
   removeFromHTMLlog('Waiting for host...')
   addToHTMLlog('Companion connected!')
   socket.emit('im companion')
@@ -51,7 +51,7 @@ function pbrChanged () {
   })
 }
 
-socket.on('press-sound', (sound, name) => {
+susdeckUniversal.socket.on('press-sound', (sound, name) => {
   if (sound.includes('--Stop_all')) {
     // eslint-disable-next-line no-undef
     Susaudio.stopAll()

@@ -3,7 +3,7 @@ const debug = require('../cliUtil')
 const fs = require('fs')
 const sbc = require('../soundboard')
 
-const init = (io) => {
+const init = (io, app) => {
     const loginList = []
     const sessions = []
     const events = new Map()
@@ -95,8 +95,16 @@ const init = (io) => {
     })
 
     // Now HTTP debug methods
-    app.get('/api/dbg', (e, r) => { r.send({ status: debug.is }) })
-
+    fs.readdir(path.join(__dirname+"/routes"), (err, files) => {
+        files.forEach(routefile => {
+            const route = require(path.join(__dirname+"/routes/"+routefile))
+            // type, route, exec
+            // only get supported for now
+            if(route.type == 'get') {
+                app.get('/api/'+route.route, (req, res) => route.exec(req, res))
+            }
+        })
+    })
 }
 
 module.exports = init;

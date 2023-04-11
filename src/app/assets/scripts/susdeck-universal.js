@@ -100,13 +100,11 @@ if (typeof ScreenSaverActivationTime === 'number') {
 
 document.body.onload = () => {
   const footer = document.createElement('footer')
-  footer.innerHTML = '<h3>Checking if Susdeck is in debug mode - this shouldn\'t be visible.</h3>'
+  footer.style.display = "none";
   document.body.appendChild(footer)
   setTimeout(() => {
-    if (susdeckUniversal.isInDebug) {
-      footer.innerHTML = '<h3>Susdeck is in debug mode</h3>'
-    } else {
-      footer.style.display = 'none'
-    }
+    if (!susdeckUniversal.isInDebug) return
+      footer.innerHTML = '<h3>Debugging</h3>'
+      footer.style.display = "block"
   }, 12)
 }

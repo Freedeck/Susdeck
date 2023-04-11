@@ -10,7 +10,7 @@ const sock_api_init = require('./api/init');
 const port = process.env.PORT || 3000
 const getNetworkInterfaces = require('./network')
 
-sock_api_init(io); // Socket API initialize
+sock_api_init(io, app); // Socket API initialize
 
 app.use('/', ex.static('./src/app'))
 

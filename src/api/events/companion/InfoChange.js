@@ -1,4 +1,4 @@
-const sounds = require('../../../sounds')
+const sounds = require('../../../settings/sounds')
 const path = require('path')
 const fs = require('fs')
 

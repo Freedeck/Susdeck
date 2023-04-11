@@ -8,7 +8,7 @@
     "extends": "standard",
     "overrides": [
         {
-            "excludedFiles": "sounds.js"
+            "excludedFiles": "settings/sounds.js"
         }
     ],
     "parserOptions": {

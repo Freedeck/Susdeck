@@ -42,7 +42,7 @@ The `sounds.js` file will take your sounds, Susdeck's `autosort.js` will sort it
 ## How do I make my own sounds/macros?
 Susdeck processes keys at the front-end, and it uses robotjs & Companion to press them on your computer.  
 It is very easy to add your own macros/sounds.  
-All you need to do is edit `src/app/sounds.js` to your liking using the above instructions.  
+All you need to do is edit `src/settings/sounds.js` to your liking using the above instructions.  
 **Icons are not required for any macro/sound!**  
 To add a sound, look for `const Sounds =` and go to the ending tag `]`. Next, you'll want to insert this snippet:
 ```js

@@ -13,8 +13,8 @@ sock_api_init(io, app); // Socket API initialize
 
 app.use('/', ex.static('./src/app'))
 
-app.get('/sounds.js', (e, r) => { r.sendFile(path.join(__dirname, '\\sounds.js')) })
-app.get('/soundboard.js', (e, r) => { r.sendFile(path.join(__dirname, '\\soundboard.js')) })
+app.get('/sounds.js', (e, r) => { r.sendFile(path.join(__dirname, '\\settings\\sounds.js')) })
+app.get('/soundboard.js', (e, r) => { r.sendFile(path.join(__dirname, '\\settings\\soundboard.js')) })
 
 http.listen(port, function () {
   console.log('Susdeck is started!')

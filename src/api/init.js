@@ -1,7 +1,7 @@
 const path = require('path')
 const debug = require('../util/debug')
 const fs = require('fs')
-const sbc = require('../soundboard')
+const sbc = require('../settings/soundboard')
 
 const init = (io, app) => {
     const loginList = []
@@ -70,8 +70,8 @@ const init = (io, app) => {
         })
         socket.on('im companion', () => {
             debug.log('Companion is connected to server')
-            delete require.cache[require.resolve('../sounds.js')]
-            const soundFile = require('../sounds')
+            delete require.cache[require.resolve('../settings/sounds.js')]
+            const soundFile = require('../settings/sounds')
             socket.emit('hic', soundFile.ScreenSaverActivationTime, soundFile.SoundOnPress)
         })
         events.forEach(function (event) {

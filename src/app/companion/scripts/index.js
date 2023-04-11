@@ -12,7 +12,7 @@ Susaudio.init()
 
 addToHTMLlog('Waiting for host...')
 
-socket.on('server_connected', function (ssatt, socs) {
+socket.on('server_connected', function () {
   removeFromHTMLlog('Waiting for host...')
   addToHTMLlog('Companion connected!')
   socket.emit('im companion')

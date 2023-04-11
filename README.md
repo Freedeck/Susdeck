@@ -4,9 +4,6 @@
 
 Susdeck is love. Susdeck is life. Susdeck is not a Stream Deck.
 Susdeck is a macro pad meant to model a Stream Deck with macro capabilities.  
-Susdeck does not play sounds, it is meant to control your computer with minimal ease like a Stream Deck.  
-You'll need to set up your own soundboard, keybinds, icons (if wanted) if you want a setup like mine.  
-For the soundboard, I recommend [Soundux](https://github.com/Soundux/Soundux).  
 So far, Susdeck only officially supports iOS.
 
 ## Join the Discord!
@@ -24,7 +21,7 @@ and finally, here's a preview of the companion icon editor editing.
 ![Susdeck Companion Home preview](https://github.com/susdeck/susdeck/blob/master/demo/c-ie-e.png?raw=true)
 
 ## How do I use Susdeck?
-** First, you will need VB-cable (Virtual audio cable Susdeck uses)
+** First, you will need VB-cable (Virtual audio cable Susdeck uses) **
 
 Clone the repo, then change `Settings.js.default` to only have it's extension `.js`.  
 Next, modify the settings however you want, you can add authentication, a password, and a message for when somebody tries to login to your Susdeck.  

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Susdeck Companion: Soundboard</title>
-    <link rel="stylesheet" href="../style/app.css">
+    <link rel="stylesheet" href="../assets/style/app.css">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
 
     <div id="main">
         <h2>Soundboard</h2>
-        <button onclick="openNav()" class="opn" style='background-image:url("../icons/comp.png")'></button>
+        <button onclick="openNav()" class="opn" style='background-image:url("../assets/icons/comp.png")'></button>
         <button onclick="socket.emit('c-change')">Remote Reload</button>
         <button onclick="socket.emit('press-sound', '--Stop_all', 'Stop All')">Stop All</button>
         <div id="console"></div>
@@ -34,11 +34,11 @@
 
     <!-- Libraries -->
     <script src="/socket.io/socket.io.js"></script>
-    <script src="../scripts/Susaudio.js"></script>
-    <script src="../../../soundboard.js"></script>
+    <script src="../assets/scripts/Susaudio.js"></script>
+    <script src="../../soundboard.js"></script>
     <!-- My scripts -->
-    <script src="../scripts/susdeck-universal.js"></script>
-    <script src="../scripts/companion/soundboard.js"></script>
+    <script src="scripts/susdeck-universal.js"></script>
+    <script src="scripts/soundboard.js"></script>
 </body>
 
 </html>

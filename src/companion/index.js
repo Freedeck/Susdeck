@@ -12,7 +12,7 @@ function createWindow () {
     height: 720
   })
   debug.log('Electron window created - loading server-side Companion')
-  window.loadURL('http://localhost:3000/assets/companion/index.html')
+  window.loadURL('http://localhost:3000/companion')
 }
 
 app.whenReady().then(() => {

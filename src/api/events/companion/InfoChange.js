@@ -1,6 +1,7 @@
 const sounds = require('../../../settings/sounds')
 const path = require('path')
 const fs = require('fs')
+const jsonbeautify = require('json-beautify')
 
 module.exports = {
   event: 'c-info-change',
@@ -23,7 +24,7 @@ module.exports = {
       Object.assign(found, newObject)
       fs.writeFileSync('./src/settings/sounds.js', `const SoundOnPress = ${sounds.SoundOnPress}
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime}
-const Sounds = ${JSON.stringify(sounds.Sounds)}
+const Sounds = ${jsonbeautify(sounds.Sounds)}
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, Sounds }`)
       return 'c-change'
     } else if (args.includes(',')) {
@@ -32,7 +33,7 @@ if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverA
       const newssoc = args[1].split('SOC:')[1]
       fs.writeFileSync('./src/settings/sounds.js', `const SoundOnPress = ${newssoc}
 const ScreenSaverActivationTime = ${newssattime}
-const Sounds = ${JSON.stringify(sounds.Sounds)}
+const Sounds = ${jsonbeautify(sounds.Sounds, null, 4, 80)}
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, Sounds }
 `)
       console.log(`const SoundOnPress = ${newssattime}`)

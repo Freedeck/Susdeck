@@ -1,5 +1,5 @@
 const path = require('path')
-const debug = require('../cliUtil')
+const debug = require('../util/debug')
 const fs = require('fs')
 const sbc = require('../soundboard')
 

@@ -1,4 +1,4 @@
-const debug = require('../../cliUtil')
+const debug = require('../../util/debug')
 
 module.exports = {
     type: 'get',

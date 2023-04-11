@@ -3,12 +3,11 @@ const path = require('path')
 const httpLib = require('http')
 const app = ex()
 const http = new httpLib.Server(app)
-const debug = require('./cliUtil')
 const io = require('socket.io')(http);
 const sock_api_init = require('./api/init');
 
 const port = process.env.PORT || 3000
-const getNetworkInterfaces = require('./network')
+const getNetworkInterfaces = require('./util/network')
 
 sock_api_init(io, app); // Socket API initialize
 

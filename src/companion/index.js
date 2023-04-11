@@ -1,5 +1,5 @@
 const electron = require('electron')
-const debug = require('../cliUtil')
+const debug = require('../util/debug')
 
 const {
   app,

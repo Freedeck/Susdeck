@@ -94,7 +94,9 @@ const init = (io) => {
         })
     })
 
-    module.exports = loginList
+    // Now HTTP debug methods
+    app.get('/api/dbg', (e, r) => { r.send({ status: debug.is }) })
+
 }
 
 module.exports = init;

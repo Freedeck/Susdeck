@@ -16,7 +16,6 @@ app.use('/', ex.static('./src/app'))
 
 app.get('/sounds.js', (e, r) => { r.sendFile(path.join(__dirname, '\\sounds.js')) })
 app.get('/soundboard.js', (e, r) => { r.sendFile(path.join(__dirname, '\\soundboard.js')) })
-app.get('/api/dbg', (e, r) => { r.send({ status: debug.is }) })
 
 http.listen(port, function () {
   console.log('Susdeck is started!')

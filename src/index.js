@@ -1,114 +1,22 @@
 const ex = require('express')
 const path = require('path')
 const httpLib = require('http')
-const rob = require('robotjs')
-const fs = require('fs')
 const app = ex()
 const http = new httpLib.Server(app)
-const io = require('socket.io')(http)
 const debug = require('./cliUtil')
-const sbc = require('./soundboard')
+const io = require('socket.io')(http);
+const sock_api_init = require('./api/init');
 
 const port = process.env.PORT || 3000
 const getNetworkInterfaces = require('./network')
-const loginList = []
-const sessions = []
-const events = new Map()
+
+sock_api_init(io); // Socket API initialize
 
 app.use('/', ex.static('./src/app'))
 
 app.get('/sounds.js', (e, r) => { r.sendFile(path.join(__dirname, '\\sounds.js')) })
 app.get('/soundboard.js', (e, r) => { r.sendFile(path.join(__dirname, '\\soundboard.js')) })
 app.get('/api/dbg', (e, r) => { r.send({ status: debug.is }) })
-
-debug.log('Adding events to app')
-
-fs.readdirSync('./src/events').forEach(function (file) {
-  if (file === 'companion') {
-    fs.readdirSync('./src/events/companion').forEach(cEvent => {
-      cEvent = 'events/companion/' + cEvent
-      const query = require('./' + cEvent)
-      events.set(query.event, { callback: query.callback, event: query.event })
-      debug.log('Added companion event ' + query.event + ' from file ' + cEvent)
-    })
-  }
-  if (file === 'c2s') {
-    fs.readdirSync('./src/events/c2s').forEach(cEvent => {
-      cEvent = 'events/c2s/' + cEvent
-      const query = require('./' + cEvent)
-      events.set(query.event, { callback: query.callback, event: query.event })
-      debug.log('Added c2s event ' + query.event + ' from file ' + cEvent)
-    })
-  }
-})
-
-io.on('connection', function (socket) {
-  console.log('Connected to client @ ' + new Date())
-  setTimeout(function () {
-    socket.emit('server_connected')
-    socket.emit('set-theme', fs.readFileSync('./src/persistent/theme.sd').toString())
-    debug.log('Sent user connection success message')
-  }, 150)
-  socket.on('keypress', function (keyInput) {
-    debug.log(JSON.stringify(keyInput))
-    if (keyInput.name) {
-      sbc.sounds.forEach(sound => {
-        if (sound.name === keyInput.name) {
-          io.emit('press-sound', sbc.soundDir + sound.path, sound.name)
-        }
-      })
-      return
-    }
-    const keys = JSON.parse(keyInput.keys)
-    keys.forEach(function (key) {
-      key = key.split('}')[0]
-      rob.keyToggle(key, 'down')
-      setTimeout(function () {
-        rob.keyToggle(key, 'up')
-      }, 50)
-    })
-  })
-  socket.on('still-alive', function () { socket.emit('still-alive') })
-  socket.on('c-change', function () { io.emit('c-change') })
-  socket.on('Reloadme', function () { socket.emit('c-change') })
-  events.forEach(function (event) {
-    socket.on(event.event, async function (args) {
-      debug.log(event.event + ' ran')
-      if (event.async) {
-        await event.callback(socket, args, loginList)
-      } else {
-        const callback = event.callback(socket, args, loginList)
-        if (!callback || typeof callback !== 'string') { return }
-        if (callback.startsWith('ValidateSession:')) {
-          const person = callback.split(':')[1]
-          sessions.push(person)
-        }
-        if (callback.startsWith('c-change')) {
-          io.emit('c-change')
-        }
-      }
-    })
-  })
-  socket.on('keepalive', () => { socket.emit('keepalive') })
-  socket.on('Authenticated', function (sessionID) {
-    console.log('Recieved ' + sessionID, ', checking..')
-    if (sessions.includes(sessionID)) {
-      debug.log(sessionID + ' is valid!')
-      socket.emit('greenlight')
-    } else {
-      debug.log(sessionID + ' is invalid, kicking out user..')
-      socket.emit('banish')
-    }
-  })
-  socket.on('im companion', () => {
-    debug.log('Companion is connected to server')
-    delete require.cache[require.resolve('./sounds.js')]
-    const soundFile = require('./sounds')
-    socket.emit('hic', soundFile.ScreenSaverActivationTime, soundFile.SoundOnPress)
-  })
-})
-
-module.exports = loginList
 
 http.listen(port, function () {
   console.log('Susdeck is started!')

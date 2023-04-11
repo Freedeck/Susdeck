@@ -1,4 +1,4 @@
-const sounds = require('../../sounds')
+const sounds = require('../../../sounds')
 const fs = require('fs')
 
 module.exports = {

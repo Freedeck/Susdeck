@@ -1,5 +1,5 @@
-const settings = require('../../../Settings')
-const debug = require('../../cliUtil')
+const settings = require('../../../../Settings')
+const debug = require('../../../cliUtil')
 
 module.exports = {
   event: 'c2sd_login',

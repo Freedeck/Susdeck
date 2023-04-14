@@ -15,7 +15,7 @@ addToHTMLlog('Waiting for host...')
 socket.on('server_connected', function () {
   removeFromHTMLlog('Waiting for host...')
   addToHTMLlog('Companion connected!')
-  socket.emit('im companion')
+  socket.emit('companion_connected')
   if (document.getElementById('keys')) loadPage(0)
   setTimeout(() => {
     document.getElementById('console').style.display = 'none'
@@ -166,7 +166,7 @@ function setSet () {
 
 socket.on('c-change', () => { window.location.replace(window.location.href) })
 
-socket.on('hic', function (ssat, soc) {
+socket.on('companion_info', function (ssat, soc) {
   document.getElementById('soc').checked = soc
   document.getElementById('ssat').value = ssat
   document.getElementById('amt').innerText = document.getElementById('ssat').value + ' seconds'

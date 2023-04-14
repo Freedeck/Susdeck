@@ -70,11 +70,11 @@ const init = (io, app) => {
         socket.emit('banish')
       }
     })
-    socket.on('im companion', () => {
+    socket.on('companion_connected', () => {
       debug.log('Companion is connected to server')
       delete require.cache[require.resolve('../settings/sounds.js')]
       const soundFile = require('../settings/sounds')
-      socket.emit('hic', soundFile.ScreenSaverActivationTime, soundFile.SoundOnPress)
+      socket.emit('companion_info', soundFile.ScreenSaverActivationTime, soundFile.SoundOnPress)
     })
     events.forEach(function (event) {
       socket.on(event.event, async function (args) {

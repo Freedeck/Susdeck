@@ -39,6 +39,7 @@ const susdeckUniversal = {
     susdeckUniversal.socket.on(event, callback)
   },
   isInDebug: false,
+  debugStat: 'Debug',
   hasConnected: false
 }
 
@@ -63,6 +64,7 @@ fetch('/api/dbg')
     data.json())
   .then(data => {
     susdeckUniversal.isInDebug = data.status
+    susdeckUniversal.debugStat = data.msg
   })
 
 const rootElem = document.querySelector(':root')
@@ -104,7 +106,7 @@ document.body.onload = () => {
   document.body.appendChild(footer)
   setTimeout(() => {
     if (!susdeckUniversal.isInDebug) return
-      footer.innerHTML = '<h3>Debugging</h3>'
+      footer.innerHTML = '<h3>In '+susdeckUniversal.debugStat+' Mode</h3>'
       footer.style.display = "block"
   }, 12)
 }

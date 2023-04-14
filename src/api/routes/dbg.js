@@ -4,6 +4,6 @@ module.exports = {
     type: 'get',
     route: 'dbg',
     exec: (request, response) => {
-        response.send({ status: debug.is })
+        response.send({ status: debug.is, msg: debug.stat })
     }
 }

@@ -7,6 +7,7 @@ const init = (io, app) => {
     const loginList = []
     const sessions = []
     const events = new Map()
+    
     debug.log('Adding events to API')
 
     fs.readdirSync(path.join(__dirname+'/events')).forEach(function (file) {

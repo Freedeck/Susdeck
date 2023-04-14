@@ -10,10 +10,7 @@
   },
   "scripts": {
     "start": "node src/index.js",
-    "debug": "node src/index.js - -dbg",
-    "headless": "node src/index.js -nocompanion",
-    "headless_debug": "node src/index.js -nocompanion -dbg",
-    "companion": "npx electron src/companion"
+    "debug": "node src/index.js - -dbg"  
   },
   "devDependencies": {
     "electron": "^23.1.1",

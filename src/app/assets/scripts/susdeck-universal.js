@@ -102,11 +102,11 @@ if (typeof ScreenSaverActivationTime === 'number') {
 
 document.body.onload = () => {
   const footer = document.createElement('footer')
-  footer.style.display = "none";
+  footer.style.display = 'none'
   document.body.appendChild(footer)
   setTimeout(() => {
     if (!susdeckUniversal.isInDebug) return
-      footer.innerHTML = '<h3>In '+susdeckUniversal.debugStat+' Mode</h3>'
-      footer.style.display = "block"
+    footer.innerHTML = '<h3>In ' + susdeckUniversal.debugStat + ' Mode</h3>'
+    footer.style.display = 'block'
   }, 12)
 }

@@ -1,5 +1,4 @@
 const sounds = require('../../../settings/sounds')
-const path = require('path')
 const fs = require('fs')
 const jsonbeautify = require('json-beautify')
 

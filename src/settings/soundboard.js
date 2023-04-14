@@ -4,7 +4,7 @@
  * Companion *WILL NOT* change this file *EVER* (unless this text is gone).
  */
 
-const soundDir = '../sounds/'
+const soundDir = '../assets/sounds/'
 const sounds = [
   { name: 'Shooting', path: 'shooting.mp3' },
   { name: 'Vine Boom', path: 'vineboom.mp3' },

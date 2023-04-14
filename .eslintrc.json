@@ -6,10 +6,8 @@
         "node": true
     },
     "extends": "standard",
-    "overrides": [
-        {
-            "files": "settings/sounds.js"
-        }
+    "ignorePatterns": [
+        "settings/**"
     ],
     "parserOptions": {
         "ecmaVersion": "latest"

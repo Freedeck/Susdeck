@@ -4,7 +4,7 @@
 
 Susdeck is love. Susdeck is life. Susdeck is not a Stream Deck.
 Susdeck is a macro pad meant to model a Stream Deck with macro capabilities.  
-So far, Susdeck only officially supports iOS.
+So far, Susdeck only officially supports iOS devices (for the standalone web app)
 
 ## Join the Discord!
 You can join the official Susdeck Discord server over at [https://discord.gg/SdA2YfEb6R](https://discord.gg/SdA2YfEb6R)

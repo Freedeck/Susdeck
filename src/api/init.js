@@ -57,7 +57,7 @@ const init = (io, app) => {
       })
     })
     socket.on('Authenticated', function (sessionID) {
-      console.log('Recieved ' + sessionID, ', checking..')
+      debug.log('Recieved ' + sessionID, ', checking against session list..')
       if (sessions.includes(sessionID)) {
         debug.log(sessionID + ' is valid!')
         socket.emit('session_valid')

@@ -30,10 +30,6 @@ socket.on('s2cs_login', (sessionID, g) => {
   window.location.href = g
 })
 
-function addToHTMLlog (text) {
-  document.getElementById('console').innerText += text + '\n'
-}
-
 // eslint-disable-next-line no-unused-vars
 function submit () {
   socket.emit('c2sd_login', document.getElementById('password').value)

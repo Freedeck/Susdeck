@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 const susdeckUniversal = {
   screensaverStatus: false,
@@ -104,4 +105,11 @@ document.body.onload = () => {
     footer.innerHTML = '<h3>In ' + susdeckUniversal.debugStat + ' Mode</h3>'
     footer.style.display = 'block'
   }, 12)
+}
+
+function addToHTMLlog (text) {
+  const txt = document.createElement('h2')
+  txt.id = text
+  txt.innerText = text
+  document.getElementById('console').appendChild(txt)
 }

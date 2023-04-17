@@ -22,12 +22,7 @@ socket.on('server_connected', function () {
   }, 1000)
 })
 
-function addToHTMLlog (text) {
-  const txt = document.createElement('h2')
-  txt.id = text
-  txt.innerText = text
-  document.getElementById('console').appendChild(txt)
-}
+
 
 function removeFromHTMLlog (text) {
   document.getElementById('console').removeChild(document.getElementById(text))

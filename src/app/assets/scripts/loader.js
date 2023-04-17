@@ -58,10 +58,6 @@ document.addEventListener('click', () => { // Basically, turn the screensaver on
   userAlive = true
 })
 
-function addToHTMLlog (text) { // Log things to  the main page
-  document.getElementById('console').innerText += text + '\n'
-}
-
 function loadPage (pageNumber) { // Setup the Susdeck page w/ sound buttons
   currentPage = pageNumber
   susdeckUniversal.save('page', currentPage) // Persistent page saving

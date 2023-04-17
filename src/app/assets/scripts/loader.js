@@ -31,7 +31,7 @@ socket.on('s2ca_login', function (s, c, n) { // When we get the green light to l
 })
 
 // The server has authenticated you therefore we can bypass login
-socket.on('greenlight', function () {
+socket.on('session_valid', function () {
   document.getElementById('loading').style.display = 'none'
   loadPage(0)
 })
@@ -117,13 +117,6 @@ function loadPage (pageNumber) { // Setup the Susdeck page w/ sound buttons
     }
   }
 }
-
-window.addEventListener('load', () => {
-  if ('serviceWorker' in navigator) {
-    // Download offline version
-    navigator.serviceWorker.register('assets/scripts/service-worker.js')
-  }
-})
 
 // Server has changed something, reload over client
 socket.on('c-change', () => { window.location.replace(window.location.href) })

@@ -7,8 +7,8 @@ socket.on('server_connected', function () {
   loaded = true
   socket.emit('c2sr_login_cont', localStorage.getItem('_sdsid'))
 })
-socket.on('hiuser', function (s) {
-  if (s === 'uhhhlol') {
+socket.on('user_ack_cont', function (status) {
+  if (status === 'session_expired') {
     localStorage.setItem('_sdsession', '')
     window.location.replace('../../index.html')
   }
@@ -21,7 +21,7 @@ socket.on('hiuser', function (s) {
   }, 500)
 })
 
-socket.on('banish', function () {
+socket.on('session_invalid', function () {
   localStorage.setItem('_sdsession', '')
   window.location.replace('../index.html')
 })

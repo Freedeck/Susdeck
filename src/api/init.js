@@ -56,7 +56,6 @@ const init = (io, app) => {
         }, 50)
       })
     })
-    socket.on('still-alive', function () { socket.emit('still-alive') })
     socket.on('c-change', function () { io.emit('c-change') })
     socket.on('Reloadme', function () { socket.emit('c-change') })
     socket.on('keepalive', () => { socket.emit('keepalive') })
@@ -64,10 +63,10 @@ const init = (io, app) => {
       console.log('Recieved ' + sessionID, ', checking..')
       if (sessions.includes(sessionID)) {
         debug.log(sessionID + ' is valid!')
-        socket.emit('greenlight')
+        socket.emit('session_valid')
       } else {
         debug.log(sessionID + ' is invalid, kicking out user..')
-        socket.emit('banish')
+        socket.emit('session_invalid')
       }
     })
     socket.on('companion_connected', () => {

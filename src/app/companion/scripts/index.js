@@ -56,7 +56,7 @@ function loadPage (pageNumber) {
       key.innerText = sound.key
     }
     if (sound.icon) {
-      btn.style.backgroundImage = "url('../icons/" + sound.icon + "')"
+      btn.style.backgroundImage = "url('../assets/icons/" + sound.icon + "')"
     }
     btn.innerText = sound.name
     keys.appendChild(btn)
@@ -144,8 +144,10 @@ window.onclick = function (event) {
   }
 }
 
-document.getElementById('ssat').oninput = () => {
-  document.getElementById('amt').innerText = document.getElementById('ssat').value + ' seconds'
+if (document.getElementById('ssat')) {
+  document.getElementById('ssat').oninput = () => {
+    document.getElementById('amt').innerText = document.getElementById('ssat').value + ' seconds'
+  }
 }
 
 // eslint-disable-next-line no-unused-vars

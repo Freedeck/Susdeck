@@ -2,7 +2,7 @@ const path = require('path')
 const debug = require('../util/debug')
 const fs = require('fs')
 const rob = require('robotjs')
-const sbc = require('../settings/soundboard')
+const sbc = require('../settings/sounds')
 
 const init = (io, app) => {
   const loginList = []
@@ -40,7 +40,7 @@ const init = (io, app) => {
     socket.on('keypress', function (keyInput) {
       debug.log(JSON.stringify(keyInput))
       if (keyInput.name) {
-        sbc.sounds.forEach(sound => {
+        sbc.Sounds.forEach(sound => {
           if (sound.name === keyInput.name) {
             io.emit('press-sound', sbc.soundDir + sound.path, sound.name)
           }

@@ -60,9 +60,20 @@ You'll also need to edit `src/settings/soundboard.js` to link it to an audio fil
 Congratulations, you have added your own sound! Susdeck Companion will soon be able to do this process automagically.
 
 ## Tested Devices
-Susdeck has not had many devices tested on it. Information on how to contribute to testing will be added later. For now, these are the officially supported devices.
+Susdeck has not had many devices tested on it. For now, these are the officially supported devices.
 | Tested Device      | Does it work? | Is it practical? | Does it look good? | Final Notes                                  |
 |--------------------|---------------|------------------|--------------------|----------------------------------------------|
 | iPod Touch 7th Gen | Yes.          | Yes.             | Yes.               | Susdeck was made for the iPod Touch 7th gen  |
 | iPhone 12          | Yes.          | Yes.             | Yes.           | No comment |
 | Desktop         | Yes.          | No.             | Meh.           | Susdeck is made for touchscreen devices when you can't instantly press a key. |
+
+## Tested Desktop Environments
+Susdeck has not had many OS/Distros/DEs tested on it. Information on how to contribute to testing will be added later. For now, these are the officially supported devices.
+| Tested OS/Distro/DE      | Does it work? | Is it practical? | Final Notes                                  |
+|--------------------|---------------|------------------|----------------------------------------------|
+| OS: Windows 10/11 | Yes.          | Yes.             | No comment  |
+| Distro: Arch, DE: `xfce4`          | Yes.          | Yes.             | You'll need `pulseaudio` or `pipewire` alongside ALSA for audio. Info will be added for VB-Cable alternatives later. |
+| Distro: Mint, DE: any         | Yes.          | Yes.             | VB-Cable alternative info will be added later. |
+| Distro: Fedora, DE: `gnome`        | Yes.          | Yes.             | VB-Cable alternative info will be added later. |
+| Distro: Pop!_OS, DE: `gnome`        | Yes.          | Yes.             | VB-Cable alternative info will be added later. |
+| Distro: Ubuntu, DE: `gnome`        | Yes.          | Yes.             | VB-Cable alternative info will be added later. |

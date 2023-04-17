@@ -4,8 +4,8 @@
 const Settings = {
   UseAuthentication: true, // Turn on authentication (every session/restart will require password)
   Password: 'p', // If you are using authentication, you will log in with this password.
-  LoginMessage: 'Hey there, please login', // This message will show for users when they try to login (below "Login to Susdeck")
-  YourName: 'John Mangoseed', // Shows alongside your login message,
+  LoginMessage: 'Susdeck is love. Susdeck is life.', // This message will show for users when they try to login (below "Login to Susdeck")
+  YourName: 'John Mangoseed' // Shows alongside your login message,
 }
 
 module.exports = Settings

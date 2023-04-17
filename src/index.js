@@ -15,8 +15,8 @@ sockApiInit(io, app) // Socket API initialize
 
 app.use('/', ex.static('./src/app')) // Initialize HTTP routes for main web app directory
 
-app.get('/sounds.js', (req, res) => { res.sendFile(path.join(__dirname, '\\settings\\sounds.js')) }) // Make sounds.js accessible from apps
-app.get('/soundboard.js', (req, res) => { res.sendFile(path.join(__dirname, '\\settings\\soundboard.js')) }) // Make soundboard.js accessible from apps
+app.get('/sounds.js', (req, res) => { res.sendFile(path.join(__dirname, '/settings/sounds.js')) }) // Make sounds.js accessible from apps
+app.get('/soundboard.js', (req, res) => { res.sendFile(path.join(__dirname, '/settings/soundboard.js')) }) // Make soundboard.js accessible from apps
 
 httpServer.listen(port, () => {
   console.log('Susdeck Web Host is starting - starting Companion')

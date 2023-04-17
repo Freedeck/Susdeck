@@ -39,11 +39,12 @@ const susdeckUniversal = {
     susdeckUniversal.socket.on(event, callback)
   },
   isInDebug: false,
+  isDevBranch: false,
   debugStat: 'Debug',
   hasConnected: false
 }
 
-susdeckUniversal.socket.on('server_connected', () => {
+susdeckUniversal.socket.on('server_connected', (stype) => {
   susdeckUniversal.hasConnected = true
   if (!susdeckUniversal.hasConnected) { socket.emit('Reloadme') }
 })
@@ -83,14 +84,8 @@ userTheme.forEach(property => {
   })
 })
 
-if (typeof ScreenSaverActivationTime === 'number') {
+if (typeof ScreenSaverActivationTime === 'number' && keys) {
   setInterval(function () { userAlive = false }, ScreenSaverActivationTime * 1000)
-
-  setInterval(function () {
-    if (!userAlive && !susdeckUniversal.screensaverStatus) {
-      keys.style.opacity = '0.125'
-    }
-  }, ScreenSaverActivationTime * 1000 + 600)
 
   setInterval(function () {
     if (!userAlive) {

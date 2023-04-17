@@ -26,7 +26,7 @@ module.exports = {
 const SoundOnPress = ${sounds.SoundOnPress}
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime}
 const soundDir = '../assets/sounds/'
-const Sounds = ${jsonbeautify(sounds.Sounds)}
+const Sounds = ${jsonbeautify(sounds.Sounds, null, 4, 80)}
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds }
 `)
 

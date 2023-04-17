@@ -1,6 +1,6 @@
 /* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const SoundOnPress = false
-const ScreenSaverActivationTime = 15
+const ScreenSaverActivationTime = 13
 const soundDir = '../assets/sounds/'
 const Sounds = [
     { "name": "Shooting", "icon": "shooting.png", "path": "shooting.mp3" },
@@ -50,6 +50,9 @@ const Sounds = [
     },
     { "name": "Ohio Sound", "icon": "ohio.png", "path": "ohio.mp3" },
     { "name": "Whoppah Remix", "path": "wopha_remix.wav" },
-    { "name": "Stop All", "path": "--Stop_all" }
+    { "name": "Stop All", "path": "--Stop_all" },
+    { "name": "WHOPPER WOPER WHOPER WOPER", "key": "enter" },
+    { "name": "New Key", "key": "enter" },
+    { "name": "New Key", "key": "enter" }
 ]
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds }

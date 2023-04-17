@@ -4,5 +4,5 @@ function setTheme (t) {
   susdeckUniversal.socket.emit('c-theme', t)
   setTimeout(() => {
     susdeckUniversal.socket.emit('c-change')
-  },200)
+  }, 200)
 }

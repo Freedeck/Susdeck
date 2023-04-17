@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable camelcase */
 const Susaudio = {
   _player: {
@@ -34,7 +35,7 @@ const Susaudio = {
     audio.isNotVB = sa_isNotVB
     if (audio.isNotVB === false) {
       await audio.setSinkId(Susaudio._player.sinkId)
-      localStorage.setItem('_susaudio_playlist', localStorage.getItem('_susaudio_playlist') + ',' + audio.saName)
+      susdeckUniversal.save('_susaudio_playlist', localStorage.getItem('_susaudio_playlist') + ',' + audio.saName)
     }
     audio.play()
     audio.onended = Susaudio._player.audioEndedCallback
@@ -42,7 +43,7 @@ const Susaudio = {
     Susaudio._player.timeSinceLastRequest = 0
   },
   clearPlaylist: function () {
-    localStorage.setItem('_susaudio_playlist', '')
+    susdeckUniversal.save('_susaudio_playlist', '')
   },
   stopAll: () => {
     Susaudio._player.queue.forEach(audio => {

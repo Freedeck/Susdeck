@@ -15,7 +15,7 @@ addToHTMLlog('Waiting for host...')
 socket.on('server_connected', function () {
   removeFromHTMLlog('Waiting for host...')
   addToHTMLlog('Companion connected!')
-  socket.emit('companion_connected')
+  socket.emit('c-connected')
   if (document.getElementById('keys')) loadPage(0)
   setTimeout(() => {
     document.getElementById('console').style.display = 'none'

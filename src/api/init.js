@@ -31,11 +31,9 @@ const init = (io, app) => {
   io.on('connection', function (socket) {
     // Initial connection
     console.log('Connected to client @ ' + new Date())
-    setTimeout(function () {
-      socket.emit('server_connected', 'dev') // Send user confirmation: connected to server
-      socket.emit('set-theme', fs.readFileSync(path.join(__dirname, '/persistent/theme.sd')).toString()) // Tell client to set the theme
-      debug.log('Sent user connection success message')
-    }, 150)
+    socket.emit('server_connected', 'dev') // Send user confirmation: connected to server
+    socket.emit('set-theme', fs.readFileSync(path.join(__dirname, '/persistent/theme.sd')).toString()) // Tell client to set the theme
+    debug.log('Sent user connection success message')
 
     socket.on('keypress', function (keyInput) {
       debug.log(JSON.stringify(keyInput))
@@ -58,9 +56,6 @@ const init = (io, app) => {
         }, 50)
       })
     })
-    socket.on('c-change', function () { io.emit('c-change') })
-    socket.on('Reloadme', function () { socket.emit('c-change') })
-    socket.on('keepalive', () => { socket.emit('keepalive') })
     socket.on('Authenticated', function (sessionID) {
       console.log('Recieved ' + sessionID, ', checking..')
       if (sessions.includes(sessionID)) {
@@ -70,12 +65,6 @@ const init = (io, app) => {
         debug.log(sessionID + ' is invalid, kicking out user..')
         socket.emit('session_invalid')
       }
-    })
-    socket.on('companion_connected', () => {
-      debug.log('Companion is connected to server')
-      delete require.cache[require.resolve('../settings/sounds.js')]
-      const soundFile = require('../settings/sounds')
-      socket.emit('companion_info', soundFile.ScreenSaverActivationTime, soundFile.SoundOnPress)
     })
     events.forEach(function (event) {
       socket.on(event.event, async function (args) {
@@ -91,6 +80,9 @@ const init = (io, app) => {
           }
           if (callback.startsWith('c-change')) {
             io.emit('c-change')
+          }
+          if (callback.startsWith('c-change-sock')) {
+            socket.emit('c-change')
           }
         }
       })

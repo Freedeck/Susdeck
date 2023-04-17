@@ -46,7 +46,7 @@ const susdeckUniversal = {
 
 susdeckUniversal.socket.on('server_connected', (stype) => {
   susdeckUniversal.hasConnected = true
-  if (!susdeckUniversal.hasConnected) { socket.emit('Reloadme') }
+  if (!susdeckUniversal.hasConnected) { socket.emit('c-client-reload') }
 })
 
 susdeckUniversal.socket.on('set-theme', (theme) => {

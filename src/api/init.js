@@ -1,7 +1,6 @@
 const path = require('path');
 const debug = require('../util/debug');
 const fs = require('fs');
-const rob = require('robotjs');
 const sbc = require('../settings/soundboard');
 
 const init = (io, app) => {
@@ -37,25 +36,6 @@ const init = (io, app) => {
       debug.log('Sent user connection success message');
     }, 150);
 
-    socket.on('keypress', function (keyInput) {
-      debug.log(JSON.stringify(keyInput));
-      if (keyInput.name) {
-        sbc.sounds.forEach(sound => {
-          if (sound.name === keyInput.name) {
-            io.emit('press-sound', sbc.soundDir + sound.path, sound.name);
-          }
-        });
-        return;
-      }
-      const keys = JSON.parse(keyInput.keys);
-      keys.forEach(function (key) {
-        key = key.split('}')[0];
-        rob.keyToggle(key, 'down');
-        setTimeout(function () {
-          rob.keyToggle(key, 'up');
-        }, 50);
-      });
-    });
     socket.on('still-alive', function () { socket.emit('still-alive'); });
     socket.on('c-change', function () { io.emit('c-change'); });
     socket.on('Reloadme', function () { socket.emit('c-change'); });

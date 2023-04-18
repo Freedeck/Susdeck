@@ -4,7 +4,7 @@
  * Companion *WILL NOT* change this file *EVER* (unless this text is gone).
  */
 
-const soundDir = '../assets/sounds/'
+const soundDir = '../assets/sounds/';
 const sounds = [
   { name: 'Shooting', path: 'shooting.mp3' },
   { name: 'Vine Boom', path: 'vineboom.mp3' },
@@ -19,8 +19,8 @@ const sounds = [
   { name: 'Ohio Sound', path: 'ohio.mp3' },
   { name: 'Whoppah Remix', path: 'wopha_remix.wav' },
   { name: 'Stop All', path: '--Stop_all' }
-]
+];
 
 if (typeof module !== 'undefined') {
-  module.exports = { sounds, soundDir }
+  module.exports = { sounds, soundDir };
 }

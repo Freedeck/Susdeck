@@ -10,83 +10,83 @@ const Susaudio = {
     timeSinceLastRequest: 0,
     queue: [],
     audioEndedCallback: function () {
-      Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this)
+      Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this);
     }
   },
   init: async () => {
-    const devices = await navigator.mediaDevices.enumerateDevices()
+    const devices = await navigator.mediaDevices.enumerateDevices();
     devices.forEach(device => {
       if (device.label === 'CABLE Input (VB-Audio Virtual Cable)') {
-        const audio = new Audio()
-        audio.setSinkId(device.deviceId)
-        Susaudio._player.sinkId = device.deviceId
+        const audio = new Audio();
+        audio.setSinkId(device.deviceId);
+        Susaudio._player.sinkId = device.deviceId;
       }
-    })
+    });
   },
   playSound: async (audioSource, audioName, sa_isNotVB = false) => {
-    if (Susaudio._player.timeSinceLastRequest < 2) return
-    const audio = new Audio(audioSource)
-    audio.preservesPitch = Susaudio._player.preservesPitch
-    audio.playbackRate = Susaudio._player.pitch
-    audio.volume = Susaudio._player.volume
-    audio.isSusaudio = true
-    audio.saName = audioName
-    audio.isNotVB = sa_isNotVB
+    if (Susaudio._player.timeSinceLastRequest < 2) return;
+    const audio = new Audio(audioSource);
+    audio.preservesPitch = Susaudio._player.preservesPitch;
+    audio.playbackRate = Susaudio._player.pitch;
+    audio.volume = Susaudio._player.volume;
+    audio.isSusaudio = true;
+    audio.saName = audioName;
+    audio.isNotVB = sa_isNotVB;
     if (audio.isNotVB === false) {
-      await audio.setSinkId(Susaudio._player.sinkId)
-      localStorage.setItem('_susaudio_playlist', localStorage.getItem('_susaudio_playlist') + ',' + audio.saName)
+      await audio.setSinkId(Susaudio._player.sinkId);
+      localStorage.setItem('_susaudio_playlist', localStorage.getItem('_susaudio_playlist') + ',' + audio.saName);
     }
-    audio.play()
-    audio.onended = Susaudio._player.audioEndedCallback
-    Susaudio._player.queue.push(audio)
-    Susaudio._player.timeSinceLastRequest = 0
+    audio.play();
+    audio.onended = Susaudio._player.audioEndedCallback;
+    Susaudio._player.queue.push(audio);
+    Susaudio._player.timeSinceLastRequest = 0;
   },
   clearPlaylist: function () {
-    localStorage.setItem('_susaudio_playlist', '')
+    localStorage.setItem('_susaudio_playlist', '');
   },
   stopAll: () => {
     Susaudio._player.queue.forEach(audio => {
-      audio.stop()
-    })
+      audio.stop();
+    });
   },
   stopRecent: () => {
-    Susaudio._player.queue[0].stop()
-    Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, Susaudio._player.queue[0])
+    Susaudio._player.queue[0].stop();
+    Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, Susaudio._player.queue[0]);
   },
   playPause: () => {
     Susaudio._player.queue.forEach(audio => {
       if (Susaudio._player.paused === true) {
-        audio.play()
-        Susaudio._player.paused = !Susaudio._player.paused
+        audio.play();
+        Susaudio._player.paused = !Susaudio._player.paused;
       } else {
-        audio.pause()
-        Susaudio._player.paused = !Susaudio._player.paused
+        audio.pause();
+        Susaudio._player.paused = !Susaudio._player.paused;
       }
-    })
+    });
   },
   changeAllPlayingPitch: (num) => {
     Susaudio._player.queue.forEach(audio => {
-      audio.pause()
-      audio.preservesPitch = false
-      audio.playbackRate = num
-      audio.play()
-    })
+      audio.pause();
+      audio.preservesPitch = false;
+      audio.playbackRate = num;
+      audio.play();
+    });
   }
-}
+};
 
 Audio.prototype.stop = function () {
-  if (!this.isSusaudio) { this.stop(); return }
-  this.pause()
-  this.currentTime = 0
-  Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this)
-}
+  if (!this.isSusaudio) { this.stop(); return; }
+  this.pause();
+  this.currentTime = 0;
+  Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this);
+};
 // other functions
 function _sa_removeFromArray (arr, value) {
   return arr.filter(function (ele) {
-    return ele !== value
-  })
+    return ele !== value;
+  });
 }
 
 setInterval(() => {
-  Susaudio._player.timeSinceLastRequest++
-}, 1)
+  Susaudio._player.timeSinceLastRequest++;
+}, 1);

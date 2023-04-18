@@ -1,5 +1,5 @@
-const SoundOnPress = false
-const ScreenSaverActivationTime = 13
+const SoundOnPress = false;
+const ScreenSaverActivationTime = 13;
 const Sounds = [
   { name: 'Shooting', icon: 'shooting.png', path: 'shooting.mp3' },
   {
@@ -49,5 +49,5 @@ const Sounds = [
   { name: 'Ohio Sound', icon: 'ohio.png', path: 'ohio.mp3' },
   { name: 'Whoppah Remix', path: 'wopha_remix.wav' },
   { name: 'Stop All', path: '--Stop_all' }
-]
-if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, Sounds }
+];
+if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, Sounds };

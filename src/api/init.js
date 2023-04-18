@@ -12,20 +12,11 @@ const init = (io, app) => {
   debug.log('Adding events to API')
 
   fs.readdirSync(path.join(__dirname, '/events')).forEach(function (file) {
-    if (file === 'companion') {
-      fs.readdirSync(path.join(__dirname, '/events/companion')).forEach(cEvent => {
-        const query = require(path.join(__dirname, 'events/companion/' + cEvent))
-        events.set(query.event, { callback: query.callback, event: query.event })
-        debug.log('Added companion event ' + query.event + ' from file ' + cEvent)
-      })
-    }
-    if (file === 'c2s') {
-      fs.readdirSync(path.join(__dirname, '/events/c2s')).forEach(cEvent => {
-        const query = require(path.join(__dirname, '/events/c2s/' + cEvent))
-        events.set(query.event, { callback: query.callback, event: query.event })
-        debug.log('Added c2s event ' + query.event + ' from file ' + cEvent)
-      })
-    }
+    fs.readdirSync(path.join(__dirname, '/events/' + file)).forEach(cEvent => {
+      const query = require(path.join(__dirname, '/events/' + file + '/' + cEvent))
+      events.set(query.event, { callback: query.callback, event: query.event })
+      debug.log('Added ' + file + ' event ' + query.event + ' from file ' + cEvent)
+    })
   })
 
   io.on('connection', function (socket) {

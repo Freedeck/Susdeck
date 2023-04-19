@@ -85,7 +85,7 @@ userTheme.forEach(property => {
   });
 });
 
-if (typeof ScreenSaverActivationTime === 'number' && keys) {
+if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('keys')) {
   setInterval(function () { userAlive = false; }, ScreenSaverActivationTime * 1000);
 
   setInterval(function () {

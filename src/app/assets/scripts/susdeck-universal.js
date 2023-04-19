@@ -24,92 +24,92 @@ const susdeckUniversal = {
     ]
   },
   retrieveSession: function () {
-    return atob(localStorage.getItem('_sdsession'))
+    return atob(localStorage.getItem('_sdsession'));
   },
   createTempHWID: function () {
-    return Math.random().toString().substring(2, 5)
+    return Math.random().toString().substring(2, 5);
   },
   save: function (name, value) {
-    localStorage.setItem('_sd' + name, value)
+    localStorage.setItem('_sd' + name, value);
   },
   load: function (name) {
-    return localStorage.getItem('_sd' + name)
+    return localStorage.getItem('_sd' + name);
   },
   socket: io(),
   connectionOn: function (event, callback) {
-    susdeckUniversal.socket.on(event, callback)
+    susdeckUniversal.socket.on(event, callback);
   },
   isInDebug: false,
   isDevBranch: false,
   debugStat: 'Debug',
   hasConnected: false
-}
+};
 
 susdeckUniversal.socket.on('server_connected', (stype) => {
-  susdeckUniversal.hasConnected = true
-  if (!susdeckUniversal.hasConnected) { socket.emit('c-client-reload') }
-})
+  susdeckUniversal.hasConnected = true;
+  if (!susdeckUniversal.hasConnected) { socket.emit('c-client-reload'); }
+});
 
 susdeckUniversal.socket.on('set-theme', (theme) => {
-  susdeckUniversal.save('theme', theme)
-  const userTheme = susdeckUniversal.themes[susdeckUniversal.load('theme')]
+  susdeckUniversal.save('theme', theme);
+  const userTheme = susdeckUniversal.themes[susdeckUniversal.load('theme')];
 
   userTheme.forEach(property => {
     Object.keys(property).forEach(key => {
-      rootElem.style.setProperty(`--sd-${key}`, property[key])
-    })
-  })
-})
+      rootElem.style.setProperty(`--sd-${key}`, property[key]);
+    });
+  });
+});
 
 fetch('/api/dbg')
   .then(data =>
     data.json())
   .then(data => {
-    susdeckUniversal.isInDebug = data.status
-    susdeckUniversal.debugStat = data.msg
-  })
+    susdeckUniversal.isInDebug = data.status;
+    susdeckUniversal.debugStat = data.msg;
+  });
 
-const rootElem = document.querySelector(':root')
+const rootElem = document.querySelector(':root');
 
 // because theming is cool
 if (!susdeckUniversal.load('theme')) {
-  susdeckUniversal.save('theme', 'Default')
+  susdeckUniversal.save('theme', 'Default');
 }
 
 // Setup the user's theme
-const userTheme = susdeckUniversal.themes[susdeckUniversal.load('theme')]
+const userTheme = susdeckUniversal.themes[susdeckUniversal.load('theme')];
 
 userTheme.forEach(property => {
   Object.keys(property).forEach(key => {
-    rootElem.style.setProperty(`--sd-${key}`, property[key])
-  })
-})
+    rootElem.style.setProperty(`--sd-${key}`, property[key]);
+  });
+});
 
 if (typeof ScreenSaverActivationTime === 'number' && keys) {
-  setInterval(function () { userAlive = false }, ScreenSaverActivationTime * 1000)
+  setInterval(function () { userAlive = false; }, ScreenSaverActivationTime * 1000);
 
   setInterval(function () {
     if (!userAlive) {
-      keys.style.opacity = '0'
-      screensaverStatus = true
+      keys.style.opacity = '0';
+      screensaverStatus = true;
     }
-  }, ScreenSaverActivationTime * 1000 + 2 * 1000)
+  }, ScreenSaverActivationTime * 1000 + 2 * 1000);
 }
 
 document.body.onload = () => {
-  const footer = document.createElement('footer')
-  footer.style.display = 'none'
-  document.body.appendChild(footer)
+  const footer = document.createElement('footer');
+  footer.style.display = 'none';
+  document.body.appendChild(footer);
   setTimeout(() => {
-    if (!susdeckUniversal.isInDebug) return
-    footer.innerHTML = '<h3>In ' + susdeckUniversal.debugStat + ' Mode</h3>'
-    footer.style.display = 'block'
-  }, 12)
-}
+    if (!susdeckUniversal.isInDebug) return;
+    footer.innerHTML = '<h3>In ' + susdeckUniversal.debugStat + ' Mode</h3>';
+    footer.style.display = 'block';
+  }, 12);
+};
 
 function addToHTMLlog (text) {
-  const txt = document.createElement('h2')
-  txt.id = text
-  txt.innerText = text
-  document.getElementById('console').appendChild(txt)
+  const txt = document.createElement('h2');
+  txt.id = text;
+  txt.innerText = text;
+  document.getElementById('console').appendChild(txt);
 }

@@ -13,5 +13,6 @@
         "ecmaVersion": "latest"
     },
     "rules": {
+        "semi": [1, "always"]
     }
 }

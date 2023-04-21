@@ -1,4 +1,5 @@
 const SoundOnPress = false;
+const soundDir = '../assets/sounds/';
 const ScreenSaverActivationTime = 13;
 const Sounds = [
   { name: 'Shooting', icon: 'shooting.png', path: 'shooting.mp3' },
@@ -50,4 +51,4 @@ const Sounds = [
   { name: 'Whoppah Remix', path: 'wopha_remix.wav' },
   { name: 'Stop All', path: '--Stop_all' }
 ];
-if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, Sounds };
+if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };

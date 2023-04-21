@@ -23,9 +23,10 @@ module.exports = {
       Object.assign(found, newObject);
 
       fs.writeFileSync('./src/settings/sounds.js', `const SoundOnPress = ${sounds.SoundOnPress}
+const soundDir = '../assets/sounds/';
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime}
 const Sounds = ${jsonbeautify(sounds.Sounds)}
-if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, Sounds }
+if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds }
 `);
 
       return 'c-change';
@@ -35,9 +36,10 @@ if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverA
       const newssoc = args[1].split('SOC:')[1];
 
       fs.writeFileSync('./src/settings/sounds.js', `const SoundOnPress = ${newssoc}
+      const soundDir = '../assets/sounds/';
 const ScreenSaverActivationTime = ${newssattime}
 const Sounds = ${jsonbeautify(sounds.Sounds, null, 4, 80)}
-if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, Sounds }
+if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds }
 `);
 
       console.log(`const SoundOnPress = ${newssattime}`);

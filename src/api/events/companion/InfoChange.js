@@ -22,10 +22,11 @@ module.exports = {
       });
       Object.assign(found, newObject);
 
-      fs.writeFileSync('./src/settings/sounds.js', `const SoundOnPress = ${sounds.SoundOnPress}
-const soundDir = '../assets/sounds/';
+      fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
+const SoundOnPress = ${sounds.SoundOnPress}
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime}
-const Sounds = ${jsonbeautify(sounds.Sounds)}
+const soundDir = '../assets/sounds/'
+const Sounds = ${jsonbeautify(sounds.Sounds, null, 4, 80)}
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds }
 `);
 
@@ -35,9 +36,10 @@ if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverA
       const newssattime = args[0].split('SSAT:')[1];
       const newssoc = args[1].split('SOC:')[1];
 
-      fs.writeFileSync('./src/settings/sounds.js', `const SoundOnPress = ${newssoc}
-      const soundDir = '../assets/sounds/';
+      fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
+const SoundOnPress = ${newssoc}
 const ScreenSaverActivationTime = ${newssattime}
+const soundDir = '../assets/sounds/'
 const Sounds = ${jsonbeautify(sounds.Sounds, null, 4, 80)}
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds }
 `);

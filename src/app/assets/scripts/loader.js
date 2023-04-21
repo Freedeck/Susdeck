@@ -23,15 +23,15 @@ socket.on('server_connected', function () {
   }
 });
 
-socket.on('s2ca_login', function (s, c, n) { // When we get the green light to login
+socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // When we get the green light to login
   addToHTMLlog('Request received by server, let\'s log in.');
-  susdeckUniversal.save('login_msg', c);
-  susdeckUniversal.save('owner_name', n); // Save the login message and owner's name
-  window.location.href = s; // Next, move the page over to login page that server sends back
+  susdeckUniversal.save('login_msg', loginMsg);
+  susdeckUniversal.save('owner_name', ownerName); // Save the login message and owner's name
+  window.location.href = nextLoc; // Next, move the page over to login page that server sends back
 });
 
 // The server has authenticated you therefore we can bypass login
-socket.on('greenlight', function () {
+socket.on('session_valid', function () {
   document.getElementById('loading').style.display = 'none';
   loadPage(0);
 });
@@ -53,13 +53,10 @@ setInterval(function () {
 }, 1500);
 
 document.addEventListener('click', () => { // Basically, turn the screensaver on
-  if (userAlive === false) keys.style.opacity = '1'; screensaverStatus = false;
+  if (userAlive === false) keys.style.opacity = '1';
+  screensaverStatus = false;
   userAlive = true;
 });
-
-function addToHTMLlog (text) { // Log things to  the main page
-  document.getElementById('console').innerText += text + '\n';
-}
 
 function loadPage (pageNumber) { // Setup the Susdeck page w/ sound buttons
   currentPage = pageNumber;
@@ -93,7 +90,9 @@ function loadPage (pageNumber) { // Setup the Susdeck page w/ sound buttons
   stopall.className = 'keypress btxt';
   stopall.innerText = 'Stop All';
   const reloadbtn = document.createElement('button');
-  reloadbtn.onclick = () => { window.location.reload(); };
+  reloadbtn.onclick = () => {
+    window.location.reload();
+  };
   reloadbtn.className = 'btxt';
   reloadbtn.innerText = 'Reload';
   const susdeck = document.createElement('a');
@@ -110,20 +109,51 @@ function loadPage (pageNumber) { // Setup the Susdeck page w/ sound buttons
       // eslint-disable-next-line no-undef
       if (SoundOnPress) new Audio('assets/sounds/press.mp3').play();
       if (allKeypress[i].getAttribute('data-key')) {
-        socket.emit('keypress', { macro: true, keys: allKeypress[i].getAttribute('data-key') });
+        socket.emit('keypress', {
+          macro: true,
+          keys: allKeypress[i].getAttribute('data-key')
+        });
       } else {
-        socket.emit('keypress', { macro: false, name: allKeypress[i].innerHTML });
+        socket.emit('keypress', {
+          macro: false,
+          name: allKeypress[i].innerHTML
+        });
       }
     };
   }
 }
 
-window.addEventListener('load', () => {
-  if ('serviceWorker' in navigator) {
-    // Download offline version
-    navigator.serviceWorker.register('assets/scripts/service-worker.js');
-  }
+// Server has changed something, reload over client
+socket.on('c-change', () => {
+  window.location.replace(window.location.href);
 });
 
-// Server has changed something, reload over client
-socket.on('c-change', () => { window.location.replace(window.location.href); });
+/* eslint-disable no-undef */
+let touchstartX = 0;
+let touchendX = 2500;
+
+function checkDirection () {
+  if (touchendX < touchstartX) {
+    // go page up
+    if (Pages[currentPage + 1]) {
+      loadPage(currentPage + 1);
+    } else {
+      /* empty */ }
+  }
+  if (touchendX > touchstartX) {
+    // go page down
+    if (Pages[currentPage - 1]) {
+      loadPage(currentPage - 1);
+    } else {
+      /* empty */ }
+  }
+}
+
+document.addEventListener('touchstart', e => {
+  touchstartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener('touchend', e => {
+  touchendX = e.changedTouches[0].screenX;
+  checkDirection();
+});

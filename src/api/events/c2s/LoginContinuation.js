@@ -7,10 +7,10 @@ module.exports = {
       // Indeed it is the same user logging in.
       loginList.splice(loginList.indexOf(sid), 1);
       // Hello
-      socket.emit('hiuser');
+      socket.emit('user_ack_cont');
       return 'User ' + sid + ' is continuing login';
     }
-    socket.emit('hiuser', 'uhhhlol');
+    socket.emit('user_ack_cont', 'session_expired');
     return 'No continue login';
   }
 };

@@ -1,6 +1,6 @@
 module.exports = {
-  event: 'c-change',
+  event: 'c-client-reload',
   callback: (socket, args) => {
-    return 'c-change';
+    return 'c-change-sock';
   }
 };

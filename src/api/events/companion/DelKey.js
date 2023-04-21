@@ -1,5 +1,6 @@
 const sounds = require('../../../settings/sounds');
 const fs = require('fs');
+const jsonbeautify = require('json-beautify');
 
 module.exports = {
   event: 'c-delkey',
@@ -8,7 +9,7 @@ module.exports = {
     fs.writeFileSync('./src/settings/sounds.js', `const SoundOnPress = ${sounds.SoundOnPress}
     const soundDir = '../assets/sounds/';
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime}
-const Sounds = ${JSON.stringify(sounds.Sounds)}
+const Sounds = ${jsonbeautify(sounds.Sounds, null, 4, 80)}
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds }`);
     return 'c-change';
   }

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 const susdeckUniversal = {
   screensaverStatus: false,
@@ -39,6 +40,7 @@ const susdeckUniversal = {
     susdeckUniversal.socket.on(event, callback);
   },
   isInDebug: false,
+  isDevBranch: false,
   debugStat: 'Debug',
   hasConnected: false
 };
@@ -114,3 +116,10 @@ document.body.onload = () => {
     footer.style.display = 'block';
   }, 12);
 };
+
+function addToHTMLlog (text) {
+  const txt = document.createElement('h2');
+  txt.id = text;
+  txt.innerText = text;
+  document.getElementById('console').appendChild(txt);
+}

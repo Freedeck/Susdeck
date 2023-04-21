@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // eslint-disable-next-line no-undef
 const socket = io();
 const keys = document.getElementById('keys');
@@ -15,19 +16,12 @@ addToHTMLlog('Waiting for host...');
 socket.on('server_connected', function () {
   removeFromHTMLlog('Waiting for host...');
   addToHTMLlog('Companion connected!');
-  socket.emit('companion_connected');
+  socket.emit('c-connected');
   if (document.getElementById('keys')) loadPage(0);
   setTimeout(() => {
     document.getElementById('console').style.display = 'none';
   }, 1000);
 });
-
-function addToHTMLlog (text) {
-  const txt = document.createElement('h2');
-  txt.id = text;
-  txt.innerText = text;
-  document.getElementById('console').appendChild(txt);
-}
 
 function removeFromHTMLlog (text) {
   document.getElementById('console').removeChild(document.getElementById(text));
@@ -56,7 +50,7 @@ function loadPage (pageNumber) {
       key.innerText = sound.key;
     }
     if (sound.icon) {
-      btn.style.backgroundImage = "url('../icons/" + sound.icon + "')";
+      btn.style.backgroundImage = "url('../assets/icons/" + sound.icon + "')";
     }
     btn.innerText = sound.name;
     keys.appendChild(btn);
@@ -144,9 +138,11 @@ window.onclick = function (event) {
   }
 };
 
-document.getElementById('ssat').oninput = () => {
-  document.getElementById('amt').innerText = document.getElementById('ssat').value + ' seconds';
-};
+if (document.getElementById('ssat')) {
+  document.getElementById('ssat').oninput = () => {
+    document.getElementById('amt').innerText = document.getElementById('ssat').value + ' seconds';
+  };
+}
 
 // eslint-disable-next-line no-unused-vars
 function Changeifo (key) {
@@ -163,6 +159,8 @@ function setSet () {
   socket.emit('c-info-change', 'SSAT:' + ssat + ',SOC:' + soc);
   socket.emit('c-change');
 }
+
+socket.on('c-change', () => { window.location.replace(window.location.href); });
 
 socket.on('companion_info', function (ssat, soc) {
   document.getElementById('soc').checked = soc;
@@ -201,16 +199,4 @@ function bp () {
   if (Pages[currentPage - 1]) {
     loadPage(currentPage - 1);
   }
-}
-
-// eslint-disable-next-line no-unused-vars
-function openNav () {
-  document.getElementById('mySidenav').style.width = '250px';
-  document.getElementById('main').style.marginLeft = '250px';
-}
-
-// eslint-disable-next-line no-unused-vars
-function closeNav () {
-  document.getElementById('mySidenav').style.width = '0';
-  document.getElementById('main').style.marginLeft = '0';
 }

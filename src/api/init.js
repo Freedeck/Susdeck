@@ -2,7 +2,7 @@ const path = require('path');
 const debug = require('../util/debug');
 const fs = require('fs');
 const rob = require('robotjs');
-const sbc = require('../settings/soundboard');
+const sbc = require('../settings/sounds');
 
 const init = (io, app) => {
   const loginList = [];
@@ -12,20 +12,11 @@ const init = (io, app) => {
   debug.log('Adding events to API');
 
   fs.readdirSync(path.join(__dirname, '/events')).forEach(function (file) {
-    if (file === 'companion') {
-      fs.readdirSync(path.join(__dirname, '/events/companion')).forEach(cEvent => {
-        const query = require(path.join(__dirname, 'events/companion/' + cEvent));
-        events.set(query.event, { callback: query.callback, event: query.event, type: 'companion' });
-        debug.log('Added companion event ' + query.event + ' from file ' + cEvent);
-      });
-    }
-    if (file === 'c2s') {
-      fs.readdirSync(path.join(__dirname, '/events/c2s')).forEach(cEvent => {
-        const query = require(path.join(__dirname, '/events/c2s/' + cEvent));
-        events.set(query.event, { callback: query.callback, event: query.event, type: 'client2server' });
-        debug.log('Added c2s event ' + query.event + ' from file ' + cEvent);
-      });
-    }
+    fs.readdirSync(path.join(__dirname, '/events/' + file)).forEach(cEvent => {
+      const query = require(path.join(__dirname, '/events/' + file + '/' + cEvent));
+      events.set(query.event, { callback: query.callback, event: query.event });
+      debug.log('Added ' + file + ' event ' + query.event + ' from file ' + cEvent);
+    });
   });
 
   io.on('connection', function (socket) {
@@ -40,14 +31,16 @@ const init = (io, app) => {
     socket.on('keypress', function (keyInput) {
       debug.log(JSON.stringify(keyInput));
       if (keyInput.name) {
-        sbc.sounds.forEach(sound => {
+        sbc.Sounds.forEach(sound => {
           if (sound.name === keyInput.name) {
             io.emit('press-sound', sbc.soundDir + sound.path, sound.name);
           }
         });
         return;
       }
-      const keys = JSON.parse(keyInput.keys);
+      let keys = [];
+      if (keyInput.key !== undefined) keys.push(keyInput.key);
+      if (keyInput.keys) keys = JSON.parse(keyInput.keys);
       keys.forEach(function (key) {
         key = key.split('}')[0];
         rob.keyToggle(key, 'down');
@@ -57,24 +50,18 @@ const init = (io, app) => {
       });
     });
     socket.on('Authenticated', function (sessionID) {
-      console.log('Recieved ' + sessionID, ', checking..');
+      debug.log('Recieved ' + sessionID, ', checking against session list..');
       if (sessions.includes(sessionID)) {
         debug.log(sessionID + ' is valid!');
-        socket.emit('greenlight');
+        socket.emit('session_valid');
       } else {
         debug.log(sessionID + ' is invalid, kicking out user..');
-        socket.emit('banish');
+        socket.emit('session_invalid');
       }
-    });
-    socket.on('companion_connected', () => {
-      debug.log('Companion is connected to server');
-      delete require.cache[require.resolve('../settings/sounds.js')];
-      const soundFile = require('../settings/sounds');
-      socket.emit('companion_info', soundFile.ScreenSaverActivationTime, soundFile.SoundOnPress);
     });
     events.forEach(function (event) {
       socket.on(event.event, async function (args) {
-        debug.log(event.event);
+        debug.log(event.event + ' ran');
         if (event.async) {
           await event.callback(socket, args, loginList);
         } else {

@@ -15,14 +15,14 @@ const init = (io, app) => {
     if (file === 'companion') {
       fs.readdirSync(path.join(__dirname, '/events/companion')).forEach(cEvent => {
         const query = require(path.join(__dirname, 'events/companion/' + cEvent));
-        events.set(query.event, { callback: query.callback, event: query.event });
+        events.set(query.event, { callback: query.callback, event: query.event, type: 'companion' });
         debug.log('Added companion event ' + query.event + ' from file ' + cEvent);
       });
     }
     if (file === 'c2s') {
       fs.readdirSync(path.join(__dirname, '/events/c2s')).forEach(cEvent => {
         const query = require(path.join(__dirname, '/events/c2s/' + cEvent));
-        events.set(query.event, { callback: query.callback, event: query.event });
+        events.set(query.event, { callback: query.callback, event: query.event, type: 'client2server' });
         debug.log('Added c2s event ' + query.event + ' from file ' + cEvent);
       });
     }
@@ -56,10 +56,6 @@ const init = (io, app) => {
         }, 50);
       });
     });
-    socket.on('still-alive', function () { socket.emit('still-alive'); });
-    socket.on('c-change', function () { io.emit('c-change'); });
-    socket.on('Reloadme', function () { socket.emit('c-change'); });
-    socket.on('keepalive', () => { socket.emit('keepalive'); });
     socket.on('Authenticated', function (sessionID) {
       console.log('Recieved ' + sessionID, ', checking..');
       if (sessions.includes(sessionID)) {
@@ -78,7 +74,7 @@ const init = (io, app) => {
     });
     events.forEach(function (event) {
       socket.on(event.event, async function (args) {
-        debug.log(event.event + ' ran');
+        debug.log(event.event);
         if (event.async) {
           await event.callback(socket, args, loginList);
         } else {

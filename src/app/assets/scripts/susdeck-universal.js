@@ -45,7 +45,7 @@ const susdeckUniversal = {
 
 susdeckUniversal.socket.on('server_connected', () => {
   susdeckUniversal.hasConnected = true;
-  if (!susdeckUniversal.hasConnected) { socket.emit('Reloadme'); }
+  if (!susdeckUniversal.hasConnected) { socket.emit('c-change-client'); }
 });
 
 susdeckUniversal.socket.on('set-theme', (theme) => {
@@ -57,6 +57,10 @@ susdeckUniversal.socket.on('set-theme', (theme) => {
       rootElem.style.setProperty(`--sd-${key}`, property[key]);
     });
   });
+});
+
+susdeckUniversal.socket.on('c-change', () => {
+  window.location.replace(window.location.href);
 });
 
 fetch('/api/dbg')
@@ -83,7 +87,7 @@ userTheme.forEach(property => {
   });
 });
 
-if (typeof ScreenSaverActivationTime === 'number') {
+if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('keys')) {
   setInterval(function () { userAlive = false; }, ScreenSaverActivationTime * 1000);
 
   setInterval(function () {

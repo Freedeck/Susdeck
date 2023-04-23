@@ -12,19 +12,16 @@
 <body>
 
     <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#" class="snactive">Home</a>
+        <a href="#" class="snactive"><img src="img/home.png" alt="home" width="32" height="32"></a>
         <!-- <a href="iconEditor.html">Icon Editor</a> -->
-        <a href="themes.html">Themes</a>
-        <a href="soundboard.html">Soundboard</a>
+        <a href="themes.html"><img src="img/themes.png" alt="home" width="32" height="32"></a>
+        <a href="soundboard.html"><img src="img/sounds.png" alt="home" width="32" height="32"></a>
     </div>
 
     <div id="main">
-        <h2>Companion Home</h2>
-        <button onclick="openNav()" class="opn"></button>
-        <br />
-        <h3>Click on the Susdeck icon to get started.</h3>
-        <h3 id="now-playing">Or, play a sound from your Susdeck!</h3>
+        <button class="opn"></button>
+        <h2>Home</h2>
+        <h3 id="now-playing">Play a sound from your Susdeck!</h3>
         <h4 id="conn-amount">There are no connections to the Host.</h4>
         <input type="range" min="1" step="1" max="15" id="ssat">
         <label for="ssat">Screensaver activation time (seconds):</label>

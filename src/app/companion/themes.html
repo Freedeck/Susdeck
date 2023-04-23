@@ -12,22 +12,23 @@
 <body>
 
     <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="index.html">Home</a>
+        <a href="index.html"><img src="img/home.png" alt="home" width="32" height="32"></a>
         <!-- <a href="iconEditor.html">Icon Editor</a> -->
-        <a href="#" class="snactive">Themes</a>
-        <a href="soundboard.html">Soundboard</a>
+        <a href="#" class="snactive"><img src="img/themes.png" alt="home" width="32" height="32"></a>
+        <a href="soundboard.html"><img src="img/sounds.png" alt="home" width="32" height="32"></a>
     </div>
 
     <div id="main">
+        <button class="opn"></button>
         <h2>Themes</h2>
         <h3 id="now-playing"></h3>
-        <button onclick="openNav()" class="opn"></button>
-        <br />
-        <h3>Themes are in beta, and may not work!</h3>
+        <h3>Press a button to set your theme!</h3>
         <button onclick="setTheme('Default')">Default Theme</button>
         <button onclick="setTheme('Blue')">Blue Theme</button>
         <button onclick="setTheme('Dark')">Dark Theme</button>
+        <br />
+        <h3>Settings</h3>
+        <button onclick="alert(susdeckUniversal.exportTheme())">Export Theme</button>
         <button onclick="susdeckUniversal.socket.emit('c-change')">Reload all Susdeck Sessions</button>
         <div id="console"></div>
         <div id="keys" hidden></div>

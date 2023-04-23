@@ -227,7 +227,7 @@ button {
 .sidenav {
   height: 100%;
   /* 100% Full-height */
-  width: 0;
+  width: 70px;
   /* 0 width - change this with JavaScript */
   position: fixed;
   /* Stay in place */
@@ -248,7 +248,7 @@ button {
 
 /* The navigation menu links */
 .sidenav a {
-  padding: 8px 8px 8px 32px;
+  padding: 8px 8px 8px 16px;
   text-decoration: none;
   font-size: 25px;
   color: #818181;
@@ -259,6 +259,11 @@ button {
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover {
   color: #f1f1f1;
+}
+
+.sidenav a {
+  background-color: #4d4d4d;
+  border-radius: 8px;
 }
 
 /* Position and style the close button (top right corner) */
@@ -272,6 +277,7 @@ button {
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #main {
+  margin-left: 70px;
   transition: margin-left .5s;
   padding: 20px;
 }
@@ -288,5 +294,5 @@ button {
 }
 
 .snactive {
-  background-color: #6b6b6b;
+  background-color: #6b6b6b !important;
 }

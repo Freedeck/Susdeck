@@ -39,6 +39,17 @@ const susdeckUniversal = {
   connectionOn: function (event, callback) {
     susdeckUniversal.socket.on(event, callback);
   },
+  exportTheme: function () {
+    // Get the theme and export back its root changeable properties
+    // This will make importing themes so much easier
+    const currentTheme = susdeckUniversal.load('theme');
+    const sUTheme = susdeckUniversal.themes[currentTheme];
+    const exportedTheme = [];
+    Object.keys(sUTheme).forEach(key => {
+      exportedTheme.push(JSON.stringify(sUTheme[key]));
+    });
+    return '_SusdeckExportedTheme={version:34,data:[' + exportedTheme.join(',') + ']};';
+  },
   isInDebug: false,
   isDevBranch: false,
   debugStat: 'Debug',

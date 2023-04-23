@@ -7,6 +7,6 @@ function openNav () {
 
 // eslint-disable-next-line no-unused-vars
 function closeNav () {
-  document.getElementById('mySidenav').style.width = '0';
-  document.getElementById('main').style.marginLeft = '0';
+  document.getElementById('mySidenav').style.width = '75px';
+  document.getElementById('main').style.marginLeft = '75px';
 }

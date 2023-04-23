@@ -4,6 +4,12 @@ const susdeckUniversal = {
   screensaverStatus: false,
   themes: {
     // Built-in themes.
+    Fun: [
+      { 'template-columns': 'repeat(4,1fr)' },
+      { 'background-size': '400% 400%' },
+      { 'font-family': 'Inter' },
+      { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' }
+    ],
     Dark: [
       { 'template-columns': 'repeat(4,1fr)' },
       { 'background-size': '400% 400%' },

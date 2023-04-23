@@ -6,10 +6,11 @@ const app = ex();
 const httpServer = new httpLib.Server(app);
 const io = require('socket.io')(httpServer);
 
+const settings = require('../Settings');
 const getNetworkInterfaces = require('./util/network');
 const sockApiInit = require('./api/init');
 
-const port = process.env.PORT || 5754;
+const port = settings.Port || process.env.PORT || 5754;
 
 sockApiInit(io, app); // Socket API initialize
 

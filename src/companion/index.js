@@ -1,4 +1,5 @@
 const electron = require('electron');
+const settings = require('../../Settings');
 
 const {
   app,
@@ -11,7 +12,7 @@ function createWindow () {
     height: 720
   });
   window.setIcon(require('path').join(__dirname, './companion.png'));
-  window.loadURL('http://localhost:3000/companion');
+  window.loadURL('http://localhost:' + settings.Port + '/companion');
 }
 
 app.whenReady().then(() => {

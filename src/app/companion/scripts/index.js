@@ -160,8 +160,6 @@ function setSet () {
   socket.emit('c-change');
 }
 
-socket.on('c-change', () => { window.location.replace(window.location.href); });
-
 socket.on('companion_info', function (ssat, soc) {
   document.getElementById('soc').checked = soc;
   document.getElementById('ssat').value = ssat;

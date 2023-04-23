@@ -123,11 +123,6 @@ function loadPage (pageNumber) { // Setup the Susdeck page w/ sound buttons
   }
 }
 
-// Server has changed something, reload over client
-socket.on('c-change', () => {
-  window.location.replace(window.location.href);
-});
-
 /* eslint-disable no-undef */
 let touchstartX = 0;
 let touchendX = 2500;

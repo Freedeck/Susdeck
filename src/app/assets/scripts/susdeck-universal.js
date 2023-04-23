@@ -18,13 +18,13 @@ const susdeckUniversal = {
     ],
     Default: [
       { 'template-columns': 'repeat(4,1fr)' },
-      { 'bac  kground-size': '400% 400%' },
+      { 'background-size': '400% 400%' },
       { 'font-family': 'Inter' },
       { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' }
     ]
   },
   retrieveSession: function () {
-    return atob(localStorage.getItem('_sdsession'));
+    return atob(susdeckUniversal.load('session'));
   },
   createTempHWID: function () {
     return Math.floor(Math.random() * 6969696969699);

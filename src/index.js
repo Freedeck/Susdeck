@@ -21,7 +21,7 @@ app.get('/sounds.js', (req, res) => { res.sendFile(path.join(__dirname, '/settin
 httpServer.listen(port, () => {
   console.log('Susdeck v' + require('../package.json').version + ' Web Host is starting - starting Companion');
   require('child_process').exec('npx electron src/companion'); // Start Companion on another process
-  Object.keys(getNetworkInterfaces()).forEach(netinterface => {
-    console.log('Go to ' + getNetworkInterfaces()[netinterface][0] + ':' + port + ' on your mobile device [Interface ' + netinterface + ']');
+  Object.keys(getNetworkInterfaces()).forEach(netInterface => {
+    console.log('Go to ' + getNetworkInterfaces()[netInterface][0] + ':' + port + ' on your mobile device [Interface ' + netInterface + ']');
   });
 });

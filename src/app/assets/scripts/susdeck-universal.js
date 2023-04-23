@@ -139,6 +139,7 @@ if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('ke
 document.body.onload = () => {
   const footer = document.createElement('footer');
   footer.style.display = 'none';
+  footer.style.zIndex = '999';
   document.body.appendChild(footer);
   setTimeout(() => {
     if (!susdeckUniversal.isInDebug) return;

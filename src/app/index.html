@@ -33,21 +33,6 @@
   </noscript>
   <div id="keys"></div>
   <div id="root"></div>
-  <script>
-    var root = document.querySelector('#root');
-    if (navigator && navigator.serviceWorker) {
-      caches.open('azwcache').then(function (cache) {
-        cache.keys().then(function (keys) {
-          root.innerHTML =
-            '<ul>' +
-            keys.map(function (key) {
-              return '<li><a href="' + key.url + '">' + key.url + '</a></li>';
-            }).join('') +
-            '</ul>';
-        });
-      });
-    }
-  </script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="sounds.js"></script>
   <script src="assets/scripts/autosort.js"></script>

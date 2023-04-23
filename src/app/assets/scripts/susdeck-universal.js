@@ -27,7 +27,7 @@ const susdeckUniversal = {
     return atob(localStorage.getItem('_sdsession'));
   },
   createTempHWID: function () {
-    return Math.random().toString().substring(2, 5);
+    return Math.floor(Math.random() * 6969696969699);
   },
   save: function (name, value) {
     localStorage.setItem('_sd' + name, value);

@@ -4,22 +4,28 @@ const fs = require('fs');
 const rob = require('robotjs');
 const sbc = require('../settings/sounds');
 
+const apiEvents = new Map();
+const sockApiEvents = new Map();
+
 const init = (io, app) => {
   const loginList = [];
   const sessions = [];
-  const events = new Map();
 
   debug.log('Adding events to API');
 
   fs.readdirSync(path.join(__dirname, '/events')).forEach(function (file) {
     fs.readdirSync(path.join(__dirname, '/events/' + file)).forEach(cEvent => {
       const query = require(path.join(__dirname, '/events/' + file + '/' + cEvent));
-      events.set(query.event, { callback: query.callback, event: query.event });
+      sockApiEvents.set(query.event, { callback: query.callback, event: query.event });
       debug.log('Added ' + file + ' event ' + query.event + ' from file ' + cEvent);
     });
   });
 
   io.on('connection', function (socket) {
+    // Give sockets a randomized ID
+    socket.id = Math.random().toString().substring(2, 4) + require('crypto').randomBytes(8 + 2).toString('hex');
+    debug.log('Socket ID generated: ' + socket.id);
+
     // Initial connection
     console.log('Connected to client @ ' + new Date());
     setTimeout(function () {
@@ -50,16 +56,17 @@ const init = (io, app) => {
       });
     });
     socket.on('Authenticated', function (sessionID) {
-      debug.log('Recieved ' + sessionID, ', checking against session list..');
+      debug.log('Recieved ' + sessionID + ', checking against session list..');
       if (sessions.includes(sessionID)) {
         debug.log(sessionID + ' is valid!');
+        console.log('Authenticated client @ ' + new Date());
         socket.emit('session_valid');
       } else {
         debug.log(sessionID + ' is invalid, kicking out user..');
         socket.emit('session_invalid');
       }
     });
-    events.forEach(function (event) {
+    sockApiEvents.forEach(function (event) {
       socket.on(event.event, async function (args) {
         debug.log(event.event + ' ran');
         if (event.async) {
@@ -87,10 +94,11 @@ const init = (io, app) => {
       // type, route, exec
       // only get supported for now
       if (route.type === 'get') {
+        apiEvents.set(route.route, route);
         app.get('/api/' + route.route, (req, res) => route.exec(req, res));
       }
     });
   });
 };
 
-module.exports = { init };
+module.exports = { init, apiEvents, sockApiEvents };

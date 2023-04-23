@@ -11,6 +11,7 @@ module.exports = {
       // Congratulations, now let's assign a session id.
       const sid = require('crypto').randomBytes(8).toString('hex');
       debug.log('Adding ' + sid + ' to session ids');
+      socket.sessionID = sid;
       socket.emit('s2cs_login', sid, '../../');
       return 'ValidateSession:' + sid;
     }

@@ -7,6 +7,7 @@ module.exports = {
     if (!settings.UseAuthentication) { socket.emit('session_valid'); return; }
     // ID recieved, load into memory so we know it's the same user logging in.
     loginList.push(sid);
+    socket.sid = sid;
 
     // We'll confirm that we want to take user to the login page.
     socket.emit('s2ca_login', 'assets/tools/login.html', settings.LoginMessage, settings.YourName);

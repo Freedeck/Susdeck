@@ -93,4 +93,4 @@ const init = (io, app) => {
   });
 };
 
-module.exports = init;
+module.exports = { init };

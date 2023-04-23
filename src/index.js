@@ -8,7 +8,7 @@ const io = require('socket.io')(httpServer);
 
 const settings = require('../Settings');
 const getNetworkInterfaces = require('./util/network');
-const sockApiInit = require('./api/init');
+const sockApiInit = require('./api/init').init;
 
 const port = settings.Port || process.env.PORT || 5754;
 

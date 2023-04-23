@@ -18,8 +18,9 @@ app.use('/', ex.static('./src/app')); // Initialize HTTP routes for main web app
 app.get('/sounds.js', (req, res) => { res.sendFile(path.join(__dirname, '/settings/sounds.js')); }); // Make sounds.js accessible from apps
 
 httpServer.listen(port, () => {
-  console.log('Susdeck Web Host is starting - starting Companion');
+  console.log('Susdeck v' + require('../package.json').version + ' Web Host is starting - starting Companion');
   require('child_process').exec('npx electron src/companion'); // Start Companion on another process
-  if (getNetworkInterfaces().Ethernet) { console.log('Go to ' + getNetworkInterfaces().Ethernet[0] + ':3000 on your mobile device '); }
-  if (getNetworkInterfaces()['Wi-Fi']) { console.log('Go to ' + getNetworkInterfaces()['Wi-Fi'][0] + ':3000 on your mobile device '); }
+  Object.keys(getNetworkInterfaces()).forEach(netinterface => {
+    console.log('Go to ' + getNetworkInterfaces()[netinterface][0] + ':3000 on your mobile device [Interface ' + netinterface + ']');
+  });
 });

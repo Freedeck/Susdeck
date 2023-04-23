@@ -1,6 +1,6 @@
 {
   "name": "susdeck",
-  "version": "3.3.0-dev",
+  "version": "3.4.0",
   "description": "Susdeck is love. Susdeck is life. Susdeck is not a Stream Deck.",
   "dependencies": {
     "express": "^4.17.1",
@@ -9,6 +9,7 @@
     "socket.io": "^4.1.2"
   },
   "scripts": {
+    "setup": "sh src/setup.sh",
     "start": "node src/index.js",
     "debug": "node src/index.js - -dbg"  
   },

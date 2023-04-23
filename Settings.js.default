@@ -6,6 +6,6 @@ const Settings = {
   Password: 'p', // If you are using authentication, you will log in with this password.
   LoginMessage: 'Susdeck is love. Susdeck is life.', // This message will show for users when they try to login (below "Login to Susdeck")
   YourName: 'John Mangoseed' // Shows alongside your login message,
-}
+};
 
-module.exports = Settings
+module.exports = Settings;

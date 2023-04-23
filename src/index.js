@@ -9,7 +9,7 @@ const io = require('socket.io')(httpServer);
 const getNetworkInterfaces = require('./util/network');
 const sockApiInit = require('./api/init');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5754;
 
 sockApiInit(io, app); // Socket API initialize
 
@@ -21,6 +21,6 @@ httpServer.listen(port, () => {
   console.log('Susdeck v' + require('../package.json').version + ' Web Host is starting - starting Companion');
   require('child_process').exec('npx electron src/companion'); // Start Companion on another process
   Object.keys(getNetworkInterfaces()).forEach(netinterface => {
-    console.log('Go to ' + getNetworkInterfaces()[netinterface][0] + ':3000 on your mobile device [Interface ' + netinterface + ']');
+    console.log('Go to ' + getNetworkInterfaces()[netinterface][0] + ':' + port + ' on your mobile device [Interface ' + netinterface + ']');
   });
 });

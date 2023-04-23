@@ -48,7 +48,7 @@ const susdeckUniversal = {
     Object.keys(sUTheme).forEach(key => {
       exportedTheme.push(JSON.stringify(sUTheme[key]));
     });
-    return JSON.stringify('{name:' + currentTheme + ',data:[' + exportedTheme.join(',') + ']}');
+    return JSON.stringify('{name:"' + currentTheme + '",data:[' + exportedTheme.join(',') + ']}');
   },
   importTheme: function (themeJSONData) {
     const themeData = JSON.parse(themeJSONData);

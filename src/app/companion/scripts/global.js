@@ -1,12 +1,4 @@
-
-// eslint-disable-next-line no-unused-vars
-function openNav () {
-  document.getElementById('mySidenav').style.width = '250px';
-  document.getElementById('main').style.marginLeft = '250px';
-}
-
-// eslint-disable-next-line no-unused-vars
-function closeNav () {
-  document.getElementById('mySidenav').style.width = '75px';
-  document.getElementById('main').style.marginLeft = '75px';
-}
+document.getElementById('mySidenav').onmouseover = () => {
+  const rootElem = document.querySelector(':root');
+  rootElem.style.setProperty('--sd-rotdeg', Math.ceil(Math.random() * 15) + 'deg');
+};

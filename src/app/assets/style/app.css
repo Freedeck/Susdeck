@@ -5,6 +5,7 @@
   --sd-font-family: 'Rubik';
   --sd-background-size: 400% 400%;
   --sd-background: 45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%;
+  --sd-rotdeg: 2deg;
 }
 
 body {
@@ -258,7 +259,8 @@ button {
 
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover {
-  color: #f1f1f1;
+  background-color: #8f8f8f !important;
+  transform: scale(1.1) rotate(var(--sd-rotdeg));
 }
 
 .sidenav a {

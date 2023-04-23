@@ -8,8 +8,8 @@ const {
 
 function createWindow () {
   const window = new BrowserWindow({
-    width: 1280,
-    height: 720
+    width: 700,
+    height: 750
   });
   window.setIcon(require('path').join(__dirname, './companion.png'));
   window.loadURL('http://localhost:' + settings.Port + '/companion');

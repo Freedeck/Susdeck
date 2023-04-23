@@ -21,11 +21,11 @@ Here's a preview of the login screen:
 Here's a preview of the companion home screen:
 ![Susdeck Companion Home preview](https://github.com/susdeck/susdeck/blob/master/demo/c-home.png?raw=true)
 
-Here's a preview of the companion icon editor:
-![Susdeck Companion Home preview](https://github.com/susdeck/susdeck/blob/master/demo/c-ie.png?raw=true)
+Here's a preview of the companion soundboard screen:
+![Susdeck Companion Home preview](https://github.com/susdeck/susdeck/blob/master/demo/c-sounds.png?raw=true)
 
-And finally, here's a preview of the companion icon editor editing.
-![Susdeck Companion Home preview](https://github.com/susdeck/susdeck/blob/master/demo/c-ie-e.png?raw=true)
+And finally, here's a preview of the companion theme screen.
+![Susdeck Companion Home preview](https://github.com/susdeck/susdeck/blob/master/demo/c-themes.png?raw=true)
 
 ## How do I use Susdeck?
 

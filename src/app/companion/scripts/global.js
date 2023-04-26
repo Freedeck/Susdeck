@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 document.getElementById('mySidenav').onmouseover = () => {
   const rootElem = document.querySelector(':root');
@@ -19,11 +20,13 @@ const pages = [
   },
   {
     page: 'settings.html',
-    icon: 'img/settings.png'
+    icon: 'img/settings.png',
+    experimental: true
   }
 ];
 
 pages.forEach(page => {
+  if (page.experimental && !susdeckUniversal.load('experiments')) return;
   const btn = document.createElement('a');
   btn.href = page.page;
   if (window.location.href.includes(page.page)) {
@@ -43,4 +46,8 @@ function addToHTMLlog (text) {
   txt.innerText = text;
   txt.id = text;
   document.getElementById('console').appendChild(txt);
+}
+
+function enableExperiments () {
+  susdeckUniversal.save('experiments', true);
 }

@@ -36,7 +36,7 @@ pages.forEach(page => {
   const btn = document.createElement('a');
   btn.href = page.page;
   if (window.location.href.includes(page.page)) {
-    btn.className = 'snactive';
+    btn.className = 'activePage';
   }
   const btnImg = document.createElement('img');
   btnImg.src = page.icon;

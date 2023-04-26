@@ -5,8 +5,8 @@ const jsonbeautify = require('json-beautify');
 module.exports = {
   event: 'c-info-change',
   callback: (socket, args) => {
-    if (args.includes('SETKEY')) {
-      const soundChangeData = args.split('SETKEY:')[1];
+    if (args.includes('set')) {
+      const soundChangeData = args.split('set:')[1];
       const tobechanged = soundChangeData.split(':')[0];
       const newkeybind = soundChangeData.split(':')[1];
       const newname = soundChangeData.split(':')[2];
@@ -33,18 +33,18 @@ if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverA
       return 'c-change';
     } else if (args.includes(',')) {
       args = args.split(',');
-      const newssattime = args[0].split('SSAT:')[1];
+      const newscreenSaverActivationTimetime = args[0].split('screenSaverActivationTime:')[1];
       const newssoc = args[1].split('SOC:')[1];
 
       fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const SoundOnPress = ${newssoc};
-const ScreenSaverActivationTime = ${newssattime};
+const ScreenSaverActivationTime = ${newscreenSaverActivationTimetime};
 const soundDir = '../assets/sounds/';
 const Sounds = ${jsonbeautify(sounds.Sounds, null, 4, 80)};
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds }; }
 `);
 
-      console.log(`const SoundOnPress = ${newssattime}`);
+      console.log(`const SoundOnPress = ${newscreenSaverActivationTimetime}`);
     }
   }
 };

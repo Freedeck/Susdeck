@@ -88,17 +88,17 @@ function loadPage (pageNumber) { // Setup the Susdeck page w/ sound buttons
   const stopall = document.createElement('button');
   stopall.className = 'keypress btxt';
   stopall.innerText = 'Stop All';
-  const reloadbtn = document.createElement('button');
-  reloadbtn.onclick = () => {
+  const reloadButton = document.createElement('button');
+  reloadButton.onclick = () => {
     window.location.reload();
   };
-  reloadbtn.className = 'btxt';
-  reloadbtn.innerText = 'Reload';
+  reloadButton.className = 'btxt';
+  reloadButton.innerText = 'Reload';
   const susdeck = document.createElement('a');
   susdeck.className = 'button';
   susdeck.style.backgroundImage = "url('assets/icons/susdeck.png')";
   keys.appendChild(stopall);
-  keys.appendChild(reloadbtn);
+  keys.appendChild(reloadButton);
   keys.appendChild(susdeck);
 
   // Setup the button press functions

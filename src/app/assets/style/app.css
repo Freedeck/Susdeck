@@ -270,15 +270,6 @@ button {
   border-radius: 8px;
 }
 
-/* Position and style the close button (top right corner) */
-.sideNav {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
-}
-
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #main {
   margin-left: 70px;

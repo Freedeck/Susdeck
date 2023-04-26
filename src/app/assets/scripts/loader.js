@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 // eslint-disable-next-line no-undef
-const socket = io();
 const keys = document.getElementById('keys');
 let keyList = [];
 let loaded = false;
@@ -9,21 +8,21 @@ let currentPage = 0;
 
 addToHTMLlog('Waiting for host...');
 
-socket.on('server_connected', function () {
+susdeckUniversal.socket.on('server_connected', function () {
   addToHTMLlog('Connected! Checking for login status..');
   if (susdeckUniversal.load('session')) { // If _sdsession exists login
-    socket.emit('Authenticated', susdeckUniversal.load('session'));
+    susdeckUniversal.socket.emit('Authenticated', susdeckUniversal.load('session'));
     addToHTMLlog('Success! You\'re logged in.');
     loaded = true; // Keep page from reloading
   } else {
     addToHTMLlog('Not logged in, requesting login');
     loaded = true;
     susdeckUniversal.save('sid', susdeckUniversal.createTempHWID()); // Create a temporary session ID for logging in
-    socket.emit('c2sr_login', susdeckUniversal.load('sid')); // Request login form with session ID
+    susdeckUniversal.socket.emit('c2sr_login', susdeckUniversal.load('sid')); // Request login form with session ID
   }
 });
 
-socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // When we get the green light to login
+susdeckUniversal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // When we get the green light to login
   addToHTMLlog('Request received by server, let\'s log in.');
   susdeckUniversal.save('login_msg', loginMsg);
   susdeckUniversal.save('owner_name', ownerName); // Save the login message and owner's name
@@ -31,12 +30,12 @@ socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // When we get
 });
 
 // The server has authenticated you therefore we can bypass login
-socket.on('session_valid', function () {
+susdeckUniversal.socket.on('session_valid', function () {
   document.getElementById('loading').style.display = 'none';
   loadPage(0);
 });
 
-socket.on('banish', function () { // The server has restarted, and your session is invalid
+susdeckUniversal.socket.on('banish', function () { // The server has restarted, and your session is invalid
   localStorage.setItem('_sdsession', '');
   document.getElementById('keys').remove();
   document.getElementById('loading').style.display = 'block';
@@ -109,12 +108,12 @@ function loadPage (pageNumber) { // Setup the Susdeck page w/ sound buttons
       // eslint-disable-next-line no-undef
       if (SoundOnPress) new Audio('assets/sounds/press.mp3').play();
       if (allKeypress[i].getAttribute('data-key')) {
-        socket.emit('keypress', {
+        susdeckUniversal.socket.emit('keypress', {
           macro: true,
           keys: allKeypress[i].getAttribute('data-key')
         });
       } else {
-        socket.emit('keypress', {
+        susdeckUniversal.socket.emit('keypress', {
           macro: false,
           name: allKeypress[i].innerHTML
         });

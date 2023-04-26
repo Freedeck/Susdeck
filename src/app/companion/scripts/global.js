@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 document.getElementById('mySidenav').onmouseover = () => {
   const rootElem = document.querySelector(':root');
   rootElem.style.setProperty('--sd-rotdeg', Math.ceil(Math.random() * 15) + 'deg');
@@ -15,6 +16,10 @@ const pages = [
   {
     page: 'soundboard.html',
     icon: 'img/sounds.png'
+  },
+  {
+    page: 'settings.html',
+    icon: 'img/settings.png'
   }
 ];
 
@@ -32,3 +37,10 @@ pages.forEach(page => {
   btn.appendChild(btnImg);
   document.getElementById('mySidenav').appendChild(btn);
 });
+
+function addToHTMLlog (text) {
+  const txt = document.createElement('p');
+  txt.innerText = text;
+  txt.id = text;
+  document.getElementById('console').appendChild(txt);
+}

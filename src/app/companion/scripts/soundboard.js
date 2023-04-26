@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars, no-undef */
-const socket = io();
 const keys = document.getElementById('keys');
 const Pages = {};
 const q = [];

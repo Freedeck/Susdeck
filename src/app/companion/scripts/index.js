@@ -1,6 +1,4 @@
 /* eslint-disable no-undef */
-// eslint-disable-next-line no-undef
-const socket = io();
 const keys = document.getElementById('keys');
 const Pages = {};
 const countOnEachPage = 8;
@@ -13,10 +11,10 @@ Susaudio.init();
 
 addToHTMLlog('Waiting for host...');
 
-socket.on('server_connected', function () {
+susdeckUniversal.socket.on('server_connected', function () {
   removeFromHTMLlog('Waiting for host...');
   addToHTMLlog('Companion connected!');
-  socket.emit('c-connected');
+  susdeckUniversal.socket.emit('c-connected');
   if (document.getElementById('keys')) loadPage(0);
   setTimeout(() => {
     document.getElementById('console').style.display = 'none';
@@ -101,7 +99,7 @@ function loadPage (pageNumber) {
   }
 }
 
-socket.on('press-sound', (sound, name) => {
+susdeckUniversal.socket.on('press-sound', (sound, name) => {
   if (sound.includes('--Stop_all')) {
     // eslint-disable-next-line no-undef
     Susaudio.stopAll();
@@ -115,7 +113,7 @@ socket.on('press-sound', (sound, name) => {
 function DeleteKey (key) {
   // eslint-disable-next-line no-undef
   Sounds.splice(Sounds.indexOf({ name: key.name, key: key.key }), 1);
-  socket.emit('c-delkey', { name: key.name, key: key.key });
+  susdeckUniversal.socket.emit('c-delkey', { name: key.name, key: key.key });
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -125,7 +123,7 @@ function createNewSound () {
     name: 'New Key',
     key: 'enter'
   });
-  socket.emit('c-newkey', { name: 'New Key', key: 'enter' });
+  susdeckUniversal.socket.emit('c-newkey', { name: 'New Key', key: 'enter' });
   loadPage(0);
 }
 
@@ -148,7 +146,7 @@ if (document.getElementById('ssat')) {
 function Changeifo (key) {
   const newkey = document.getElementById('newkey').value;
   const newname = document.getElementById('newname').value;
-  socket.emit('c-info-change', `SETKEY:${key}:${newkey}:${newname}`);
+  susdeckUniversal.socket.emit('c-info-change', `SETKEY:${key}:${newkey}:${newname}`);
   loadPage(0);
 }
 
@@ -156,11 +154,11 @@ function Changeifo (key) {
 function setSet () {
   const soc = document.getElementById('soc').checked;
   const ssat = document.getElementById('ssat').value;
-  socket.emit('c-info-change', 'SSAT:' + ssat + ',SOC:' + soc);
-  socket.emit('c-change');
+  susdeckUniversal.socket.emit('c-info-change', 'SSAT:' + ssat + ',SOC:' + soc);
+  susdeckUniversal.socket.emit('c-change');
 }
 
-socket.on('companion_info', function (ssat, soc) {
+susdeckUniversal.socket.on('companion_info', function (ssat, soc) {
   document.getElementById('soc').checked = soc;
   document.getElementById('ssat').value = ssat;
   document.getElementById('amt').innerText = document.getElementById('ssat').value + ' seconds';

@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 document.getElementById('mySidenav').onmouseover = () => {
   const rootElem = document.querySelector(':root');
-  rootElem.style.setProperty('--sd-rotdeg', Math.ceil(Math.random() * 15) + 'deg');
+  rootElem.style.setProperty('--sd-rotationDegrees', Math.ceil(Math.random() * 15) + 'deg');
 };
 
 const pages = [

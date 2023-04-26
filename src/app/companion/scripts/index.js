@@ -38,7 +38,7 @@ function loadPage (pageNumber) {
     keyList.push(sound);
     const btn = document.createElement('button');
     const key = document.createElement('p');
-    btn.className = 'keypress btxt';
+    btn.className = 'keypress white-txt';
     if (sound.keys) {
       btn.setAttribute('data-multi', true);
       btn.setAttribute('data-key', sound.keys);
@@ -54,16 +54,16 @@ function loadPage (pageNumber) {
     keys.appendChild(btn);
   });
 
-  const stopall = document.createElement('button');
-  stopall.onclick = () => { window.location.reload(); };
-  stopall.className = 'keypress btxt';
-  stopall.innerText = 'Stop All';
-  stopall.setAttribute('data-key', 'f19');
+  const stopAll = document.createElement('button');
+  stopAll.onclick = () => { window.location.reload(); };
+  stopAll.className = 'keypress white-txt';
+  stopAll.innerText = 'Stop All';
+  stopAll.setAttribute('data-key', 'f19');
   const reloadButton = document.createElement('button');
   reloadButton.onclick = () => { window.location.reload(); };
-  reloadButton.className = 'btxt';
+  reloadButton.className = 'white-txt';
   reloadButton.innerText = 'Reload';
-  keys.appendChild(stopall);
+  keys.appendChild(stopAll);
   keys.appendChild(reloadButton);
 
   const allKeypress = document.getElementsByClassName('keypress');
@@ -93,7 +93,7 @@ function loadPage (pageNumber) {
       <p>Icon Preview</p>
       <button style='background-image: ${allKeypress[i].style.backgroundImage.replace()}'></button>
       <button onclick="DeleteKey({name:'${allKeypress[i].innerText}',key:'${allKeypress[i].getAttribute('data-key')}'})">Delete</button>
-      <button onclick="changeInfo('${allKeypress[i].getAttribute('data-key')}')" class="btxt">Change</button>`;
+      <button onclick="changeInfo('${allKeypress[i].getAttribute('data-key')}')" class="white-txt">Change</button>`;
       modal.style.display = 'block';
     };
   }

@@ -19,6 +19,12 @@ const pages = [
     icon: 'img/sounds.png'
   },
   {
+    page: 'iconEditor.html',
+    icon: 'img/icon.png',
+    experimental: true,
+    experimentMessage: 'This page might break your Susdeck.'
+  },
+  {
     page: 'settings.html',
     icon: 'img/settings.png',
     experimental: true

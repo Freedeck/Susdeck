@@ -32,7 +32,7 @@ const pages = [
 ];
 
 pages.forEach(page => {
-  if (page.experimental && !susdeckUniversal.load('experiments')) return;
+  if (page.experimental && susdeckUniversal.load('experiments') !== 'true') return;
   const btn = document.createElement('a');
   btn.href = page.page;
   if (window.location.href.includes(page.page)) {

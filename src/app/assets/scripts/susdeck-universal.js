@@ -69,6 +69,10 @@ const susdeckUniversal = {
 
     susdeckUniversal.themes[themeName] = themeRules;
   },
+  grantExperiments: function () {
+    susdeckUniversal.save('experiments', true);
+    susdeckUniversal.socket.emit('c-client-reload');
+  },
   isInDebug: false,
   isDevBranch: false,
   debugStat: 'Debug',

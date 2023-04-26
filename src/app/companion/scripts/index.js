@@ -159,9 +159,11 @@ function setSet () {
 }
 
 susdeckUniversal.socket.on('companion_info', function (ssat, soc) {
-  document.getElementById('soc').checked = soc;
-  document.getElementById('ssat').value = ssat;
-  document.getElementById('amt').innerText = document.getElementById('ssat').value + ' seconds';
+  if (document.getElementById('ssat')) {
+    document.getElementById('soc').checked = soc;
+    document.getElementById('ssat').value = ssat;
+    document.getElementById('amt').innerText = document.getElementById('ssat').value + ' seconds';
+  };
 });
 
 function autosort () {

@@ -10,7 +10,7 @@ Susaudio.init();
 susdeckUniversal.socket.on('server_connected', function (ssatt, socs) {
   removeFromHTMLlog('Waiting for host...');
   addToHTMLlog('Host connection established!');
-  socket.emit('companion_connected');
+  susdeckUniversal.socket.emit('companion_connected');
   setTimeout(() => {
     document.getElementById('console').style.display = 'none';
     if (susdeckUniversal.isInDebug === true) {

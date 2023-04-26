@@ -25,7 +25,9 @@ body {
 }
 
 .opn {
-  background-image: url("/assets/icons/companion.png");
+  position: absolute;
+  right: 0px;
+  bottom: 0;
 }
 
 footer {

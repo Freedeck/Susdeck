@@ -1,7 +1,7 @@
 /* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const SoundOnPress = true;
-const soundDir = '../assets/sounds/';
 const ScreenSaverActivationTime = 13;
+const soundDir = '../assets/sounds/';
 const Sounds = [
     { "name": "Shooting", "icon": "shooting.png", "path": "shooting.mp3" },
     {

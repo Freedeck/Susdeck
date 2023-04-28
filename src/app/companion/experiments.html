@@ -17,7 +17,11 @@
     <div id="main">
         <h2>Experiments</h2>
         <h3 id="now-playing">Play a sound from your Susdeck!</h3>
-        <h2>No experiments available.</h2>
+        <h2>1 experiment available</h2>
+        <div class="experiment">
+            <p>Custom Themes!</p>
+            <button onclick="importTheme()">Import Theme</button>
+        </div>
         <h2>Check back later!</h2>
         <button onclick="socket.emit('c-change')">Remote Reload</button>
         <div id="console"></div>

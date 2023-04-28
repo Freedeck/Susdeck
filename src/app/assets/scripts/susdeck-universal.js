@@ -69,10 +69,13 @@ const susdeckUniversal = {
     Object.keys(sUTheme).forEach(key => {
       exportedTheme.push(JSON.stringify(sUTheme[key]));
     });
-    const exportedThemeStr = JSON.stringify('{name:"' + currentTheme + '",data:[' + exportedTheme.join(',') + ']}');
+    const exportedThemeStr = JSON.stringify('[' + exportedTheme.join(',') + ']');
 
     susdeckUniversal.save('custom_theme', exportedThemeStr);
+    const expt = document.getElementById('theme-exported');
 
+    expt.value = exportedThemeStr;
+    expt.hidden = false;
     return exportedThemeStr;
   },
   importTheme: function (themeJSONData) {
@@ -131,9 +134,11 @@ if (!susdeckUniversal.load('theme')) {
 }
 
 susdeckUniversal.socket.on('custom_theme', themeData => {
-  const parsed = JSON.parse(themeData);
+  const parsed = JSON.parse(JSON.parse(JSON.parse(themeData)));
+
   parsed.forEach(property => {
     Object.keys(property).forEach(key => {
+      console.log(key, property)
       rootElem.style.setProperty(`--sd-${key}`, property[key]);
     });
   });
@@ -149,8 +154,8 @@ userTheme.forEach(property => {
 });
 
 if (susdeckUniversal.load('custom_theme')) {
-  const theme = JSON.parse(susdeckUniversal.load('custom_theme'));
-  susdeckUniversal.socket.emit('c-send-theme', JSON.stringify(theme.data));
+  const theme = susdeckUniversal.load('custom_theme');
+  susdeckUniversal.socket.emit('c-send-theme', JSON.stringify(theme));
 }
 
 if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('keys')) {

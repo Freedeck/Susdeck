@@ -84,6 +84,6 @@ function enableExperiments () {
 }
 
 function importTheme () {
-  theme = prompt('Enter your Susdeck Theme code');
-  susdeckUniversal.save('custom_theme', theme);
+  theme = document.getElementById('theme-import').value;
+  susdeckUniversal.save('custom_theme', JSON.parse(JSON.stringify(theme)));
 }

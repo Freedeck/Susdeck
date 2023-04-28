@@ -20,10 +20,11 @@
         <h2>1 experiment available</h2>
         <div class="experiment">
             <p>Custom Themes!</p>
+            <input type="text" id="theme-import" placeholder="theme code">
             <button onclick="importTheme()">Import Theme</button>
         </div>
         <h2>Check back later!</h2>
-        <button onclick="socket.emit('c-change')">Remote Reload</button>
+        <button onclick="susdeckUniversal.socket.emit('c-change')">Remote Reload</button>
         <div id="console"></div>
     </div>
 

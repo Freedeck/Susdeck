@@ -20,6 +20,7 @@
         <br />
         <button onclick="socket.emit('press-sound', '--Stop_all', 'Stop All')">Stop All</button>
         <button onclick="alert(susdeckUniversal.exportTheme())">Export Theme</button>
+        <input id="theme-exported" hidden>
         <button onclick="susdeckUniversal.socket.emit('c-change')">Reload all Susdeck Sessions</button>
         <button onclick="enableExperiments()">Toggle Susdeck Experiments</button>
         <div id="console"></div>

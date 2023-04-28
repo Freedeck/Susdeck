@@ -1,7 +1,7 @@
 /* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const SoundOnPress = true;
-const ScreenSaverActivationTime = 13;
 const soundDir = '../assets/sounds/';
+const ScreenSaverActivationTime = 13;
 const Sounds = [
     { "name": "Shooting", "icon": "shooting.png", "path": "shooting.mp3" },
     {
@@ -9,7 +9,7 @@ const Sounds = [
         "icon": "footsteps.png",
         "path": "loudfootsteps.mp3"
     },
-    { "name": "Whoppah", "icon": "whopper.png", "path": "WHOPPER.mp3" },
+    { "name": "Whoppah", "path": "WHOPPER.mp3", "icon": "whopper.png" },
     { "name": "Didn't I Do It", "icon": "borzoi.png", "path": "borzio.mp3" },
     {
         "name": "Biggest Bird",
@@ -47,9 +47,6 @@ const Sounds = [
         "name": "End Stream OBS",
         "keys": "[\"alt\",\"f22\"]",
         "icon": "alt_tab.png"
-    },
-    { "name": "Ohio Sound", "icon": "ohio.png", "path": "ohio.mp3" },
-    { "name": "Whoppah Remix", "path": "wopha_remix.wav" },
-    { "name": "New Key", "key": "enter" }
+    }
 ];
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };

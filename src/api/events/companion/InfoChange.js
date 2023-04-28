@@ -10,11 +10,20 @@ module.exports = {
       const newObject = {};
       try {
         const found = sounds.Sounds.find(thing => thing.path === args.key);
+        if (!found) {
+          throw new Error('Unsupported or uneditable sound.');
+        }
         sounds.Sounds.forEach(thing => {
-          newObject.name = args.newname;
-          newObject.icon = thing.icon;
-          if (thing.key === args.key) newObject.key = args.newpath;
-          if (thing.path === args.key) newObject.path = args.newpath;
+          if (thing.key === args.key) {
+            newObject.key = args.newpath;
+            newObject.name = args.newname;
+            newObject.icon = thing.icon;
+          }
+          if (thing.path === args.key) {
+            newObject.path = args.newpath;
+            newObject.name = args.newname;
+            newObject.icon = thing.icon;
+          }
         });
         Object.assign(found, newObject);
       } catch (err) {

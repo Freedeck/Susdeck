@@ -27,10 +27,26 @@
 
             <div class="modal-content">
                 <div class="modal-header" id="mh">
-
+                    <span class="close" onclick="modal.style.display = 'none'">&times;</span>
+                    <h2 id="mhe"></h2>
                 </div>
                 <div class="modal-body" id="mc">
+                    <label for="newname">Name:</label>
+                    <input type="text" id="newname" value="" />
 
+                    <br /> 
+                    <br />
+
+                    <div id="mcmultikey">
+
+                    </div>
+                    <label id="npl" for="newpath">Sound Path:</label>
+                    <input type="text" id="newpath" value=""/>
+                    <p>Icon Preview</p>
+                    <button id="mcip"></button>
+                    <!-- data-orig-key data-orig-name -->
+                    <button id="mcdel" onclick="DeleteKey({ name: document.getElementById('mhe').getAttribute('data-orig-name'), key: document.getElementById('mhe').getAttribute('data-orig-key') });">Delete</button>
+                    <button id="mcset" onclick="changeInfo(document.getElementById('mhe').getAttribute('data-orig-key'));"class="white-txt">Set</button>
                 </div>
                 <div class="modal-footer">
                     <h3>Susdeck Companion</h3>

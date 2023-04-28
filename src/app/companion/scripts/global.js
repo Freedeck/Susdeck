@@ -82,3 +82,8 @@ function enableExperiments () {
     alert('Experiments enabled.');
   }
 }
+
+function importTheme () {
+  theme = prompt('Enter your Susdeck Theme code');
+  susdeckUniversal.save('custom_theme', theme);
+}

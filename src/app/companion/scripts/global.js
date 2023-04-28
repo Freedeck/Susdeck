@@ -7,26 +7,32 @@ document.getElementById('mySidenav').onmouseover = () => {
 
 const pages = [
   {
+    name: 'Home',
     page: 'index.html',
     icon: 'img/home.png'
   },
   {
+    name: 'Themes',
     page: 'themes.html',
     icon: 'img/themes.png'
   },
   {
+    name: 'Soundboard',
     page: 'soundboard.html',
     icon: 'img/sounds.png'
   },
   {
+    name: 'Icon Editor',
     page: 'iconEditor.html',
     icon: 'img/icon.png'
   },
   {
+    name: 'Settings',
     page: 'settings.html',
     icon: 'img/settings.png'
   },
   {
+    name: 'Experiments',
     page: 'experiments.html',
     icon: 'img/experiments.png',
     experimental: true
@@ -38,6 +44,7 @@ pages.forEach(page => {
   const btn = document.createElement('a');
   btn.href = page.page;
   if (window.location.href.includes(page.page)) {
+    document.title = 'Susdeck Companion - ' + page.name;
     btn.className = 'activePage';
   }
   const btnImg = document.createElement('img');
@@ -48,6 +55,13 @@ pages.forEach(page => {
   btn.appendChild(btnImg);
   document.getElementById('mySidenav').appendChild(btn);
 });
+
+document.body.onload = () => {
+  const susdeckLogo = document.createElement('img');
+  susdeckLogo.src = '../assets/icons/companion.png';
+  susdeckLogo.className = 'susdeck-logo';
+  document.body.appendChild(susdeckLogo);
+};
 
 function addToHTMLlog (text) {
   const txt = document.createElement('p');

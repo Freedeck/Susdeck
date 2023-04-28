@@ -5,30 +5,35 @@ const susdeckUniversal = {
   themes: {
     // Built-in themes.
     Default: [
+      { 'icon-count': 8 },
       { 'template-columns': 'repeat(4,1fr)' },
       { 'background-size': '400% 400%' },
       { 'font-family': 'Inter' },
       { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' }
     ],
     Fun: [
+      { 'icon-count': 8 },
       { 'template-columns': 'repeat(5,1fr)' },
       { 'background-size': '400% 100%' },
       { 'font-family': 'Poppins' },
       { background: '45deg, rgba(245, 75, 66, 1) 0%, rgba(245, 162, 29, 1) 33%, rgba(195, 245, 29, 1) 66%, rgba(0, 179, 255, 1) 100%' }
     ],
     Dark: [
+      { 'icon-count': 8 },
       { 'template-columns': 'repeat(4,1fr)' },
       { 'background-size': '400% 400%' },
       { 'font-family': 'Rubik' },
       { background: '45deg, rgba(59, 59, 59, 1) 0%, rgba(94, 94, 94, 1) 33%, rgba(59, 59, 59, 1) 66%, rgba(87, 87, 87, 1) 100%' }
     ],
     Blue: [
+      { 'icon-count': 8 },
       { 'template-columns': 'repeat(4,1fr)' },
       { 'background-size': '400% 400%' },
       { 'font-family': 'Inter' },
       { background: '45deg, rgba(0, 183, 255, 1) 0%, rgba(33, 192, 255, 1) 33%, rgba(0, 183, 255, 1) 66%, rgba(33, 192, 255, 1) 100%' }
     ],
     'Compact Default': [
+      { 'icon-count': 11 },
       { 'template-columns': 'repeat(5,1fr)' },
       { 'background-size': '400% 400%' },
       { 'font-family': 'Inter' },
@@ -60,7 +65,11 @@ const susdeckUniversal = {
     Object.keys(sUTheme).forEach(key => {
       exportedTheme.push(JSON.stringify(sUTheme[key]));
     });
-    return JSON.stringify('{name:"' + currentTheme + '",data:[' + exportedTheme.join(',') + ']}');
+    const exportedThemeStr = JSON.stringify('{name:"' + currentTheme + '",data:[' + exportedTheme.join(',') + ']}');
+
+    susdeckUniversal.save('custom_theme', exportedThemeStr);
+
+    return exportedThemeStr;
   },
   importTheme: function (themeJSONData) {
     const themeData = JSON.parse(themeJSONData);

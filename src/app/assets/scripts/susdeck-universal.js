@@ -95,7 +95,9 @@ const susdeckUniversal = {
     return susdeckUniversal.load('experiments') ? susdeckUniversal.load('experiments') : 'false';
   },
   isDevBranch: false,
+  iconCount: 8,
   debugStat: 'Debug',
+  root: document.querySelector(':root'),
   hasConnected: false
 };
 
@@ -106,21 +108,28 @@ susdeckUniversal.socket.on('server_connected', () => {
 
 susdeckUniversal.socket.on('set-theme', (theme) => {
   susdeckUniversal.save('theme', theme);
-  const userTheme = susdeckUniversal.themes[susdeckUniversal.load('theme')];
-
-  userTheme.forEach(property => {
-    Object.keys(property).forEach(key => {
-      rootElem.style.setProperty(`--sd-${key}`, property[key]);
-    });
-  });
 
   if (susdeckUniversal.load('custom_theme')) {
-    const theme = susdeckUniversal.load('custom_theme');
-    const parsed = JSON.parse(JSON.parse(theme));
-    susdeckUniversal.socket.emit('c-send-theme', theme);
+    const theme2 = susdeckUniversal.load('custom_theme');
+    const parsed = JSON.parse(JSON.parse(theme2));
+    susdeckUniversal.socket.emit('c-send-theme', theme2);
     parsed.forEach(property => {
       Object.keys(property).forEach(key => {
-        rootElem.style.setProperty(`--sd-${key}`, property[key]);
+        susdeckUniversal.root.style.setProperty(`--sd-${key}`, property[key]);
+        document.body.setAttribute(`data-sd-${key}`, property[key]);
+        if (Object.keys(property)[0] === 'icon-count') {
+          susdeckUniversal.iconCount = property[key];
+          autosort(property[key]);
+        }
+      });
+    });
+  } else {
+    const userTheme = susdeckUniversal.themes[susdeckUniversal.load('theme')];
+
+    userTheme.forEach(property => {
+      Object.keys(property).forEach(key => {
+        susdeckUniversal.root.style.setProperty(`--sd-${key}`, property[key]);
+        document.body.setAttribute(`data-sd-${key}`, property[key]);
       });
     });
   }
@@ -138,8 +147,6 @@ fetch('/api/dbg')
     susdeckUniversal.debugStat = data.msg;
   });
 
-const rootElem = document.querySelector(':root');
-
 // because theming is cool
 if (!susdeckUniversal.load('theme')) {
   susdeckUniversal.save('theme', 'Default');
@@ -148,15 +155,6 @@ if (!susdeckUniversal.load('theme')) {
 susdeckUniversal.socket.on('custom_theme', themeData => {
   susdeckUniversal.save('custom_theme', themeData);
 });
-
-// Setup the user's theme
-  const userTheme = susdeckUniversal.themes[susdeckUniversal.load('theme')];
-
-  userTheme.forEach(property => {
-    Object.keys(property).forEach(key => {
-      rootElem.style.setProperty(`--sd-${key}`, property[key]);
-    });
-  });
 
 if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('keys')) {
   setInterval(function () { userAlive = false; }, ScreenSaverActivationTime * 1000);

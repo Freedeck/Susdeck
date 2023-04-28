@@ -87,4 +87,5 @@ function importTheme () {
   theme = document.getElementById('theme-import').value;
   susdeckUniversal.save('custom_theme', theme);
   susdeckUniversal.socket.emit('c-send-theme', theme);
+  susdeckUniversal.socket.emit('c-change');
 }

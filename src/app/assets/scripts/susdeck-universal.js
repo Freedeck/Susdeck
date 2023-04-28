@@ -119,7 +119,11 @@ susdeckUniversal.socket.on('set-theme', (theme) => {
         document.body.setAttribute(`data-sd-${key}`, property[key]);
         if (Object.keys(property)[0] === 'icon-count') {
           susdeckUniversal.iconCount = property[key];
-          autosort(property[key]);
+          try {
+            autosort(property[key]);
+          } catch (err) {
+            console.log('Autosort failed: is client companion?');
+          }
         }
       });
     });

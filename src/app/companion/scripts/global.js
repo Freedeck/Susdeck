@@ -20,14 +20,11 @@ const pages = [
   },
   {
     page: 'iconEditor.html',
-    icon: 'img/icon.png',
-    experimental: true,
-    experimentMessage: 'This page might break your Susdeck.'
+    icon: 'img/icon.png'
   },
   {
     page: 'settings.html',
-    icon: 'img/settings.png',
-    experimental: true
+    icon: 'img/settings.png'
   }
 ];
 
@@ -55,5 +52,5 @@ function addToHTMLlog (text) {
 }
 
 function enableExperiments () {
-  susdeckUniversal.save('experiments', true);
+  if (confirm('Are you sure you want to turn on Susdeck Experiments?')) { susdeckUniversal.save('experiments', true); alert('Experiments enabled.'); }
 }

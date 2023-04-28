@@ -47,6 +47,9 @@ function loadPage (pageNumber) {
       btn.setAttribute('data-key', sound.key);
       key.innerText = sound.key;
     }
+    if (sound.path) {
+      btn.setAttribute('data-key', sound.path);
+    }
     if (sound.icon) {
       btn.style.backgroundImage = "url('../assets/icons/" + sound.icon + "')";
     }
@@ -89,7 +92,7 @@ function loadPage (pageNumber) {
       document.getElementById('mc').innerHTML = `
       <label for="newname">Name:</label><input type="text" id="newname" value="${allKeypress[i].innerText}" />
       <br /> <br />
-      <label for="newkey">Key:</label><input type="text" value='${allKeypress[i].getAttribute('data-key')}'id="newkey"/>
+      <label for="newpath">Sound Path:</label><input type="text" value='${allKeypress[i].getAttribute('data-key')}'id="newpath"/>
       <p>Icon Preview</p>
       <button style='background-image: ${allKeypress[i].style.backgroundImage.replace()}'></button>
       <button onclick="DeleteKey({name:'${allKeypress[i].innerText}',key:'${allKeypress[i].getAttribute('data-key')}'})">Delete</button>
@@ -144,9 +147,9 @@ if (document.getElementById('screenSaverActivationTime')) {
 
 // eslint-disable-next-line no-unused-vars
 function changeInfo (key) {
-  const newkey = document.getElementById('newkey').value;
+  const newpath = document.getElementById('newpath').value;
   const newname = document.getElementById('newname').value;
-  susdeckUniversal.socket.emit('c-info-change', `set:${key}:${newkey}:${newname}`);
+  susdeckUniversal.emit('c-info-change', { type: 'key_edit', key, newpath, newname });
   loadPage(0);
 }
 
@@ -154,7 +157,7 @@ function changeInfo (key) {
 function setSet () {
   const soc = document.getElementById('soc').checked;
   const screenSaverActivationTime = document.getElementById('screenSaverActivationTime').value;
-  susdeckUniversal.socket.emit('c-info-change', 'screenSaverActivationTime:' + screenSaverActivationTime + ',SOC:' + soc);
+  susdeckUniversal.emit('c-info-change', { type: 'ssat_soc', screenSaverActivationTime, soc });
   susdeckUniversal.socket.emit('c-change');
 }
 

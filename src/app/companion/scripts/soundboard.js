@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars, no-undef */
-const socket = io();
 const keys = document.getElementById('keys');
 const Pages = {};
 const q = [];
@@ -8,10 +7,10 @@ const countOnEachPage = 8;
 addToHTMLlog('Waiting for host...');
 Susaudio.init();
 
-susdeckUniversal.socket.on('server_connected', function (ssatt, socs) {
+susdeckUniversal.socket.on('server_connected', function () {
   removeFromHTMLlog('Waiting for host...');
   addToHTMLlog('Host connection established!');
-  socket.emit('companion_connected');
+  susdeckUniversal.socket.emit('companion_connected');
   setTimeout(() => {
     document.getElementById('console').style.display = 'none';
     if (susdeckUniversal.isInDebug === true) {

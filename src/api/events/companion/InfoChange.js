@@ -5,22 +5,30 @@ const jsonbeautify = require('json-beautify');
 module.exports = {
   event: 'c-info-change',
   callback: (socket, args) => {
-    if (args.includes('SETKEY')) {
-      const soundChangeData = args.split('SETKEY:')[1];
-      const tobechanged = soundChangeData.split(':')[0];
-      const newkeybind = soundChangeData.split(':')[1];
-      const newname = soundChangeData.split(':')[2];
+    args = JSON.parse(args);
+    if (args.type === 'key_edit') {
       const newObject = {};
-      const found = sounds.Sounds.find(thing => thing.key === tobechanged);
-      sounds.Sounds.forEach(thing => {
-        if (thing.key === tobechanged) {
-          console.log(thing);
-          newObject.key = newkeybind;
-          newObject.name = newname;
-          newObject.icon = thing.icon;
+      try {
+        const found = sounds.Sounds.find(thing => thing.path === args.key);
+        if (!found) {
+          throw new Error('Unsupported or uneditable sound.');
         }
-      });
-      Object.assign(found, newObject);
+        sounds.Sounds.forEach(thing => {
+          if (thing.key === args.key) {
+            newObject.key = args.newpath;
+            newObject.name = args.newname;
+            newObject.icon = thing.icon;
+          }
+          if (thing.path === args.key) {
+            newObject.path = args.newpath;
+            newObject.name = args.newname;
+            newObject.icon = thing.icon;
+          }
+        });
+        Object.assign(found, newObject);
+      } catch (err) {
+        console.log('Error!', err);
+      }
 
       fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const SoundOnPress = ${sounds.SoundOnPress};
@@ -31,20 +39,14 @@ if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverA
 `);
 
       return 'c-change';
-    } else if (args.includes(',')) {
-      args = args.split(',');
-      const newssattime = args[0].split('SSAT:')[1];
-      const newssoc = args[1].split('SOC:')[1];
-
+    } else if (args.type === 'ssat_soc') {
       fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
-const SoundOnPress = ${newssoc};
-const ScreenSaverActivationTime = ${newssattime};
+const SoundOnPress = ${args.soc};
+const ScreenSaverActivationTime = ${args.screenSaverActivationTime};
 const soundDir = '../assets/sounds/';
 const Sounds = ${jsonbeautify(sounds.Sounds, null, 4, 80)};
-if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds }; }
+if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };
 `);
-
-      console.log(`const SoundOnPress = ${newssattime}`);
     }
   }
 };

@@ -11,24 +11,12 @@
 
 <body>
 
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="index.html">Home</a>
-        <a href="#" class="snactive">Icon Editor</a>
-        <a href="themes.html">Themes</a>
-        <a href="soundboard.html">Soundboard</a>
+    <div id="mySidenav" class="sideNav">
     </div>
 
     <div id="main">
         <h2>Icon Editor</h2>
         <h3 id="now-playing">Play a sound from Susdeck to see this change!</h3>
-        <input type="checkbox" id="soc" disabled>
-        <label for="soc">Sound on press</label>
-        <br />
-        <input type="range" min="1" max="15" id="ssat" disabled>
-        <label for="ssat" id="amt"></label>
-        <br />
-        <button class="opn"></button>
         <button onclick="socket.emit('c-change')">Remote Reload</button>
         <button onclick="createNewSound()">New Sound</button>
         <button onclick="np()">Next Page</button>
@@ -39,10 +27,26 @@
 
             <div class="modal-content">
                 <div class="modal-header" id="mh">
-
+                    <span class="close" onclick="modal.style.display = 'none'">&times;</span>
+                    <h2 id="mhe"></h2>
                 </div>
                 <div class="modal-body" id="mc">
+                    <label for="newname">Name:</label>
+                    <input type="text" id="newname" value="" />
 
+                    <br /> 
+                    <br />
+
+                    <div id="mcmultikey">
+
+                    </div>
+                    <label id="npl" for="newpath">Sound Path:</label>
+                    <input type="text" id="newpath" value=""/>
+                    <p>Icon Preview</p>
+                    <button id="mcip"></button>
+                    <!-- data-orig-key data-orig-name -->
+                    <button id="mcdel" onclick="DeleteKey({ name: document.getElementById('mhe').getAttribute('data-orig-name'), key: document.getElementById('mhe').getAttribute('data-orig-key') });">Delete</button>
+                    <button id="mcset" onclick="changeInfo(document.getElementById('mhe').getAttribute('data-orig-key'));"class="white-txt">Set</button>
                 </div>
                 <div class="modal-footer">
                     <h3>Susdeck Companion</h3>
@@ -54,16 +58,18 @@
         <br />
         <div id="keys">
         </div>
-        <img class="opn" src="../assets/icons/companion.png"></img>
+        <img class="susdeck-logo" src="../assets/icons/companion.png"></img>
     </div>
 
+    <!-- Libraries -->
     <script src="/socket.io/socket.io.js"></script>
-    <script src="../assets/scripts/Susaudio.js"></script>
-    <script src="./scripts/index.js"></script>
-    <script src="/sounds.js"></script>
-    <script src="scripts/global.js"></script>
     <script src="../assets/scripts/susdeck-universal.js"></script>
-    <script src="./scripts/soundboard-universal.js"></script>
+    <script src="../assets/scripts/Susaudio.js"></script>
+    <script src="../../sounds.js"></script>
+    <!-- My scripts -->
+    <script src="scripts/index.js"></script>
+    <script src="scripts/global.js"></script>
+    <script src="scripts/soundboard-universal.js"></script>
 </body>
 
 </html>

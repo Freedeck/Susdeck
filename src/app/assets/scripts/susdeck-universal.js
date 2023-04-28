@@ -48,6 +48,10 @@ const susdeckUniversal = {
     return localStorage.getItem('_sd' + name);
   },
   socket: io(),
+  emit: (event, data) => {
+    if (typeof data === 'object') data = JSON.stringify(data);
+    susdeckUniversal.socket.emit(event, data);
+  },
   connectionOn: function (event, callback) {
     susdeckUniversal.socket.on(event, callback);
   },
@@ -68,6 +72,10 @@ const susdeckUniversal = {
     const themeRules = themeData.data;
 
     susdeckUniversal.themes[themeName] = themeRules;
+  },
+  grantExperiments: function () {
+    susdeckUniversal.save('experiments', true);
+    susdeckUniversal.socket.emit('c-client-reload');
   },
   isInDebug: false,
   isDevBranch: false,

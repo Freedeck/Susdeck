@@ -81,6 +81,10 @@ const init = (io, app) => {
           if (callback.startsWith('c-change')) {
             io.emit('c-change');
           }
+          if (callback.startsWith('custom_theme=')) {
+            const t = callback.split('=')[1];
+            io.emit('custom_theme', t);
+          }
         }
       });
     });

@@ -25,6 +25,11 @@ const pages = [
   {
     page: 'settings.html',
     icon: 'img/settings.png'
+  },
+  {
+    page: 'experiments.html',
+    icon: 'img/experiments.png',
+    experimental: true
   }
 ];
 

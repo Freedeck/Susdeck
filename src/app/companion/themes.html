@@ -11,11 +11,7 @@
 
 <body>
 
-    <div id="mySidenav" class="sidenav">
-        <a href="index.html"><img src="img/home.png" alt="home" width="32" height="32"></a>
-        <!-- <a href="iconEditor.html">Icon Editor</a> -->
-        <a href="#" class="snactive"><img src="img/themes.png" alt="home" width="32" height="32"></a>
-        <a href="soundboard.html"><img src="img/sounds.png" alt="home" width="32" height="32"></a>
+    <div id="mySidenav" class="sideNav">
     </div>
 
     <div id="main">
@@ -29,17 +25,18 @@
         <button onclick="susdeckUniversal.socket.emit('c-change')">Reload all Susdeck Sessions</button>
         <div id="console"></div>
         <div id="keys" hidden></div>
-        <img class="opn" src="../assets/icons/companion.png"></img>
+        <img class="susdeck-logo" src="../assets/icons/companion.png"></img>
     </div>
     
-
+    <!-- Libraries -->
     <script src="/socket.io/socket.io.js"></script>
-    <script src="../../sounds.js"></script>
-    <script src="scripts/global.js"></script>
     <script src="../assets/scripts/susdeck-universal.js"></script>
     <script src="../assets/scripts/Susaudio.js"></script>
-    <script src="scripts/soundboard-universal.js"></script>
+    <script src="../../sounds.js"></script>
+    <!-- My scripts -->
+    <script src="scripts/global.js"></script>
     <script src="scripts/theming.js"></script>
+    <script src="scripts/soundboard-universal.js"></script>
 </body>
 
 </html>

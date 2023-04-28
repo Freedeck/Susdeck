@@ -5,7 +5,7 @@
   --sd-font-family: 'Rubik';
   --sd-background-size: 400% 400%;
   --sd-background: 45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%;
-  --sd-rotdeg: 2deg;
+  --sd-rotationDegrees: 2deg;
 }
 
 body {
@@ -24,7 +24,7 @@ body {
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
-.opn {
+.susdeck-logo {
   position: absolute;
   right: 0px;
   bottom: 0;
@@ -120,7 +120,7 @@ button {
   border-radius: 50px;
 }
 
-.btxt {
+.white-txt {
   color: #FFFFFF;
 }
 
@@ -209,12 +209,12 @@ button {
   border: 1px solid #888;
   width: 80%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  animation-name: animatetop;
+  animation-name: animateTop;
   animation-duration: 0.4s
 }
 
 /* Add Animation */
-@keyframes animatetop {
+@keyframes animateTop {
   from {
     top: -300px;
     opacity: 0
@@ -227,7 +227,7 @@ button {
 }
 
 /* The side navigation menu */
-.sidenav {
+.sideNav {
   height: 100%;
   /* 100% Full-height */
   width: 70px;
@@ -246,11 +246,11 @@ button {
   padding-top: 60px;
   /* Place content 60px from the top */
   transition: 0.5s;
-  /* 0.5 second transition effect to slide in the sidenav */
+  /* 0.5 second transition effect to slide in the sideNav */
 }
 
 /* The navigation menu links */
-.sidenav a {
+.sideNav a {
   padding: 8px 8px 8px 16px;
   text-decoration: none;
   font-size: 25px;
@@ -260,23 +260,14 @@ button {
 }
 
 /* When you mouse over the navigation links, change their color */
-.sidenav a:hover {
+.sideNav a:hover {
   background-color: #8f8f8f !important;
-  transform: scale(1.1) rotate(var(--sd-rotdeg));
+  transform: scale(1.1) rotate(var(--sd-rotationDegrees));
 }
 
-.sidenav a {
+.sideNav a {
   background-color: #4d4d4d;
   border-radius: 8px;
-}
-
-/* Position and style the close button (top right corner) */
-.sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
 }
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
@@ -286,17 +277,17 @@ button {
   padding: 20px;
 }
 
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+/* On smaller screens, where height is less than 450px, change the style of the sideNav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
-  .sidenav {
+  .sideNav {
     padding-top: 15px;
   }
 
-  .sidenav a {
+  .sideNav a {
     font-size: 18px;
   }
 }
 
-.snactive {
+.activePage {
   background-color: #6b6b6b !important;
 }

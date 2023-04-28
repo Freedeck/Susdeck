@@ -45,6 +45,7 @@ function loadPage (pageNumber) {
     }
     if (sound.key) {
       btn.setAttribute('data-key', sound.key);
+      btn.setAttribute('data-uneditable', true);
       key.innerText = sound.key;
     }
     if (sound.path) {
@@ -78,7 +79,9 @@ function loadPage (pageNumber) {
           klD.push(`<label for="newkey">Key:</label><input type="text" value='${key}' data-key-num="${i}" disabled/>`);
           i++;
         });
-        document.getElementById('mh').innerHTML = `<span class="close" onclick="modal.style.display = 'none'">&times;</span><h2>Editing ${allKeypress[i].innerText} - Multi Key Macro</h2>`;
+        document.getElementById('mh').innerHTML = `
+        <span class="close" onclick="modal.style.display = 'none'">&times;</span>
+        <h2>Editing ${allKeypress[i].innerText} - Multi Key Macro</h2>`;
         document.getElementById('mc').innerHTML = `
       <label for="newname">Name:</label><input type="text" value="${allKeypress[i].innerText}" disabled />
       <br /> <br />
@@ -88,7 +91,9 @@ function loadPage (pageNumber) {
         modal.style.display = 'block';
         return;
       }
-      document.getElementById('mh').innerHTML = `<span class="close" onclick="modal.style.display = 'none'">&times;</span><h2>Editing ${allKeypress[i].innerText}</h2>`;
+      document.getElementById('mh').innerHTML = `
+      <span class="close" onclick="modal.style.display = 'none'">&times;</span>
+      <h2>Editing ${allKeypress[i].innerText}</h2>`;
       document.getElementById('mc').innerHTML = `
       <label for="newname">Name:</label><input type="text" id="newname" value="${allKeypress[i].innerText}" />
       <br /> <br />
@@ -113,14 +118,14 @@ susdeckUniversal.socket.on('press-sound', (sound, name) => {
 });
 
 // eslint-disable-next-line no-unused-vars
-function DeleteKey (key) {
+function DeleteKey(key) {
   // eslint-disable-next-line no-undef
   Sounds.splice(Sounds.indexOf({ name: key.name, key: key.key }), 1);
   susdeckUniversal.socket.emit('c-delete-key', { name: key.name, key: key.key });
 }
 
 // eslint-disable-next-line no-unused-vars
-function createNewSound () {
+function createNewSound() {
   // eslint-disable-next-line no-undef
   Sounds.push({
     name: 'New Key',
@@ -146,7 +151,7 @@ if (document.getElementById('screenSaverActivationTime')) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function changeInfo (key) {
+function changeInfo(key) {
   const newpath = document.getElementById('newpath').value;
   const newname = document.getElementById('newname').value;
   susdeckUniversal.emit('c-info-change', { type: 'key_edit', key, newpath, newname });
@@ -154,7 +159,7 @@ function changeInfo (key) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function setSet () {
+function setSet() {
   const soc = document.getElementById('soc').checked;
   const screenSaverActivationTime = document.getElementById('screenSaverActivationTime').value;
   susdeckUniversal.emit('c-info-change', { type: 'ssat_soc', screenSaverActivationTime, soc });
@@ -169,7 +174,7 @@ susdeckUniversal.socket.on('companion_info', function (screenSaverActivationTime
   };
 });
 
-function autoSort () {
+function autoSort() {
   // eslint-disable-next-line no-undef
   const pagesAmount = Sounds.length / countOnEachPage;
   for (let i = 0; i < pagesAmount; i++) {
@@ -189,14 +194,14 @@ function autoSort () {
 }
 
 // eslint-disable-next-line no-unused-vars
-function np () {
+function np() {
   if (Pages[currentPage + 1]) {
     loadPage(currentPage + 1);
   }
 }
 
 // eslint-disable-next-line no-unused-vars
-function bp () {
+function bp() {
   if (Pages[currentPage - 1]) {
     loadPage(currentPage - 1);
   }

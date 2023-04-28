@@ -78,6 +78,9 @@ const susdeckUniversal = {
     susdeckUniversal.socket.emit('c-client-reload');
   },
   isInDebug: false,
+  isExperimental: () => {
+    return susdeckUniversal.load('experiments') ? susdeckUniversal.load('experiments') : 'false';
+  },
   isDevBranch: false,
   debugStat: 'Debug',
   hasConnected: false

@@ -71,5 +71,14 @@ function addToHTMLlog (text) {
 }
 
 function enableExperiments () {
-  if (confirm('Are you sure you want to turn on Susdeck Experiments?')) { susdeckUniversal.save('experiments', true); alert('Experiments enabled.'); }
+  if (confirm('Are you sure you want to turn on Susdeck Experiments?')) {
+    if (susdeckUniversal.load('experiments') === 'true') {
+      if (!confirm('Experiments is already enabled, do you want to turn off Susdeck Experiments?')) return;
+      susdeckUniversal.save('experiments', false);
+      alert('Experiments disabled.');
+      return;
+    }
+    susdeckUniversal.save('experiments', true);
+    alert('Experiments enabled.');
+  }
 }

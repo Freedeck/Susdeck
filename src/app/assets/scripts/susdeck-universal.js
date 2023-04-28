@@ -13,7 +13,7 @@ const susdeckUniversal = {
       { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' }
     ],
     Fun: [
-      { 'icon-count': 8 },
+      { 'icon-count': 3 },
       { 'template-columns': 'repeat(5,1fr)' },
       { 'background-size': '400% 100%' },
       { 'font-family': 'Poppins' },
@@ -32,6 +32,14 @@ const susdeckUniversal = {
       { 'background-size': '400% 400%' },
       { 'font-family': 'Inter' },
       { background: '45deg, rgba(0, 183, 255, 1) 0%, rgba(33, 192, 255, 1) 33%, rgba(0, 183, 255, 1) 66%, rgba(33, 192, 255, 1) 100%' }
+    ],
+    'Catppuccin Mocha': [
+      { 'icon-count': 8 },
+      { 'template-columns': 'repeat(4,1fr)' },
+      { 'background-size': '400% 400%' },
+      { 'font-family': 'Rubik' },
+      { background: '45deg, rgba(30, 30, 40, 1) 0%, rgba(49,50,68, 1) 33%, rgba(30, 30, 40, 1) 66%, rgba(49,50,68, 1) 100%' },
+      { 'btn-background': 'rgba(180, 190, 254, 0.15)' }
     ],
     'Compact Default': [
       { 'icon-count': 11 },

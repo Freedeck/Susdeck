@@ -85,6 +85,10 @@ function enableExperiments () {
 
 function importTheme () {
   theme = document.getElementById('theme-import').value;
+  if (theme === '' || theme === ' ') {
+    susdeckUniversal.remove('custom_theme');
+    susdeckUniversal.socket.emit('c-del-theme', theme);
+  }
   susdeckUniversal.save('custom_theme', theme);
   susdeckUniversal.socket.emit('c-send-theme', theme);
   susdeckUniversal.socket.emit('c-change');

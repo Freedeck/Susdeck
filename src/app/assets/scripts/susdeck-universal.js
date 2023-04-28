@@ -53,6 +53,9 @@ const susdeckUniversal = {
   load: function (name) {
     return localStorage.getItem('_sd' + name);
   },
+  remove: function (name) {
+    return localStorage.removeItem('_sd' + name);
+  },
   socket: io(),
   emit: (event, data) => {
     if (typeof data === 'object') data = JSON.stringify(data);
@@ -157,6 +160,10 @@ if (!susdeckUniversal.load('theme')) {
 }
 
 susdeckUniversal.socket.on('custom_theme', themeData => {
+  if (themeData === 'del') {
+    susdeckUniversal.remove('custom_theme');
+    return;
+  }
   susdeckUniversal.save('custom_theme', themeData);
 });
 

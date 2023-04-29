@@ -1,5 +1,5 @@
 /* eslint-disable quotes, quote-props, indent, no-unused-vars */
-const SoundOnPress = true;
+const SoundOnPress = false;
 const ScreenSaverActivationTime = 13;
 const soundDir = '../assets/sounds/';
 const Sounds = [
@@ -47,6 +47,9 @@ const Sounds = [
         "name": "End Stream OBS",
         "keys": "[\"alt\",\"f22\"]",
         "icon": "alt_tab.png"
-    }
+    },
+    { "name": "Huh", "path": "huh.mp3" },
+    { "name": "Haha", "path": "haha.mp3" },
+    { "name": "Test", "path": "unnamed.mp3" }
 ];
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };

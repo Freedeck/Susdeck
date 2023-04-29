@@ -22,5 +22,5 @@ if (typeof document.getElementById('now-playing') !== 'undefined') {
       soundQueue.push(audio.saName);
     });
     document.getElementById('now-playing').innerText = 'Playing: ' + soundQueue.join(', ');
-  }, 250);
+  }, 2);
 }

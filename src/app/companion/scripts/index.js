@@ -115,9 +115,9 @@ function createNewSound () {
   // eslint-disable-next-line no-undef
   Sounds.push({
     name: 'New Key',
-    key: 'enter'
+    path: 'unnamed.mp3'
   });
-  susdeckUniversal.socket.emit('c-newkey', { name: 'New Key', key: 'enter' });
+  susdeckUniversal.socket.emit('c-newkey', { name: 'New Key', path: 'unnamed.mp3' });
   loadPage(0);
 }
 

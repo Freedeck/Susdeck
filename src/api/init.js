@@ -103,6 +103,30 @@ const init = (io, app) => {
       }
     });
   });
+
+  // Now, before exit
+  // catching signals and do something before exit
+  ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
+    'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM', 'exit'
+  ].forEach(function (sig) {
+    process.on(sig, function () {
+      terminator(sig);
+      console.log('signal: ' + sig);
+    });
+  });
+
+  function terminator (sig) {
+    if (typeof sig === 'string') {
+      // call your async task here and then call process.exit() after async task is done
+      io.emit('server_shutdown');
+    }
+    console.log('Sent shutdown message to Susdeck client');
+
+    // give clients time to change page
+    setTimeout(() => {
+      process.exit(0);
+    }, 250);
+  }
 };
 
 module.exports = { init, apiEvents, sockApiEvents };

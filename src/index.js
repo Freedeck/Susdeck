@@ -27,5 +27,5 @@ try {
     });
   });
 } catch (err) {
-  console.log('Presumably fatal error:',err);
+  console.log('Presumably fatal error:', err);
 }

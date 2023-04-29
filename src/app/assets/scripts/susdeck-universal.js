@@ -117,6 +117,10 @@ susdeckUniversal.socket.on('server_connected', () => {
   if (!susdeckUniversal.hasConnected) { socket.emit('c-change-client'); }
 });
 
+susdeckUniversal.socket.on('server_shutdown', () => {
+  window.location.replace('/assets/tools/offline.html');
+});
+
 susdeckUniversal.socket.on('set-theme', (theme) => {
   susdeckUniversal.save('theme', theme);
 

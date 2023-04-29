@@ -37,6 +37,7 @@ const init = (io, app) => {
     socket.on('keypress', function (keyInput) {
       debug.log(JSON.stringify(keyInput));
       if (keyInput.name) {
+        if (keyInput.name === 'Stop All') io.emit('press-sound', 'Stop All', 'Stop All');
         sbc.Sounds.forEach(sound => {
           if (sound.name === keyInput.name) {
             io.emit('press-sound', sbc.soundDir + sound.path, sound.name);

@@ -1,4 +1,7 @@
+/* eslint-disable no-undef */
 const soundQueue = [];
+
+Susaudio.init();
 
 /* eslint-disable no-undef */
 susdeckUniversal.socket.on('press-sound', (sound, name) => {
@@ -9,7 +12,6 @@ susdeckUniversal.socket.on('press-sound', (sound, name) => {
   }
   Susaudio.playSound(sound, name);
   Susaudio.playSound(sound, name, true);
-  susdeckUniversal.socket.emit('c2s_log', '[COMPANIONSB] Playing ' + name);
 });
 
 if (typeof document.getElementById('now-playing') !== 'undefined') {

@@ -29,9 +29,9 @@ const susdeckUniversal = {
     Blue: [
       { 'icon-count': 8 },
       { 'template-columns': 'repeat(4,1fr)' },
+      { background: '45deg, rgba(0, 183, 255, 1) 0%, rgba(33, 192, 255, 1) 33%, rgba(0, 183, 255, 1) 66%, rgba(33, 192, 255, 1) 100%' },
       { 'background-size': '400% 400%' },
-      { 'font-family': 'Inter' },
-      { background: '45deg, rgba(0, 183, 255, 1) 0%, rgba(33, 192, 255, 1) 33%, rgba(0, 183, 255, 1) 66%, rgba(33, 192, 255, 1) 100%' }
+      { 'font-family': 'Inter' }
     ],
     'Catppuccin Mocha': [
       { 'icon-count': 8 },

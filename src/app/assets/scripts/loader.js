@@ -12,13 +12,7 @@ susdeckUniversal.socket.on('server_connected', function () {
   addToHTMLlog('Connected! Checking for login status..');
   if (susdeckUniversal.load('session')) { // If _sdsession exists login
     susdeckUniversal.socket.emit('Authenticated', susdeckUniversal.load('session'));
-    addToHTMLlog('Authenticated - Loading page..');
-    setTimeout(() => {
-      if (!loaded) {
-        susdeckUniversal.save('session', '');
-        window.location.replace(window.location.href);
-      }
-    }, 1500);
+    addToHTMLlog('Sending server session ID..');
   } else {
     addToHTMLlog('Not logged in, requesting login');
     loaded = true;
@@ -42,13 +36,16 @@ susdeckUniversal.socket.on('session_valid', function () {
   loadPage(0);
 });
 
-susdeckUniversal.socket.on('banish', function () { // The server has restarted, and your session is invalid
+susdeckUniversal.socket.on('session_invalid', function () { // The server has restarted, and your session is invalid
   localStorage.setItem('_sdsession', '');
   document.getElementById('keys').remove();
   document.getElementById('loading').style.display = 'block';
   document.getElementById('loading').innerHTML = `<h1>Susdeck</h1>
-  <p>Your session expired, please login again.</p>
-  <button onclick="localStorage.setItem('_sdsession',''); window.location.replace(window.location.href)">Login</button>`;
+  <p>Your session expired - We're trying to log you back in.</p>
+  <button onclick="localStorage.setItem('_sdsession',''); window.location.replace(window.location.href)">Reset Session</button>
+  <div id='console'></div>`;
+  susdeckUniversal.save('sid', susdeckUniversal.createTempHWID()); // Create a temporary session ID for logging in
+    susdeckUniversal.socket.emit('c2sr_login', susdeckUniversal.load('sid')); // Request login form with session ID
 });
 
 setInterval(function () {

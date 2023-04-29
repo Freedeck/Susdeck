@@ -12,8 +12,13 @@ susdeckUniversal.socket.on('server_connected', function () {
   addToHTMLlog('Connected! Checking for login status..');
   if (susdeckUniversal.load('session')) { // If _sdsession exists login
     susdeckUniversal.socket.emit('Authenticated', susdeckUniversal.load('session'));
-    addToHTMLlog('Success! You\'re logged in.');
-    loaded = true; // Keep page from reloading
+    addToHTMLlog('Authenticated - Loading page..');
+    setTimeout(() => {
+      if (!loaded) {
+        susdeckUniversal.save('session', '');
+        window.location.replace(window.location.href);
+      }
+    }, 1500);
   } else {
     addToHTMLlog('Not logged in, requesting login');
     loaded = true;
@@ -23,6 +28,7 @@ susdeckUniversal.socket.on('server_connected', function () {
 });
 
 susdeckUniversal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // When we get the green light to login
+  loaded = true; // Keep page from reloading
   addToHTMLlog('Request received by server, let\'s log in.');
   susdeckUniversal.save('login_msg', loginMsg);
   susdeckUniversal.save('owner_name', ownerName); // Save the login message and owner's name
@@ -31,6 +37,7 @@ susdeckUniversal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName)
 
 // The server has authenticated you therefore we can bypass login
 susdeckUniversal.socket.on('session_valid', function () {
+  loaded = true; // Keep page from reloading
   document.getElementById('loading').style.display = 'none';
   loadPage(0);
 });

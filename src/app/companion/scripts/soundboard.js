@@ -23,7 +23,6 @@ susdeckUniversal.socket.on('server_connected', function () {
   }, 1000);
 });
 
-
 function volChanged () {
   const volumeSlider = document.getElementById('out-vol');
   Susaudio._player.queue.forEach(audio => {

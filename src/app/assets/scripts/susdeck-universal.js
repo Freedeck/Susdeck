@@ -13,7 +13,7 @@ const susdeckUniversal = {
       { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' }
     ],
     Fun: [
-      { 'icon-count': 8 },
+      { 'icon-count': 3 },
       { 'template-columns': 'repeat(5,1fr)' },
       { 'background-size': '400% 100%' },
       { 'font-family': 'Poppins' },
@@ -29,9 +29,17 @@ const susdeckUniversal = {
     Blue: [
       { 'icon-count': 8 },
       { 'template-columns': 'repeat(4,1fr)' },
+      { background: '45deg, rgba(0, 183, 255, 1) 0%, rgba(33, 192, 255, 1) 33%, rgba(0, 183, 255, 1) 66%, rgba(33, 192, 255, 1) 100%' },
       { 'background-size': '400% 400%' },
-      { 'font-family': 'Inter' },
-      { background: '45deg, rgba(0, 183, 255, 1) 0%, rgba(33, 192, 255, 1) 33%, rgba(0, 183, 255, 1) 66%, rgba(33, 192, 255, 1) 100%' }
+      { 'font-family': 'Inter' }
+    ],
+    'Catppuccin Mocha': [
+      { 'icon-count': 8 },
+      { 'template-columns': 'repeat(4,1fr)' },
+      { 'background-size': '400% 400%' },
+      { 'font-family': 'Rubik' },
+      { background: '45deg, rgba(30, 30, 40, 1) 0%, rgba(49,50,68, 1) 33%, rgba(30, 30, 40, 1) 66%, rgba(49,50,68, 1) 100%' },
+      { 'btn-background': 'rgba(180, 190, 254, 0.15)' }
     ],
     'Compact Default': [
       { 'icon-count': 11 },
@@ -46,6 +54,9 @@ const susdeckUniversal = {
   },
   createTempHWID: function () {
     return Math.floor(Math.random() * 6969696969699);
+  },
+  log: function (data) {
+    console.log('[SU] ' + data);
   },
   save: function (name, value) {
     localStorage.setItem('_sd' + name, value);
@@ -107,6 +118,10 @@ const susdeckUniversal = {
 susdeckUniversal.socket.on('server_connected', () => {
   susdeckUniversal.hasConnected = true;
   if (!susdeckUniversal.hasConnected) { socket.emit('c-change-client'); }
+});
+
+susdeckUniversal.socket.on('server_shutdown', () => {
+  window.location.replace('/assets/tools/offline.html');
 });
 
 susdeckUniversal.socket.on('set-theme', (theme) => {

@@ -14,9 +14,10 @@ const init = (io, app) => {
   debug.log('Adding events to API');
 
   fs.readdirSync(path.join(__dirname, '/events')).forEach(function (file) {
+    if (file === 'Event.js') return;
     fs.readdirSync(path.join(__dirname, '/events/' + file)).forEach(cEvent => {
       const query = require(path.join(__dirname, '/events/' + file + '/' + cEvent));
-      sockApiEvents.set(query.event, { callback: query.callback, event: query.event });
+      query.init();
       debug.log('Added ' + file + ' event ' + query.event + ' from file ' + cEvent);
     });
   });
@@ -37,6 +38,7 @@ const init = (io, app) => {
     socket.on('keypress', function (keyInput) {
       debug.log(JSON.stringify(keyInput));
       if (keyInput.name) {
+        if (keyInput.name === 'Stop All') io.emit('press-sound', 'Stop All', 'Stop All');
         sbc.Sounds.forEach(sound => {
           if (sound.name === keyInput.name) {
             io.emit('press-sound', sbc.soundDir + sound.path, sound.name);
@@ -45,7 +47,6 @@ const init = (io, app) => {
         return;
       }
       let keys = [];
-      if (keyInput.key !== undefined) keys.push(keyInput.key);
       if (keyInput.keys) keys = JSON.parse(keyInput.keys);
       keys.forEach(function (key) {
         key = key.split('}')[0];
@@ -103,6 +104,30 @@ const init = (io, app) => {
       }
     });
   });
+
+  // Now, before exit
+  // catching signals and do something before exit
+  ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
+    'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM', 'exit'
+  ].forEach(function (sig) {
+    process.on(sig, function () {
+      terminator(sig);
+      console.log('signal: ' + sig);
+    });
+  });
+
+  function terminator (sig) {
+    if (typeof sig === 'string') {
+      // call your async task here and then call process.exit() after async task is done
+      io.emit('server_shutdown');
+    }
+    console.log('Sent shutdown message to Susdeck client');
+
+    // give clients time to change page
+    setTimeout(() => {
+      process.exit(0);
+    }, 250);
+  }
 };
 
 module.exports = { init, apiEvents, sockApiEvents };

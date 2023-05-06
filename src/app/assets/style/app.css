@@ -6,6 +6,7 @@
   --sd-background-size: 400% 400%;
   --sd-background: 45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%;
   --sd-rotationDegrees: 2deg;
+  --sd-btn-background: rgba(0, 0, 0, 0.5);
 }
 
 body {
@@ -81,7 +82,7 @@ body {
 }
 
 button {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--sd-btn-background);
   border-radius: 8px;
   width: 100px;
   height: 100px;
@@ -101,6 +102,7 @@ button {
   grid-column-gap: 7px;
   grid-row-gap: 2px;
 }
+
 
 #loading {
   text-align: center;

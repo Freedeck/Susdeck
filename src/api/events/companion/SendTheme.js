@@ -1,6 +1,7 @@
-module.exports = {
-  event: 'c-send-theme',
-  callback: (socket, args) => {
-    return 'custom_theme=' + args;
-  }
-};
+const Event = require('../Event');
+
+const ev = new Event('c-send-theme', (socket, args) => {
+  return 'custom_theme=' + args;
+});
+
+module.exports = ev;

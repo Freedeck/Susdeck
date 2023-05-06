@@ -75,11 +75,19 @@ function enableExperiments () {
     if (susdeckUniversal.load('experiments') === 'true') {
       if (!confirm('Experiments is already enabled, do you want to turn off Susdeck Experiments?')) return;
       susdeckUniversal.save('experiments', false);
+      susdeckUniversal.log('LocalStorage Experiments off');
       alert('Experiments disabled.');
+      // Clear the user's custom theme
+      susdeckUniversal.remove('custom_theme');
+      susdeckUniversal.socket.emit('c-del-theme', '');
+      susdeckUniversal.log('Removed theme, requesting refresh');
+      susdeckUniversal.socket.emit('c-change');
       return;
     }
     susdeckUniversal.save('experiments', true);
+
     alert('Experiments enabled.');
+    susdeckUniversal.socket.emit('c-change');
   }
 }
 

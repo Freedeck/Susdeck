@@ -23,17 +23,6 @@ susdeckUniversal.socket.on('server_connected', function () {
   }, 1000);
 });
 
-setInterval(() => {
-  q.splice(0, q.length);
-  // eslint-disable-next-line no-undef
-  Susaudio._player.queue.forEach(audio => {
-    if (audio.isSusaudioFB) return;
-    if (!audio.isNotVB) return;
-    q.push(audio.saName);
-  });
-  document.getElementById('now-playing').innerText = 'Playing: ' + q.join(', ');
-}, 250);
-
 function volChanged () {
   const volumeSlider = document.getElementById('out-vol');
   Susaudio._player.queue.forEach(audio => {
@@ -49,18 +38,6 @@ function pbrChanged () {
     audio.playbackRate = Susaudio._player.pitch;
   });
 }
-
-susdeckUniversal.socket.on('press-sound', (sound, name) => {
-  if (sound.includes('--Stop_all')) {
-    // eslint-disable-next-line no-undef
-    Susaudio.stopAll();
-    return;
-  }
-  // eslint-disable-next-line no-undef
-  Susaudio.playSound(sound, name);
-  Susaudio.playSound(sound, name, true);
-  susdeckUniversal.socket.emit('c2s_log', '[COMPANIONSB] Playing ' + name);
-});
 
 function addToHTMLlog (text) {
   const txt = document.createElement('h2');

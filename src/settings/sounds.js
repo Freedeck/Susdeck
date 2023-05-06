@@ -23,6 +23,8 @@ const Sounds = [
     },
     { "name": "Vine Boom", "icon": "boom.png", "path": "vineboom.mp3" },
     { "name": "Semtex", "icon": "semtex.png", "path": "semtex.mp3" },
+    { "name": "Huh", "path": "huh.mp3" },
+    { "name": "Haha", "path": "haha.mp3" },
     {
         "name": "Alt Tab",
         "keys": "[\"alt\",\"tab\"]",
@@ -47,6 +49,9 @@ const Sounds = [
         "name": "End Stream OBS",
         "keys": "[\"alt\",\"f22\"]",
         "icon": "alt_tab.png"
-    }
+    },
+    { "name": "Whoppah Remix", "path": "wopha_remix.wav" },
+    { "name": "Bugatti", "path": "bugatti.mp3" },
+    { "name": "Metal Pipe", "path": "metal_pipe.mp3" }
 ];
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };

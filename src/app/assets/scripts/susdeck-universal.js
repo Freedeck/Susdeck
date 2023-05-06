@@ -55,6 +55,9 @@ const susdeckUniversal = {
   createTempHWID: function () {
     return Math.floor(Math.random() * 6969696969699);
   },
+  log: function (data) {
+    console.log('[SU] ' + data);
+  },
   save: function (name, value) {
     localStorage.setItem('_sd' + name, value);
   },

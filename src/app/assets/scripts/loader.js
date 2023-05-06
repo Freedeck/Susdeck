@@ -92,6 +92,12 @@ function loadPage (pageNumber) { // Setup the Susdeck page w/ sound buttons
   const stopAll = document.createElement('button');
   stopAll.className = 'keypress white-txt';
   stopAll.innerText = 'Stop All';
+  stopAll.onclick = () => {
+    susdeckUniversal.socket.emit('keypress', {
+      macro: false,
+      name: allKeypress[i].innerHTML
+    });
+  };
   const reloadButton = document.createElement('button');
   reloadButton.onclick = () => {
     window.location.reload();

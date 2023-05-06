@@ -46,7 +46,6 @@ const init = (io, app) => {
         return;
       }
       let keys = [];
-      if (keyInput.key !== undefined) keys.push(keyInput.key);
       if (keyInput.keys) keys = JSON.parse(keyInput.keys);
       keys.forEach(function (key) {
         key = key.split('}')[0];

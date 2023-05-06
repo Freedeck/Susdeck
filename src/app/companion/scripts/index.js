@@ -41,15 +41,11 @@ function loadPage (pageNumber) {
     btn.className = 'keypress white-txt';
     if (sound.keys) {
       btn.setAttribute('data-multi', true);
-      btn.setAttribute('data-key', sound.keys);
-    }
-    if (sound.key) {
-      btn.setAttribute('data-key', sound.key);
-      btn.setAttribute('data-uneditable', true);
-      key.innerText = sound.key;
+      btn.setAttribute('data-keys', sound.keys);
+      key.innerText = sound.keys;
     }
     if (sound.path) {
-      btn.setAttribute('data-key', sound.path);
+      btn.setAttribute('data-path', sound.path);
     }
     if (sound.icon) {
       btn.style.backgroundImage = "url('../assets/icons/" + sound.icon + "')";
@@ -63,11 +59,11 @@ function loadPage (pageNumber) {
     allKeypress[i].onclick = (ev) => {
       document.getElementById('mcip').style.backgroundImage = allKeypress[i].style.backgroundImage;
       document.getElementById('mhe').setAttribute('data-orig-name', allKeypress[i].innerText);
-      document.getElementById('mhe').setAttribute('data-orig-key', allKeypress[i].getAttribute('data-key'));
+      document.getElementById('mhe').setAttribute('data-orig-key', allKeypress[i].getAttribute('data-keys'));
 
-      if (allKeypress[i].getAttribute('data-multi') && allKeypress[i].getAttribute('data-key')) {
+      if (allKeypress[i].getAttribute('data-multi') && allKeypress[i].getAttribute('data-keys')) {
         let i = 0;
-        JSON.parse(allKeypress[i].getAttribute('data-key')).forEach(key => {
+        JSON.parse(allKeypress[i].getAttribute('data-keys')).forEach(key => {
           klD.push(`<label for="newkey">Key:</label><input type="text" value='${key}' data-key-num="${i}" disabled/>`);
           i++;
         });
@@ -106,8 +102,8 @@ susdeckUniversal.socket.on('press-sound', (sound, name) => {
 // eslint-disable-next-line no-unused-vars
 function DeleteKey (key) {
   // eslint-disable-next-line no-undef
-  Sounds.splice(Sounds.indexOf({ name: key.name, key: key.key }), 1);
-  susdeckUniversal.socket.emit('c-delete-key', { name: key.name, key: key.key });
+  Sounds.splice(Sounds.indexOf({ name: key.name }), 1);
+  susdeckUniversal.socket.emit('c-delete-key', { name: key.name });
 }
 
 // eslint-disable-next-line no-unused-vars

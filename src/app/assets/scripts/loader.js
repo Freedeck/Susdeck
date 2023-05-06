@@ -76,10 +76,7 @@ function loadPage (pageNumber) { // Setup the Susdeck page w/ sound buttons
     btn.className = 'keypress white-txt';
     if (sound.keys) {
       btn.setAttribute('data-multi', true);
-      btn.setAttribute('data-key', sound.keys);
-    }
-    if (sound.key) {
-      btn.setAttribute('data-key', sound.key);
+      btn.setAttribute('data-keys', sound.keys);
     }
     if (sound.icon) {
       btn.style.backgroundImage = "url('assets/icons/" + sound.icon + "')";
@@ -117,10 +114,10 @@ function loadPage (pageNumber) { // Setup the Susdeck page w/ sound buttons
     allKeypress[i].onmouseup = (ev) => {
       // eslint-disable-next-line no-undef
       if (SoundOnPress) new Audio('assets/sounds/press.mp3').play();
-      if (allKeypress[i].getAttribute('data-key')) {
+      if (allKeypress[i].getAttribute('data-keys')) {
         susdeckUniversal.socket.emit('keypress', {
           macro: true,
-          keys: allKeypress[i].getAttribute('data-key')
+          keys: allKeypress[i].getAttribute('data-keys')
         });
       } else {
         susdeckUniversal.socket.emit('keypress', {

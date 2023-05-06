@@ -14,9 +14,10 @@ const init = (io, app) => {
   debug.log('Adding events to API');
 
   fs.readdirSync(path.join(__dirname, '/events')).forEach(function (file) {
+    if (file === 'Event.js') return;
     fs.readdirSync(path.join(__dirname, '/events/' + file)).forEach(cEvent => {
       const query = require(path.join(__dirname, '/events/' + file + '/' + cEvent));
-      sockApiEvents.set(query.event, { callback: query.callback, event: query.event });
+      query.init();
       debug.log('Added ' + file + ' event ' + query.event + ' from file ' + cEvent);
     });
   });

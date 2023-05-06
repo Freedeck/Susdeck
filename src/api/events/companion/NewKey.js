@@ -1,8 +1,8 @@
 const sounds = require('../../../settings/sounds');
+const Event = require('../Event');
 
-module.exports = {
-  event: 'c-newkey',
-  callback: (socket, args) => {
-    sounds.Sounds.push(args);
-  }
-};
+const ev = new Event('c-newkey', (socket, args) => {
+  sounds.Sounds.push(args);
+});
+
+module.exports = ev;

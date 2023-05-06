@@ -1,6 +1,7 @@
-module.exports = {
-  event: 'c-del-theme',
-  callback: (socket, args) => {
-    return 'custom_theme=del';
-  }
-};
+const Event = require('../Event');
+
+const ev = new Event('c-del-theme', (socket, args) => {
+  return 'custom_theme=del';
+});
+
+module.exports = ev;

@@ -1,5 +1,5 @@
 /* eslint-disable quotes, quote-props, indent, no-unused-vars */
-const SoundOnPress = true;
+const SoundOnPress = false;
 const ScreenSaverActivationTime = 13;
 const soundDir = '../assets/sounds/';
 const Sounds = [

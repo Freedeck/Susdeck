@@ -1,6 +1,6 @@
 {
   "name": "susdeck",
-  "version": "3.6.0-dev",
+  "version": "3.7.0",
   "description": "Susdeck is love. Susdeck is life. Susdeck is not a Stream Deck.",
   "dependencies": {
     "electron-prompt": "^1.7.0",

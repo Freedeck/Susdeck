@@ -293,3 +293,16 @@ button {
 .activePage {
   background-color: #6b6b6b !important;
 }
+
+.experiment {
+  background-color: rgba(0, 0, 0, 0.19);
+  border-radius: 12px;
+  padding: 5px;
+  width: max-content;
+}
+
+.experiment > p {
+  background-color: rgba(255,255,255,0.25);
+  width: fit-content;
+  border-radius: 3px;
+}

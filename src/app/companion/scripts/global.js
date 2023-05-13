@@ -39,6 +39,15 @@ const pages = [
   }
 ];
 
+const experiments = [
+  {
+    name: 'Custom Themes',
+    html: `<input type="text" id="theme-import" placeholder="theme code">
+    <button onclick="importTheme()">Import Theme</button>
+    <button onclick="removeTheme()">Remove Custom Theme</button>`
+  }
+];
+
 pages.forEach(page => {
   if (page.experimental && susdeckUniversal.load('experiments') !== 'true') return;
   const btn = document.createElement('a');
@@ -54,6 +63,14 @@ pages.forEach(page => {
   btnImg.height = '32';
   btn.appendChild(btnImg);
   document.getElementById('mySidenav').appendChild(btn);
+});
+
+experiments.forEach(experiment => {
+  if (document.title !== 'Susdeck Companion - Experiments' || typeof document.getElementById('experiments') === 'undefined') return;
+  const newDiv = document.createElement('div');
+  newDiv.className = 'experiment';
+  newDiv.innerHTML = `<p>${experiment.name}</p>${experiment.html}`;
+  document.getElementById('experiments').appendChild(newDiv);
 });
 
 document.body.onload = () => {

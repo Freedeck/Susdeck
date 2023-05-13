@@ -18,11 +18,8 @@
         <h2>Experiments</h2>
         <h3 id="now-playing">Play a sound from your Susdeck!</h3>
         <h2>1 experiment available</h2>
-        <div class="experiment">
-            <p>Custom Themes!</p>
-            <input type="text" id="theme-import" placeholder="theme code">
-            <button onclick="importTheme()">Import Theme</button>
-            <button onclick="removeTheme()">Remove Custom Theme</button>
+        <div id="experiments">
+
         </div>
         <h2>Check back later!</h2>
         <button onclick="susdeckUniversal.socket.emit('c-change')">Remote Reload</button>

@@ -82,7 +82,7 @@ function loadPage (pageNumber) {
 
       document.getElementById('mhe').innerText = 'Editing ' + allKeypress[i].innerText;
       document.getElementById('newname').value = allKeypress[i].innerText;
-      document.getElementById('newpath').value = allKeypress[i].getAttribute('data-key');
+      document.getElementById('newpath').value = allKeypress[i].getAttribute('data-path');
 
       modal.style.display = 'block';
     };

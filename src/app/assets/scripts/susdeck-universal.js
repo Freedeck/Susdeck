@@ -10,28 +10,32 @@ const susdeckUniversal = {
       { 'template-columns': 'repeat(4,1fr)' },
       { 'background-size': '400% 400%' },
       { 'font-family': 'Inter' },
-      { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' }
+      { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' },
+      { 'modal-color': 'rgba(0, 179, 255, 1)' }
     ],
     Fun: [
       { 'icon-count': 3 },
       { 'template-columns': 'repeat(5,1fr)' },
       { 'background-size': '400% 100%' },
       { 'font-family': 'Poppins' },
-      { background: '45deg, rgba(245, 75, 66, 1) 0%, rgba(245, 162, 29, 1) 33%, rgba(195, 245, 29, 1) 66%, rgba(0, 179, 255, 1) 100%' }
+      { background: '45deg, rgba(245, 75, 66, 1) 0%, rgba(245, 162, 29, 1) 33%, rgba(195, 245, 29, 1) 66%, rgba(0, 179, 255, 1) 100%' },
+      { 'modal-color': 'rgba(245, 162, 29, 1)' }
     ],
     Dark: [
       { 'icon-count': 8 },
       { 'template-columns': 'repeat(4,1fr)' },
       { 'background-size': '400% 400%' },
       { 'font-family': 'Rubik' },
-      { background: '45deg, rgba(59, 59, 59, 1) 0%, rgba(94, 94, 94, 1) 33%, rgba(59, 59, 59, 1) 66%, rgba(87, 87, 87, 1) 100%' }
+      { background: '45deg, rgba(59, 59, 59, 1) 0%, rgba(94, 94, 94, 1) 33%, rgba(59, 59, 59, 1) 66%, rgba(87, 87, 87, 1) 100%' },
+      { 'modal-color': 'rgba(0,0,0, 0.75)' }
     ],
     Blue: [
       { 'icon-count': 8 },
       { 'template-columns': 'repeat(4,1fr)' },
       { background: '45deg, rgba(0, 183, 255, 1) 0%, rgba(33, 192, 255, 1) 33%, rgba(0, 183, 255, 1) 66%, rgba(33, 192, 255, 1) 100%' },
       { 'background-size': '400% 400%' },
-      { 'font-family': 'Inter' }
+      { 'font-family': 'Inter' },
+      { 'modal-color': 'rgba(33, 192, 255, 1)' }
     ],
     'Catppuccin Mocha': [
       { 'icon-count': 8 },
@@ -39,14 +43,16 @@ const susdeckUniversal = {
       { 'background-size': '400% 400%' },
       { 'font-family': 'Rubik' },
       { background: '45deg, rgba(30, 30, 40, 1) 0%, rgba(49,50,68, 1) 33%, rgba(30, 30, 40, 1) 66%, rgba(49,50,68, 1) 100%' },
-      { 'btn-background': 'rgba(180, 190, 254, 0.15)' }
+      { 'btn-background': 'rgba(180, 190, 254, 0.15)' },
+      { 'modal-color': 'rgb(203, 166, 247)' }
     ],
     'Compact Default': [
       { 'icon-count': 11 },
       { 'template-columns': 'repeat(5,1fr)' },
       { 'background-size': '400% 400%' },
       { 'font-family': 'Inter' },
-      { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' }
+      { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' },
+      { 'modal-color': 'rgba(0, 179, 255, 1)' }
     ]
   },
   retrieveSession: function () {

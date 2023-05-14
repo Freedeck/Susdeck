@@ -7,6 +7,7 @@
   --sd-background: 45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%;
   --sd-rotationDegrees: 2deg;
   --sd-btn-background: rgba(0, 0, 0, 0.5);
+  --sd-modal-color: rgb(15, 140, 194);
 }
 
 body {
@@ -161,10 +162,8 @@ button {
   margin: 5% auto;
   /* 15% from the top and centered */
   padding: 20px;
-  border: 1px solid #888;
   width: 60%;
   /* Could be more or less, depending on screen size */
-  border: solid 5px black;
   border-radius: 8px;
 }
 
@@ -186,7 +185,7 @@ button {
 /* Modal Header */
 .modal-header {
   padding: 2px 16px;
-  background-color: #5cb85c;
+  background-color: var(--sd-modal-color);
   color: white;
 }
 
@@ -198,7 +197,7 @@ button {
 /* Modal Footer */
 .modal-footer {
   padding: 2px 16px;
-  background-color: #5cb85c;
+  background-color: var(--sd-modal-color);
   color: white;
 }
 

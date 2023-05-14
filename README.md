@@ -66,7 +66,7 @@ Susdeck has not had many devices tested on it. For now, these are the officially
 | iPod Touch 7th Gen | Yes.          | Yes.             | Yes.               | Susdeck was made for the iPod Touch 7th gen  |
 | iPhone 12          | Yes.          | Yes.             | Yes.           | No comment |
 | iPhone XR          | Yes.          | Yes.             | Yes.           | No comment |
-| Samsung S22+         | Yes.          | Yes.             | Yes.           | Does need to stay in browser unlike iOS devices |
+| Samsung S22+         | Yes.          | Yes.             | Yes.           | You will need to scroll down to "fullscreen" the app. |
 | iPad Pro 2nd Gen 10.5" (A10X)          | Yes.          | Yes.             | Yes.           | No comment |
 | Desktop         | Yes.          | No.             | Almost.           | Susdeck is made for touchscreen devices when you can't instantly press a key. |
 

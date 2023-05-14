@@ -41,12 +41,6 @@ const pages = [
 
 const experiments = [
   {
-    name: 'Custom Themes',
-    html: `<input type="text" id="theme-import" placeholder="theme code">
-    <button onclick="importTheme()">Import Theme</button>
-    <button onclick="removeTheme()">Remove Custom Theme</button>`
-  },
-  {
     name: 'Switchable Audio Inputs',
     uuid: 'sai',
     html: '<label for="sai">Select audio input</label><select id="sai"></select>'

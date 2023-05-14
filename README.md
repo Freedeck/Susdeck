@@ -30,17 +30,24 @@ And finally, here's a preview of the companion theme screen.
 
 ## How do I use Susdeck?
 
-**First, you will need VB-cable (Virtual audio cable Susdeck uses)**
+**First, you will need any virtual audio cable (Such as VB-Cable, Susdeck's default)**
 Clone the repo, then change `Settings.js.default` to only have it's extension `.js`.  
 Next, modify the settings however you want, you can add authentication, a password, and a message for when somebody tries to login to your Susdeck.  
 
 Now, for the fun part. Run `npm run setup` and then `npm run start`.  
 
-Susdeck Companion will open. **This is normal!** This is how you will configure your Susdeck.  
-Now your computer is hosting a server on port 5754 (or your `PORT` in the env). Get any iOS device and go to `yourlocalip:5754` in Safari.  
+Susdeck Companion will open.  
+**This is normal!**  
+This is how you will configure your Susdeck.  
+Now your computer is hosting a server on port 5754 (or your `PORT` in `Settings.js`). Get any device and go to `yourlocalip:5754` in a web browser (for iOS, use Safari for best results).  
+
+## iOS EXCLUSIVE
+
 Now, add the app to your home screen by pressing the share button.  
 Next, open the app on your device. It will be full screen.  
 **Susdeck is best used in landscape/horizontal mode.**
+
+## Ok, back to normal
 
 There are preloaded keys, for example `Shooting` will make CoD shooting sounds play through your computer and your VB-Cable.
 

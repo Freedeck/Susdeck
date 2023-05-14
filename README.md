@@ -39,10 +39,13 @@ Now, for the fun part. Run `npm run setup` and then `npm run start`.
 Susdeck Companion will open.  
 **This is normal!**  
 This is how you will configure your Susdeck.  
-Now your computer is hosting a server on port 5754 (or your `PORT` in `Settings.js`). Get any device and go to `yourlocalip:5754` in a web browser (for iOS, use Safari for best results).  
+Now your computer is hosting a server on port 5754 (or your `PORT` in `Settings.js`).  
+Susdeck will tell you in the terminal what IP to go to.
+Get any device and go to `yourlocalip:5754` in a web browser (for iOS, use Safari for best results).  
 
 ## iOS EXCLUSIVE
 
+**You must use Safari for this.**  
 Now, add the app to your home screen by pressing the share button.  
 Next, open the app on your device. It will be full screen.  
 **Susdeck is best used in landscape/horizontal mode.**

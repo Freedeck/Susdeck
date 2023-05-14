@@ -5,7 +5,6 @@ const q = [];
 const countOnEachPage = 8;
 
 addToHTMLlog('Waiting for host...');
-Susaudio.init();
 
 susdeckUniversal.socket.on('server_connected', function () {
   removeFromHTMLlog('Waiting for host...');

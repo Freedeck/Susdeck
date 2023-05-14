@@ -6,9 +6,6 @@ let currentPage = 0;
 let keyList = [];
 const klD = [];
 
-// eslint-disable-next-line no-undef
-Susaudio.init();
-
 addToHTMLlog('Waiting for host...');
 
 susdeckUniversal.socket.on('server_connected', function () {

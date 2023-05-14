@@ -45,6 +45,11 @@ const experiments = [
     html: `<input type="text" id="theme-import" placeholder="theme code">
     <button onclick="importTheme()">Import Theme</button>
     <button onclick="removeTheme()">Remove Custom Theme</button>`
+  },
+  {
+    name: 'Switchable Audio Inputs',
+    uuid: 'sai',
+    html: '<label for="sai">Select audio input</label><select id="sai"></select>'
   }
 ];
 
@@ -67,11 +72,27 @@ pages.forEach(page => {
 
 experiments.forEach(experiment => {
   if (document.title !== 'Susdeck Companion - Experiments' || typeof document.getElementById('experiments') === 'undefined') return;
+  document.getElementById('exp-count').innerText = `${experiments.length} experiment${experiments.length > 1 ? 's' : ''} available`;
   const newDiv = document.createElement('div');
   newDiv.className = 'experiment';
   newDiv.innerHTML = `<p>${experiment.name}</p>${experiment.html}`;
   document.getElementById('experiments').appendChild(newDiv);
 });
+
+setTimeout(() => {
+  Susaudio._player.devicesList.forEach(device => {
+    const option = document.createElement('option');
+    option.value = device.name;
+    option.innerText = device.name;
+    option.setAttribute('data-sai-id', device.id);
+    document.getElementById('sai').appendChild(option);
+  });
+}, 250);
+
+document.getElementById('sai').onchange = function (ev) {
+  Susaudio.setSink(document.getElementById('sai').options[document.getElementById('sai').selectedIndex].getAttribute('data-sai-id'));
+  console.log('Changed sink')
+};
 
 document.body.onload = () => {
   const susdeckLogo = document.createElement('img');

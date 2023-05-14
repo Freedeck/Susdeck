@@ -82,14 +82,18 @@ Susdeck has not had many devices tested on it. For now, these are the officially
 
 ## Tested Desktop Environments
 
-Susdeck has not had many OS/Distros/DEs tested on it. Information on how to contribute to testing will be added later. For now, these are the officially supported devices.
-| Tested OS/Distro/DE      | Does it work? | Is it practical? | Final Notes                                  |
+Susdeck (Companion) has not had many OS/Distros/DE/WMs tested on it. Information on how to contribute to testing will be added later. For now, these are the officially supported devices.
+| Tested OS/Distro/DE/WM      | Does it work? | Is it practical? | Final Notes                                  |
 |--------------------|---------------|------------------|----------------------------------------------|
 | OS: Windows 10/11 | Yes.          | Yes.             | No comment  |
 | Distro: Arch, DE: `xfce4`          | Yes.          | Yes.             | You'll need `pulseaudio` or `pipewire` alongside ALSA/`alsa-utils` for audio. Info will be added for VB-Cable alternatives later. |
+| Distro: Arch, DE: `lxde`          | Yes.          | Yes.             | You'll need `pulseaudio` or `pipewire` alongside ALSA/`alsa-utils` for audio. Info will be added for VB-Cable alternatives later. |
+| Distro: Arch, DE: `deepin`          | Yes.          | Yes.             | You'll need `pulseaudio` or `pipewire` alongside ALSA/`alsa-utils` for audio. Info will be added for VB-Cable alternatives later. |
+| Distro: Arch, DE: `cutefish`          | Yes.          | Yes.             | You'll need `pulseaudio` or `pipewire` alongside ALSA/`alsa-utils` for audio. Info will be added for VB-Cable alternatives later. |
+| Distro: Arch, DE: `gnome`          | Yes.          | Yes.             | You'll need `pulseaudio` or `pipewire` alongside ALSA/`alsa-utils` for audio. Info will be added for VB-Cable alternatives later. |
 | Distro: Arch, WM: `openbox`          | Yes.          | Yes.             | You'll need `pulseaudio` or `pipewire` alongside ALSA/`alsa-utils` for audio. Info will be added for VB-Cable alternatives later. |
 | Distro: Arch, WM: `i3`          | Yes.          | Yes.             | You'll need `pulseaudio` or `pipewire` alongside ALSA/`alsa-utils` for audio. Info will be added for VB-Cable alternatives later. |
-| Distro: Arch, WM: `hyprland`          | Yes.          | Yes.             | Wayland WM. You'll need `pulseaudio` or `pipewire` alongside ALSA/`alsa-utils` for audio. Info will be added for VB-Cable alternatives later. |
+| Distro: Arch, WM: `Hyprland`          | Yes.          | Yes.             | Wayland WM. You'll need `pulseaudio` or `pipewire` alongside ALSA/`alsa-utils` for audio. Info will be added for VB-Cable alternatives later. |
 | Distro: Mint, DE: any         | Yes.          | Yes.             | VB-Cable alternative info will be added later. |
 | Distro: Fedora, DE: `gnome`        | Yes.          | Yes.             | VB-Cable alternative info will be added later. |
 | Distro: Pop!_OS, DE: `gnome`        | Yes.          | Yes.             | VB-Cable alternative info will be added later. |

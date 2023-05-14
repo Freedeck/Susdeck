@@ -3,7 +3,6 @@
   "version": "3.8.0",
   "description": "Susdeck is love. Susdeck is life. Susdeck is not a Stream Deck.",
   "dependencies": {
-    "electron-prompt": "^1.7.0",
     "express": "^4.17.1",
     "json-beautify": "^1.1.1",
     "robotjs": "^0.6.0",

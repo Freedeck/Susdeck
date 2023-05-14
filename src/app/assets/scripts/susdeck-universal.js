@@ -216,7 +216,7 @@ document.body.onload = () => {
     if (!susdeckUniversal.isInDebug) return;
     footer.innerHTML = '<h3>In ' + susdeckUniversal.debugStat + ' Mode</h3>';
     footer.style.display = 'block';
-  }, 12);
+  }, 20);
 };
 
 function addToHTMLlog (text) {

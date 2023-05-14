@@ -14,6 +14,8 @@ const ev = new Event('c2sd_login', (socket, args) => {
     socket.sessionID = sid;
     socket.emit('s2cs_login', sid, '../../');
     return 'ValidateSession:' + sid;
+  } else {
+    socket.emit('s2ca_incorrect_pass');
   }
 });
 

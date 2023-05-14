@@ -114,6 +114,20 @@ const susdeckUniversal = {
   isExperimental: () => {
     return susdeckUniversal.load('experiments') ? susdeckUniversal.load('experiments') : 'false';
   },
+  sendToast: (message) => {
+    const s = document.createElement('div');
+    s.id = 'snackbar';
+    s.innerText = message;
+
+    // Add the "show" class to DIV
+    s.className = 'show';
+    document.body.appendChild(s);
+    // After 3 seconds, remove the show class from DIV
+    setTimeout(function () {
+      s.className = s.className.replace('show', '');
+      s.remove();
+    }, 3000);
+  },
   isDevBranch: false,
   iconCount: 8,
   debugStat: 'Debug',
@@ -129,6 +143,10 @@ susdeckUniversal.socket.on('server_connected', () => {
 susdeckUniversal.socket.on('server_shutdown', () => {
   window.location.replace('/assets/tools/offline.html');
 });
+
+susdeckUniversal.socket.on('server_notification', (message) => {
+  susdeckUniversal.sendToast(message);
+})
 
 susdeckUniversal.socket.on('set-theme', (theme) => {
   susdeckUniversal.save('theme', theme);

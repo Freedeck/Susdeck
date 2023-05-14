@@ -6,6 +6,11 @@ susdeckUniversal.socket.on('server_connected', function () {
   loaded = true;
   susdeckUniversal.socket.emit('c2sr_login_cont', susdeckUniversal.load('sid'));
 });
+
+susdeckUniversal.socket.on('s2ca_incorrect_pass', function () {
+  susdeckUniversal.sendToast('Incorrect password!');
+});
+
 susdeckUniversal.socket.on('user_ack_cont', function (status) {
   if (status === 'session_expired') {
     susdeckUniversal.save('session', '');
@@ -31,5 +36,6 @@ susdeckUniversal.socket.on('s2cs_login', (sessionID, g) => {
 
 // eslint-disable-next-line no-unused-vars
 function submit () {
+  susdeckUniversal.sendToast('Logging you in..');
   susdeckUniversal.socket.emit('c2sd_login', document.getElementById('password').value);
 }

@@ -3,6 +3,7 @@ const debug = require('../util/debug');
 const fs = require('fs');
 const rob = require('robotjs');
 const sbc = require('../settings/sounds');
+const set = require('../../Settings');
 
 const apiEvents = new Map();
 const sockApiEvents = new Map();
@@ -36,6 +37,7 @@ const init = (io, app) => {
     }, 150);
 
     socket.on('keypress', function (keyInput) {
+      if (set.UseAuthentication && !sessions.includes(socket.sid)) { socket.emit('session_invalid'); return; };
       debug.log(JSON.stringify(keyInput));
       if (keyInput.name) {
         if (keyInput.name === 'Stop All') io.emit('press-sound', 'Stop All', 'Stop All');
@@ -62,6 +64,7 @@ const init = (io, app) => {
         debug.log(sessionID + ' is valid!');
         console.log('Authenticated client @ ' + new Date());
         socket.emit('session_valid');
+        socket.sid = sessionID;
       } else {
         debug.log(sessionID + ' is invalid, kicking out user..');
         socket.emit('session_invalid');

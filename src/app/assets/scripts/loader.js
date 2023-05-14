@@ -34,6 +34,11 @@ susdeckUniversal.socket.on('session_valid', function () {
   loaded = true; // Keep page from reloading
   document.getElementById('loading').style.display = 'none';
   loadPage(0);
+
+  if (!susdeckUniversal.load('welcomed')) {
+    susdeckUniversal.sendToast('Welcome to Susdeck! Press any button to play a sound on your computer!');
+    susdeckUniversal.save('welcomed', true);
+  }
 });
 
 susdeckUniversal.socket.on('session_invalid', function () { // The server has restarted, and your session is invalid

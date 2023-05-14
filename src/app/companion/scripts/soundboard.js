@@ -13,9 +13,7 @@ susdeckUniversal.socket.on('server_connected', function () {
   setTimeout(() => {
     document.getElementById('console').style.display = 'none';
     if (susdeckUniversal.isInDebug === true) {
-      // eslint-disable-next-line no-undef
       Sounds.forEach(function (s) {
-        // eslint-disable-next-line no-undef
         document.getElementById('keys').innerHTML += `<div><h3>${s.name}</h3><h4>${soundDir + s.path}</h4></div>`;
       });
     }

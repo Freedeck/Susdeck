@@ -9,32 +9,32 @@ const pages = [
   {
     name: 'Home',
     page: 'index.html',
-    icon: 'img/home.png'
+    icon: 'img/home.svg'
   },
   {
     name: 'Themes',
     page: 'themes.html',
-    icon: 'img/themes.png'
+    icon: 'img/themes.svg'
   },
   {
     name: 'Soundboard',
     page: 'soundboard.html',
-    icon: 'img/sounds.png'
+    icon: 'img/sounds.svg'
   },
   {
     name: 'Icon Editor',
     page: 'iconEditor.html',
-    icon: 'img/icon.png'
+    icon: 'img/icon.svg'
   },
   {
     name: 'Settings',
     page: 'settings.html',
-    icon: 'img/settings.png'
+    icon: 'img/settings.svg'
   },
   {
     name: 'Experiments',
     page: 'experiments.html',
-    icon: 'img/experiments.png',
+    icon: 'img/experiments.svg',
     experimental: true
   }
 ];

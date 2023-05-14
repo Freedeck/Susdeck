@@ -8,11 +8,6 @@ function setTheme (t) {
 }
 
 const tc = document.getElementById('themechoices');
-/*
-  <button onclick="setTheme('Default')">Default Theme</button>
-        <button onclick="setTheme('Blue')">Blue Theme</button>
-        <button onclick="setTheme('Dark')">Dark Theme</button>
-        */
 Object.keys(susdeckUniversal.themes).forEach(key => {
   const newbutton = document.createElement('button');
   newbutton.onclick = () => {

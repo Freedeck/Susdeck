@@ -18,6 +18,9 @@
         <h2>Soundboard</h2>
         <button onclick="socket.emit('c-change')">Remote Reload</button>
         <button onclick="socket.emit('press-sound', '--Stop_all', 'Stop All')">Stop All</button>
+        <br />
+        <br />
+        <label for="sai"><strong>Select VB-Cable (or other output)</strong></label><select id="sai"></select>
         <div id="console"></div>
         <h2 id="now-playing">Welcome to the Susdeck Soundboard. Play any sound on your Susdeck.</h2>
         <label for="out-vol">Volume</label><input type="range" min="0" max="1" step="0.1" value="1" id="out-vol" onchange="volChanged()">

@@ -40,11 +40,6 @@ const pages = [
 ];
 
 const experiments = [
-  {
-    name: 'Switchable Audio Inputs',
-    uuid: 'sai',
-    html: '<label for="sai">Select audio input</label><select id="sai"></select>'
-  }
 ];
 
 pages.forEach(page => {
@@ -74,7 +69,7 @@ experiments.forEach(experiment => {
 });
 
 setTimeout(() => {
-  if (document.title !== 'Susdeck Companion - Experiments' || typeof document.getElementById('experiments') === 'undefined') return;
+  if (document.title !== 'Susdeck Companion - Soundboard') return;
   Susaudio._player.devicesList.forEach(device => {
     const option = document.createElement('option');
     option.value = device.name;

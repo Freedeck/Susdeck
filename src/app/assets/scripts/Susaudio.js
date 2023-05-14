@@ -10,6 +10,7 @@ const Susaudio = {
     sinkId: null,
     timeSinceLastRequest: 0,
     queue: [],
+    devicesList: [],
     audioEndedCallback: function () {
       Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this);
     }
@@ -17,30 +18,38 @@ const Susaudio = {
   init: async () => {
     const devices = await navigator.mediaDevices.enumerateDevices();
     devices.forEach(device => {
+      Susaudio.devicesList.push(device);
       if (device.label === 'CABLE Input (VB-Audio Virtual Cable)' || device.label === 'Companion Soundboard In') {
         const audio = new Audio();
-        audio.setSinkId(device.deviceId);
+        audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
         Susaudio._player.sinkId = device.deviceId;
       }
     });
   },
+  setSink: async (sinkId) => {
+    const audio = new Audio();
+    audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
+    Susaudio._player.sinkId = sinkId; // Set global sink ID
+  },
   playSound: async (audioSource, audioName, sa_isNotVB = false) => {
-    if (Susaudio._player.timeSinceLastRequest < 2) return;
-    const audio = new Audio(audioSource);
+    if (Susaudio._player.timeSinceLastRequest < 2) return; // Make sure we haven't just tried to make a request in the last 2ms
+    const audio = new Audio(audioSource); // Create a new audio object
+    // Setup all Susaudio params
     audio.preservesPitch = Susaudio._player.preservesPitch;
     audio.playbackRate = Susaudio._player.pitch;
     audio.volume = Susaudio._player.volume;
     audio.isSusaudio = true;
     audio.saName = audioName;
     audio.isNotVB = sa_isNotVB;
+    // Check for if this is loopback to user speakers
     if (audio.isNotVB === false) {
       await audio.setSinkId(Susaudio._player.sinkId);
       susdeckUniversal.save('_susaudio_playlist', susdeckUniversal.load('_susaudio_playlist') + ',' + audio.saName);
     }
     audio.play();
     audio.onended = Susaudio._player.audioEndedCallback;
-    Susaudio._player.queue.push(audio);
-    Susaudio._player.timeSinceLastRequest = 0;
+    Susaudio._player.queue.push(audio); // Add this to the queue
+    Susaudio._player.timeSinceLastRequest = 0; // Reset time since last request
   },
   clearPlaylist: function () {
     susdeckUniversal.save('_susaudio_playlist', '');
@@ -67,16 +76,16 @@ const Susaudio = {
   },
   changeAllPlayingPitch: (num) => {
     Susaudio._player.queue.forEach(audio => {
-      audio.pause();
-      audio.preservesPitch = false;
+      audio.pause(); // Let us edit the object
+      audio.preservesPitch = false; // Change it real quick
       audio.playbackRate = num;
-      audio.play();
+      audio.play(); // Start playing again
     });
   }
 };
 
 Audio.prototype.stop = function () {
-  if (!this.isSusaudio) { this.stop(); return; }
+  if (!this.isSusaudio) { this.stop(); return; } // This is a custom stop function meant to Susaudio the audio
   this.pause();
   this.currentTime = 0;
   Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this);
@@ -84,7 +93,7 @@ Audio.prototype.stop = function () {
 // other functions
 function _sa_removeFromArray (arr, value) {
   return arr.filter(function (ele) {
-    return ele !== value;
+    return ele !== value; // Filter out
   });
 }
 

@@ -123,6 +123,7 @@ const init = (io, app) => {
     if (typeof sig === 'string') {
       // call your async task here and then call process.exit() after async task is done
       io.emit('server_shutdown');
+      io.emit('server_notification', 'Server shutting down!');
     }
     console.log('Sent shutdown message to Susdeck client');
 

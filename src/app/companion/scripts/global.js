@@ -80,6 +80,7 @@ experiments.forEach(experiment => {
 });
 
 setTimeout(() => {
+  if (document.title !== 'Susdeck Companion - Experiments' || typeof document.getElementById('experiments') === 'undefined') return;
   Susaudio._player.devicesList.forEach(device => {
     const option = document.createElement('option');
     option.value = device.name;
@@ -89,10 +90,12 @@ setTimeout(() => {
   });
 }, 250);
 
-document.getElementById('sai').onchange = function (ev) {
-  Susaudio.setSink(document.getElementById('sai').options[document.getElementById('sai').selectedIndex].getAttribute('data-sai-id'));
-  console.log('Changed sink')
-};
+if (document.getElementById('sai')) {
+  document.getElementById('sai').onchange = function (ev) {
+    Susaudio.setSink(document.getElementById('sai').options[document.getElementById('sai').selectedIndex].getAttribute('data-sai-id'));
+    console.log('Changed sink');
+  };
+}
 
 document.body.onload = () => {
   const susdeckLogo = document.createElement('img');

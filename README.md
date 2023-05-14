@@ -48,28 +48,15 @@ There are preloaded keys, for example `Shooting` will make CoD shooting sounds p
 
 Susdeck processes keys & plays sounds at the front-end, and it uses robotjs & Companion to press/play them on your computer.  
 It is very easy to add your own macros/sounds.  
-All you need to do is edit `src/settings/sounds.js` to your liking using the above instructions.  
-**Icons are not required for any macro/sound!**  
-To add a sound, look for `const Sounds =` and go to the ending tag `]`. Next, you'll want to insert this snippet:
+All you need to do is use Companion!
+To add a sound, start Susdeck with `npm run start`.  
+Wait for Companion to open, and press the *second* paintbrush icon.  
+Now, press `New Sound`. You might need to press `Next Page` to scroll through the pages to find the sound.  
+Once you do, click it.  
+You are now able to edit the sound path and name. Icon editing will be supported in the future.  
 
-```js
-        {
-            name: 'What The Dog Doin?',
-            icon: 'susdeck.png'
-        }
-```
-
-You'll also need to edit `src/settings/soundboard.js` to link it to an audio file. It's the same process, except you'll need to insert (& change) this snippet:
-
-```js
-        { 
-            name: 'What the Dog Doin?', 
-            path: 'what_the_dd.mp3' 
-        },
-```
-
-**Make sure that `what_the_dd.mp3` or any other file you use is inside of `src/app/assets/sounds` or it will not work!**  
-Congratulations, you have added your own sound! Susdeck Companion will soon be able to do this process automagically.
+**Make sure that anything in the `Sound Path` is inside of `src/app/assets/sounds` or it will not work!**  
+Congratulations, you have added your own sound, all using Susdeck Companion's magic.
 
 ## Tested Devices
 

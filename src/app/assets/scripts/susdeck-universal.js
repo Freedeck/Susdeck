@@ -164,7 +164,6 @@ susdeckUniversal.socket.on('set-theme', (theme) => {
           try {
             autosort(property[key]);
           } catch (err) {
-            console.log('Autosort failed: is client companion?');
           }
         }
       });

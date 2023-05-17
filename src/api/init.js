@@ -89,6 +89,9 @@ const init = (io, app) => {
             const t = callback.split('=')[1];
             io.emit('custom_theme', t);
           }
+          if (callback.startsWith('c-reset')) {
+            io.emit('c-reset');
+          }
         }
       });
     });

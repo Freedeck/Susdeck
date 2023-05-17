@@ -144,9 +144,15 @@ susdeckUniversal.socket.on('server_shutdown', () => {
   window.location.replace('/assets/tools/offline.html');
 });
 
+susdeckUniversal.socket.on('c-reset', () => {
+  susdeckUniversal.remove('welcomed');
+  susdeckUniversal.remove('custom_theme');
+  window.location.replace(window.location.href);
+});
+
 susdeckUniversal.socket.on('server_notification', (message) => {
   susdeckUniversal.sendToast(message);
-})
+});
 
 susdeckUniversal.socket.on('set-theme', (theme) => {
   susdeckUniversal.save('theme', theme);

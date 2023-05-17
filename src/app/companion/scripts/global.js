@@ -40,6 +40,10 @@ const pages = [
 ];
 
 const experiments = [
+  {
+    name: 'Client Resetting',
+    html: '<button onclick="susdeckUniversal.socket.emit(\'c-reset\')">Reset Clients</button><p>Warning: Your custom theme will be removed.</p>'
+  }
 ];
 
 pages.forEach(page => {

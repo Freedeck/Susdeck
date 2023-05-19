@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Inter&family=Rubik&family=Poppins&display=swap');
+@import url('animations.css');
 
 :root {
   --sd-template-columns: repeat(4, 1fr);

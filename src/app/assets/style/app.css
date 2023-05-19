@@ -52,49 +52,17 @@ body {
   overflow: hidden;
 }
 
-@-webkit-keyframes errorBg {
-  0% {
-    background-position: 100% 0%
-  }
-
-  100% {
-    background-position: 15% 100%
-  }
-}
-
-@-moz-keyframes errorBg {
-  0% {
-    background-position: 100% 0%
-  }
-
-  100% {
-    background-position: 15% 100%
-  }
-}
-
-@keyframes errorBg {
-  0% {
-    background-position: 100% 0%
-  }
-
-  100% {
-    background-position: 15% 100%
-  }
-}
-
 button {
   background-color: var(--sd-btn-background);
   border-radius: 8px;
   width: 100px;
   height: 100px;
-
 }
 
 .button {
   border-radius: 8px;
   width: 100px;
   height: 100px;
-
 }
 
 #keys {
@@ -103,7 +71,6 @@ button {
   grid-column-gap: 7px;
   grid-row-gap: 2px;
 }
-
 
 #loading {
   text-align: center;
@@ -128,46 +95,31 @@ button {
 }
 
 .info {
-
   width: 15rem;
   padding: 2px;
 }
 
-/* The Modal (background) */
 .modal {
   display: none;
-  /* Hidden by default */
   position: fixed;
-  /* Stay in place */
   z-index: 1;
-  /* Sit on top */
   left: 0;
   top: 0;
   width: 100%;
-  /* Full width */
   height: 100%;
-  /* Full height */
   overflow: auto;
-  /* Enable scroll if needed */
   background-color: rgb(0, 0, 0);
-  /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4);
-  /* Black w/ opacity */
-
 }
 
-/* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
   margin: 5% auto;
-  /* 15% from the top and centered */
   padding: 20px;
   width: 60%;
-  /* Could be more or less, depending on screen size */
   border-radius: 8px;
 }
 
-/* The Close Button */
 .close {
   color: #aaa;
   float: right;
@@ -182,26 +134,22 @@ button {
   cursor: pointer;
 }
 
-/* Modal Header */
 .modal-header {
   padding: 2px 16px;
   background-color: var(--sd-modal-color);
   color: white;
 }
 
-/* Modal Body */
 .modal-body {
   padding: 2px 16px;
 }
 
-/* Modal Footer */
 .modal-footer {
   padding: 2px 16px;
   background-color: var(--sd-modal-color);
   color: white;
 }
 
-/* Modal Content */
 .modal-content {
   position: relative;
   background-color: #fefefe;
@@ -214,7 +162,6 @@ button {
   animation-duration: 0.4s
 }
 
-/* Add Animation */
 @keyframes animateTop {
   from {
     top: -300px;
@@ -227,30 +174,21 @@ button {
   }
 }
 
-/* The side navigation menu */
+
 .sideNav {
   height: 100%;
-  /* 100% Full-height */
   width: 70px;
-  /* 0 width - change this with JavaScript */
   position: fixed;
-  /* Stay in place */
   z-index: 1;
-  /* Stay on top */
   top: 0;
-  /* Stay at the top */
   left: 0;
   background-color: #111;
-  /* Black*/
   overflow-x: hidden;
-  /* Disable horizontal scroll */
   padding-top: 60px;
-  /* Place content 60px from the top */
   transition: 0.5s;
-  /* 0.5 second transition effect to slide in the sideNav */
 }
 
-/* The navigation menu links */
+
 .sideNav a {
   padding: 8px 8px 8px 16px;
   text-decoration: none;
@@ -260,7 +198,7 @@ button {
   transition: 0.3s;
 }
 
-/* When you mouse over the navigation links, change their color */
+
 .sideNav a:hover {
   background-color: #8f8f8f !important;
   transform: scale(1.1) rotate(var(--sd-rotationDegrees));
@@ -271,14 +209,14 @@ button {
   border-radius: 8px;
 }
 
-/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+
 #main {
   margin-left: 70px;
   transition: margin-left .5s;
   padding: 20px;
 }
 
-/* On smaller screens, where height is less than 450px, change the style of the sideNav (less padding and a smaller font size) */
+
 @media screen and (max-height: 450px) {
   .sideNav {
     padding-top: 15px;
@@ -300,54 +238,31 @@ button {
   width: max-content;
 }
 
-.experiment > p {
-  background-color: rgba(255,255,255,0.25);
+.experiment>p {
+  background-color: rgba(255, 255, 255, 0.25);
   width: fit-content;
   border-radius: 3px;
 }
 
-/* The snackbar - position it at the bottom and in the middle of the screen */
+
 #snackbar {
-  visibility: hidden; /* Hidden by default. Visible on click */
-  min-width: 250px; /* Set a default minimum width */
-  margin-left: -125px; /* Divide value of min-width by 2 */
-  background-color: #333; /* Black background color */
-  color: #fff; /* White text color */
-  text-align: center; /* Centered text */
-  border-radius: 2px; /* Rounded borders */
-  padding: 16px; /* Padding */
-  position: fixed; /* Sit on top of the screen */
-  z-index: 1; /* Add a z-index if needed */
-  left: 50%; /* Center the snackbar */
-  bottom: 30px; /* 30px from the bottom */
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
 }
 
-/* Show the snackbar when clicking on a button (class added with JavaScript) */
+
 #snackbar.show {
-  visibility: visible; /* Show the snackbar */
-  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
-  However, delay the fade out process for 2.5 seconds */
+  visibility: visible;
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
   animation: fadein 0.5s, fadeout 0.5s 2.5s;
-}
-
-/* Animations to fade the snackbar in and out */
-@-webkit-keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
-}
-
-@keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
-}
-
-@-webkit-keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
-}
-
-@keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
 }

@@ -75,3 +75,25 @@
         opacity: 0;
     }
 }
+
+@keyframes animateTop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@media screen and (max-height: 450px) {
+    .sideNav {
+        padding-top: 15px;
+    }
+
+    .sideNav a {
+        font-size: 18px;
+    }
+}

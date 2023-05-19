@@ -162,19 +162,6 @@ button {
   animation-duration: 0.4s
 }
 
-@keyframes animateTop {
-  from {
-    top: -300px;
-    opacity: 0
-  }
-
-  to {
-    top: 0;
-    opacity: 1
-  }
-}
-
-
 .sideNav {
   height: 100%;
   width: 70px;
@@ -188,7 +175,6 @@ button {
   transition: 0.5s;
 }
 
-
 .sideNav a {
   padding: 8px 8px 8px 16px;
   text-decoration: none;
@@ -197,7 +183,6 @@ button {
   display: block;
   transition: 0.3s;
 }
-
 
 .sideNav a:hover {
   background-color: #8f8f8f !important;
@@ -209,22 +194,10 @@ button {
   border-radius: 8px;
 }
 
-
 #main {
   margin-left: 70px;
   transition: margin-left .5s;
   padding: 20px;
-}
-
-
-@media screen and (max-height: 450px) {
-  .sideNav {
-    padding-top: 15px;
-  }
-
-  .sideNav a {
-    font-size: 18px;
-  }
 }
 
 .activePage {
@@ -244,7 +217,6 @@ button {
   border-radius: 3px;
 }
 
-
 #snackbar {
   visibility: hidden;
   min-width: 250px;
@@ -259,7 +231,6 @@ button {
   left: 50%;
   bottom: 30px;
 }
-
 
 #snackbar.show {
   visibility: visible;

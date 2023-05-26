@@ -80,6 +80,7 @@ setTimeout(() => {
     option.value = device.name;
     option.innerText = device.name;
     option.setAttribute('data-sai-id', device.id);
+    if (Susaudio._player.sinkId === device.id) option.selected = true;
     document.getElementById('sai').appendChild(option);
   });
 }, 250);

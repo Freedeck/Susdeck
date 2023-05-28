@@ -188,6 +188,13 @@ button:hover {
   transition: 0.5s;
 }
 
+#themechoices {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 3px;
+  grid-row-gap: 2px;
+}
+
 #sidebar a {
   background-color: #4d4d4d;
   border-radius: 8px;

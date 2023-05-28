@@ -31,10 +31,10 @@
     How are you seeing this?
   </noscript>
   <h1>Freedeck - Settings</h1>
-  <h4>Press the Freedeck icon in the bottom right to go back.</h4>
   <div id="themechoices">
   </div>
-  <button class="keypress white-txt" style="position: absolute; right: 125px; bottom: 0; width: 100px;height: 100px;" onclick="universal.socket.emit('c-change')">Reload All Sessions</button>
+  <button class="keypress white-txt" style="position: absolute; right: 225px; bottom: 0; width: 50px;height: 50px;" onclick="window.location.replace(window.location.href)">Reload This</button>
+  <button class="keypress white-txt" style="position: absolute; right: 125px; bottom: 0; width: 50px;height: 50px;" onclick="universal.socket.emit('c-change')">Reload All</button>
   <a href="/"class="freedeck-logo"><button style="background-image:url('assets/icons/freedeck.png'); background-size: contain;"></button></a>
   <div id="root"></div>
 

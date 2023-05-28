@@ -19,7 +19,7 @@ const Susaudio = {
     const devices = await navigator.mediaDevices.enumerateDevices();
     devices.forEach(device => {
       if (device.kind === 'audiooutput') Susaudio._player.devicesList.push({ name: device.label, id: device.deviceId });
-      if (device.label === 'CABLE Input (VB-Audio Virtual Cable)' || device.label === 'Companion Soundboard In') {
+      if (device.label === 'CABLE Input (VB-Audio Virtual Cable)') {
         const audio = new Audio();
         audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
         if (universal.load('susaudio_sinkid')) return;

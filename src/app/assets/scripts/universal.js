@@ -62,7 +62,7 @@ const universal = {
     return Math.floor(Math.random() * 6969696969699);
   },
   log: function (data) {
-    console.log('[SU] ' + data);
+    universal.socket.emit('c2s_log', data);
   },
   save: function (name, value) {
     localStorage.setItem('_sd_' + name, value);
@@ -193,7 +193,7 @@ universal.socket.on('set-theme', (theme) => {
           try {
             autosort(property[key]);
           } catch (err) {
-            console.log('Autosort failed: is client companion?');
+            universal.log('Autosort failed: is client companion?');
           }
         }
       });

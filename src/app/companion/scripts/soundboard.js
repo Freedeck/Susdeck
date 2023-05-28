@@ -40,7 +40,7 @@ function addToHTMLlog (text) {
   const txt = document.createElement('h2');
   txt.id = text;
   txt.innerText = text;
-  universal.socket.emit('c2s_log', '[COMPANIONSB] ' + text);
+  universal.log('[COMPANIONSB] ' + text);
   document.getElementById('console').appendChild(txt);
 }
 

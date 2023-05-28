@@ -81,6 +81,13 @@ const universal = {
   connectionOn: function (event, callback) {
     universal.socket.on(event, callback);
   },
+  setTheme: (t) => {
+    universal.save('theme', t);
+    universal.socket.emit('c-theme', t);
+    setTimeout(() => {
+      universal.socket.emit('c-change');
+    }, 200);
+  },
   exportTheme: function () {
     // Get the theme and export back its root changeable properties
     // This will make importing themes so much easier

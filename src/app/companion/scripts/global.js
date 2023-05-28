@@ -1,9 +1,5 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-document.getElementById('mySidenav').onmouseover = () => {
-  const rootElem = document.querySelector(':root');
-  rootElem.style.setProperty('--sd-rotationDegrees', Math.ceil(Math.random() * 15) + 'deg');
-};
 
 const pages = [
   {
@@ -46,22 +42,23 @@ const experiments = [
   }
 ];
 
+const sideNav = document.createElement('div');
+sideNav.id = 'sidebar';
+
 pages.forEach(page => {
   if (page.experimental && susdeckUniversal.load('experiments') !== 'true') return;
   const btn = document.createElement('a');
   btn.href = page.page;
-  if (window.location.href.includes(page.page)) {
-    document.title = 'Susdeck Companion - ' + page.name;
-    btn.className = 'activePage';
-  }
   const btnImg = document.createElement('img');
   btnImg.src = page.icon;
   btnImg.alt = page.page + ' Icon';
   btnImg.width = '32';
   btnImg.height = '32';
   btn.appendChild(btnImg);
-  document.getElementById('mySidenav').appendChild(btn);
+  sideNav.appendChild(btn);
 });
+
+document.body.appendChild(sideNav);
 
 experiments.forEach(experiment => {
   if (document.title !== 'Susdeck Companion - Experiments' || typeof document.getElementById('experiments') === 'undefined') return;
@@ -149,3 +146,8 @@ function removeTheme () {
 if (document.body.dataset.page) {
   document.title = 'Freedeck: Companion - ' + document.body.dataset.page;
 }
+
+document.getElementById('sidebar').onmouseover = () => {
+  const rootElem = document.querySelector(':root');
+  rootElem.style.setProperty('--sd-rotationDegrees', Math.ceil(Math.random() * 15) + 'deg');
+};

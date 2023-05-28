@@ -95,7 +95,7 @@ setTimeout(() => {
 if (document.getElementById('sai')) {
   document.getElementById('sai').onchange = function (ev) {
     Susaudio.setSink(document.getElementById('sai').options[document.getElementById('sai').selectedIndex].getAttribute('data-sai-id'));
-    console.log('Changed sink');
+    universal.log('Changed sink');
   };
 }
 

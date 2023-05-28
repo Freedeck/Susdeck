@@ -207,15 +207,16 @@
     </div>
 
     <script>
+        function log(s) { document.getElementById('console').innerText += '\n{Log} ' + s }
         setInterval(() => {
             try {
                 fetch('/').then(res => res.text()).then(res => {
                     window.location.replace("/")
                 }).catch(err => {
-                    console.log('[Server not online, this error is expected]', err)
+                    log('Pinged server', err)
                 })
             } catch (err) {
-                console.log(err)
+                log(err)
             }
         }, 500)
         function noti(message) {

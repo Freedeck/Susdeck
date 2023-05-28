@@ -50,11 +50,6 @@ footer {
   font-family: var(--sd-font-family);
 }
 
-html,
-body {
-  overflow: hidden;
-}
-
 button {
   background-color: var(--sd-btn-background);
   border-radius: 8px;

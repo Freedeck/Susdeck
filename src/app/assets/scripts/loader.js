@@ -92,29 +92,43 @@ function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
   });
 
   // Utility buttons
-  const stopAll = document.createElement('button');
-  stopAll.className = 'keypress white-txt';
-  stopAll.innerText = 'Stop All';
-  stopAll.onclick = () => {
-    universal.socket.emit('keypress', {
-      macro: false,
-      name: allKeypress[i].innerHTML
-    });
-  };
-  const reloadButton = document.createElement('button');
-  reloadButton.onclick = () => {
-    window.location.reload();
-  };
-  reloadButton.className = 'white-txt';
-  reloadButton.innerText = 'Reload';
-  const freedeck = document.createElement('a');
-  freedeck.className = 'button';
-  freedeck.style.backgroundImage = "url('assets/icons/freedeck.png')";
-  freedeck.style.backgroundSize = 'contain';
-  freedeck.href = 'theme.html';
-  keys.appendChild(stopAll);
-  keys.appendChild(reloadButton);
-  keys.appendChild(freedeck);
+  const utils = [
+    {
+      name: 'Stop All',
+      onclick: () => {
+        universal.socket.emit('keypress', {
+          macro: false,
+          name: 'Stop All'
+        });
+      }
+    },
+    {
+      name: 'Reload',
+      onclick: () => {
+        window.location.reload();
+      }
+    },
+    {
+      id: 'freedeck'
+    }
+  ];
+  utils.forEach((util) => {
+    if (util.id === 'freedeck') {
+      const freedeck = document.createElement('a');
+      freedeck.className = 'button';
+      freedeck.style.backgroundImage = "url('assets/icons/freedeck.png')";
+      freedeck.style.backgroundSize = 'contain';
+      freedeck.href = 'theme.html';
+      keys.appendChild(freedeck);
+      return;
+    }
+    const tempButton = document.createElement('button');
+    tempButton.className = 'keypress white-txt';
+    tempButton.innerText = util.name;
+    tempButton.onclick = util.onclick;
+    keys.appendChild(tempButton);
+  });
+
   document.body.appendChild(keys);
 
   // Setup the button press functions

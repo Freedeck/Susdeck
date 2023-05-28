@@ -44,6 +44,9 @@ const experiments = [
 
 const sideNav = document.createElement('div');
 sideNav.id = 'sidebar';
+const tooltip = document.createElement('p');
+tooltip.id = 'icon-tip';
+document.body.appendChild(tooltip);
 
 pages.forEach(page => {
   if (page.experimental && universal.load('experiments') !== 'true') return;
@@ -54,6 +57,12 @@ pages.forEach(page => {
   btnImg.alt = page.page + ' Icon';
   btnImg.width = '32';
   btnImg.height = '32';
+  btn.onmouseenter = (ev) => {
+    tooltip.innerText = page.name;
+  };
+  btn.onmouseleave = (ev) => {
+    tooltip.innerText = '';
+  };
   btn.appendChild(btnImg);
   sideNav.appendChild(btn);
 });

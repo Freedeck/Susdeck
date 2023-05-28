@@ -173,20 +173,27 @@ button:hover {
 }
 
 #sidebar {
-  height: 100%;
-  width: 70px;
+  /* Pure magic right here. */
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  height: 15%;
+  width: 100%;
   position: fixed;
   z-index: 1;
-  top: 0;
+  top: 85%;
   left: 0;
   background-color: #111;
-  overflow-x: hidden;
-  padding-top: 60px;
   transition: 0.5s;
 }
 
 #sidebar a {
-  padding: 8px 8px 8px 16px;
+  background-color: #4d4d4d;
+  border-radius: 8px;
+  padding: 8px 18px 8px 16px;
+  width: max-content;
+  height: max-content;
   text-decoration: none;
   font-size: 25px;
   color: #818181;
@@ -199,13 +206,20 @@ button:hover {
   transform: scale(1.1) rotate(var(--sd-rotationDegrees));
 }
 
-#sidebar a {
-  background-color: #4d4d4d;
-  border-radius: 8px;
+#icon-tip {
+  background-color: #333;
+  border-radius: 5px;
+  width: max-content;
+  position: absolute;
+  top: 77%;
+  font-size: large;
+}
+
+#icon-tip:hover {
+  animation: goUp 1s;
 }
 
 #main {
-  margin-left: 70px;
   transition: margin-left .5s;
   padding: 20px;
 }

@@ -97,3 +97,12 @@
         font-size: 18px;
     }
 }
+
+@keyframes goUp {
+    0% {
+        top: 80%;
+    }
+    100% {
+        top: 77%;
+    }
+}

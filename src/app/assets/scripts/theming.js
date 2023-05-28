@@ -50,7 +50,6 @@ universal.socket.on('session_valid', function () {
 
 universal.socket.on('session_invalid', function () { // The server has restarted, and your session is invalid
   localStorage.setItem('_sdsession', '');
-  document.getElementById('keys').remove();
   document.getElementById('loading').style.display = 'block';
   document.getElementById('loading').innerHTML = `<h1>Freedeck</h1>
   <p>Your session expired - We're trying to log you back in.</p>

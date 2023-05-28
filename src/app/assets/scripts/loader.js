@@ -115,6 +115,7 @@ function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
   keys.appendChild(stopAll);
   keys.appendChild(reloadButton);
   keys.appendChild(freedeck);
+  document.body.appendChild(keys);
 
   // Setup the button press functions
   const allKeypress = document.getElementsByClassName('keypress');
@@ -135,8 +136,6 @@ function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
       }
     };
   }
-
-  document.body.appendChild(keys);
 }
 
 /* eslint-disable no-undef */

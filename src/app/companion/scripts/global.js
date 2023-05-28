@@ -72,7 +72,7 @@ pages.forEach(page => {
 document.body.appendChild(sideNav);
 
 experiments.forEach(experiment => {
-  if (typeof document.getElementById('experiments') === 'undefined') return;
+  if (!document.body.contains(document.getElementById('experiments'))) return;
   document.getElementById('exp-count').innerText = `${experiments.length} experiment${experiments.length > 1 ? 's' : ''} available`;
   const newDiv = document.createElement('div');
   newDiv.className = 'experiment';

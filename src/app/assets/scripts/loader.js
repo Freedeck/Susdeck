@@ -110,6 +110,7 @@ function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
   freedeck.className = 'button';
   freedeck.style.backgroundImage = "url('assets/icons/freedeck.png')";
   freedeck.style.backgroundSize = 'contain';
+  freedeck.href = 'theme.html';
   keys.appendChild(stopAll);
   keys.appendChild(reloadButton);
   keys.appendChild(freedeck);

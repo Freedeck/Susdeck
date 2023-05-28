@@ -22,15 +22,20 @@
 
 <body data-sdu-footer-exempt="true">
   <div id="loading">
-    <h1>Freedeck</h1>
-    <p>Please wait a second...</p>
+    <h1>Freedeck - Settings</h1>
+    <p>We're just checking that you're logged in.</p>
     <button onclick="universal.save('session',''); window.location.reload()">Reset Session</button>
     <div id="console"></div>
   </div>
   <noscript>
     How are you seeing this?
   </noscript>
-  <div id="keys"><div class="dummy"></div></div>
+  <h1>Freedeck - Settings</h1>
+  <h4>Press the Freedeck icon in the bottom right to go back.</h4>
+  <div id="themechoices">
+  </div>
+  <button class="keypress white-txt" style="position: absolute; right: 125px; bottom: 0; width: 100px;height: 100px;" onclick="universal.socket.emit('c-change')">Reload All Sessions</button>
+  <a href="/"class="freedeck-logo"><button style="background-image:url('assets/icons/freedeck.png'); background-size: contain;"></button></a>
   <div id="root"></div>
 
   <!-- Libraries -->
@@ -39,7 +44,7 @@
   <script src="sounds.js"></script>
   <!-- My scripts -->
   <script src="assets/scripts/autosort.js"></script>
-  <script src="assets/scripts/loader.js"></script>
+  <script src="assets/scripts/theming.js"></script>
 </body>
 
 </html>

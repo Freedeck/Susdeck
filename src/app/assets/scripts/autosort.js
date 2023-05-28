@@ -3,37 +3,38 @@
 // Page sorter! No more manual pages!
 const Pages = {};
 const countOnEachPage = universal.iconCount;
-
-const pagesAmount = Sounds.length / countOnEachPage;
-for (let i = 0; i < pagesAmount; i++) {
-  Pages[i] = [];
-}
+let pagesAmount = Sounds.length / countOnEachPage;
 let pageCounter = 0;
 let index = 0;
 
-Sounds.forEach(sound => {
-  Pages[pageCounter].push(sound);
-  if (index === countOnEachPage) {
-    pageCounter++;
-    index = 0;
+for (let i = 0; i < pagesAmount; i++) {
+  Pages[i] = []; // Loop through and clear each page
+}
+
+Sounds.forEach(sound => { // Loop through each sound
+  Pages[pageCounter].push(sound); // Add it to a page
+  if (index === countOnEachPage) { // However, if we reach the max icon count for the screen,
+    pageCounter++; // Increment the page
+    index = 0; // And reset the sound amount counter
   }
-  index++;
+  index++; // Increment sound index/amount
 });
 
 function autosort (countOnEP) {
-  const pagesAmount = Sounds.length / countOnEP;
+  pagesAmount = Sounds.length / countOnEP; // Set the amount of pages
   for (let i = 0; i < pagesAmount; i++) {
-    Pages[i] = [];
+    Pages[i] = []; // Loop through and clear each page
   }
-  let pageCounter = 0;
-  let index = 0;
 
-  Sounds.forEach(sound => {
-    Pages[pageCounter].push(sound);
-    if (index === countOnEP) {
-      pageCounter++;
-      index = 0;
+  pageCounter = 0; // Start on page 0
+  index = 0; // Alongside sound 0
+
+  Sounds.forEach(sound => { // Loop through each sound
+    Pages[pageCounter].push(sound); // Add it to a page
+    if (index === countOnEP) { // However, if we reach the max icon count for the screen,
+      pageCounter++; // Increment the page
+      index = 0; // And reset the sound amount counter
     }
-    index++;
+    index++; // Increment sound index/amount
   });
 }

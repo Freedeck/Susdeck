@@ -2,7 +2,7 @@
 
 addToHTMLlog('Waiting for host to respond to login request continuation');
 susdeckUniversal.socket.on('server_connected', function () {
-  addToHTMLlog('Connected to Susdeck host');
+  addToHTMLlog('Connected to Freedeck host');
   loaded = true;
   susdeckUniversal.socket.emit('c2sr_login_cont', susdeckUniversal.load('sid'));
 });

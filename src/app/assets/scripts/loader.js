@@ -66,7 +66,7 @@ document.addEventListener('click', () => { // Basically, turn the screensaver on
   userAlive = true;
 });
 
-function loadPage (pageNumber) { // Setup the Susdeck page w/ sound buttons
+function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
   currentPage = pageNumber;
   susdeckUniversal.save('page', currentPage); // Persistent page saving
   keyList = [];

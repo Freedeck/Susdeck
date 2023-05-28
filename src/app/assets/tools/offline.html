@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Susdeck Offline</title>
+    <title>Freedeck Offline</title>
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
     <style>
@@ -197,9 +197,9 @@
 
 <body onload="noti('Successfully loaded offline environment')">
     <div id="loading">
-        <h1>Susdeck</h1>
-        <h1>The Susdeck server is offline.</h1>
-        <h2>You cannot access Susdeck during this time.</h2>
+        <h1>Freedeck</h1>
+        <h1>The Freedeck server/host is offline.</h1>
+        <h2>You cannot access Freedeck during this time.</h2>
         <h2>This client is waiting for the server to come back online, then you will be automatically refreshed into a
             new session.</h2>
         <button onclick="gobyebye()">Click to make this message go away</button>
@@ -234,7 +234,7 @@
         }
         function gobyebye() {
             document.getElementById('loading').style.display = 'none'
-            noti('Hid message! It will not come back! Susdeck is still pinging the server.')
+            noti('Hid message! It will not come back! Freedeck is still pinging the server.')
         }
     </script>
 </body>

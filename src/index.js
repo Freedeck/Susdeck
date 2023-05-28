@@ -3,6 +3,7 @@ const path = require('path');
 const httpLib = require('http');
 
 const app = ex();
+const debug = require('./util/debug');
 const httpServer = new httpLib.Server(app);
 const io = require('socket.io')(httpServer);
 
@@ -13,14 +14,17 @@ const sockApiInit = require('./api/init').init;
 const port = settings.Port || process.env.PORT || 5754;
 
 try {
+  debug.log('Initializing Socket API');
   sockApiInit(io, app); // Socket API initialize
 
+  debug.log('Initializing HTTP routes');
   app.use('/', ex.static('./src/app')); // Initialize HTTP routes for main web app directory
 
   app.get('/sounds.js', (req, res) => { res.sendFile(path.join(__dirname, '/settings/sounds.js')); }); // Make sounds.js accessible from apps
 
+  debug.log('Listening for ' + port);
   httpServer.listen(port, () => {
-    console.log('Susdeck v' + require('../package.json').version + ' Web Host is starting - starting Companion');
+    console.log('Freedeck v' + require('../package.json').version + ' Web Host is starting - starting Companion');
     require('child_process').exec('npx electron src/companion'); // Start Companion on another process
     Object.keys(getNetworkInterfaces()).forEach(netInterface => {
       console.log('Go to ' + getNetworkInterfaces()[netInterface][0] + ':' + port + ' on your mobile device [Interface ' + netInterface + ']');

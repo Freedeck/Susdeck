@@ -5,11 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Susdeck Companion</title>
     <link rel="stylesheet" href="../assets/style/app.css">
 </head>
 
-<body>
+<body data-page="Settings">
 
     <div id="mySidenav" class="sideNav">
     </div>
@@ -21,8 +20,8 @@
         <button onclick="socket.emit('press-sound', '--Stop_all', 'Stop All')">Stop All</button>
         <button onclick="alert(susdeckUniversal.exportTheme())">Export Theme</button>
         <input id="theme-exported" hidden>
-        <button onclick="susdeckUniversal.socket.emit('c-change')">Reload all Susdeck Sessions</button>
-        <button onclick="enableExperiments()">Toggle Susdeck Experiments</button>
+        <button onclick="susdeckUniversal.socket.emit('c-change')">Reload all Freedeck Sessions</button>
+        <button onclick="enableExperiments()">Toggle Freedeck Experiments</button>
         <div id="console"></div>
         <div id="keys" style="display: none;"></div>
     </div>

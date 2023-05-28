@@ -145,3 +145,7 @@ function removeTheme () {
   susdeckUniversal.socket.emit('c-del-theme', theme);
   susdeckUniversal.socket.emit('c-change');
 }
+
+if (document.body.dataset.page) {
+  document.title = 'Freedeck: Companion - ' + document.body.dataset.page;
+}

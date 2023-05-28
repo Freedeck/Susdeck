@@ -13,7 +13,7 @@
     <div id="main">
         <h2>Icon Editor</h2>
         <h4 onmouseover="this.style.display = 'none';"id="now-playing">Play a sound from Freedeck to see this change!</h4>
-        <button onclick="socket.emit('c-change')">Remote Reload</button>
+        <button onclick="universal.socket.emit('c-change')">Remote Reload</button>
         <button onclick="createNewSound()">New Sound</button>
         <button onclick="np()">Next Page</button>
         <button onclick="bp()">Back</button>

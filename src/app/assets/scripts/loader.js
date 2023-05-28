@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 // eslint-disable-next-line no-undef
-const keys = document.getElementById('keys');
 let keyList = [];
 let loaded = false;
 let userAlive = true;
@@ -70,9 +69,11 @@ function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
   currentPage = pageNumber;
   universal.save('page', currentPage); // Persistent page saving
   keyList = [];
-  const keysNode = document.getElementById('keys');
-  while (keysNode.firstChild) {
-    keysNode.removeChild(keysNode.lastChild); // Remove everything from the previous keys
+  if (document.getElementById('keys')) document.getElementById('keys').remove();
+  const keys = document.createElement('div');
+  keys.id = 'keys';
+  while (keys.firstChild) {
+    keys.removeChild(keys.lastChild); // Remove everything from the previous keys
   }
   // eslint-disable-next-line no-undef
   Pages[pageNumber].forEach(sound => { // For each sound in the page create a button
@@ -134,6 +135,8 @@ function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
       }
     };
   }
+
+  document.body.appendChild(keys);
 }
 
 /* eslint-disable no-undef */

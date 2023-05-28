@@ -5,7 +5,7 @@
 <img src="https://github.com/susdeck/susdeck/blob/dev/src/app/assets/icons/freedeck.png?raw=true" width='100' height='100'>
 
 Freedeck is the FOSS alternative to the Elgato Stream Deck.  
-Freedeck has had tons of time put into making the user experience as easy as possible, while staying in the boundaries of **4** (soon to be 3) dependencies!
+Freedeck has had tons of time put into making the user experience as easy as possible, while staying in the boundaries of **4** dependencies!
 
 ## Join the Discord
 

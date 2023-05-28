@@ -1,6 +1,5 @@
 const sounds = require('../../../settings/sounds');
 const fs = require('fs');
-const jsonbeautify = require('json-beautify');
 const Event = require('../Event');
 
 const ev = new Event('c-info-change', (socket, args) => {
@@ -8,21 +7,15 @@ const ev = new Event('c-info-change', (socket, args) => {
   if (args.type === 'key_edit') {
     const newObject = {};
     try {
-      const found = sounds.Sounds.find(thing => thing.path === args.key);
+      const found = sounds.Sounds.find(thing => thing.path === args.path);
       if (!found) {
         throw new Error('Unsupported or uneditable sound.');
       }
       sounds.Sounds.forEach(thing => {
-        if (thing.key === args.key) {
-          newObject.key = args.newpath;
-          newObject.name = args.newname;
-          newObject.icon = thing.icon;
-        }
-        if (thing.path === args.key) {
-          newObject.path = args.newpath;
-          newObject.name = args.newname;
-          newObject.icon = thing.icon;
-        }
+        if (thing.key === args.key) newObject.key = args.newpath;
+        if (thing.path === args.path) newObject.path = args.newpath;
+        newObject.name = args.newname;
+        newObject.icon = thing.icon;
       });
       Object.assign(found, newObject);
     } catch (err) {
@@ -33,7 +26,7 @@ const ev = new Event('c-info-change', (socket, args) => {
 const SoundOnPress = ${sounds.SoundOnPress};
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
 const soundDir = '../assets/sounds/';
-const Sounds = ${jsonbeautify(sounds.Sounds, null, 4, 80)};
+const Sounds = ${JSON.stringify(sounds.Sounds)};
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };
 `);
 
@@ -43,7 +36,7 @@ if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverA
 const SoundOnPress = ${args.soc};
 const ScreenSaverActivationTime = ${args.screenSaverActivationTime};
 const soundDir = '../assets/sounds/';
-const Sounds = ${jsonbeautify(sounds.Sounds, null, 4, 80)};
+const Sounds = ${JSON.stringify(sounds.Sounds)};
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };
 `);
   }

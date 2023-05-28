@@ -1,6 +1,5 @@
 const sounds = require('../../../settings/sounds');
 const fs = require('fs');
-const jsonbeautify = require('json-beautify');
 const Event = require('../Event');
 
 const ev = new Event('c-delete-key', (socket, args) => {
@@ -9,7 +8,7 @@ const ev = new Event('c-delete-key', (socket, args) => {
 const SoundOnPress = ${sounds.SoundOnPress};
 const soundDir = '../assets/sounds/';
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
-const Sounds = ${jsonbeautify(sounds.Sounds, null, 4, 80)};
+const Sounds = ${JSON.parse(sounds.Sounds)};
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };`);
   return 'c-change';
 });

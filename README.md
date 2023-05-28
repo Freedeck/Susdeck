@@ -1,4 +1,6 @@
-# Susdeck
+# Susdeck is being renamed to Freedeck
+
+## Freedeck
 
 ![alt text](https://github.com/susdeck/susdeck/blob/master/src/app/assets/icons/susdeck.png?raw=true)
 

@@ -17,7 +17,7 @@ const universal = {
       { 'icon-count': 3 },
       { 'template-columns': 'repeat(5,1fr)' },
       { 'background-size': '400% 100%' },
-      { 'font-family': 'Poppins' },
+      { 'font-family': 'Comic Sans MS, Poppins' },
       { background: '45deg, rgba(245, 75, 66, 1) 0%, rgba(245, 162, 29, 1) 33%, rgba(195, 245, 29, 1) 66%, rgba(0, 179, 255, 1) 100%' },
       { 'modal-color': 'rgba(245, 162, 29, 1)' }
     ],

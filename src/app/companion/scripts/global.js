@@ -37,7 +37,7 @@ const pages = [
 
 const experiments = [
   {
-    name: 'Client Resetting',
+    name: 'Client Reset',
     html: '<button onclick="universal.socket.emit(\'c-reset\')">Reset Clients</button><p>Warning: Your custom theme will be removed.</p>'
   }
 ];
@@ -72,7 +72,7 @@ pages.forEach(page => {
 document.body.appendChild(sideNav);
 
 experiments.forEach(experiment => {
-  if (document.title !== 'Freedeck: Companion - Experiments' || typeof document.getElementById('experiments') === 'undefined') return;
+  if (typeof document.getElementById('experiments') === 'undefined') return;
   document.getElementById('exp-count').innerText = `${experiments.length} experiment${experiments.length > 1 ? 's' : ''} available`;
   const newDiv = document.createElement('div');
   newDiv.className = 'experiment';

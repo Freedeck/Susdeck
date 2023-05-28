@@ -2,7 +2,7 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "short_name": "Susdeck",
+    "short_name": "Freedeck",
     "icons": [
         {
             "src": "/assets/icons/web/android-chrome-192x192.png",
@@ -17,6 +17,6 @@
     ],
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
-    "name": "Susdeck",
-    "description": "Susdeck is an app."
+    "name": "Freedeck",
+    "description": "Freedeck is the FOSS alternative to the Elgato Stream Deck."
 }

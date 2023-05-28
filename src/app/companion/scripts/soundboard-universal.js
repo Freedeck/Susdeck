@@ -4,7 +4,7 @@ const soundQueue = [];
 Susaudio.init();
 
 /* eslint-disable no-undef */
-susdeckUniversal.socket.on('press-sound', (sound, name) => {
+universal.socket.on('press-sound', (sound, name) => {
   if (name.includes('Stop All')) {
     // eslint-disable-next-line no-undef
     Susaudio.stopAll();

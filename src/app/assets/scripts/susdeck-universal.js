@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 /* eslint-disable no-undef */
-const susdeckUniversal = {
+const universal = {
   screensaverStatus: false,
   themes: {
     // Built-in themes.
@@ -56,7 +56,7 @@ const susdeckUniversal = {
     ]
   },
   retrieveSession: function () {
-    return atob(susdeckUniversal.load('session'));
+    return atob(universal.load('session'));
   },
   createTempHWID: function () {
     return Math.floor(Math.random() * 6969696969699);
@@ -76,23 +76,23 @@ const susdeckUniversal = {
   socket: io(),
   emit: (event, data) => {
     if (typeof data === 'object') data = JSON.stringify(data);
-    susdeckUniversal.socket.emit(event, data);
+    universal.socket.emit(event, data);
   },
   connectionOn: function (event, callback) {
-    susdeckUniversal.socket.on(event, callback);
+    universal.socket.on(event, callback);
   },
   exportTheme: function () {
     // Get the theme and export back its root changeable properties
     // This will make importing themes so much easier
-    const currentTheme = susdeckUniversal.load('theme');
-    const sUTheme = susdeckUniversal.themes[currentTheme];
+    const currentTheme = universal.load('theme');
+    const sUTheme = universal.themes[currentTheme];
     const exportedTheme = [];
     Object.keys(sUTheme).forEach(key => {
       exportedTheme.push(JSON.stringify(sUTheme[key]));
     });
     const exportedThemeStr = JSON.stringify('[' + exportedTheme.join(',') + ']');
 
-    susdeckUniversal.save('custom_theme', exportedThemeStr);
+    universal.save('custom_theme', exportedThemeStr);
     const expt = document.getElementById('theme-exported');
 
     expt.value = exportedThemeStr;
@@ -104,15 +104,15 @@ const susdeckUniversal = {
     const themeName = themeData.name;
     const themeRules = themeData.data;
 
-    susdeckUniversal.themes[themeName] = themeRules;
+    universal.themes[themeName] = themeRules;
   },
   grantExperiments: function () {
-    susdeckUniversal.save('experiments', true);
-    susdeckUniversal.socket.emit('c-client-reload');
+    universal.save('experiments', true);
+    universal.socket.emit('c-client-reload');
   },
   isInDebug: false,
   isExperimental: () => {
-    return susdeckUniversal.load('experiments') ? susdeckUniversal.load('experiments') : 'false';
+    return universal.load('experiments') ? universal.load('experiments') : 'false';
   },
   sendToast: (message) => {
     const s = document.createElement('div');
@@ -135,38 +135,38 @@ const susdeckUniversal = {
   hasConnected: false
 };
 
-susdeckUniversal.socket.on('server_connected', () => {
-  susdeckUniversal.hasConnected = true;
-  if (!susdeckUniversal.hasConnected) { socket.emit('c-change-client'); }
+universal.socket.on('server_connected', () => {
+  universal.hasConnected = true;
+  if (!universal.hasConnected) { socket.emit('c-change-client'); }
 });
 
-susdeckUniversal.socket.on('server_shutdown', () => {
+universal.socket.on('server_shutdown', () => {
   window.location.replace('/assets/tools/offline.html');
 });
 
-susdeckUniversal.socket.on('c-reset', () => {
-  susdeckUniversal.remove('welcomed');
-  susdeckUniversal.remove('custom_theme');
+universal.socket.on('c-reset', () => {
+  universal.remove('welcomed');
+  universal.remove('custom_theme');
   window.location.replace(window.location.href);
 });
 
-susdeckUniversal.socket.on('server_notification', (message) => {
-  susdeckUniversal.sendToast(message);
+universal.socket.on('server_notification', (message) => {
+  universal.sendToast(message);
 });
 
-susdeckUniversal.socket.on('set-theme', (theme) => {
-  susdeckUniversal.save('theme', theme);
+universal.socket.on('set-theme', (theme) => {
+  universal.save('theme', theme);
 
-  if (susdeckUniversal.load('custom_theme')) {
-    const theme2 = susdeckUniversal.load('custom_theme');
+  if (universal.load('custom_theme')) {
+    const theme2 = universal.load('custom_theme');
     const parsed = JSON.parse(JSON.parse(theme2));
-    susdeckUniversal.socket.emit('c-send-theme', theme2);
+    universal.socket.emit('c-send-theme', theme2);
     parsed.forEach(property => {
       Object.keys(property).forEach(key => {
-        susdeckUniversal.root.style.setProperty(`--sd-${key}`, property[key]);
+        universal.root.style.setProperty(`--sd-${key}`, property[key]);
         document.body.setAttribute(`data-sd-${key}`, property[key]);
         if (Object.keys(property)[0] === 'icon-count') {
-          susdeckUniversal.iconCount = property[key];
+          universal.iconCount = property[key];
           try {
             autosort(property[key]);
           } catch (err) {
@@ -175,14 +175,14 @@ susdeckUniversal.socket.on('set-theme', (theme) => {
       });
     });
   } else {
-    const userTheme = susdeckUniversal.themes[susdeckUniversal.load('theme')];
+    const userTheme = universal.themes[universal.load('theme')];
 
     userTheme.forEach(property => {
       Object.keys(property).forEach(key => {
-        susdeckUniversal.root.style.setProperty(`--sd-${key}`, property[key]);
+        universal.root.style.setProperty(`--sd-${key}`, property[key]);
         document.body.setAttribute(`data-sd-${key}`, property[key]);
         if (Object.keys(property)[0] === 'icon-count') {
-          susdeckUniversal.iconCount = property[key];
+          universal.iconCount = property[key];
           try {
             autosort(property[key]);
           } catch (err) {
@@ -194,7 +194,7 @@ susdeckUniversal.socket.on('set-theme', (theme) => {
   }
 });
 
-susdeckUniversal.socket.on('c-change', () => {
+universal.socket.on('c-change', () => {
   window.location.replace(window.location.href);
 });
 
@@ -202,28 +202,28 @@ fetch('/api/dbg')
   .then(data =>
     data.json())
   .then(data => {
-    susdeckUniversal.isInDebug = data.status;
-    susdeckUniversal.debugStat = data.msg;
+    universal.isInDebug = data.status;
+    universal.debugStat = data.msg;
   });
 
 // because theming is cool
-if (!susdeckUniversal.load('theme')) {
-  susdeckUniversal.save('theme', 'Default');
+if (!universal.load('theme')) {
+  universal.save('theme', 'Default');
 }
 
-susdeckUniversal.socket.on('custom_theme', themeData => {
+universal.socket.on('custom_theme', themeData => {
   if (themeData === 'del') {
-    susdeckUniversal.remove('custom_theme');
+    universal.remove('custom_theme');
     return;
   }
-  susdeckUniversal.save('custom_theme', themeData);
+  universal.save('custom_theme', themeData);
 });
 
 if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('keys')) {
   setInterval(function () { userAlive = false; }, ScreenSaverActivationTime * 1000);
 
   setInterval(function () {
-    if (!userAlive && !susdeckUniversal.screensaverStatus) {
+    if (!userAlive && !universal.screensaverStatus) {
       keys.style.opacity = '0.125';
     }
   }, ScreenSaverActivationTime * 1000 + 600);
@@ -242,8 +242,8 @@ document.body.onload = () => {
   footer.style.zIndex = '999';
   document.body.appendChild(footer);
   setTimeout(() => {
-    if (!susdeckUniversal.isInDebug) return;
-    footer.innerHTML = '<h3>In ' + susdeckUniversal.debugStat + ' Mode</h3>';
+    if (!universal.isInDebug) return;
+    footer.innerHTML = '<h3>In ' + universal.debugStat + ' Mode</h3>';
     footer.style.display = 'block';
   }, 20);
 };

@@ -7,7 +7,7 @@ const Susaudio = {
     volume: 1.0,
     autotuned: false,
     paused: false,
-    sinkId: susdeckUniversal.load('susaudio_sinkid') ? susdeckUniversal.load('susaudio_sinkid') : null,
+    sinkId: universal.load('susaudio_sinkid') ? universal.load('susaudio_sinkid') : null,
     timeSinceLastRequest: 0,
     queue: [],
     devicesList: [],
@@ -22,7 +22,7 @@ const Susaudio = {
       if (device.label === 'CABLE Input (VB-Audio Virtual Cable)' || device.label === 'Companion Soundboard In') {
         const audio = new Audio();
         audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
-        if (susdeckUniversal.load('susaudio_sinkid')) return;
+        if (universal.load('susaudio_sinkid')) return;
         Susaudio._player.sinkId = device.deviceId;
       }
     });
@@ -31,7 +31,7 @@ const Susaudio = {
     const audio = new Audio();
     audio.setSinkId(sinkId); // Create a new audio to set permission to use sink
     Susaudio._player.sinkId = sinkId; // Set global sink ID
-    susdeckUniversal.save('susaudio_sinkid', sinkId);
+    universal.save('susaudio_sinkid', sinkId);
   },
   playSound: async (audioSource, audioName, sa_isNotVB = false) => {
     if (Susaudio._player.timeSinceLastRequest < 2) return; // Make sure we haven't just tried to make a request in the last 2ms
@@ -46,7 +46,7 @@ const Susaudio = {
     // Check for if this is loopback to user speakers
     if (audio.isNotVB === false) {
       await audio.setSinkId(Susaudio._player.sinkId);
-      susdeckUniversal.save('susaudio_playlist', susdeckUniversal.load('_susaudio_playlist') + ',' + audio.saName);
+      universal.save('susaudio_playlist', universal.load('_susaudio_playlist') + ',' + audio.saName);
     }
     audio.play();
     audio.onended = Susaudio._player.audioEndedCallback;
@@ -54,7 +54,7 @@ const Susaudio = {
     Susaudio._player.timeSinceLastRequest = 0; // Reset time since last request
   },
   clearPlaylist: function () {
-    susdeckUniversal.save('susaudio_playlist', '');
+    universal.save('susaudio_playlist', '');
   },
   stopAll: () => {
     Susaudio._player.queue.forEach(audio => {

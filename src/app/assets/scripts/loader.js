@@ -8,40 +8,40 @@ let currentPage = 0;
 
 addToHTMLlog('Waiting for host...');
 
-susdeckUniversal.socket.on('server_connected', function () {
+universal.socket.on('server_connected', function () {
   addToHTMLlog('Connected! Checking for login status..');
-  if (susdeckUniversal.load('session')) { // If _sdsession exists login
-    susdeckUniversal.socket.emit('Authenticated', susdeckUniversal.load('session'));
+  if (universal.load('session')) { // If _sdsession exists login
+    universal.socket.emit('Authenticated', universal.load('session'));
     addToHTMLlog('Sending server session ID..');
   } else {
     addToHTMLlog('Not logged in, requesting login');
     loaded = true;
-    susdeckUniversal.save('sid', susdeckUniversal.createTempHWID()); // Create a temporary session ID for logging in
-    susdeckUniversal.socket.emit('c2sr_login', susdeckUniversal.load('sid')); // Request login form with session ID
+    universal.save('sid', universal.createTempHWID()); // Create a temporary session ID for logging in
+    universal.socket.emit('c2sr_login', universal.load('sid')); // Request login form with session ID
   }
 });
 
-susdeckUniversal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // When we get the green light to login
+universal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // When we get the green light to login
   loaded = true; // Keep page from reloading
   addToHTMLlog('Request received by server, let\'s log in.');
-  susdeckUniversal.save('login_msg', loginMsg);
-  susdeckUniversal.save('owner_name', ownerName); // Save the login message and owner's name
+  universal.save('login_msg', loginMsg);
+  universal.save('owner_name', ownerName); // Save the login message and owner's name
   window.location.href = nextLoc; // Next, move the page over to login page that server sends back
 });
 
 // The server has authenticated you therefore we can bypass login
-susdeckUniversal.socket.on('session_valid', function () {
+universal.socket.on('session_valid', function () {
   loaded = true; // Keep page from reloading
   document.getElementById('loading').style.display = 'none';
   loadPage(0);
 
-  if (!susdeckUniversal.load('welcomed')) {
-    susdeckUniversal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');
-    susdeckUniversal.save('welcomed', true);
+  if (!universal.load('welcomed')) {
+    universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');
+    universal.save('welcomed', true);
   }
 });
 
-susdeckUniversal.socket.on('session_invalid', function () { // The server has restarted, and your session is invalid
+universal.socket.on('session_invalid', function () { // The server has restarted, and your session is invalid
   localStorage.setItem('_sdsession', '');
   document.getElementById('keys').remove();
   document.getElementById('loading').style.display = 'block';
@@ -49,8 +49,8 @@ susdeckUniversal.socket.on('session_invalid', function () { // The server has re
   <p>Your session expired - We're trying to log you back in.</p>
   <button onclick="localStorage.setItem('_sdsession',''); window.location.replace(window.location.href)">Reset Session</button>
   <div id='console'></div>`;
-  susdeckUniversal.save('sid', susdeckUniversal.createTempHWID()); // Create a temporary session ID for logging in
-  susdeckUniversal.socket.emit('c2sr_login', susdeckUniversal.load('sid')); // Request login form with session ID
+  universal.save('sid', universal.createTempHWID()); // Create a temporary session ID for logging in
+  universal.socket.emit('c2sr_login', universal.load('sid')); // Request login form with session ID
 });
 
 setInterval(function () {
@@ -68,7 +68,7 @@ document.addEventListener('click', () => { // Basically, turn the screensaver on
 
 function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
   currentPage = pageNumber;
-  susdeckUniversal.save('page', currentPage); // Persistent page saving
+  universal.save('page', currentPage); // Persistent page saving
   keyList = [];
   const keysNode = document.getElementById('keys');
   while (keysNode.firstChild) {
@@ -95,7 +95,7 @@ function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
   stopAll.className = 'keypress white-txt';
   stopAll.innerText = 'Stop All';
   stopAll.onclick = () => {
-    susdeckUniversal.socket.emit('keypress', {
+    universal.socket.emit('keypress', {
       macro: false,
       name: allKeypress[i].innerHTML
     });
@@ -121,12 +121,12 @@ function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
       // eslint-disable-next-line no-undef
       if (SoundOnPress) new Audio('assets/sounds/press.mp3').play();
       if (allKeypress[i].getAttribute('data-keys')) {
-        susdeckUniversal.socket.emit('keypress', {
+        universal.socket.emit('keypress', {
           macro: true,
           keys: allKeypress[i].getAttribute('data-keys')
         });
       } else {
-        susdeckUniversal.socket.emit('keypress', {
+        universal.socket.emit('keypress', {
           macro: false,
           name: allKeypress[i].innerHTML
         });

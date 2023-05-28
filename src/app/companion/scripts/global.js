@@ -38,7 +38,7 @@ const pages = [
 const experiments = [
   {
     name: 'Client Resetting',
-    html: '<button onclick="susdeckUniversal.socket.emit(\'c-reset\')">Reset Clients</button><p>Warning: Your custom theme will be removed.</p>'
+    html: '<button onclick="universal.socket.emit(\'c-reset\')">Reset Clients</button><p>Warning: Your custom theme will be removed.</p>'
   }
 ];
 
@@ -46,7 +46,7 @@ const sideNav = document.createElement('div');
 sideNav.id = 'sidebar';
 
 pages.forEach(page => {
-  if (page.experimental && susdeckUniversal.load('experiments') !== 'true') return;
+  if (page.experimental && universal.load('experiments') !== 'true') return;
   const btn = document.createElement('a');
   btn.href = page.page;
   const btnImg = document.createElement('img');
@@ -89,10 +89,10 @@ if (document.getElementById('sai')) {
 }
 
 document.body.onload = () => {
-  const susdeckLogo = document.createElement('img');
-  susdeckLogo.src = '../assets/icons/companion.png';
-  susdeckLogo.className = 'susdeck-logo';
-  document.body.appendChild(susdeckLogo);
+  const freedeckLogo = document.createElement('img');
+  freedeckLogo.src = '../assets/icons/companion.png';
+  freedeckLogo.className = 'freedeck-logo';
+  document.body.appendChild(freedeckLogo);
 };
 
 function addToHTMLlog (text) {
@@ -104,43 +104,43 @@ function addToHTMLlog (text) {
 
 function enableExperiments () {
   if (confirm('Are you sure you want to turn on experiments?')) {
-    if (susdeckUniversal.load('experiments') === 'true') {
+    if (universal.load('experiments') === 'true') {
       if (!confirm('Experiments is already enabled, do you want to turn off experiments?')) return;
-      susdeckUniversal.save('experiments', false);
-      susdeckUniversal.log('LocalStorage Experiments off');
+      universal.save('experiments', false);
+      universal.log('LocalStorage Experiments off');
       alert('Experiments disabled.');
       // Clear the user's custom theme
-      susdeckUniversal.remove('custom_theme');
-      susdeckUniversal.socket.emit('c-del-theme', '');
-      susdeckUniversal.log('Removed theme, requesting refresh');
-      susdeckUniversal.socket.emit('c-change');
+      universal.remove('custom_theme');
+      universal.socket.emit('c-del-theme', '');
+      universal.log('Removed theme, requesting refresh');
+      universal.socket.emit('c-change');
       return;
     }
-    susdeckUniversal.save('experiments', true);
+    universal.save('experiments', true);
 
     alert('Experiments enabled.');
-    susdeckUniversal.socket.emit('c-change');
+    universal.socket.emit('c-change');
   }
 }
 
 function importTheme () {
   theme = document.getElementById('theme-import').value;
   if (theme === '' || theme === ' ') {
-    susdeckUniversal.remove('custom_theme');
-    susdeckUniversal.socket.emit('c-del-theme', theme);
-    susdeckUniversal.socket.emit('c-change');
+    universal.remove('custom_theme');
+    universal.socket.emit('c-del-theme', theme);
+    universal.socket.emit('c-change');
     return;
   }
-  susdeckUniversal.save('custom_theme', theme);
-  susdeckUniversal.socket.emit('c-send-theme', theme);
-  susdeckUniversal.socket.emit('c-change');
+  universal.save('custom_theme', theme);
+  universal.socket.emit('c-send-theme', theme);
+  universal.socket.emit('c-change');
 }
 
 function removeTheme () {
   theme = document.getElementById('theme-import').value;
-  susdeckUniversal.remove('custom_theme');
-  susdeckUniversal.socket.emit('c-del-theme', theme);
-  susdeckUniversal.socket.emit('c-change');
+  universal.remove('custom_theme');
+  universal.socket.emit('c-del-theme', theme);
+  universal.socket.emit('c-change');
 }
 
 if (document.body.dataset.page) {

@@ -6,13 +6,13 @@ const countOnEachPage = 8;
 
 addToHTMLlog('Waiting for host...');
 
-susdeckUniversal.socket.on('server_connected', function () {
+universal.socket.on('server_connected', function () {
   removeFromHTMLlog('Waiting for host...');
   addToHTMLlog('Host connection established!');
-  susdeckUniversal.socket.emit('companion_connected');
+  universal.socket.emit('companion_connected');
   setTimeout(() => {
     document.getElementById('console').style.display = 'none';
-    if (susdeckUniversal.isInDebug === true) {
+    if (universal.isInDebug === true) {
       Sounds.forEach(function (s) {
         document.getElementById('keys').innerHTML += `<div><h3>${s.name}</h3><h4>${soundDir + s.path}</h4></div>`;
       });
@@ -40,7 +40,7 @@ function addToHTMLlog (text) {
   const txt = document.createElement('h2');
   txt.id = text;
   txt.innerText = text;
-  susdeckUniversal.socket.emit('c2s_log', '[COMPANIONSB] ' + text);
+  universal.socket.emit('c2s_log', '[COMPANIONSB] ' + text);
   document.getElementById('console').appendChild(txt);
 }
 

@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 // Page sorter! No more manual pages!
 const Pages = {};
-const countOnEachPage = susdeckUniversal.iconCount;
+const countOnEachPage = universal.iconCount;
 
 const pagesAmount = Sounds.length / countOnEachPage;
 for (let i = 0; i < pagesAmount; i++) {

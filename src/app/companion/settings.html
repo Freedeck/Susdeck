@@ -18,9 +18,9 @@
         <h3 id="now-playing"></h3>
         <br />
         <button onclick="socket.emit('press-sound', '--Stop_all', 'Stop All')">Stop All</button>
-        <button onclick="alert(susdeckUniversal.exportTheme())">Export Theme</button>
+        <button onclick="alert(universal.exportTheme())">Export Theme</button>
         <input id="theme-exported" hidden>
-        <button onclick="susdeckUniversal.socket.emit('c-change')">Reload all Freedeck Sessions</button>
+        <button onclick="universal.socket.emit('c-change')">Reload all Freedeck Sessions</button>
         <button onclick="enableExperiments()">Toggle Freedeck Experiments</button>
         <div id="console"></div>
         <div id="keys" style="display: none;"></div>

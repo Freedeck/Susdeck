@@ -1,14 +1,14 @@
 /* eslint-disable no-undef, no-unused-vars */
 function setTheme (t) {
-  susdeckUniversal.save('theme', t);
-  susdeckUniversal.socket.emit('c-theme', t);
+  universal.save('theme', t);
+  universal.socket.emit('c-theme', t);
   setTimeout(() => {
-    susdeckUniversal.socket.emit('c-change');
+    universal.socket.emit('c-change');
   }, 200);
 }
 
 const tc = document.getElementById('themechoices');
-Object.keys(susdeckUniversal.themes).forEach(key => {
+Object.keys(universal.themes).forEach(key => {
   const newbutton = document.createElement('button');
   newbutton.onclick = () => {
     setTheme(key);

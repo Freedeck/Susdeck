@@ -8,10 +8,10 @@ const klD = [];
 
 addToHTMLlog('Waiting for host...');
 
-susdeckUniversal.socket.on('server_connected', function () {
+universal.socket.on('server_connected', function () {
   removeFromHTMLlog('Waiting for host...');
   addToHTMLlog('Companion connected!');
-  susdeckUniversal.socket.emit('c-connected');
+  universal.socket.emit('c-connected');
   if (document.getElementById('keys')) loadPage(0);
   setTimeout(() => {
     document.getElementById('console').style.display = 'none';
@@ -86,7 +86,7 @@ function loadPage (pageNumber) {
   }
 }
 
-susdeckUniversal.socket.on('press-sound', (sound, name) => {
+universal.socket.on('press-sound', (sound, name) => {
   if (sound.includes('--Stop_all')) {
     // eslint-disable-next-line no-undef
     Susaudio.stopAll();
@@ -100,7 +100,7 @@ susdeckUniversal.socket.on('press-sound', (sound, name) => {
 function DeleteKey (key) {
   // eslint-disable-next-line no-undef
   Sounds.splice(Sounds.indexOf({ name: key.name }), 1);
-  susdeckUniversal.socket.emit('c-delete-key', { name: key.name });
+  universal.socket.emit('c-delete-key', { name: key.name });
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -110,7 +110,7 @@ function createNewSound () {
     name: 'New Key',
     path: 'unnamed.mp3'
   });
-  susdeckUniversal.socket.emit('c-newkey', { name: 'New Key', path: 'unnamed.mp3' });
+  universal.socket.emit('c-newkey', { name: 'New Key', path: 'unnamed.mp3' });
   loadPage(0);
 }
 
@@ -133,7 +133,7 @@ if (document.getElementById('screenSaverActivationTime')) {
 function changeInfo (key) {
   const newpath = document.getElementById('newpath').value;
   const newname = document.getElementById('newname').value;
-  susdeckUniversal.emit('c-info-change', { type: 'key_edit', key, newpath, newname });
+  universal.emit('c-info-change', { type: 'key_edit', key, newpath, newname });
   loadPage(0);
 }
 
@@ -141,11 +141,11 @@ function changeInfo (key) {
 function setSet () {
   const soc = document.getElementById('soc').checked;
   const screenSaverActivationTime = document.getElementById('screenSaverActivationTime').value;
-  susdeckUniversal.emit('c-info-change', { type: 'ssat_soc', screenSaverActivationTime, soc });
-  susdeckUniversal.socket.emit('c-change');
+  universal.emit('c-info-change', { type: 'ssat_soc', screenSaverActivationTime, soc });
+  universal.socket.emit('c-change');
 }
 
-susdeckUniversal.socket.on('companion_info', function (screenSaverActivationTime, soc) {
+universal.socket.on('companion_info', function (screenSaverActivationTime, soc) {
   if (document.getElementById('screenSaverActivationTime')) {
     document.getElementById('soc').checked = soc;
     document.getElementById('screenSaverActivationTime').value = screenSaverActivationTime;

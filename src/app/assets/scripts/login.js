@@ -1,41 +1,41 @@
 /* eslint-disable no-undef */
 
 addToHTMLlog('Waiting for host to respond to login request continuation');
-susdeckUniversal.socket.on('server_connected', function () {
+universal.socket.on('server_connected', function () {
   addToHTMLlog('Connected to Freedeck host');
   loaded = true;
-  susdeckUniversal.socket.emit('c2sr_login_cont', susdeckUniversal.load('sid'));
+  universal.socket.emit('c2sr_login_cont', universal.load('sid'));
 });
 
-susdeckUniversal.socket.on('s2ca_incorrect_pass', function () {
-  susdeckUniversal.sendToast('Incorrect password!');
+universal.socket.on('s2ca_incorrect_pass', function () {
+  universal.sendToast('Incorrect password!');
 });
 
-susdeckUniversal.socket.on('user_ack_cont', function (status) {
+universal.socket.on('user_ack_cont', function (status) {
   if (status === 'session_expired') {
-    susdeckUniversal.save('session', '');
+    universal.save('session', '');
     window.location.replace('../../index.html');
   }
   addToHTMLlog('Loading login form..');
   document.getElementById('loading').style.display = 'none';
-  document.getElementById('sdl').innerText = susdeckUniversal.load('login_msg');
-  document.getElementById('yn').innerText = susdeckUniversal.load('owner_name');
+  document.getElementById('sdl').innerText = universal.load('login_msg');
+  document.getElementById('yn').innerText = universal.load('owner_name');
   document.getElementById('login').style.display = 'block';
 });
 
-susdeckUniversal.socket.on('session_invalid', function () {
-  susdeckUniversal.save('session', '');
+universal.socket.on('session_invalid', function () {
+  universal.save('session', '');
   window.location.replace('../index.html');
 });
 
-susdeckUniversal.socket.on('s2cs_login', (sessionID, g) => {
+universal.socket.on('s2cs_login', (sessionID, g) => {
   // This session ID is actually kinda important
-  susdeckUniversal.save('session', sessionID);
+  universal.save('session', sessionID);
   window.location.href = g;
 });
 
 // eslint-disable-next-line no-unused-vars
 function submit () {
-  susdeckUniversal.sendToast('Logging you in..');
-  susdeckUniversal.socket.emit('c2sd_login', document.getElementById('password').value);
+  universal.sendToast('Logging you in..');
+  universal.socket.emit('c2sd_login', document.getElementById('password').value);
 }

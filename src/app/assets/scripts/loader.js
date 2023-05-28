@@ -30,8 +30,6 @@ universal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // W
 
 // The server has authenticated you therefore we can bypass login
 universal.socket.on('session_valid', function () {
-  loaded = true; // Keep page from reloading
-  document.getElementById('loading').style.display = 'none';
   loadPage(0);
 
   if (!universal.load('welcomed')) {

@@ -20,8 +20,6 @@ universal.socket.on('user_ack_cont', function (status) {
   document.getElementById('login').style.display = 'block';
 });
 
-
-
 universal.socket.on('s2cs_login', (sessionID, g) => {
   // This session ID is actually kinda important
   universal.save('session', sessionID);

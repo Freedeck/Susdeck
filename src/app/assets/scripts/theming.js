@@ -39,9 +39,6 @@ universal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // W
 
 // The server has authenticated you therefore we can bypass login
 universal.socket.on('session_valid', function () {
-  loaded = true; // Keep page from reloading
-  document.getElementById('loading').style.display = 'none';
-
   if (!universal.load('welcomed_ob')) {
     universal.sendToast('Welcome to Freedeck\'s onboard settings!');
     universal.save('welcomed_ob', true);

@@ -205,6 +205,11 @@ universal.socket.on('s2ca_incorrect_pass', function () {
   universal.sendToast('Incorrect password!');
 });
 
+universal.socket.on('session_valid', function () {
+  loaded = true; // Keep page from reloading
+  document.getElementById('loading').style.display = 'none';
+});
+
 universal.socket.on('session_invalid', function () { // The server has restarted, and your session is invalid
   localStorage.setItem('_sdsession', '');
   if (document.body.contains(document.getElementById('keys'))) document.getElementById('keys').remove();

@@ -7,8 +7,16 @@ let currentPage = 0;
 
 addToHTMLlog('Waiting for host...');
 
-universal.socket.on('server_connected', function () {
+universal.socket.on('server_connected', function (loginStatus) {
   addToHTMLlog('Connected! Checking for login status..');
+  if (!loginStatus) {
+    loadPage(0);
+
+    if (!universal.load('welcomed')) {
+      universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');
+      universal.save('welcomed', true);
+    }
+  }
   if (universal.load('session')) { // If _sdsession exists login
     universal.socket.emit('Authenticated', universal.load('session'));
     addToHTMLlog('Sending server session ID..');
@@ -51,7 +59,7 @@ document.addEventListener('click', () => { // Basically, turn the screensaver on
   userAlive = true;
 });
 
-function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
+function loadPage(pageNumber) { // Setup the Freedeck page w/ sound buttons
   currentPage = pageNumber;
   universal.save('page', currentPage); // Persistent page saving
   keyList = [];
@@ -142,20 +150,22 @@ function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
 let touchstartX = 0;
 let touchendX = 2500;
 
-function checkDirection () {
+function checkDirection() {
   if (touchendX < touchstartX) {
     // go page up
     if (Pages[currentPage + 1]) {
       loadPage(currentPage + 1);
     } else {
-      /* empty */ }
+      /* empty */
+}
   }
   if (touchendX > touchstartX) {
     // go page down
     if (Pages[currentPage - 1]) {
       loadPage(currentPage - 1);
     } else {
-      /* empty */ }
+      /* empty */
+}
   }
 }
 

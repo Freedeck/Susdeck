@@ -30,7 +30,7 @@ const init = (io, app) => {
 
     // Initial connection
     console.log('Connected to client @ ' + new Date());
-    socket.emit('server_connected'); // Send user confirmation: connected to server
+    socket.emit('server_connected', set.UseAuthentication); // Send user confirmation: connected to server
     socket.emit('set-theme', fs.readFileSync(path.join(__dirname, '/persistent/theme.sd')).toString()); // Tell client to set the theme
     debug.log('Sent user connection success message');
 
@@ -70,6 +70,7 @@ const init = (io, app) => {
     });
     sockApiEvents.forEach(function (event) {
       socket.on(event.event, async function (args) {
+        if (event.event === 'c2sr_login') { socket.emit('session_valid'); }
         debug.log(event.event + ' ran');
         if (event.async) {
           await event.callback(socket, args, loginList);

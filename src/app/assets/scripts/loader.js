@@ -10,21 +10,24 @@ addToHTMLlog('Waiting for host...');
 universal.socket.on('server_connected', function (loginStatus) {
   addToHTMLlog('Connected! Checking for login status..');
   if (!loginStatus) {
+    loaded = true;
+    document.getElementById('loading').style.display = 'none';
     loadPage(0);
 
     if (!universal.load('welcomed')) {
       universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');
       universal.save('welcomed', true);
     }
-  }
-  if (universal.load('session')) { // If _sdsession exists login
-    universal.socket.emit('Authenticated', universal.load('session'));
-    addToHTMLlog('Sending server session ID..');
   } else {
-    addToHTMLlog('Not logged in, requesting login');
-    loaded = true;
-    universal.save('sid', universal.createTempHWID()); // Create a temporary session ID for logging in
-    universal.socket.emit('c2sr_login', universal.load('sid')); // Request login form with session ID
+    if (universal.load('session')) { // If _sdsession exists login
+      universal.socket.emit('Authenticated', universal.load('session'));
+      addToHTMLlog('Sending server session ID..');
+    } else {
+      addToHTMLlog('Not logged in, requesting login');
+      loaded = true;
+      universal.save('sid', universal.createTempHWID()); // Create a temporary session ID for logging in
+      universal.socket.emit('c2sr_login', universal.load('sid')); // Request login form with session ID
+    }
   }
 });
 
@@ -59,7 +62,7 @@ document.addEventListener('click', () => { // Basically, turn the screensaver on
   userAlive = true;
 });
 
-function loadPage(pageNumber) { // Setup the Freedeck page w/ sound buttons
+function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
   currentPage = pageNumber;
   universal.save('page', currentPage); // Persistent page saving
   keyList = [];
@@ -150,14 +153,14 @@ function loadPage(pageNumber) { // Setup the Freedeck page w/ sound buttons
 let touchstartX = 0;
 let touchendX = 2500;
 
-function checkDirection() {
+function checkDirection () {
   if (touchendX < touchstartX) {
     // go page up
     if (Pages[currentPage + 1]) {
       loadPage(currentPage + 1);
     } else {
       /* empty */
-}
+    }
   }
   if (touchendX > touchstartX) {
     // go page down
@@ -165,7 +168,7 @@ function checkDirection() {
       loadPage(currentPage - 1);
     } else {
       /* empty */
-}
+    }
   }
 }
 

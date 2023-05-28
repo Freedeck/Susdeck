@@ -16,19 +16,29 @@ let loaded = false;
 
 addToHTMLlog('Waiting for host...');
 
-universal.socket.on('server_connected', function () {
+universal.socket.on('server_connected', function (loginStatus) {
   addToHTMLlog('Connected! Checking for login status..');
-  if (universal.load('session')) { // If _sdsession exists login
-    universal.socket.emit('Authenticated', universal.load('session'));
-    addToHTMLlog('Sending server session ID..');
-  } else {
-    addToHTMLlog('Not logged in, requesting login');
+  if (!loginStatus) {
     loaded = true;
-    universal.save('sid', universal.createTempHWID()); // Create a temporary session ID for logging in
-    universal.socket.emit('c2sr_login', universal.load('sid')); // Request login form with session ID
+    document.getElementById('loading').style.display = 'none';
+    loadPage(0);
+
+    if (!universal.load('welcomed')) {
+      universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');
+      universal.save('welcomed', true);
+    }
+  } else {
+    if (universal.load('session')) { // If _sdsession exists login
+      universal.socket.emit('Authenticated', universal.load('session'));
+      addToHTMLlog('Sending server session ID..');
+    } else {
+      addToHTMLlog('Not logged in, requesting login');
+      loaded = true;
+      universal.save('sid', universal.createTempHWID()); // Create a temporary session ID for logging in
+      universal.socket.emit('c2sr_login', universal.load('sid')); // Request login form with session ID
+    }
   }
 });
-
 universal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // When we get the green light to login
   loaded = true; // Keep page from reloading
   addToHTMLlog('Request received by server, let\'s log in.');

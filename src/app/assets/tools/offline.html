@@ -227,8 +227,8 @@
     // Add the "show" class to DIV
     s.className = 'show';
     document.body.appendChild(s);
-    // After 3 seconds, remove the show class from DIV
-    setTimeout(function () {
+
+    setTimeout(function () { // After 3 seconds, remove the show class from DIV
       s.className = s.className.replace('show', '');
       s.remove();
     }, 3000);

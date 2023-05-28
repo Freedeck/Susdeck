@@ -13,9 +13,7 @@ universal.socket.on('server_connected', function () {
   addToHTMLlog('Companion connected!');
   universal.socket.emit('c-connected');
   if (document.getElementById('keys')) loadPage(0);
-  setTimeout(() => {
-    document.getElementById('console').style.display = 'none';
-  }, 1000);
+  document.getElementById('console').style.display = 'none';
 });
 
 function removeFromHTMLlog (text) {

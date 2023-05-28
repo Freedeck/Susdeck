@@ -84,9 +84,7 @@ const universal = {
   setTheme: (t) => {
     universal.save('theme', t);
     universal.socket.emit('c-theme', t);
-    setTimeout(() => {
-      universal.socket.emit('c-change');
-    }, 200);
+    universal.socket.emit('c-change');
   },
   exportTheme: function () {
     // Get the theme and export back its root changeable properties
@@ -129,8 +127,8 @@ const universal = {
     // Add the "show" class to DIV
     s.className = 'show';
     document.body.appendChild(s);
-    // After 3 seconds, remove the show class from DIV
-    setTimeout(function () {
+
+    setTimeout(function () { // After 3 seconds, remove the show class from DIV
       s.className = s.className.replace('show', '');
       s.remove();
     }, 3000);
@@ -269,11 +267,9 @@ document.body.onload = () => {
   footer.style.display = 'none';
   footer.style.zIndex = '999';
   document.body.appendChild(footer);
-  setTimeout(() => {
-    if (!universal.isInDebug) return;
-    footer.innerHTML = '<h3>In ' + universal.debugStat + ' Mode</h3>';
-    footer.style.display = 'block';
-  }, 20);
+  if (!universal.isInDebug) return;
+  footer.innerHTML = '<h3>In ' + universal.debugStat + ' Mode</h3>';
+  footer.style.display = 'block';
 };
 
 function addToHTMLlog (text) {

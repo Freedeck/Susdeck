@@ -80,7 +80,7 @@ experiments.forEach(experiment => {
   document.getElementById('experiments').appendChild(newDiv);
 });
 
-setTimeout(() => {
+function listAudioDevices () {
   if (document.title !== 'Freedeck: Companion - Soundboard Config') return;
   Susaudio._player.devicesList.forEach(device => {
     const option = document.createElement('option');
@@ -90,7 +90,9 @@ setTimeout(() => {
     if (Susaudio._player.sinkId === device.id) option.selected = true;
     document.getElementById('sai').appendChild(option);
   });
-}, 250);
+}
+
+listAudioDevices();
 
 if (document.getElementById('sai')) {
   document.getElementById('sai').onchange = function (ev) {

@@ -30,11 +30,9 @@ const init = (io, app) => {
 
     // Initial connection
     console.log('Connected to client @ ' + new Date());
-    setTimeout(function () {
-      socket.emit('server_connected'); // Send user confirmation: connected to server
-      socket.emit('set-theme', fs.readFileSync(path.join(__dirname, '/persistent/theme.sd')).toString()); // Tell client to set the theme
-      debug.log('Sent user connection success message');
-    }, 150);
+    socket.emit('server_connected'); // Send user confirmation: connected to server
+    socket.emit('set-theme', fs.readFileSync(path.join(__dirname, '/persistent/theme.sd')).toString()); // Tell client to set the theme
+    debug.log('Sent user connection success message');
 
     socket.on('keypress', function (keyInput) {
       if (set.UseAuthentication && !sessions.includes(socket.sid)) { socket.emit('session_invalid'); return; };
@@ -53,7 +51,7 @@ const init = (io, app) => {
       keys.forEach(function (key) {
         key = key.split('}')[0];
         rob.keyToggle(key, 'down');
-        setTimeout(function () {
+        setTimeout(function () { // Add delay to mimic keyboard
           rob.keyToggle(key, 'up');
         }, 50);
       });
@@ -130,8 +128,7 @@ const init = (io, app) => {
     }
     console.log('Sent shutdown message to Freedeck client');
 
-    // give clients time to change page
-    setTimeout(() => {
+    setTimeout(() => { // give clients time to change page
       process.exit(0);
     }, 260);
   }

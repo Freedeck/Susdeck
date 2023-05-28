@@ -61,7 +61,7 @@ pages.forEach(page => {
 document.body.appendChild(sideNav);
 
 experiments.forEach(experiment => {
-  if (document.title !== 'Susdeck Companion - Experiments' || typeof document.getElementById('experiments') === 'undefined') return;
+  if (document.title !== 'Freedeck: Companion - Experiments' || typeof document.getElementById('experiments') === 'undefined') return;
   document.getElementById('exp-count').innerText = `${experiments.length} experiment${experiments.length > 1 ? 's' : ''} available`;
   const newDiv = document.createElement('div');
   newDiv.className = 'experiment';
@@ -70,7 +70,7 @@ experiments.forEach(experiment => {
 });
 
 setTimeout(() => {
-  if (document.title !== 'Susdeck Companion - Soundboard') return;
+  if (document.title !== 'Freedeck: Companion - Soundboard Config') return;
   Susaudio._player.devicesList.forEach(device => {
     const option = document.createElement('option');
     option.value = device.name;
@@ -103,9 +103,9 @@ function addToHTMLlog (text) {
 }
 
 function enableExperiments () {
-  if (confirm('Are you sure you want to turn on Susdeck Experiments?')) {
+  if (confirm('Are you sure you want to turn on experiments?')) {
     if (susdeckUniversal.load('experiments') === 'true') {
-      if (!confirm('Experiments is already enabled, do you want to turn off Susdeck Experiments?')) return;
+      if (!confirm('Experiments is already enabled, do you want to turn off experiments?')) return;
       susdeckUniversal.save('experiments', false);
       susdeckUniversal.log('LocalStorage Experiments off');
       alert('Experiments disabled.');

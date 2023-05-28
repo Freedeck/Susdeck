@@ -1,4 +1,4 @@
-# Freedeck is being renamed to Freedeck
+# Susdeck is being renamed to Freedeck
 
 ## Freedeck
 

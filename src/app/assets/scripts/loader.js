@@ -36,7 +36,7 @@ susdeckUniversal.socket.on('session_valid', function () {
   loadPage(0);
 
   if (!susdeckUniversal.load('welcomed')) {
-    susdeckUniversal.sendToast('Welcome to Susdeck! Press any button to play a sound on your computer!');
+    susdeckUniversal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');
     susdeckUniversal.save('welcomed', true);
   }
 });
@@ -45,7 +45,7 @@ susdeckUniversal.socket.on('session_invalid', function () { // The server has re
   localStorage.setItem('_sdsession', '');
   document.getElementById('keys').remove();
   document.getElementById('loading').style.display = 'block';
-  document.getElementById('loading').innerHTML = `<h1>Susdeck</h1>
+  document.getElementById('loading').innerHTML = `<h1>Freedeck</h1>
   <p>Your session expired - We're trying to log you back in.</p>
   <button onclick="localStorage.setItem('_sdsession',''); window.location.replace(window.location.href)">Reset Session</button>
   <div id='console'></div>`;
@@ -108,7 +108,8 @@ function loadPage (pageNumber) { // Setup the Susdeck page w/ sound buttons
   reloadButton.innerText = 'Reload';
   const susdeck = document.createElement('a');
   susdeck.className = 'button';
-  susdeck.style.backgroundImage = "url('assets/icons/susdeck.png')";
+  susdeck.style.backgroundImage = "url('assets/icons/freedeck.png')";
+  susdeck.style.backgroundSize = 'contain';
   keys.appendChild(stopAll);
   keys.appendChild(reloadButton);
   keys.appendChild(susdeck);

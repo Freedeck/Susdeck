@@ -128,12 +128,12 @@ const init = (io, app) => {
       io.emit('server_shutdown');
       io.emit('server_notification', 'Server shutting down!');
     }
-    console.log('Sent shutdown message to Susdeck client');
+    console.log('Sent shutdown message to Freedeck client');
 
     // give clients time to change page
     setTimeout(() => {
       process.exit(0);
-    }, 250);
+    }, 260);
   }
 };
 

@@ -106,13 +106,13 @@ function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
   };
   reloadButton.className = 'white-txt';
   reloadButton.innerText = 'Reload';
-  const susdeck = document.createElement('a');
-  susdeck.className = 'button';
-  susdeck.style.backgroundImage = "url('assets/icons/freedeck.png')";
-  susdeck.style.backgroundSize = 'contain';
+  const freedeck = document.createElement('a');
+  freedeck.className = 'button';
+  freedeck.style.backgroundImage = "url('assets/icons/freedeck.png')";
+  freedeck.style.backgroundSize = 'contain';
   keys.appendChild(stopAll);
   keys.appendChild(reloadButton);
-  keys.appendChild(susdeck);
+  keys.appendChild(freedeck);
 
   // Setup the button press functions
   const allKeypress = document.getElementsByClassName('keypress');

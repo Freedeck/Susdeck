@@ -213,10 +213,9 @@ button:hover {
   position: absolute;
   top: 77%;
   font-size: large;
-}
-
-#icon-tip:hover {
-  animation: goUp 1s;
+  justify-content: center;
+  animation-duration: .25s;
+  animation-timing-function: ease-in-out;
 }
 
 #main {

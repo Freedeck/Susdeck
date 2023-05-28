@@ -59,9 +59,11 @@ pages.forEach(page => {
   btnImg.height = '32';
   btn.onmouseenter = (ev) => {
     tooltip.innerText = page.name;
+    tooltip.style.animationName = 'goUp';
   };
   btn.onmouseleave = (ev) => {
     tooltip.innerText = '';
+    tooltip.style.animationName = '';
   };
   btn.appendChild(btnImg);
   sideNav.appendChild(btn);

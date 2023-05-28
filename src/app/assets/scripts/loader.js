@@ -115,7 +115,10 @@ function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
       freedeck.className = 'button';
       freedeck.style.backgroundImage = "url('assets/icons/freedeck.png')";
       freedeck.style.backgroundSize = 'contain';
-      freedeck.href = 'theme.html';
+      freedeck.onclick = () => {
+        document.getElementById('settings').style.display = 'block';
+        document.getElementById('keys').style.display = 'none';
+      }
       keys.appendChild(freedeck);
       return;
     }
@@ -179,4 +182,15 @@ document.addEventListener('touchstart', e => {
 document.addEventListener('touchend', e => {
   touchendX = e.changedTouches[0].screenX;
   checkDirection();
+});
+
+const tc = document.getElementById('themechoices');
+Object.keys(universal.themes).forEach(key => {
+  const newButton = document.createElement('button');
+  newButton.className = 'keypress white-txt';
+  newButton.onclick = () => {
+    universal.setTheme(key);
+  };
+  newButton.innerText = key + ' Theme';
+  tc.appendChild(newButton);
 });

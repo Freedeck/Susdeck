@@ -95,7 +95,7 @@ setTimeout(() => {
 if (document.getElementById('sai')) {
   document.getElementById('sai').onchange = function (ev) {
     Susaudio.setSink(document.getElementById('sai').options[document.getElementById('sai').selectedIndex].getAttribute('data-sai-id'));
-    universal.log('Changed sink');
+    universal.log('Susaudio', 'Changed sink');
   };
 }
 
@@ -118,12 +118,12 @@ function enableExperiments () {
     if (universal.load('experiments') === 'true') {
       if (!confirm('Experiments is already enabled, do you want to turn off experiments?')) return;
       universal.save('experiments', false);
-      universal.log('LocalStorage Experiments off');
+      universal.log('Experiments', 'LocalStorage Experiments off');
       alert('Experiments disabled.');
       // Clear the user's custom theme
       universal.remove('custom_theme');
       universal.socket.emit('c-del-theme', '');
-      universal.log('Removed theme, requesting refresh');
+      universal.log('Experiments', 'Removed theme, requesting refresh');
       universal.socket.emit('c-change');
       return;
     }

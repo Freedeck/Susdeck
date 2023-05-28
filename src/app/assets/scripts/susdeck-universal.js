@@ -65,13 +65,13 @@ const susdeckUniversal = {
     console.log('[SU] ' + data);
   },
   save: function (name, value) {
-    localStorage.setItem('_sd' + name, value);
+    localStorage.setItem('_sd_' + name, value);
   },
   load: function (name) {
-    return localStorage.getItem('_sd' + name);
+    return localStorage.getItem('_sd_' + name);
   },
   remove: function (name) {
-    return localStorage.removeItem('_sd' + name);
+    return localStorage.removeItem('_sd_' + name);
   },
   socket: io(),
   emit: (event, data) => {

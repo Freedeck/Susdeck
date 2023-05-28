@@ -1,10 +1,10 @@
-// Welcome to Susdeck internal settings! Here you can.. set.. settings!
+// Welcome to Freedeck internal settings! Here you can.. set.. settings!
 // True for yes, false for no
 
 const Settings = {
   UseAuthentication: true, // Turn on authentication (every session/restart will require password)
-  Password: 'Susdeck!123', // If you are using authentication, you will log in with this password.
-  LoginMessage: 'Stay out of my Susdeck!', // This message will show for users when they try to login (below "Login to Susdeck")
+  Password: 'Freedecj!123', // If you are using authentication, you will log in with this password.
+  LoginMessage: '', // This message will show for users when they try to login (below "Login to (your name)'s Freedeck")
   YourName: 'John Mangoseed', // Shows alongside your login message,
   Port: 5754
 };

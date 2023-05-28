@@ -1,7 +1,7 @@
 {
-  "name": "susdeck",
+  "name": "freedeck",
   "version": "4.0.0-dev",
-  "description": "Susdeck is love. Susdeck is life. Susdeck is not a Stream Deck.",
+  "description": "The FOSS Elgato Stream Deck alternative",
   "dependencies": {
     "express": "^4.17.1",
     "json-beautify": "^1.1.1",

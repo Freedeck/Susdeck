@@ -190,12 +190,8 @@ button:hover {
   grid-row-gap: 2px;
 }
 
-#keys {
-  display: none;
-}
-
 #settings {
-  /* display: none; */
+  display: none;
   width: max-content;
   height: min-content;
   background-color: rgba(0, 0, 0, 0.25);

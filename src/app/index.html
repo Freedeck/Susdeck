@@ -33,11 +33,9 @@
   <div id="keys"></div>
   <div id="settings">
     <div id="themechoices" class="experiment"></div>
-    <div class="experiment utils-btn">
-      <button class="keypress white-txt" onclick="window.location.replace(window.location.href)">Reload This</button>
+    <button class="keypress white-txt" onclick="window.location.replace(window.location.href)">Reload This</button>
     <button class="keypress white-txt" onclick="universal.socket.emit('c-change')">Reload All</button>
     <button class="keypress white-txt" onclick="document.getElementById('settings').style.display = 'none'; document.getElementById('keys').style.display = 'grid';" style="background-image:url('assets/icons/freedeck.png'); background-size: contain;"></button>
-    </div>
   </div>
   <div id="root"></div>
 

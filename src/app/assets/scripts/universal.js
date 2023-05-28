@@ -201,6 +201,22 @@ universal.socket.on('set-theme', (theme) => {
   }
 });
 
+universal.socket.on('s2ca_incorrect_pass', function () {
+  universal.sendToast('Incorrect password!');
+});
+
+universal.socket.on('session_invalid', function () { // The server has restarted, and your session is invalid
+  localStorage.setItem('_sdsession', '');
+  if (document.body.contains(document.getElementById('keys'))) document.getElementById('keys').remove();
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('loading').innerHTML = `<h1>Freedeck</h1>
+  <p>Your session expired - We're trying to log you back in.</p>
+  <button onclick="localStorage.setItem('_sdsession',''); window.location.replace(window.location.href)">Reset Session</button>
+  <div id='console'></div>`;
+  universal.save('sid', universal.createTempHWID()); // Create a temporary session ID for logging in
+  universal.socket.emit('c2sr_login', universal.load('sid')); // Request login form with session ID
+});
+
 universal.socket.on('c-change', () => {
   window.location.replace(window.location.href);
 });

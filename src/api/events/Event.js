@@ -1,11 +1,12 @@
 const { sockApiEvents } = require('../init');
+const debug = require('../../util/debug')
 
 class Event {
   constructor (event, callback) {
     this.eventStr = event;
     this.callbackFn = callback;
     sockApiEvents.set(event, { callback: this.callbackFn, event: this.eventStr });
-    debug.log('Registered new event', event);
+    debug.log(event, 'Events');
   }
 
   init () {

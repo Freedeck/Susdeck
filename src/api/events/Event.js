@@ -5,7 +5,7 @@ class Event {
     this.eventStr = event;
     this.callbackFn = callback;
     sockApiEvents.set(event, { callback: this.callbackFn, event: this.eventStr });
-    console.log('Registered new event', event);
+    debug.log('Registered new event', event);
   }
 
   init () {

@@ -117,7 +117,7 @@ const init = (io, app) => {
   ].forEach(function (sig) {
     process.on(sig, () => {
       terminator(sig);
-      console.log('signal: ' + sig);
+      debug.log('Signal received: ' + sig);
     });
   });
 

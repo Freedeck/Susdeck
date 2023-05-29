@@ -1,8 +1,9 @@
 const dbgUtil = {
   is: false,
   stat: 'Debug',
-  log: function (s) {
-    if (this.is) { console.log('[DEBUG] ' + s); }
+  log: function (s, t='') {
+    if (t) t = '@' + t;
+    if (this.is) { console.log('[DEBUG'+t+'] ' + s); }
   }
 };
 

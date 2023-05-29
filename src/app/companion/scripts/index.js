@@ -8,7 +8,7 @@ const klD = [];
 
 addToHTMLlog('Waiting for host...');
 
-universal.socket.on('server_connected', function () {
+universal.socket.on('server_connected', () => {
   removeFromHTMLlog('Waiting for host...');
   addToHTMLlog('Companion connected!');
   universal.socket.emit('c-connected');

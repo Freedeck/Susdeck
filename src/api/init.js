@@ -12,27 +12,26 @@ const init = (io, app) => {
   const loginList = [];
   const sessions = [];
 
-  debug.log('Adding events to API');
+  debug.log('Adding socket events', 'SocketAPI');
 
   fs.readdirSync(path.join(__dirname, '/events')).forEach(function (file) {
     if (file === 'Event.js') return;
     fs.readdirSync(path.join(__dirname, '/events/' + file)).forEach(cEvent => {
       const query = require(path.join(__dirname, '/events/' + file + '/' + cEvent));
       query.init();
-      debug.log('Added ' + file + ' event ' + query.event + ' from file ' + cEvent);
     });
   });
 
   io.on('connection', function (socket) {
     // Give sockets a randomized ID
     socket.id = Math.random().toString().substring(2, 4) + require('crypto').randomBytes(8 + 2).toString('hex');
-    debug.log('Socket ID generated: ' + socket.id);
+    debug.log('New connection - new socket ID generated: ' + socket.id);
 
     // Initial connection
     console.log('Connected to client @ ' + new Date());
     socket.emit('server_connected', set.UseAuthentication); // Send user confirmation: connected to server
     socket.emit('set-theme', fs.readFileSync(path.join(__dirname, '/persistent/theme.sd')).toString()); // Tell client to set the theme
-    debug.log('Sent user connection success message');
+    debug.log('Sent user connection success message', 'SocketAPI:'+socket.id);
 
     socket.on('keypress', function (keyInput) {
       if (set.UseAuthentication && !sessions.includes(socket.sid)) { socket.emit('session_invalid'); return; };
@@ -51,7 +50,7 @@ const init = (io, app) => {
       keys.forEach(function (key) {
         key = key.split('}')[0];
         rob.keyToggle(key, 'down');
-        setTimeout(function () { // Add delay to mimic keyboard
+        setTimeout(() => { // Add delay to mimic keyboard
           rob.keyToggle(key, 'up');
         }, 50);
       });
@@ -64,14 +63,14 @@ const init = (io, app) => {
         socket.emit('session_valid');
         socket.sid = sessionID;
       } else {
-        debug.log(sessionID + ' is invalid, kicking out user..');
+        debug.log(sessionID + ' is invalid, kicking out user..', 'SocketAPI:'+socket.id);
         socket.emit('session_invalid');
       }
     });
     sockApiEvents.forEach(function (event) {
       socket.on(event.event, async function (args) {
         if (event.event === 'c2sr_login') { socket.emit('session_valid'); }
-        debug.log(event.event + ' ran');
+        debug.log(event.event + ' ran', 'SocketAPI:'+socket.id);
         if (event.async) {
           await event.callback(socket, args, loginList);
         } else {
@@ -96,6 +95,7 @@ const init = (io, app) => {
     });
   });
 
+  debug.log('Adding HTTP endpoints', 'SocketAPI')
   // Now HTTP debug methods
   fs.readdir(path.join(__dirname, '/routes'), (err, files) => {
     if (err) { throw new Error(err); }
@@ -115,9 +115,9 @@ const init = (io, app) => {
   ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
     'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM', 'exit'
   ].forEach(function (sig) {
-    process.on(sig, function () {
+    process.on(sig, () => {
       terminator(sig);
-      console.log('signal: ' + sig);
+      debug.log('Signal received: ' + sig);
     });
   });
 

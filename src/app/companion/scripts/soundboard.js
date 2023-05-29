@@ -6,7 +6,7 @@ const countOnEachPage = 8;
 
 addToHTMLlog('Waiting for host...');
 
-universal.socket.on('server_connected', function () {
+universal.socket.on('server_connected', () => {
   removeFromHTMLlog('Waiting for host...');
   addToHTMLlog('Host connection established!');
   universal.socket.emit('companion_connected');

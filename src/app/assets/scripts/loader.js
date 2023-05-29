@@ -40,7 +40,7 @@ universal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // W
 });
 
 // The server has authenticated you therefore we can bypass login
-universal.socket.on('session_valid', function () {
+universal.socket.on('session_valid', () => {
   loadPage();
 
   if (!universal.load('welcomed')) {
@@ -49,7 +49,7 @@ universal.socket.on('session_valid', function () {
   }
 });
 
-setInterval(function () {
+setInterval(() => {
   // Auto refresh, you shouldn't be waiting to connect for longer than 500ms.
   if (loaded) return;
   addToHTMLlog('Connection attempt timed out. Retrying...');

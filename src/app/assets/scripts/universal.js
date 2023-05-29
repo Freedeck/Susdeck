@@ -55,10 +55,10 @@ const universal = {
       { 'modal-color': 'rgba(0, 179, 255, 1)' }
     ]
   },
-  retrieveSession: function () {
+  retrieveSession: () => {
     return atob(universal.load('session'));
   },
-  createTempHWID: function () {
+  createTempHWID: () => {
     return Math.floor(Math.random() * 6969696969699);
   },
   log: function (sender, data) {
@@ -86,7 +86,7 @@ const universal = {
     universal.socket.emit('c-theme', t);
     universal.socket.emit('c-change');
   },
-  exportTheme: function () {
+  exportTheme: () => {
     // Get the theme and export back its root changeable properties
     // This will make importing themes so much easier
     const currentTheme = universal.load('theme');
@@ -111,7 +111,7 @@ const universal = {
 
     universal.themes[themeName] = themeRules;
   },
-  grantExperiments: function () {
+  grantExperiments: () => {
     universal.save('experiments', true);
     universal.socket.emit('c-client-reload');
   },
@@ -128,7 +128,7 @@ const universal = {
     s.className = 'show';
     document.body.appendChild(s);
 
-    setTimeout(function () { // After 3 seconds, remove the show class from DIV
+    setTimeout(() => { // After 3 seconds, remove the show class from DIV
       s.className = s.className.replace('show', '');
       s.remove();
     }, 3000);
@@ -199,16 +199,16 @@ universal.socket.on('set-theme', (theme) => {
   }
 });
 
-universal.socket.on('s2ca_incorrect_pass', function () {
+universal.socket.on('s2ca_incorrect_pass', () => {
   universal.sendToast('Incorrect password!');
 });
 
-universal.socket.on('session_valid', function () {
+universal.socket.on('session_valid', () => {
   loaded = true; // Keep page from reloading
   document.getElementById('loading').style.display = 'none';
 });
 
-universal.socket.on('session_invalid', function () { // The server has restarted, and your session is invalid
+universal.socket.on('session_invalid', () => { // The server has restarted, and your session is invalid
   localStorage.setItem('_sdsession', '');
   if (document.body.contains(document.getElementById('keys'))) document.getElementById('keys').remove();
   document.getElementById('loading').style.display = 'block';
@@ -245,15 +245,15 @@ universal.socket.on('custom_theme', themeData => {
 });
 
 if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('keys')) {
-  setInterval(function () { userAlive = false; }, ScreenSaverActivationTime * 1000);
+  setInterval(() => { userAlive = false; }, ScreenSaverActivationTime * 1000);
 
-  setInterval(function () {
+  setInterval(() => {
     if (!userAlive && !universal.screensaverStatus) {
       keys.style.opacity = '0.125';
     }
   }, ScreenSaverActivationTime * 1000 + 600);
 
-  setInterval(function () {
+  setInterval(() => {
     if (!userAlive) {
       keys.style.opacity = '0';
       screensaverStatus = true;

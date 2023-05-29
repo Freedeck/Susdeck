@@ -51,7 +51,7 @@ const init = (io, app) => {
       keys.forEach(function (key) {
         key = key.split('}')[0];
         rob.keyToggle(key, 'down');
-        setTimeout(function () { // Add delay to mimic keyboard
+        setTimeout(() => { // Add delay to mimic keyboard
           rob.keyToggle(key, 'up');
         }, 50);
       });
@@ -115,7 +115,7 @@ const init = (io, app) => {
   ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
     'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM', 'exit'
   ].forEach(function (sig) {
-    process.on(sig, function () {
+    process.on(sig, () => {
       terminator(sig);
       console.log('signal: ' + sig);
     });

@@ -1,3 +1,4 @@
 /node_modules
 Settings.js
 src/api/persistent/theme.sd
+/build

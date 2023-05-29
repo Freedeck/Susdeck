@@ -11,7 +11,7 @@ const Susaudio = {
     timeSinceLastRequest: 0,
     queue: [],
     devicesList: [],
-    audioEndedCallback: function () {
+    audioEndedCallback: () => {
       Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this);
     }
   },
@@ -53,7 +53,7 @@ const Susaudio = {
     Susaudio._player.queue.push(audio); // Add this to the queue
     Susaudio._player.timeSinceLastRequest = 0; // Reset time since last request
   },
-  clearPlaylist: function () {
+  clearPlaylist: () => {
     universal.save('susaudio_playlist', '');
   },
   stopAll: () => {
@@ -86,7 +86,7 @@ const Susaudio = {
   }
 };
 
-Audio.prototype.stop = function () {
+Audio.prototype.stop = () => {
   if (!this.isSusaudio) { this.stop(); return; } // This is a custom stop function meant to Susaudio the audio
   this.pause();
   this.currentTime = 0;

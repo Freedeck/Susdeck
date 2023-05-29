@@ -228,7 +228,7 @@
     s.className = 'show';
     document.body.appendChild(s);
 
-    setTimeout(function () { // After 3 seconds, remove the show class from DIV
+    setTimeout(() => { // After 3 seconds, remove the show class from DIV
       s.className = s.className.replace('show', '');
       s.remove();
     }, 3000);

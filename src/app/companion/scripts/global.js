@@ -164,3 +164,9 @@ document.getElementById('sidebar').onmouseover = () => {
   const rootElem = document.querySelector(':root');
   rootElem.style.setProperty('--sd-rotationDegrees', Math.ceil(Math.random() * 15) + 'deg');
 };
+
+const sharedStylesheet = document.createElement('link');
+sharedStylesheet.rel = 'stylesheet';
+sharedStylesheet.href = 'shared.css';
+
+document.body.appendChild(sharedStylesheet);

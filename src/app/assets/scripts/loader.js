@@ -3,7 +3,7 @@
 let keyList = [];
 let loaded = false;
 let userAlive = true;
-let currentPage = 0;
+let currentPage = universal.load('page') ? universal.load('page') : 0;
 
 addToHTMLlog('Waiting for host...');
 
@@ -12,7 +12,7 @@ universal.socket.on('server_connected', function (loginStatus) {
   if (!loginStatus) {
     loaded = true;
     document.getElementById('loading').style.display = 'none';
-    loadPage(0);
+    loadPage();
 
     if (!universal.load('welcomed')) {
       universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');
@@ -41,7 +41,7 @@ universal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // W
 
 // The server has authenticated you therefore we can bypass login
 universal.socket.on('session_valid', function () {
-  loadPage(0);
+  loadPage();
 
   if (!universal.load('welcomed')) {
     universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');
@@ -62,7 +62,7 @@ document.addEventListener('click', () => { // Basically, turn the screensaver on
   userAlive = true;
 });
 
-function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
+function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sound buttons
   currentPage = pageNumber;
   universal.save('page', currentPage); // Persistent page saving
   keyList = [];
@@ -73,7 +73,7 @@ function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
     keys.removeChild(keys.lastChild); // Remove everything from the previous keys
   }
   // eslint-disable-next-line no-undef
-  Pages[pageNumber].forEach(sound => { // For each sound in the page create a button
+  Pages[currentPage].forEach(sound => { // For each sound in the page create a button
     keyList.push(sound);
     const btn = document.createElement('button');
     btn.className = 'keypress white-txt';
@@ -118,7 +118,7 @@ function loadPage (pageNumber) { // Setup the Freedeck page w/ sound buttons
       freedeck.onclick = () => {
         document.getElementById('settings').style.display = 'block';
         document.getElementById('keys').style.display = 'none';
-      }
+      };
       keys.appendChild(freedeck);
       return;
     }
@@ -159,16 +159,16 @@ let touchendX = 2500;
 function checkDirection () {
   if (touchendX < touchstartX) {
     // go page up
-    if (Pages[currentPage + 1]) {
-      loadPage(currentPage + 1);
+    if (Pages[universal.load('page') + 1]) {
+      loadPage(universal.load('page') + 1);
     } else {
       /* empty */
     }
   }
   if (touchendX > touchstartX) {
     // go page down
-    if (Pages[currentPage - 1]) {
-      loadPage(currentPage - 1);
+    if (Pages[universal.load('page') - 1]) {
+      loadPage(universal.load('page') - 1);
     } else {
       /* empty */
     }

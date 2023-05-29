@@ -2,7 +2,7 @@
 const keys = document.getElementById('keys');
 const Pages = {};
 const countOnEachPage = 8;
-let currentPage = 0;
+let currentPage = pageNumber = universal.load('page') ? universal.load('page') : 0;
 let keyList = [];
 const klD = [];
 
@@ -12,7 +12,7 @@ universal.socket.on('server_connected', function () {
   removeFromHTMLlog('Waiting for host...');
   addToHTMLlog('Companion connected!');
   universal.socket.emit('c-connected');
-  if (document.getElementById('keys')) loadPage(0);
+  if (document.getElementById('keys')) loadPage();
   document.getElementById('console').style.display = 'none';
 });
 
@@ -20,7 +20,7 @@ function removeFromHTMLlog (text) {
   document.getElementById('console').removeChild(document.getElementById(text));
 }
 
-function loadPage (pageNumber) {
+function loadPage (pageNumber = universal.load('page') ? universal.load('page') : 0) {
   autoSort();
   currentPage = pageNumber;
   keyList = [];
@@ -109,7 +109,7 @@ function createNewSound () {
     path: 'unnamed.mp3'
   });
   universal.socket.emit('c-newkey', { name: 'New Key', path: 'unnamed.mp3' });
-  loadPage(0);
+  loadPage();
 }
 
 // Get the modal
@@ -132,7 +132,7 @@ function changeInfo (key) {
   const newpath = document.getElementById('newpath').value;
   const newname = document.getElementById('newname').value;
   universal.emit('c-info-change', { type: 'key_edit', key, newpath, newname });
-  loadPage(0);
+  loadPage();
 }
 
 // eslint-disable-next-line no-unused-vars

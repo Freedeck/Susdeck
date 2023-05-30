@@ -133,6 +133,9 @@ const universal = {
       s.remove();
     }, 3000);
   },
+  validSession: () => {
+    document.title = universal.load('owner_name') + '\'s Freedeck';
+  },
   isDevBranch: false,
   iconCount: 8,
   debugStat: 'Debug',

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 // eslint-disable-next-line no-undef
 let keyList = [];
@@ -6,16 +7,14 @@ let userAlive = true;
 let currentPage = universal.load('page') ? universal.load('page') : 0;
 
 addToHTMLlog('Waiting for host...');
+universal.remove('hidden');
 
 universal.socket.on('server_connected', function (loginStatus) {
   addToHTMLlog('Connected! Checking for login status..');
   if (!loginStatus) {
     loaded = true;
     document.getElementById('loading').style.display = 'none';
-    loadPage();
-    universal.remove('temp_hwid');
-    universal.remove('login_msg');
-    universal.remove('owner_name');
+    universal.validSession();
 
     if (!universal.load('welcomed')) {
       universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');
@@ -45,14 +44,7 @@ universal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // W
 // The server has authenticated you therefore we can bypass login
 universal.socket.on('session_valid', () => {
   loadPage();
-  universal.remove('temp_hwid');
-  universal.remove('login_msg');
-  universal.remove('owner_name');
-
-  if (!universal.load('welcomed')) {
-    universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');
-    universal.save('welcomed', true);
-  }
+  universal.validSession();
 });
 
 setInterval(() => {
@@ -126,6 +118,7 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
         document.getElementById('settings').style.display = 'block';
         document.getElementById('settings').style.animationName = 'sizeup_init';
         document.getElementById('keys').style.animationName = 'sizedown';
+        fard();
         setTimeout(() => {
           document.getElementById('keys').style.display = 'none';
           universal.save('hidden', true);
@@ -210,3 +203,7 @@ Object.keys(universal.themes).forEach(key => {
   newButton.innerText = key + ' Theme';
   tc.appendChild(newButton);
 });
+
+function fard () {
+  document.getElementById('setow').innerText = universal.load('owner_name') + "'s Freedeck: Settings (scroll)";
+}

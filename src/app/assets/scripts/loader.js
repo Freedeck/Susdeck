@@ -122,6 +122,7 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
         document.getElementById('keys').style.animationName = 'sizedown';
         setTimeout(() => {
           document.getElementById('keys').style.display = 'none';
+          universal.save('hidden', true);
         }, 250);
       };
       keys.appendChild(freedeck);

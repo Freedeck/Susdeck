@@ -255,26 +255,6 @@ universal.socket.on('custom_theme', themeData => {
   universal.save('custom_theme', themeData);
 });
 
-if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('keys')) {
-  setInterval(() => { userAlive = false; }, ScreenSaverActivationTime * 1000); // After x seconds the user is not alive :sob:
-  // For example, 1 sec
-
-  setInterval(() => {
-    if (!userAlive && !universal.screensaverStatus) {
-      document.getElementById('keys').style.opacity = '0.125';
-    }
-  }, ScreenSaverActivationTime * 1000 + 600); // For x.6 seconds, lower this
-  // At 1.6 seconds of inactivity
-
-  setInterval(() => {
-    if (!userAlive) {
-      document.getElementById('keys').style.opacity = '0';
-      screensaverStatus = true;
-    }
-  }, ScreenSaverActivationTime * 1000 + 2 * 1000); // After x+1.2 seconds of inactivity, bye
-  // At 2.2 seconds of inactivity (when 2.2 robert)
-}
-
 document.body.onload = () => {
   const footer = document.createElement('footer');
   footer.style.display = 'none';
@@ -283,9 +263,34 @@ document.body.onload = () => {
   if (!universal.isInDebug) return;
   footer.innerHTML = '<h3>In ' + universal.debugStat + ' Mode</h3>';
   footer.style.display = 'block';
+
+  // Screensaver
+  if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('keys')) {
+    setInterval(() => { userAlive = false; }, ScreenSaverActivationTime * 1000); // After x seconds the user is not alive :sob:
+    // For example, 1 sec
+
+    setInterval(() => {
+      if (!userAlive && !universal.screensaverStatus) {
+        document.getElementById('keys').style.opacity = '0.125';
+      }
+    }, ScreenSaverActivationTime * 1000 + 600); // For x.6 seconds, lower this
+    // At 1.6 seconds of inactivity
+
+    setInterval(() => {
+      if (!userAlive) {
+        document.getElementById('keys').style.opacity = '0';
+        universal.screensaverStatus = true;
+      }
+    }, ScreenSaverActivationTime * 1000 + 2 * 1000); // After x+1.2 seconds of inactivity, bye
+    // At 2.2 seconds of inactivity (when 2.2 robert)
+
+    document.body.onclick = () => {
+      if (universal.screensaverStatus) universal.screensaverStatus = false;
+    };
+  }
 };
 
-function addToHTMLlog (text) {
+function addToHTMLlog(text) {
   const txt = document.createElement('h2');
   txt.id = text;
   txt.innerText = text;

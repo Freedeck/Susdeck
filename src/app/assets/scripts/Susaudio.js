@@ -11,8 +11,8 @@ const Susaudio = {
     timeSinceLastRequest: 0,
     queue: [],
     devicesList: [],
-    audioEndedCallback: () => {
-      Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this);
+    audioEndedCallback: (this2 = this) => {
+      Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this2 || this);
     }
   },
   init: async () => {
@@ -58,6 +58,7 @@ const Susaudio = {
   },
   stopAll: () => {
     Susaudio._player.queue.forEach(audio => {
+      Susaudio._player.audioEndedCallback(audio);
       audio.stop();
     });
   },

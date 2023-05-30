@@ -5,9 +5,12 @@ Susaudio.init();
 
 /* eslint-disable no-undef */
 universal.socket.on('press-sound', (sound, name) => {
-  if (name.includes('Stop All')) {
+  if (name === 'Stop All') {
     // eslint-disable-next-line no-undef
     Susaudio.stopAll();
+    // Just in case
+    name = '';
+    sound = '';
     return;
   }
   Susaudio.playSound(sound, name);

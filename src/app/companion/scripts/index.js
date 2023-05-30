@@ -84,16 +84,6 @@ function loadPage (pageNumber = universal.load('page') ? universal.load('page') 
   }
 }
 
-universal.socket.on('press-sound', (sound, name) => {
-  if (sound.includes('--Stop_all')) {
-    // eslint-disable-next-line no-undef
-    Susaudio.stopAll();
-    return;
-  }
-  // eslint-disable-next-line no-undef
-  Susaudio.playSound(sound, name);
-});
-
 // eslint-disable-next-line no-unused-vars
 function DeleteKey (key) {
   // eslint-disable-next-line no-undef

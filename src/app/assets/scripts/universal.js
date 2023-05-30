@@ -53,6 +53,14 @@ const universal = {
       { 'font-family': 'Rubik, sans-serif' },
       { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' },
       { 'modal-color': 'rgba(0, 179, 255, 1)' }
+    ],
+    Yellow: [
+      { 'icon-count': 11 },
+      { 'template-columns': 'repeat(5,1fr)' },
+      { 'background-size': '400% 400%' },
+      { 'font-family': 'Rubik, sans-serif' },
+      { background: '45deg, rgba(255, 215, 59, 1) 0%, rgba(209, 173, 33, 1) 33%, rgba(255, 215, 59, 1) 66%, rgba(209, 173, 33, 1) 100%' },
+      { 'modal-color': 'rgba(255, 190, 106, 1)' }
     ]
   },
   retrieveSession: () => {

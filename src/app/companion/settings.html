@@ -14,7 +14,7 @@
         <h2>Settings</h2>
         <h3 id="now-playing"></h3>
         <br />
-        <button onclick="socket.emit('press-sound', '--Stop_all', 'Stop All')">Stop All</button>
+        <button onclick="socket.emit('press-sound', 'Stop All', 'Stop All')">Stop All</button>
         <button onclick="alert(universal.exportTheme())">Export Theme</button>
         <input id="theme-exported" hidden>
         <button onclick="universal.socket.emit('c-reset')">Reset Clients</button>

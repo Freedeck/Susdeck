@@ -156,6 +156,10 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
       }
     };
   }
+
+  if (universal.load('hidden')) {
+    document.getElementById('keys').style.display = 'none';
+  }
 }
 
 /* eslint-disable no-undef */

@@ -118,8 +118,8 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
       freedeck.style.backgroundSize = 'contain';
       freedeck.onclick = () => {
         document.getElementById('settings').style.display = 'block';
-        document.getElementById('settings').style.animationName = 'fadein';
-        document.getElementById('keys').style.animationName = 'size';
+        document.getElementById('settings').style.animationName = 'sizeup_init';
+        document.getElementById('keys').style.animationName = 'sizedown';
         setTimeout(() => {
           document.getElementById('keys').style.display = 'none';
         }, 250);

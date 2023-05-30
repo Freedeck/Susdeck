@@ -107,7 +107,18 @@
     }
 }
 
-@keyframes size {
+@keyframes sizeup {
+    from {
+        opacity: 0%;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 100%;
+        transform: scale(1);
+    }
+}
+
+@keyframes sizeup_init {
     from {
         opacity: 0%;
         transform: scale(1);
@@ -121,13 +132,15 @@
 @keyframes fadein {
     from{
         opacity: 0%;
+        transform: scale(0.9);
     }
     to {
+     transform: scale(1);
         opacity: 100%;
     }
 }
 
-@keyframes sizeup {
+@keyframes sizedown {
     from {
         opacity: 100%;
         transform: scale(0.9);

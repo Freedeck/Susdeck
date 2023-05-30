@@ -11,8 +11,8 @@ const Susaudio = {
     timeSinceLastRequest: 0,
     queue: [],
     devicesList: [],
-    audioEndedCallback: (this2 = this) => {
-      Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this2 || this);
+    audioEndedCallback: () => {
+      Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this);
     }
   },
   init: async () => {
@@ -49,9 +49,9 @@ const Susaudio = {
       universal.save('susaudio_playlist', universal.load('_susaudio_playlist') + ',' + audio.saName);
     }
     audio.play();
-    audio.onended = Susaudio._player.audioEndedCallback;
     Susaudio._player.queue.push(audio); // Add this to the queue
     Susaudio._player.timeSinceLastRequest = 0; // Reset time since last request
+    audio.onended = Susaudio._player.audioEndedCallback;
   },
   clearPlaylist: () => {
     universal.save('susaudio_playlist', '');
@@ -59,11 +59,11 @@ const Susaudio = {
   stopAll: () => {
     Susaudio._player.queue.forEach(audio => {
       Susaudio._player.audioEndedCallback(audio);
-      audio.stop();
+      stopAudio(audio);
     });
   },
   stopRecent: () => {
-    Susaudio._player.queue[0].stop();
+    stopAudio(Susaudio._player.queue[0]);
     Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, Susaudio._player.queue[0]);
   },
   playPause: () => {
@@ -87,11 +87,10 @@ const Susaudio = {
   }
 };
 
-Audio.prototype.stop = () => {
-  if (!this.isSusaudio) { this.stop(); return; } // This is a custom stop function meant to Susaudio the audio
-  this.pause();
-  this.currentTime = 0;
-  Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this);
+const stopAudio = (audio) => {
+  audio.pause();
+  audio.currentTime = 0;
+  Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, audio);
 };
 // other functions
 function _sa_removeFromArray (arr, value) {

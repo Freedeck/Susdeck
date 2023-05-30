@@ -129,17 +129,17 @@ const universal = {
   },
   sendToast: (message) => {
     const s = document.createElement('div');
-    s.id = 'snackbar';
+    s.id = 'toast';
     s.innerText = message;
 
     // Add the "show" class to DIV
     s.className = 'show';
-    document.body.appendChild(s);
+    document.getElementById('snackbar').appendChild(s);
 
     setTimeout(() => { // After 3 seconds, remove the show class from DIV
       s.className = s.className.replace('show', '');
       s.remove();
-    }, 3000);
+    }, 1250);
   },
   validSession: () => {
     universal.sendToast('Session valid!');
@@ -151,7 +151,10 @@ const universal = {
   root: document.querySelector(':root'),
   hasConnected: false
 };
+const notibar = document.createElement('div');
+notibar.id = 'snackbar';
 
+document.body.appendChild(notibar);
 universal.socket.on('server_connected', () => {
   universal.hasConnected = true;
   if (!universal.hasConnected) { socket.emit('c-change-client'); }

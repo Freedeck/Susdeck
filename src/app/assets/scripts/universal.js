@@ -290,7 +290,7 @@ document.body.onload = () => {
   }
 };
 
-function addToHTMLlog(text) {
+function addToHTMLlog (text) {
   const txt = document.createElement('h2');
   txt.id = text;
   txt.innerText = text;

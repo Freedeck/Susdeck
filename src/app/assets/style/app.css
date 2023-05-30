@@ -75,6 +75,7 @@ button:hover {
   grid-template-columns: var(--sd-template-columns);
   grid-column-gap: 7px;
   grid-row-gap: 2px;
+  animation-duration: .25s;
 }
 
 #loading {
@@ -192,6 +193,9 @@ button:hover {
 
 #settings {
   display: none;
+  animation-duration: .5s;
+  position: absolute;
+  transform: scale(0.9);
   width: max-content;
   height: min-content;
   background-color: rgba(0, 0, 0, 0.25);

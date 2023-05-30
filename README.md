@@ -1,8 +1,6 @@
-# Susdeck is being renamed to Freedeck
+# Freedeck
 
-## Freedeck
-
-<img src="https://github.com/susdeck/susdeck/blob/dev/src/app/assets/icons/freedeck.png?raw=true" width='100' height='100'>
+<img src="https://github.com/freedeck/freedeck/blob/dev/src/app/assets/icons/freedeck.png?raw=true" width='100' height='100'>
 
 Freedeck is the FOSS alternative to the Elgato Stream Deck.  
 Freedeck has had tons of time put into making the user experience as easy as possible, while staying in the boundaries of **3** (standard) dependencies!
@@ -14,19 +12,19 @@ You can join the official Freedeck Discord server over at [https://discord.gg/Sd
 ## What does it look like?
 
 These screenshots were taken on a desktop environment made to look like mobile.
-![Freedeck UI preview](https://github.com/susdeck/susdeck/blob/master/demo/preview.png?raw=true)
+![Freedeck UI preview](https://github.com/freedeck/freedeck/blob/master/demo/preview.png?raw=true)
 
 Here's a preview of the login screen:
-![Freedeck Login preview](https://github.com/susdeck/susdeck/blob/master/demo/login.png?raw=true)
+![Freedeck Login preview](https://github.com/freedeck/freedeck/blob/master/demo/login.png?raw=true)
 
 Here's a preview of the companion home screen:
-![Freedeck Companion Home preview](https://github.com/susdeck/susdeck/blob/master/demo/c-home.png?raw=true)
+![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-home.png?raw=true)
 
 Here's a preview of the companion soundboard screen:
-![Freedeck Companion Home preview](https://github.com/susdeck/susdeck/blob/master/demo/c-sounds.png?raw=true)
+![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-sounds.png?raw=true)
 
 And finally, here's a preview of the companion theme screen.
-![Freedeck Companion Home preview](https://github.com/susdeck/susdeck/blob/master/demo/c-themes.png?raw=true)
+![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-themes.png?raw=true)
 
 ## How do I use Freedeck?
 

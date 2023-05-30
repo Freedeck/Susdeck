@@ -1,7 +1,5 @@
 /* eslint-disable no-undef */
 
-universal.sendToast('Waiting for host to respond to login request continuation');
-
 universal.socket.on('server_connected', () => {
   universal.sendToast('Connected to Freedeck host');
   loaded = true;

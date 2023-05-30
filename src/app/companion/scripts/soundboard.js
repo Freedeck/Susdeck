@@ -4,8 +4,6 @@ const Pages = {};
 const q = [];
 const countOnEachPage = 8;
 
-universal.sendToast('Waiting for host...');
-
 universal.socket.on('server_connected', () => {
   universal.sendToast('Host connection established!');
   universal.socket.emit('companion_connected');

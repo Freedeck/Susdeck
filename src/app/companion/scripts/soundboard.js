@@ -7,7 +7,6 @@ const countOnEachPage = 8;
 universal.sendToast('Waiting for host...');
 
 universal.socket.on('server_connected', () => {
-  removeFromHTMLlog('Waiting for host...');
   universal.sendToast('Host connection established!');
   universal.socket.emit('companion_connected');
   document.getElementById('console').style.display = 'none';
@@ -18,7 +17,7 @@ universal.socket.on('server_connected', () => {
   }
 });
 
-function volChanged() {
+function volChanged () {
   const volumeSlider = document.getElementById('out-vol');
   Susaudio._player.queue.forEach(audio => {
     Susaudio._player.volume = volumeSlider.value;
@@ -26,14 +25,10 @@ function volChanged() {
   });
 }
 
-function pbrChanged() {
+function pbrChanged () {
   const volumeSlider = document.getElementById('out-pbr');
   Susaudio._player.queue.forEach(audio => {
     Susaudio._player.pitch = volumeSlider.value;
     audio.playbackRate = Susaudio._player.pitch;
   });
-}
-
-function removeFromHTMLlog(text) {
-  document.getElementById('console').removeChild(document.getElementById(text));
 }

@@ -142,6 +142,7 @@ const universal = {
     }, 3000);
   },
   validSession: () => {
+    universal.sendToast('Session valid!');
     document.title = universal.load('owner_name') + '\'s Freedeck';
   },
   isDevBranch: false,

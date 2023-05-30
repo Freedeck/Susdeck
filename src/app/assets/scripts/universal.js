@@ -151,10 +151,14 @@ const universal = {
   root: document.querySelector(':root'),
   hasConnected: false
 };
+
 const notibar = document.createElement('div');
 notibar.id = 'snackbar';
 
 document.body.appendChild(notibar);
+
+universal.sendToast('Waiting for host...');
+
 universal.socket.on('server_connected', () => {
   universal.hasConnected = true;
   if (!universal.hasConnected) { socket.emit('c-change-client'); }

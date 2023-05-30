@@ -1,3 +1,7 @@
 * {
     overflow: hidden;
 }
+
+#snackbar {
+    margin-bottom: 15%;
+}

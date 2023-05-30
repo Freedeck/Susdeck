@@ -6,7 +6,6 @@ let loaded = false;
 let userAlive = true;
 let currentPage = universal.load('page') ? universal.load('page') : 0;
 
-universal.sendToast('Waiting for host...');
 universal.remove('hidden');
 
 universal.socket.on('server_connected', function (loginStatus) {

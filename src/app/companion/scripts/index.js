@@ -9,16 +9,11 @@ const klD = [];
 universal.sendToast('Waiting for host...');
 
 universal.socket.on('server_connected', () => {
-  removeFromHTMLlog('Waiting for host...');
   universal.sendToast('Companion connected!');
   universal.socket.emit('c-connected');
   if (document.getElementById('keys')) loadPage();
   document.getElementById('console').style.display = 'none';
 });
-
-function removeFromHTMLlog (text) {
-  document.getElementById('console').removeChild(document.getElementById(text));
-}
 
 function loadPage (pageNumber = universal.load('page') ? universal.load('page') : 0) {
   autoSort();

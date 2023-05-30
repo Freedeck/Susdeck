@@ -36,10 +36,7 @@ const pages = [
 ];
 
 const experiments = [
-  {
-    name: 'Client Reset',
-    html: '<button onclick="universal.socket.emit(\'c-reset\')">Reset Clients</button><p>Warning: Your custom theme will be removed.</p>'
-  }
+
 ];
 
 const sideNav = document.createElement('div');

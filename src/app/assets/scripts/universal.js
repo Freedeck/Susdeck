@@ -130,6 +130,9 @@ const universal = {
   clearToasts: () => {
     document.querySelectorAll('#toast').forEach(elem => elem.remove());
   },
+  getDebuggableLogs: () => {
+    return { message_for_you: 'In case you\'re wondering, these logs do not reveal anything sensitive.', logs_for_neerds: { t: document.title, no: universal.load('notification_log') } };
+  },
   sendToast: (message) => {
     const s = document.createElement('div');
     s.id = 'toast';

@@ -161,6 +161,7 @@ universal.sendToast('Waiting for host...');
 
 universal.socket.on('server_connected', () => {
   universal.hasConnected = true;
+  universal.sendToast('Host connection established!');
   if (!universal.hasConnected) { socket.emit('c-change-client'); }
 });
 

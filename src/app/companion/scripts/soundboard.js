@@ -5,8 +5,7 @@ const q = [];
 const countOnEachPage = 8;
 
 universal.socket.on('server_connected', () => {
-  universal.sendToast('Host connection established!');
-  universal.socket.emit('companion_connected');
+  universal.socket.emit('c-connected');
   document.getElementById('console').style.display = 'none';
   if (universal.isInDebug === true) {
     Sounds.forEach(function (s) {

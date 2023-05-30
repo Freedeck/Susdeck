@@ -5,7 +5,7 @@ addToHTMLlog('Waiting for host to respond to login request continuation');
 universal.socket.on('server_connected', () => {
   addToHTMLlog('Connected to Freedeck host');
   loaded = true;
-  universal.socket.emit('c2sr_login_cont', universal.load('sid'));
+  universal.socket.emit('c2sr_login_cont', universal.load('temp_hwid'));
 });
 
 universal.socket.on('user_ack_cont', function (status) {

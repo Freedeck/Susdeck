@@ -13,6 +13,9 @@ universal.socket.on('server_connected', function (loginStatus) {
     loaded = true;
     document.getElementById('loading').style.display = 'none';
     loadPage();
+    universal.remove('temp_hwid');
+    universal.remove('login_msg');
+    universal.remove('owner_name');
 
     if (!universal.load('welcomed')) {
       universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');
@@ -25,8 +28,8 @@ universal.socket.on('server_connected', function (loginStatus) {
     } else {
       addToHTMLlog('Not logged in, requesting login');
       loaded = true;
-      universal.save('sid', universal.createTempHWID()); // Create a temporary session ID for logging in
-      universal.socket.emit('c2sr_login', universal.load('sid')); // Request login form with session ID
+      universal.save('temp_hwid', universal.createTempHWID()); // Create a temporary session ID for logging in
+      universal.socket.emit('c2sr_login', universal.load('temp_hwid')); // Request login form with session ID
     }
   }
 });
@@ -42,6 +45,9 @@ universal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // W
 // The server has authenticated you therefore we can bypass login
 universal.socket.on('session_valid', () => {
   loadPage();
+  universal.remove('temp_hwid');
+  universal.remove('login_msg');
+  universal.remove('owner_name');
 
   if (!universal.load('welcomed')) {
     universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');

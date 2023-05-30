@@ -215,8 +215,8 @@ universal.socket.on('session_invalid', () => { // The server has restarted, and 
   document.getElementById('loading').innerHTML = `<h1>Freedeck</h1>
   Please wait a moment..
   <div id='console'></div>`;
-  universal.save('sid', universal.createTempHWID()); // Create a temporary session ID for logging in
-  universal.socket.emit('c2sr_login', universal.load('sid')); // Request login form with session ID
+  universal.save('temp_hwid', universal.createTempHWID()); // Create a temporary session ID for logging in
+  universal.socket.emit('c2sr_login', universal.load('temp_hwid')); // Request login form with session ID
 });
 
 universal.socket.on('c-change', () => {

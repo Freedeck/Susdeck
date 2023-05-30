@@ -63,6 +63,7 @@ document.addEventListener('click', () => { // Basically, turn the screensaver on
 });
 
 function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sound buttons
+  pageNumber = Number(pageNumber);
   currentPage = pageNumber;
   universal.save('page', currentPage); // Persistent page saving
   keyList = [];
@@ -159,16 +160,16 @@ let touchendX = 2500;
 function checkDirection () {
   if (touchendX < touchstartX) {
     // go page up
-    if (Pages[universal.load('page') + 1]) {
-      loadPage(universal.load('page') + 1);
+    if (Pages[currentPage + 1]) {
+      loadPage(currentPage + 1);
     } else {
       /* empty */
     }
   }
   if (touchendX > touchstartX) {
     // go page down
-    if (Pages[universal.load('page') - 1]) {
-      loadPage(universal.load('page') - 1);
+    if (Pages[currentPage - 1]) {
+      loadPage(currentPage - 1);
     } else {
       /* empty */
     }

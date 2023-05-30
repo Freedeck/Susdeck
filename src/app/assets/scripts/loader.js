@@ -117,7 +117,6 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
         document.getElementById('settings').style.display = 'block';
         document.getElementById('settings').style.animationName = 'sizeup_init';
         document.getElementById('keys').style.animationName = 'sizedown';
-        universal.sendToast('This menu is WIP! Expect it to probably not work or look right.');
         fard();
         setTimeout(() => {
           document.getElementById('keys').style.display = 'none';

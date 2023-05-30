@@ -11,20 +11,29 @@ You can join the official Freedeck Discord server over at [https://discord.gg/Sd
 
 ## What does it look like?
 
-These screenshots were taken on a desktop environment made to look like mobile.
-![Freedeck UI preview](https://github.com/freedeck/freedeck/blob/master/demo/preview.png?raw=true)
+These screenshots were taken on the iPod Touch 7th gen.
+![Freedeck UI preview](https://github.com/freedeck/freedeck/blob/master/demo/preview.jpg?raw=true)
 
 Here's a preview of the login screen:
-![Freedeck Login preview](https://github.com/freedeck/freedeck/blob/master/demo/login.png?raw=true)
+![Freedeck Login preview](https://github.com/freedeck/freedeck/blob/master/demo/preview-login.jpg?raw=true)
 
 Here's a preview of the companion home screen:
 ![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-home.png?raw=true)
 
-Here's a preview of the companion soundboard screen:
-![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-sounds.png?raw=true)
+Here's a preview of the companion theme screen:
+![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-themeing.png?raw=true)
 
-And finally, here's a preview of the companion theme screen.
-![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-themes.png?raw=true)
+Here's a preview of the companion soundboard screen:
+![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-soundboard.png?raw=true)
+
+Here's a preview of the companion icon editor screen:
+![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-icon-editor.png?raw=true)
+
+Here's a preview of the companion settings screen:
+![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-settings.png?raw=true)
+
+Here's a preview of the companion experiments screen:
+![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-experiments.png?raw=true)
 
 ## How do I use Freedeck?
 

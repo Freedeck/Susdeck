@@ -127,13 +127,15 @@ const universal = {
   isExperimental: () => {
     return universal.load('experiments') ? universal.load('experiments') : 'false';
   },
+  clearToasts: () => {
+    document.querySelectorAll('#toast').forEach(elem => elem.remove());
+  },
   sendToast: (message) => {
     const s = document.createElement('div');
     s.id = 'toast';
     s.innerText = message;
-
-    // Add the "show" class to DIV
     s.className = 'show';
+    s.onclick = () => { s.className = s.className.replace('show', ''); s.remove(); };
     document.getElementById('snackbar').appendChild(s);
 
     setTimeout(() => { // After 3 seconds, remove the show class from DIV

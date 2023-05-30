@@ -265,34 +265,29 @@ document.body.onload = () => {
   footer.style.display = 'block';
 
   // Screensaver
-  if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('keys')) {
-    setInterval(() => { userAlive = false; }, ScreenSaverActivationTime * 1000); // After x seconds the user is not alive :sob:
-    // For example, 1 sec
+  setTimeout(() => {
+    if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('keys')) {
+      setInterval(() => { userAlive = false; }, ScreenSaverActivationTime * 1000); // After x seconds the user is not alive :sob:
+      // For example, 1 sec
 
-    setInterval(() => {
-      if (!userAlive && !universal.screensaverStatus) {
-        document.getElementById('keys').style.opacity = '0.125';
-      }
-    }, ScreenSaverActivationTime * 1000 + 600); // For x.6 seconds, lower this
-    // At 1.6 seconds of inactivity
+      setInterval(() => {
+        if (!userAlive && !universal.screensaverStatus) {
+          document.getElementById('keys').style.opacity = '0.125';
+        }
+      }, ScreenSaverActivationTime * 1000 + 600); // For x.6 seconds, lower this
+      // At 1.6 seconds of inactivity
 
-    setInterval(() => {
-      if (!userAlive) {
-        document.getElementById('keys').style.opacity = '0';
-        universal.screensaverStatus = true;
-      }
-    }, ScreenSaverActivationTime * 1000 + 2 * 1000); // After x+1.2 seconds of inactivity, bye
-    // At 2.2 seconds of inactivity (when 2.2 robert)
+      setInterval(() => {
+        if (!userAlive) {
+          document.getElementById('keys').style.opacity = '0';
+          universal.screensaverStatus = true;
+        }
+      }, ScreenSaverActivationTime * 1000 + 2 * 1000); // After x+1.2 seconds of inactivity, bye
+      // At 2.2 seconds of inactivity (when 2.2 robert)
 
-    document.body.onclick = () => {
-      if (universal.screensaverStatus) universal.screensaverStatus = false;
-    };
-  }
+      document.body.onclick = () => {
+        if (universal.screensaverStatus) universal.screensaverStatus = false;
+      };
+    }
+  }, 250);
 };
-
-function addToHTMLlog (text) {
-  const txt = document.createElement('h2');
-  txt.id = text;
-  txt.innerText = text;
-  document.getElementById('console').appendChild(txt);
-}

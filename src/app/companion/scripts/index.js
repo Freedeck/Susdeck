@@ -6,11 +6,11 @@ let currentPage = pageNumber = universal.load('page') ? universal.load('page') :
 let keyList = [];
 const klD = [];
 
-addToHTMLlog('Waiting for host...');
+universal.sendToast('Waiting for host...');
 
 universal.socket.on('server_connected', () => {
   removeFromHTMLlog('Waiting for host...');
-  addToHTMLlog('Companion connected!');
+  universal.sendToast('Companion connected!');
   universal.socket.emit('c-connected');
   if (document.getElementById('keys')) loadPage();
   document.getElementById('console').style.display = 'none';

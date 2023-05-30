@@ -6,11 +6,11 @@ let loaded = false;
 let userAlive = true;
 let currentPage = universal.load('page') ? universal.load('page') : 0;
 
-addToHTMLlog('Waiting for host...');
+universal.sendToast('Waiting for host...');
 universal.remove('hidden');
 
 universal.socket.on('server_connected', function (loginStatus) {
-  addToHTMLlog('Connected! Checking for login status..');
+  universal.sendToast('Connected! Checking for login status..');
   if (!loginStatus) {
     loaded = true;
     document.getElementById('loading').style.display = 'none';
@@ -23,9 +23,9 @@ universal.socket.on('server_connected', function (loginStatus) {
   } else {
     if (universal.load('session')) { // If _sdsession exists login
       universal.socket.emit('Authenticated', universal.load('session'));
-      addToHTMLlog('Sending server session ID..');
+      universal.sendToast('Sending server session ID..');
     } else {
-      addToHTMLlog('Not logged in, requesting login');
+      universal.sendToast('Not logged in, requesting login');
       loaded = true;
       universal.save('temp_hwid', universal.createTempHWID()); // Create a temporary session ID for logging in
       universal.socket.emit('c2sr_login', universal.load('temp_hwid')); // Request login form with session ID
@@ -35,7 +35,7 @@ universal.socket.on('server_connected', function (loginStatus) {
 
 universal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // When we get the green light to login
   loaded = true; // Keep page from reloading
-  addToHTMLlog('Request received by server, let\'s log in.');
+  universal.sendToast('Request received by server, let\'s log in.');
   universal.save('login_msg', loginMsg);
   universal.save('owner_name', ownerName); // Save the login message and owner's name
   window.location.href = nextLoc; // Next, move the page over to login page that server sends back
@@ -50,7 +50,7 @@ universal.socket.on('session_valid', () => {
 setInterval(() => {
   // Auto refresh, you shouldn't be waiting to connect for longer than 500ms.
   if (loaded) return;
-  addToHTMLlog('Connection attempt timed out. Retrying...');
+  universal.sendToast('Connection attempt timed out. Retrying...');
   window.location.reload();
 }, 1500);
 

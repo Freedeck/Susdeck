@@ -4,11 +4,11 @@ const Pages = {};
 const q = [];
 const countOnEachPage = 8;
 
-addToHTMLlog('Waiting for host...');
+universal.sendToast('Waiting for host...');
 
 universal.socket.on('server_connected', () => {
   removeFromHTMLlog('Waiting for host...');
-  addToHTMLlog('Host connection established!');
+  universal.sendToast('Host connection established!');
   universal.socket.emit('companion_connected');
   document.getElementById('console').style.display = 'none';
   if (universal.isInDebug === true) {
@@ -32,14 +32,6 @@ function pbrChanged() {
     Susaudio._player.pitch = volumeSlider.value;
     audio.playbackRate = Susaudio._player.pitch;
   });
-}
-
-function addToHTMLlog(text) {
-  const txt = document.createElement('h2');
-  txt.id = text;
-  txt.innerText = text;
-  universal.log('CompanionSB', text);
-  document.getElementById('console').appendChild(txt);
 }
 
 function removeFromHTMLlog(text) {

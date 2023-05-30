@@ -105,13 +105,6 @@ document.body.onload = () => {
   document.body.appendChild(freedeckLogo);
 };
 
-function addToHTMLlog (text) {
-  const txt = document.createElement('p');
-  txt.innerText = text;
-  txt.id = text;
-  document.getElementById('console').appendChild(txt);
-}
-
 function enableExperiments () {
   if (confirm('Are you sure you want to turn on experiments?')) {
     if (universal.load('experiments') === 'true') {

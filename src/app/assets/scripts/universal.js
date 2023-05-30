@@ -256,20 +256,23 @@ universal.socket.on('custom_theme', themeData => {
 });
 
 if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('keys')) {
-  setInterval(() => { userAlive = false; }, ScreenSaverActivationTime * 1000);
+  setInterval(() => { userAlive = false; }, ScreenSaverActivationTime * 1000); // After x seconds the user is not alive :sob:
+  // For example, 1 sec
 
   setInterval(() => {
     if (!userAlive && !universal.screensaverStatus) {
-      keys.style.opacity = '0.125';
+      document.getElementById('keys').style.opacity = '0.125';
     }
-  }, ScreenSaverActivationTime * 1000 + 600);
+  }, ScreenSaverActivationTime * 1000 + 600); // For x.6 seconds, lower this
+  // At 1.6 seconds of inactivity
 
   setInterval(() => {
     if (!userAlive) {
-      keys.style.opacity = '0';
+      document.getElementById('keys').style.opacity = '0';
       screensaverStatus = true;
     }
-  }, ScreenSaverActivationTime * 1000 + 2 * 1000);
+  }, ScreenSaverActivationTime * 1000 + 2 * 1000); // After x+1.2 seconds of inactivity, bye
+  // At 2.2 seconds of inactivity (when 2.2 robert)
 }
 
 document.body.onload = () => {

@@ -16,6 +16,7 @@ universal.socket.on('server_connected', () => {
 
 function volChanged () {
   const volumeSlider = document.getElementById('out-vol');
+  Susaudio._player.volume = volumeSlider.value;
   Susaudio._player.queue.forEach(audio => {
     Susaudio._player.volume = volumeSlider.value;
     audio.volume = Susaudio._player.volume;
@@ -24,6 +25,7 @@ function volChanged () {
 
 function pbrChanged () {
   const volumeSlider = document.getElementById('out-pbr');
+  Susaudio._player.pitch = volumeSlider.value;
   Susaudio._player.queue.forEach(audio => {
     Susaudio._player.pitch = volumeSlider.value;
     audio.playbackRate = Susaudio._player.pitch;

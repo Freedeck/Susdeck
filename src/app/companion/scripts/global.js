@@ -78,7 +78,7 @@ experiments.forEach(experiment => {
 });
 
 function listAudioDevices () {
-  if (document.title !== 'Freedeck: Companion - Soundboard Config') return;
+  if (document.title !== 'Freedeck: Companion - Soundboard') return;
   Susaudio._player.devicesList.forEach(device => {
     const option = document.createElement('option');
     option.value = device.name;
@@ -89,7 +89,7 @@ function listAudioDevices () {
   });
 }
 
-listAudioDevices();
+setTimeout(() => { listAudioDevices(); }, 15);
 
 if (document.getElementById('sai')) {
   document.getElementById('sai').onchange = function (ev) {

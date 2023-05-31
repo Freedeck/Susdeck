@@ -38,7 +38,7 @@ function addToHTMLlog(text) {
   const txt = document.createElement('h2');
   txt.id = text;
   txt.innerText = text;
-  universal.log('CompanionSB', text);
+  universal.log('Soundboard', text);
   document.getElementById('console').appendChild(txt);
 }
 

@@ -10,6 +10,7 @@ universal.socket.on('press-sound', (sound, name) => {
     Susaudio.stopAll();
     return;
   }
+  universal.log('Soundboard', `Playing ${name}`);
   Susaudio.playSound(sound, name);
   Susaudio.playSound(sound, name, true);
 });

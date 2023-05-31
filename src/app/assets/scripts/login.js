@@ -1,11 +1,9 @@
 /* eslint-disable no-undef */
 
-addToHTMLlog('Waiting for host to respond to login request continuation');
-
 universal.socket.on('server_connected', () => {
-  addToHTMLlog('Connected to Freedeck host');
+  universal.sendToast('Connected to Freedeck host');
   loaded = true;
-  universal.socket.emit('c2sr_login_cont', universal.load('sid'));
+  universal.socket.emit('c2sr_login_cont', universal.load('temp_hwid'));
 });
 
 universal.socket.on('user_ack_cont', function (status) {
@@ -13,7 +11,7 @@ universal.socket.on('user_ack_cont', function (status) {
     universal.save('session', '');
     window.location.replace('../../index.html');
   }
-  addToHTMLlog('Loading login form..');
+  universal.sendToast('Loading login form..');
   document.getElementById('loading').style.display = 'none';
   document.getElementById('sdl').innerText = universal.load('login_msg');
   document.getElementById('yn').innerText = universal.load('owner_name');

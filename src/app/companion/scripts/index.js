@@ -6,19 +6,11 @@ let currentPage = pageNumber = universal.load('page') ? universal.load('page') :
 let keyList = [];
 const klD = [];
 
-addToHTMLlog('Waiting for host...');
-
 universal.socket.on('server_connected', () => {
-  removeFromHTMLlog('Waiting for host...');
-  addToHTMLlog('Companion connected!');
   universal.socket.emit('c-connected');
   if (document.getElementById('keys')) loadPage();
   document.getElementById('console').style.display = 'none';
 });
-
-function removeFromHTMLlog (text) {
-  document.getElementById('console').removeChild(document.getElementById(text));
-}
 
 function loadPage (pageNumber = universal.load('page') ? universal.load('page') : 0) {
   autoSort();
@@ -83,16 +75,6 @@ function loadPage (pageNumber = universal.load('page') ? universal.load('page') 
     };
   }
 }
-
-universal.socket.on('press-sound', (sound, name) => {
-  if (sound.includes('--Stop_all')) {
-    // eslint-disable-next-line no-undef
-    Susaudio.stopAll();
-    return;
-  }
-  // eslint-disable-next-line no-undef
-  Susaudio.playSound(sound, name);
-});
 
 // eslint-disable-next-line no-unused-vars
 function DeleteKey (key) {

@@ -53,6 +53,14 @@ const universal = {
       { 'font-family': 'Rubik, sans-serif' },
       { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' },
       { 'modal-color': 'rgba(0, 179, 255, 1)' }
+    ],
+    Yellow: [
+      { 'icon-count': 11 },
+      { 'template-columns': 'repeat(5,1fr)' },
+      { 'background-size': '400% 400%' },
+      { 'font-family': 'Rubik, sans-serif' },
+      { background: '45deg, rgba(255, 215, 59, 1) 0%, rgba(209, 173, 33, 1) 33%, rgba(255, 215, 59, 1) 66%, rgba(209, 173, 33, 1) 100%' },
+      { 'modal-color': 'rgba(255, 190, 106, 1)' }
     ]
   },
   retrieveSession: () => {
@@ -119,19 +127,29 @@ const universal = {
   isExperimental: () => {
     return universal.load('experiments') ? universal.load('experiments') : 'false';
   },
+  clearToasts: () => {
+    document.querySelectorAll('#toast').forEach(elem => elem.remove());
+  },
+  getDebuggableLogs: () => {
+    return { message_for_you: 'In case you\'re wondering, these logs do not reveal anything sensitive.', logs_for_neerds: { t: document.title, no: universal.load('notification_log') } };
+  },
   sendToast: (message) => {
     const s = document.createElement('div');
-    s.id = 'snackbar';
+    s.id = 'toast';
     s.innerText = message;
-
-    // Add the "show" class to DIV
     s.className = 'show';
-    document.body.appendChild(s);
+    s.onclick = () => { s.className = s.className.replace('show', ''); s.remove(); };
+    document.getElementById('snackbar').appendChild(s);
 
     setTimeout(() => { // After 3 seconds, remove the show class from DIV
       s.className = s.className.replace('show', '');
       s.remove();
-    }, 3000);
+    }, 1250);
+    universal.save('notification_log', universal.load('notification_log') + `,${btoa(JSON.stringify({ time: new Date().toTimeString(), page: window.location.pathname, message }))}`);
+  },
+  validSession: () => {
+    universal.sendToast('Session valid!');
+    document.title = universal.load('owner_name') + '\'s Freedeck';
   },
   isDevBranch: false,
   iconCount: 8,
@@ -140,8 +158,16 @@ const universal = {
   hasConnected: false
 };
 
+const notibar = document.createElement('div');
+notibar.id = 'snackbar';
+
+document.body.appendChild(notibar);
+
+universal.sendToast('Waiting for host...');
+
 universal.socket.on('server_connected', () => {
   universal.hasConnected = true;
+  universal.sendToast('Host connection established!');
   if (!universal.hasConnected) { socket.emit('c-change-client'); }
 });
 
@@ -215,8 +241,8 @@ universal.socket.on('session_invalid', () => { // The server has restarted, and 
   document.getElementById('loading').innerHTML = `<h1>Freedeck</h1>
   Please wait a moment..
   <div id='console'></div>`;
-  universal.save('sid', universal.createTempHWID()); // Create a temporary session ID for logging in
-  universal.socket.emit('c2sr_login', universal.load('sid')); // Request login form with session ID
+  universal.save('temp_hwid', universal.createTempHWID()); // Create a temporary session ID for logging in
+  universal.socket.emit('c2sr_login', universal.load('temp_hwid')); // Request login form with session ID
 });
 
 universal.socket.on('c-change', () => {
@@ -244,23 +270,6 @@ universal.socket.on('custom_theme', themeData => {
   universal.save('custom_theme', themeData);
 });
 
-if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('keys')) {
-  setInterval(() => { userAlive = false; }, ScreenSaverActivationTime * 1000);
-
-  setInterval(() => {
-    if (!userAlive && !universal.screensaverStatus) {
-      keys.style.opacity = '0.125';
-    }
-  }, ScreenSaverActivationTime * 1000 + 600);
-
-  setInterval(() => {
-    if (!userAlive) {
-      keys.style.opacity = '0';
-      screensaverStatus = true;
-    }
-  }, ScreenSaverActivationTime * 1000 + 2 * 1000);
-}
-
 document.body.onload = () => {
   const footer = document.createElement('footer');
   footer.style.display = 'none';
@@ -269,11 +278,31 @@ document.body.onload = () => {
   if (!universal.isInDebug) return;
   footer.innerHTML = '<h3>In ' + universal.debugStat + ' Mode</h3>';
   footer.style.display = 'block';
-};
 
-function addToHTMLlog (text) {
-  const txt = document.createElement('h2');
-  txt.id = text;
-  txt.innerText = text;
-  document.getElementById('console').appendChild(txt);
-}
+  // Screensaver
+  setTimeout(() => {
+    if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('keys')) {
+      setInterval(() => { userAlive = false; }, ScreenSaverActivationTime * 1000); // After x seconds the user is not alive :sob:
+      // For example, 1 sec
+
+      setInterval(() => {
+        if (!userAlive && !universal.screensaverStatus) {
+          document.getElementById('keys').style.opacity = '0.125';
+        }
+      }, ScreenSaverActivationTime * 1000 + 600); // For x.6 seconds, lower this
+      // At 1.6 seconds of inactivity
+
+      setInterval(() => {
+        if (!userAlive) {
+          document.getElementById('keys').style.opacity = '0';
+          universal.screensaverStatus = true;
+        }
+      }, ScreenSaverActivationTime * 1000 + 2 * 1000); // After x+1.2 seconds of inactivity, bye
+      // At 2.2 seconds of inactivity (when 2.2 robert)
+
+      document.body.onclick = () => {
+        if (universal.screensaverStatus) universal.screensaverStatus = false;
+      };
+    }
+  }, 250);
+};

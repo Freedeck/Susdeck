@@ -106,3 +106,47 @@
         top: 77%;
     }
 }
+
+@keyframes sizeup {
+    from {
+        opacity: 0%;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 100%;
+        transform: scale(1);
+    }
+}
+
+@keyframes sizeup_init {
+    from {
+        opacity: 0%;
+        transform: scale(1);
+    }
+    to {
+        opacity: 100%;
+        transform: scale(0.9);
+    }
+}
+
+@keyframes fadein {
+    from{
+        opacity: 0%;
+        transform: scale(0.9);
+    }
+    to {
+     transform: scale(1);
+        opacity: 100%;
+    }
+}
+
+@keyframes sizedown {
+    from {
+        opacity: 100%;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 0%;
+        transform: scale(1);
+    }
+}

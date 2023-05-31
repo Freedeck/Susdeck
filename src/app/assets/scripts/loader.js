@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 // eslint-disable-next-line no-undef
 let keyList = [];
@@ -5,14 +6,14 @@ let loaded = false;
 let userAlive = true;
 let currentPage = universal.load('page') ? universal.load('page') : 0;
 
-addToHTMLlog('Waiting for host...');
+universal.remove('hidden');
 
 universal.socket.on('server_connected', function (loginStatus) {
-  addToHTMLlog('Connected! Checking for login status..');
+  universal.sendToast('Connected! Checking for login status..');
   if (!loginStatus) {
     loaded = true;
     document.getElementById('loading').style.display = 'none';
-    loadPage();
+    universal.validSession();
 
     if (!universal.load('welcomed')) {
       universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');
@@ -21,19 +22,19 @@ universal.socket.on('server_connected', function (loginStatus) {
   } else {
     if (universal.load('session')) { // If _sdsession exists login
       universal.socket.emit('Authenticated', universal.load('session'));
-      addToHTMLlog('Sending server session ID..');
+      universal.sendToast('Sending server session ID..');
     } else {
-      addToHTMLlog('Not logged in, requesting login');
+      universal.sendToast('Not logged in, requesting login');
       loaded = true;
-      universal.save('sid', universal.createTempHWID()); // Create a temporary session ID for logging in
-      universal.socket.emit('c2sr_login', universal.load('sid')); // Request login form with session ID
+      universal.save('temp_hwid', universal.createTempHWID()); // Create a temporary session ID for logging in
+      universal.socket.emit('c2sr_login', universal.load('temp_hwid')); // Request login form with session ID
     }
   }
 });
 
 universal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // When we get the green light to login
   loaded = true; // Keep page from reloading
-  addToHTMLlog('Request received by server, let\'s log in.');
+  universal.sendToast('Request received by server, let\'s log in.');
   universal.save('login_msg', loginMsg);
   universal.save('owner_name', ownerName); // Save the login message and owner's name
   window.location.href = nextLoc; // Next, move the page over to login page that server sends back
@@ -42,17 +43,13 @@ universal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // W
 // The server has authenticated you therefore we can bypass login
 universal.socket.on('session_valid', () => {
   loadPage();
-
-  if (!universal.load('welcomed')) {
-    universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');
-    universal.save('welcomed', true);
-  }
+  universal.validSession();
 });
 
 setInterval(() => {
   // Auto refresh, you shouldn't be waiting to connect for longer than 500ms.
   if (loaded) return;
-  addToHTMLlog('Connection attempt timed out. Retrying...');
+  universal.sendToast('Connection attempt timed out. Retrying...');
   window.location.reload();
 }, 1500);
 
@@ -63,6 +60,7 @@ document.addEventListener('click', () => { // Basically, turn the screensaver on
 });
 
 function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sound buttons
+  pageNumber = Number(pageNumber);
   currentPage = pageNumber;
   universal.save('page', currentPage); // Persistent page saving
   keyList = [];
@@ -117,7 +115,13 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
       freedeck.style.backgroundSize = 'contain';
       freedeck.onclick = () => {
         document.getElementById('settings').style.display = 'block';
-        document.getElementById('keys').style.display = 'none';
+        document.getElementById('settings').style.animationName = 'sizeup_init';
+        document.getElementById('keys').style.animationName = 'sizedown';
+        fard();
+        setTimeout(() => {
+          document.getElementById('keys').style.display = 'none';
+          universal.save('hidden', true);
+        }, 250);
       };
       keys.appendChild(freedeck);
       return;
@@ -150,6 +154,10 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
       }
     };
   }
+
+  if (universal.load('hidden')) {
+    document.getElementById('keys').style.display = 'none';
+  }
 }
 
 /* eslint-disable no-undef */
@@ -159,16 +167,16 @@ let touchendX = 2500;
 function checkDirection () {
   if (touchendX < touchstartX) {
     // go page up
-    if (Pages[universal.load('page') + 1]) {
-      loadPage(universal.load('page') + 1);
+    if (Pages[currentPage + 1]) {
+      loadPage(currentPage + 1);
     } else {
       /* empty */
     }
   }
   if (touchendX > touchstartX) {
     // go page down
-    if (Pages[universal.load('page') - 1]) {
-      loadPage(universal.load('page') - 1);
+    if (Pages[currentPage - 1]) {
+      loadPage(currentPage - 1);
     } else {
       /* empty */
     }
@@ -194,3 +202,7 @@ Object.keys(universal.themes).forEach(key => {
   newButton.innerText = key + ' Theme';
   tc.appendChild(newButton);
 });
+
+function fard () {
+  document.getElementById('setow').innerText = universal.load('owner_name') + "'s Freedeck: Settings (scroll)";
+}

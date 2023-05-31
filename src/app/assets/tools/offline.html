@@ -2,241 +2,25 @@
 <html>
 
 <head>
-    <title>Freedeck Offline</title>
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
+    <title>Freedeck is offline..</title>
     <style>
-        :root {
-            --sd-template-columns: repeat(4, 1fr);
-            --sd-font-family: 'Arial';
-            --sd-background-size: 400% 400%;
-            --sd-background: 45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%;
-            --sd-rotationDegrees: 2deg;
-            --sd-btn-background: rgba(0, 0, 0, 0.5);
-        }
-
-        body {
-            background: rgba(255, 0, 89, 1);
-            background: -webkit-linear-gradient(var(--sd-background));
-            background: -moz-linear-gradient(var(--sd-background));
-            background: -ms-linear-gradient(var(--sd-background));
-            background: -o-linear-gradient(var(--sd-background));
-            background: linear-gradient(var(--sd-background));
-            background-size: var(--sd-background-size);
-            -webkit-animation: errorBg 5s linear infinite;
-            -moz-animation: errorBg 5s linear infinite;
-            animation: errorBg 5s linear infinite;
-            height: 100vh;
-            width: 100vw;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-        }
-
-        .freedeck-logo {
-            position: absolute;
-            right: 0px;
-            bottom: 0;
-        }
-
-        footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            height: 10%;
-            width: 25%;
-            background-color: red;
-            color: white;
-            text-align: center;
-        }
-
-        * {
-            font-family: var(--sd-font-family);
-        }
-
-        html,
-        body {
-            overflow: hidden;
-        }
-
-        @-webkit-keyframes errorBg {
-            0% {
-                background-position: 100% 0%
-            }
-
-            100% {
-                background-position: 15% 100%
-            }
-        }
-
-        @-moz-keyframes errorBg {
-            0% {
-                background-position: 100% 0%
-            }
-
-            100% {
-                background-position: 15% 100%
-            }
-        }
-
-        @keyframes errorBg {
-            0% {
-                background-position: 100% 0%
-            }
-
-            100% {
-                background-position: 15% 100%
-            }
-        }
-
-
-
-        #loading {
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border-radius: 50px;
-        }
-
-        #login {
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border-radius: 50px;
-        }
-
-        #snackbar {
-            visibility: hidden;
-            /* Hidden by default. Visible on click */
-            min-width: 250px;
-            /* Set a default minimum width */
-            margin-left: -125px;
-            /* Divide value of min-width by 2 */
-            background-color: #333;
-            /* Black background color */
-            color: #fff;
-            /* White text color */
-            text-align: center;
-            /* Centered text */
-            border-radius: 2px;
-            /* Rounded borders */
-            padding: 16px;
-            /* Padding */
-            position: fixed;
-            /* Sit on top of the screen */
-            z-index: 1;
-            /* Add a z-index if needed */
-            left: 50%;
-            /* Center the snackbar */
-            bottom: 30px;
-            /* 30px from the bottom */
-        }
-
-        /* Show the snackbar when clicking on a button (class added with JavaScript) */
-        #snackbar.show {
-            visibility: visible;
-            /* Show the snackbar */
-            /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
-  However, delay the fade out process for 2.5 seconds */
-            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-            animation: fadein 0.5s, fadeout 0.5s 2.5s;
-        }
-
-        /* Animations to fade the snackbar in and out */
-        @-webkit-keyframes fadein {
-            from {
-                bottom: 0;
-                opacity: 0;
-            }
-
-            to {
-                bottom: 30px;
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadein {
-            from {
-                bottom: 0;
-                opacity: 0;
-            }
-
-            to {
-                bottom: 30px;
-                opacity: 1;
-            }
-        }
-
-        @-webkit-keyframes fadeout {
-            from {
-                bottom: 30px;
-                opacity: 1;
-            }
-
-            to {
-                bottom: 0;
-                opacity: 0;
-            }
-        }
-
-        @keyframes fadeout {
-            from {
-                bottom: 30px;
-                opacity: 1;
-            }
-
-            to {
-                bottom: 0;
-                opacity: 0;
-            }
-        }
+        #loading,#snackbar{color:#fff;text-align:center}:root{--bg:45deg,rgba(255, 0, 89, 1) 0%,rgba(0, 179, 255, 1) 33%,rgba(255, 0, 89, 1) 66%,rgba(0, 179, 255, 1) 100%}body{background:#ff0059;background:linear-gradient(var(--bg));background-size:400%,400%;animation:5s linear infinite errorBg;height:100vh;width:100vw;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}body,html{font-family:'Gill Sans','Gill Sans MT',Calibri,'Trebuchet MS',sans-serif;overflow:hidden}@keyframes errorBg{0%{background-position:100% 0}100%{background-position:15% 100%}}#loading{width:100%;height:100%;background-color:rgba(0,0,0,.5);border-radius:50px}#snackbar{visibility:hidden;min-width:250px;margin-left:-125px;background-color:#333;border-radius:2px;padding:16px;position:fixed;z-index:1;left:50%;bottom:30px}#snackbar.show{visibility:visible}
     </style>
 </head>
 
-<body onload="noti('Successfully loaded offline environment')">
+<body onload="e('Successfully loaded offline environment')">
     <div id="loading">
         <h1>Freedeck</h1>
         <h1>The Freedeck server/host is offline.</h1>
         <h2>You cannot access Freedeck during this time.</h2>
         <h2>This client is waiting for the server to come back online, then you will be automatically refreshed into a
             new session.</h2>
-        <button onclick="gobyebye()">Click to make this message go away</button>
-        <div id="console"></div>
+        <button onclick="n()">Click to make this message go away</button>
     </div>
 
     <script>
-        function log(s) { document.getElementById('console').innerText += '\n{Log} ' + s }
-        setInterval(() => {
-            try {
-                fetch('/').then(res => res.text()).then(res => {
-                    window.location.replace("/")
-                }).catch(err => {
-                    log('Pinged server', err)
-                })
-            } catch (err) {
-                log(err)
-            }
-        }, 500)
-        function noti(message) {
-            const s = document.createElement('div');
-    s.id = 'snackbar';
-    s.innerText = message;
-
-    // Add the "show" class to DIV
-    s.className = 'show';
-    document.body.appendChild(s);
-
-    setTimeout(() => { // After 3 seconds, remove the show class from DIV
-      s.className = s.className.replace('show', '');
-      s.remove();
-    }, 3000);
-        }
-        function gobyebye() {
-            document.getElementById('loading').style.display = 'none'
-            noti('Hid message! It will not come back! Freedeck is still pinging the server.')
-        }
+        function e(e){const t=document.createElement("div");t.id="snackbar",t.innerText=e,t.className="show",document.body.appendChild(t),setTimeout((function(){t.className=t.className.replace("show",""),t.remove()}),400);}function n(){document.getElementById("loading").style.display="none",e("Hid message! It will not come back! Freedeck is still pinging the server.")};setInterval((()=>{try{fetch("/").then((e=>e.text())).then((e=>{window.location.replace('/')})).catch((n=>{e("Pinged server")}))}catch(n){e(n)}}),500);e("Loaded offline environment");
+        
     </script>
 </body>
 

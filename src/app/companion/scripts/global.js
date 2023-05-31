@@ -36,10 +36,7 @@ const pages = [
 ];
 
 const experiments = [
-  {
-    name: 'Client Reset',
-    html: '<button onclick="universal.socket.emit(\'c-reset\')">Reset Clients</button><p>Warning: Your custom theme will be removed.</p>'
-  }
+
 ];
 
 const sideNav = document.createElement('div');
@@ -81,7 +78,7 @@ experiments.forEach(experiment => {
 });
 
 function listAudioDevices () {
-  if (document.title !== 'Freedeck: Companion - Soundboard Config') return;
+  if (document.title !== 'Freedeck: Companion - Soundboard') return;
   Susaudio._player.devicesList.forEach(device => {
     const option = document.createElement('option');
     option.value = device.name;
@@ -92,7 +89,7 @@ function listAudioDevices () {
   });
 }
 
-listAudioDevices();
+setTimeout(() => { listAudioDevices(); }, 15);
 
 if (document.getElementById('sai')) {
   document.getElementById('sai').onchange = function (ev) {
@@ -107,13 +104,6 @@ document.body.onload = () => {
   freedeckLogo.className = 'freedeck-logo';
   document.body.appendChild(freedeckLogo);
 };
-
-function addToHTMLlog (text) {
-  const txt = document.createElement('p');
-  txt.innerText = text;
-  txt.id = text;
-  document.getElementById('console').appendChild(txt);
-}
 
 function enableExperiments () {
   if (confirm('Are you sure you want to turn on experiments?')) {

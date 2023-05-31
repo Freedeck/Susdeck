@@ -8,6 +8,9 @@ universal.socket.on('press-sound', (sound, name) => {
   if (name.includes('Stop All')) {
     // eslint-disable-next-line no-undef
     Susaudio.stopAll();
+    // Just in case
+    name = '';
+    sound = '';
     return;
   }
   universal.log('Soundboard', `Playing ${name}`);

@@ -13,7 +13,8 @@
     <div id="main">
         <h2>Soundboard</h2>
         <button onclick="universal.socket.emit('c-change')">Remote Reload</button>
-        <button onclick="universal.socket.emit('press-sound', 'Stop All', 'Stop All')">Stop All</button>
+        <button onclick="Susaudio._player.autotuned = !Susaudio._player.autotuned">Autotune</button>
+        <button onclick="Susaudio.stopAll()">Stop All</button>
         <br />
         <br />
         <label for="sai"><strong>Select VB-Cable (or other output)</strong></label><select id="sai"></select>

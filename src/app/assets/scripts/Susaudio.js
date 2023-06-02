@@ -79,10 +79,8 @@ const Susaudio = {
   },
   changeAllPlayingPitch: (num) => {
     Susaudio._player.queue.forEach(audio => {
-      audio.pause(); // Let us edit the object
       audio.preservesPitch = false; // Change it real quick
       audio.playbackRate = num;
-      audio.play(); // Start playing again
     });
   }
 };
@@ -101,4 +99,7 @@ function _sa_removeFromArray (arr, value) {
 
 setInterval(() => {
   Susaudio._player.timeSinceLastRequest++;
+  if (Susaudio._player.autotuned) {
+    Susaudio.changeAllPlayingPitch(Math.floor(Math.random() * (2 - 1 + 1)) + 1);
+  }
 }, 1);

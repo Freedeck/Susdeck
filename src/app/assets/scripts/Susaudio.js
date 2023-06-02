@@ -11,8 +11,8 @@ const Susaudio = {
     timeSinceLastRequest: 0,
     queue: [],
     devicesList: [],
-    audioEndedCallback: () => {
-      Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, this);
+    audioEndedCallback: (aud) => {
+      Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, aud);
     }
   },
   init: async () => {
@@ -48,17 +48,16 @@ const Susaudio = {
       await audio.setSinkId(Susaudio._player.sinkId);
       universal.save('susaudio_playlist', universal.load('_susaudio_playlist') + ',' + audio.saName);
     }
+    audio.onended = () => Susaudio._player.audioEndedCallback(audio);
     audio.play();
     Susaudio._player.queue.push(audio); // Add this to the queue
     Susaudio._player.timeSinceLastRequest = 0; // Reset time since last request
-    audio.onended = Susaudio._player.audioEndedCallback;
   },
   clearPlaylist: () => {
     universal.save('susaudio_playlist', '');
   },
   stopAll: () => {
     Susaudio._player.queue.forEach(audio => {
-      Susaudio._player.audioEndedCallback(audio);
       stopAudio(audio);
     });
   },
@@ -85,10 +84,10 @@ const Susaudio = {
   }
 };
 
-const stopAudio = (audio) => {
+stopAudio = (audio) => {
+  Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, audio);
   audio.pause();
   audio.currentTime = 0;
-  Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, audio);
 };
 // other functions
 function _sa_removeFromArray (arr, value) {

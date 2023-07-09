@@ -280,3 +280,8 @@ button:hover {
   -webkit-animation: fadein 0.5s, fadeout 0.5s 1s;
   animation: fadein 0.5s, fadeout 0.5s 1s;
 }
+
+.functions {
+  display: flex;
+  gap: 5px;
+}

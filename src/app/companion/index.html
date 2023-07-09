@@ -19,8 +19,10 @@
         <br />
         <input type="checkbox" value="" id="soc"> <label for="soc">Play sound on click</label>
         <br /> <br />
-        <button onclick="setSet()">Set</button>
-        <button onclick="universal.socket.emit('c-change')">Remote Reload</button>
+        <div class="functions">
+            <button onclick="setSet()">Set</button>
+            <button onclick="universal.socket.emit('c-change')">Remote Reload</button>
+        </div>
         <div id="console"></div>
     </div>
 

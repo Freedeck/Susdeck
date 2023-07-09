@@ -24,7 +24,7 @@ const Susaudio = {
         audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
         if (universal.load('susaudio_sinkid')) return;
         Susaudio._player.sinkId = device.deviceId;
-      }
+      } else Susaudio._player.sinkId = 0;
     });
   },
   setSink: async (sinkId) => {

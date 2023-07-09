@@ -43,6 +43,7 @@ universal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // W
 // The server has authenticated you therefore we can bypass login
 universal.socket.on('session_valid', () => {
   loadPage();
+  document.querySelector('#keys').style.display = 'grid';
   universal.validSession();
 });
 

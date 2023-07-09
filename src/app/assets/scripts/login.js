@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 
 universal.socket.on('server_connected', () => {
-  universal.sendToast('Connected to Freedeck host');
   loaded = true;
   universal.socket.emit('c2sr_login_cont', universal.load('temp_hwid'));
 });

@@ -2,12 +2,11 @@
 /* eslint-disable no-undef */
 // Page sorter! No more manual pages!
 const Pages = {};
-const countOnEachPage = universal.iconCount;
-let pagesAmount = Sounds.length / countOnEachPage;
-let pageCounter = 0;
-let index = 0;
 
 function autosort (countOnEP) {
+  let pagesAmount = Sounds.length / universal.iconCount;
+  let pageCounter = 0;
+  let index = 0;
   pagesAmount = Math.floor(Sounds.length / countOnEP); // Set the amount of pages
   for (let i = 0; i < pagesAmount; i++) {
     Pages[i] = []; // Loop through and clear each page

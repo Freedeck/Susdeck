@@ -17,10 +17,12 @@
         <div id="themechoices" class="experiment"></div>
         <br />
         <h3>Settings</h3>
-        <input type="text" id="theme-import" placeholder="Freedeck Theme Code">
-    <button onclick="importTheme()">Import Theme</button>
-    <button onclick="removeTheme()">Remove Custom Theme</button>
-        <button onclick="universal.socket.emit('c-change')">Reload all Freedeck Sessions</button>
+        <div class="functions">
+            <input type="text" id="theme-import" placeholder="Freedeck Theme Code">
+            <button onclick="importTheme()">Import Theme</button>
+            <button onclick="removeTheme()">Remove Custom Theme</button>
+            <button onclick="universal.socket.emit('c-change')">Reload all Freedeck Sessions</button>
+        </div>
         <div id="console"></div>
         <div id="keys" hidden></div>
     </div>

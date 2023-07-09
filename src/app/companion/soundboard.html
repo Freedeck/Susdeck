@@ -12,8 +12,10 @@
 
     <div id="main">
         <h2>Soundboard</h2>
-        <button onclick="universal.socket.emit('c-change')">Remote Reload</button>
-        <button onclick="universal.socket.emit('press-sound', 'Stop All', 'Stop All')">Stop All</button>
+        <div class="functions">
+            <button onclick="universal.socket.emit('c-change')">Remote Reload</button>
+            <button onclick="universal.socket.emit('press-sound', 'Stop All', 'Stop All')">Stop All</button>
+        </div>
         <br />
         <br />
         <label for="sai"><strong>Select VB-Cable (or other output)</strong></label><select id="sai"></select>

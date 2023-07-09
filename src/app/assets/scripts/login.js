@@ -11,10 +11,10 @@ universal.socket.on('user_ack_cont', function (status) {
     window.location.replace('../../index.html');
   }
   universal.sendToast('Loading login form..');
-  document.getElementById('loading').style.display = 'none';
-  document.getElementById('sdl').innerText = universal.load('login_msg');
-  document.getElementById('yn').innerText = universal.load('owner_name');
-  document.getElementById('login').style.display = 'block';
+  document.querySelector('#loading').style.display = 'none';
+  document.querySelector('#sdl').innerText = universal.load('login_msg');
+  document.querySelector('#yn').innerText = universal.load('owner_name');
+  document.querySelector('#login').style.display = 'block';
 });
 
 universal.socket.on('s2cs_login', (sessionID, g) => {
@@ -26,5 +26,5 @@ universal.socket.on('s2cs_login', (sessionID, g) => {
 // eslint-disable-next-line no-unused-vars
 function submit () {
   universal.sendToast('Logging you in..');
-  universal.socket.emit('c2sd_login', document.getElementById('password').value);
+  universal.socket.emit('c2sd_login', document.querySelector('#password').value);
 }

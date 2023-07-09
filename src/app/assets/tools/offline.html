@@ -19,7 +19,7 @@
     </div>
 
     <script>
-        function e(e){const t=document.createElement("div");t.id="snackbar",t.innerText=e,t.className="show",document.body.appendChild(t),setTimeout((function(){t.className=t.className.replace("show",""),t.remove()}),400);}function n(){document.getElementById("loading").style.display="none",e("Hid message! It will not come back! Freedeck is still pinging the server.")};setInterval((()=>{try{fetch("/").then((e=>e.text())).then((e=>{window.location.replace('/')})).catch((n=>{e("Pinged server")}))}catch(n){e(n)}}),500);e("Loaded offline environment");
+        function e(e){const t=document.createElement("div");t.id="snackbar",t.innerText=e,t.className="show",document.body.appendChild(t),setTimeout((function(){t.className=t.className.replace("show",""),t.remove()}),400);}function n(){document.querySelector("#loading").style.display="none",e("Hid message! It will not come back! Freedeck is still pinging the server.")};setInterval((()=>{try{fetch("/").then((e=>e.text())).then((e=>{window.location.replace('/')})).catch((n=>{e("Pinged server")}))}catch(n){e(n)}}),500);e("Loaded offline environment");
         
     </script>
 </body>

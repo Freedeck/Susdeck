@@ -106,7 +106,7 @@ const universal = {
     const exportedThemeStr = JSON.stringify('[' + exportedTheme.join(',') + ']');
 
     universal.save('custom_theme', exportedThemeStr);
-    const expt = document.getElementById('theme-exported');
+    const expt = document.querySelector('#theme-exported');
 
     expt.value = exportedThemeStr;
     expt.hidden = false;
@@ -139,7 +139,7 @@ const universal = {
     s.innerText = message;
     s.className = 'show';
     s.onclick = () => { s.className = s.className.replace('show', ''); s.remove(); };
-    document.getElementById('snackbar').appendChild(s);
+    document.querySelector('#snackbar').appendChild(s);
 
     setTimeout(() => { // After 3 seconds, remove the show class from DIV
       s.className = s.className.replace('show', '');
@@ -231,14 +231,14 @@ universal.socket.on('s2ca_incorrect_pass', () => {
 
 universal.socket.on('session_valid', () => {
   loaded = true; // Keep page from reloading
-  document.getElementById('loading').style.display = 'none';
+  document.querySelector('#loading').style.display = 'none';
 });
 
 universal.socket.on('session_invalid', () => { // The server has restarted, and your session is invalid
   localStorage.setItem('_sdsession', '');
-  if (document.body.contains(document.getElementById('keys'))) document.getElementById('keys').remove();
-  document.getElementById('loading').style.display = 'block';
-  document.getElementById('loading').innerHTML = `<h1>Freedeck</h1>
+  if (document.body.contains(document.querySelector('#keys'))) document.querySelector('#keys').remove();
+  document.querySelector('#loading').style.display = 'block';
+  document.querySelector('#loading').innerHTML = `<h1>Freedeck</h1>
   Please wait a moment..
   <div id='console'></div>`;
   universal.save('temp_hwid', universal.createTempHWID()); // Create a temporary session ID for logging in
@@ -281,20 +281,20 @@ document.body.onload = () => {
 
   // Screensaver
   setTimeout(() => {
-    if (typeof ScreenSaverActivationTime === 'number' && document.getElementById('keys')) {
+    if (typeof ScreenSaverActivationTime === 'number' && document.querySelector('#keys')) {
       setInterval(() => { userAlive = false; }, ScreenSaverActivationTime * 1000); // After x seconds the user is not alive :sob:
       // For example, 1 sec
 
       setInterval(() => {
         if (!userAlive && !universal.screensaverStatus) {
-          document.getElementById('keys').style.opacity = '0.125';
+          document.querySelector('#keys').style.opacity = '0.125';
         }
       }, ScreenSaverActivationTime * 1000 + 600); // For x.6 seconds, lower this
       // At 1.6 seconds of inactivity
 
       setInterval(() => {
         if (!userAlive) {
-          document.getElementById('keys').style.opacity = '0';
+          document.querySelector('#keys').style.opacity = '0';
           universal.screensaverStatus = true;
         }
       }, ScreenSaverActivationTime * 1000 + 2 * 1000); // After x+1.2 seconds of inactivity, bye

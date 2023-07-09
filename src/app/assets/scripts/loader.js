@@ -12,7 +12,7 @@ universal.socket.on('server_connected', function (loginStatus) {
   universal.sendToast('Connected! Checking for login status..');
   if (!loginStatus) {
     loaded = true;
-    document.getElementById('loading').style.display = 'none';
+    document.querySelector('#loading').style.display = 'none';
     universal.validSession();
 
     if (!universal.load('welcomed')) {
@@ -65,7 +65,7 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
   currentPage = pageNumber;
   universal.save('page', currentPage); // Persistent page saving
   keyList = [];
-  if (document.getElementById('keys')) document.getElementById('keys').remove();
+  if (document.querySelector('#keys')) document.querySelector('#keys').remove();
   const keys = document.createElement('div');
   keys.id = 'keys';
   while (keys.firstChild) {
@@ -115,12 +115,12 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
       freedeck.style.backgroundImage = "url('assets/icons/freedeck.png')";
       freedeck.style.backgroundSize = 'contain';
       freedeck.onclick = () => {
-        document.getElementById('settings').style.display = 'block';
-        document.getElementById('settings').style.animationName = 'sizeup_init';
-        document.getElementById('keys').style.animationName = 'sizedown';
+        document.querySelector('#settings').style.display = 'block';
+        document.querySelector('#settings').style.animationName = 'sizeup_init';
+        document.querySelector('#keys').style.animationName = 'sizedown';
         fard();
         setTimeout(() => {
-          document.getElementById('keys').style.display = 'none';
+          document.querySelector('#keys').style.display = 'none';
           universal.save('hidden', true);
         }, 250);
       };
@@ -157,7 +157,7 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
   }
 
   if (universal.load('hidden')) {
-    document.getElementById('keys').style.display = 'none';
+    document.querySelector('#keys').style.display = 'none';
   }
 }
 
@@ -193,7 +193,7 @@ document.addEventListener('touchend', e => {
   checkDirection();
 });
 
-const tc = document.getElementById('themechoices');
+const tc = document.querySelector('#themechoices');
 Object.keys(universal.themes).forEach(key => {
   const newButton = document.createElement('button');
   newButton.className = 'keypress white-txt';
@@ -205,5 +205,5 @@ Object.keys(universal.themes).forEach(key => {
 });
 
 function fard () {
-  document.getElementById('setow').innerText = universal.load('owner_name') + "'s Freedeck: Settings (scroll)";
+  document.querySelector('#setow').innerText = universal.load('owner_name') + "'s Freedeck: Settings (scroll)";
 }

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const keys = document.getElementById('keys');
+const keys = document.querySelector('#keys');
 const Pages = {};
 const countOnEachPage = 8;
 let currentPage = pageNumber = universal.load('page') ? universal.load('page') : 0;
@@ -8,15 +8,15 @@ const klD = [];
 
 universal.socket.on('server_connected', () => {
   universal.socket.emit('c-connected');
-  if (document.getElementById('keys')) loadPage();
-  document.getElementById('console').style.display = 'none';
+  if (document.querySelector('#keys')) loadPage();
+  document.querySelector('#console').style.display = 'none';
 });
 
 function loadPage (pageNumber = universal.load('page') ? universal.load('page') : 0) {
   autoSort();
   currentPage = pageNumber;
   keyList = [];
-  const myNode = document.getElementById('keys');
+  const myNode = document.querySelector('#keys');
   while (myNode.firstChild) {
     myNode.removeChild(myNode.lastChild);
   }
@@ -44,9 +44,9 @@ function loadPage (pageNumber = universal.load('page') ? universal.load('page') 
   const allKeypress = document.getElementsByClassName('keypress');
   for (let i = 0; i < allKeypress.length; i++) {
     allKeypress[i].onclick = (ev) => {
-      document.getElementById('mcip').style.backgroundImage = allKeypress[i].style.backgroundImage;
-      document.getElementById('mhe').setAttribute('data-orig-name', allKeypress[i].innerText);
-      document.getElementById('mhe').setAttribute('data-orig-key', allKeypress[i].getAttribute('data-keys'));
+      document.querySelector('#mcip').style.backgroundImage = allKeypress[i].style.backgroundImage;
+      document.querySelector('#mhe').setAttribute('data-orig-name', allKeypress[i].innerText);
+      document.querySelector('#mhe').setAttribute('data-orig-key', allKeypress[i].getAttribute('data-keys'));
 
       if (allKeypress[i].getAttribute('data-multi') && allKeypress[i].getAttribute('data-keys')) {
         let i = 0;
@@ -55,21 +55,21 @@ function loadPage (pageNumber = universal.load('page') ? universal.load('page') 
           i++;
         });
 
-        document.getElementById('mhe').innerText = 'Editing ' + allKeypress[i].innerText + ' - Multi Key Macro';
-        document.getElementById('newname').value = allKeypress[i].innerText;
+        document.querySelector('#mhe').innerText = 'Editing ' + allKeypress[i].innerText + ' - Multi Key Macro';
+        document.querySelector('#newname').value = allKeypress[i].innerText;
 
-        document.getElementById('npl').style.display = 'none';
-        document.getElementById('newpath').style.display = 'none';
+        document.querySelector('#npl').style.display = 'none';
+        document.querySelector('#newpath').style.display = 'none';
 
-        document.getElementById('mcmultikey').innerHTML = `${klD.join('\n')}`;
+        document.querySelector('#mcmultikey').innerHTML = `${klD.join('\n')}`;
 
         modal.style.display = 'block';
         return;
       }
 
-      document.getElementById('mhe').innerText = 'Editing ' + allKeypress[i].innerText;
-      document.getElementById('newname').value = allKeypress[i].innerText;
-      document.getElementById('newpath').value = allKeypress[i].getAttribute('data-path');
+      document.querySelector('#mhe').innerText = 'Editing ' + allKeypress[i].innerText;
+      document.querySelector('#newname').value = allKeypress[i].innerText;
+      document.querySelector('#newpath').value = allKeypress[i].getAttribute('data-path');
 
       modal.style.display = 'block';
     };
@@ -95,7 +95,7 @@ function createNewSound () {
 }
 
 // Get the modal
-const modal = document.getElementById('myModal');
+const modal = document.querySelector('#myModal');
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
   if (event.target === modal) {
@@ -103,33 +103,33 @@ window.onclick = function (event) {
   }
 };
 
-if (document.getElementById('screenSaverActivationTime')) {
-  document.getElementById('screenSaverActivationTime').oninput = () => {
-    document.getElementById('amt').innerText = document.getElementById('screenSaverActivationTime').value + ' seconds';
+if (document.querySelector('#screenSaverActivationTime')) {
+  document.querySelector('#screenSaverActivationTime').oninput = () => {
+    document.querySelector('#amt').innerText = document.querySelector('#screenSaverActivationTime').value + ' seconds';
   };
 }
 
 // eslint-disable-next-line no-unused-vars
 function changeInfo (key) {
-  const newpath = document.getElementById('newpath').value;
-  const newname = document.getElementById('newname').value;
+  const newpath = document.querySelector('#newpath').value;
+  const newname = document.querySelector('#newname').value;
   universal.emit('c-info-change', { type: 'key_edit', key, newpath, newname });
   loadPage();
 }
 
 // eslint-disable-next-line no-unused-vars
 function setSet () {
-  const soc = document.getElementById('soc').checked;
-  const screenSaverActivationTime = document.getElementById('screenSaverActivationTime').value;
+  const soc = document.querySelector('#soc').checked;
+  const screenSaverActivationTime = document.querySelector('#screenSaverActivationTime').value;
   universal.emit('c-info-change', { type: 'ssat_soc', screenSaverActivationTime, soc });
   universal.socket.emit('c-change');
 }
 
 universal.socket.on('companion_info', function (screenSaverActivationTime, soc) {
-  if (document.getElementById('screenSaverActivationTime')) {
-    document.getElementById('soc').checked = soc;
-    document.getElementById('screenSaverActivationTime').value = screenSaverActivationTime;
-    document.getElementById('amt').innerText = document.getElementById('screenSaverActivationTime').value + ' seconds';
+  if (document.querySelector('#screenSaverActivationTime')) {
+    document.querySelector('#soc').checked = soc;
+    document.querySelector('#screenSaverActivationTime').value = screenSaverActivationTime;
+    document.querySelector('#amt').innerText = document.querySelector('#screenSaverActivationTime').value + ' seconds';
   };
 });
 

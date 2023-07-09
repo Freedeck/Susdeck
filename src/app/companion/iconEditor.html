@@ -42,8 +42,8 @@
                     <p>Icon Preview</p>
                     <button id="mcip"></button>
                     <!-- data-orig-key data-orig-name -->
-                    <button id="mcdel" onclick="DeleteKey({ name: document.getElementById('mhe').getAttribute('data-orig-name') });">Delete</button>
-                    <button id="mcset" onclick="changeInfo(document.getElementById('mhe').getAttribute('data-orig-key'));"class="white-txt">Set</button>
+                    <button id="mcdel" onclick="DeleteKey({ name: document.querySelector('#mhe').getAttribute('data-orig-name') });">Delete</button>
+                    <button id="mcset" onclick="changeInfo(document.querySelector('#mhe').getAttribute('data-orig-key'));"class="white-txt">Set</button>
                 </div>
                 <div class="modal-footer">
                     <h3>Freedeck Companion</h3>

@@ -18,7 +18,7 @@ universal.socket.on('press-sound', (sound, name) => {
   Susaudio.playSound(sound, name, true);
 });
 
-if (typeof document.getElementById('now-playing') !== 'undefined') {
+if (typeof document.querySelector('#now-playing') !== 'undefined') {
   setInterval(() => {
     soundQueue.splice(0, soundQueue.length);
     // eslint-disable-next-line no-undef
@@ -27,6 +27,6 @@ if (typeof document.getElementById('now-playing') !== 'undefined') {
       if (!audio.isNotVB) return;
       soundQueue.push(audio.saName);
     });
-    document.getElementById('now-playing').innerText = 'Playing: ' + soundQueue.join(', ');
+    document.querySelector('#now-playing').innerText = 'Playing: ' + soundQueue.join(', ');
   }, 2);
 }

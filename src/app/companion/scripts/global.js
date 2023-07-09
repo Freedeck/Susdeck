@@ -69,12 +69,12 @@ pages.forEach(page => {
 document.body.appendChild(sideNav);
 
 experiments.forEach(experiment => {
-  if (!document.body.contains(document.getElementById('experiments'))) return;
-  document.getElementById('exp-count').innerText = `${experiments.length} experiment${experiments.length > 1 ? 's' : ''} available`;
+  if (!document.body.contains(document.querySelector('#experiments'))) return;
+  document.querySelector('#exp-count').innerText = `${experiments.length} experiment${experiments.length > 1 ? 's' : ''} available`;
   const newDiv = document.createElement('div');
   newDiv.className = 'experiment';
   newDiv.innerHTML = `<p>${experiment.name}</p>${experiment.html}`;
-  document.getElementById('experiments').appendChild(newDiv);
+  document.querySelector('#experiments').appendChild(newDiv);
 });
 
 function listAudioDevices () {
@@ -85,15 +85,15 @@ function listAudioDevices () {
     option.innerText = device.name;
     option.setAttribute('data-sai-id', device.id);
     if (Susaudio._player.sinkId === device.id) option.selected = true;
-    document.getElementById('sai').appendChild(option);
+    document.querySelector('#sai').appendChild(option);
   });
 }
 
 setTimeout(() => { listAudioDevices(); }, 15);
 
-if (document.getElementById('sai')) {
-  document.getElementById('sai').onchange = function (ev) {
-    Susaudio.setSink(document.getElementById('sai').options[document.getElementById('sai').selectedIndex].getAttribute('data-sai-id'));
+if (document.querySelectorAll('#sai')) {
+  document.querySelector('#sai').onchange = function (ev) {
+    Susaudio.setSink(document.querySelector('#sai').options[document.querySelector('#sai').selectedIndex].getAttribute('data-sai-id'));
     universal.log('Susaudio', 'Changed sink');
   };
 }
@@ -127,7 +127,7 @@ function enableExperiments () {
 }
 
 function importTheme () {
-  theme = document.getElementById('theme-import').value;
+  theme = document.querySelector('#theme-import').value;
   if (theme === '' || theme === ' ') {
     universal.remove('custom_theme');
     universal.socket.emit('c-del-theme', theme);
@@ -140,7 +140,7 @@ function importTheme () {
 }
 
 function removeTheme () {
-  theme = document.getElementById('theme-import').value;
+  theme = document.querySelector('#theme-import').value;
   universal.remove('custom_theme');
   universal.socket.emit('c-del-theme', theme);
   universal.socket.emit('c-change');
@@ -150,7 +150,7 @@ if (document.body.dataset.page) {
   document.title = 'Freedeck: Companion - ' + document.body.dataset.page;
 }
 
-document.getElementById('sidebar').onmouseover = () => {
+document.querySelector('#sidebar').onmouseover = () => {
   const rootElem = document.querySelector(':root');
   rootElem.style.setProperty('--sd-rotationDegrees', Math.ceil(Math.random() * 15) + 'deg');
 };

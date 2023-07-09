@@ -63,7 +63,7 @@ const init = (io, app) => {
         socket.emit('session_valid');
         socket.sid = sessionID;
       } else {
-        debug.log(sessionID + ' is invalid, kicking out user..', 'SocketAPI:'+socket.id);
+        debug.log(sessionID + ' is invalid, kicking out user..', 'SocketAPI:' + socket.id);
         socket.emit('session_invalid');
       }
     });
@@ -95,7 +95,7 @@ const init = (io, app) => {
     });
   });
 
-  debug.log('Adding HTTP endpoints', 'SocketAPI')
+  debug.log('Adding HTTP endpoints', 'SocketAPI');
   // Now HTTP debug methods
   fs.readdir(path.join(__dirname, '/routes'), (err, files) => {
     if (err) { throw new Error(err); }

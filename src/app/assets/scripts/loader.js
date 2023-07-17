@@ -96,12 +96,18 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
           macro: false,
           name: 'Stop All'
         });
+      },
+      interaction: {
+        name: 'Stop All'
       }
     },
     {
       name: 'Reload',
       onclick: () => {
         window.location.reload();
+      },
+      interaction: {
+        name: 'Reload'
       }
     },
     {
@@ -130,6 +136,7 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
     const tempButton = document.createElement('button');
     tempButton.className = 'keypress white-txt';
     tempButton.innerText = util.name;
+    if (util.interaction) tempButton.setAttribute('data-interaction', JSON.stringify(util.interaction));
     tempButton.onclick = util.onclick;
     keys.appendChild(tempButton);
   });
@@ -142,19 +149,7 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
     allKeypress[i].onmouseup = (ev) => {
       // eslint-disable-next-line no-undef
       if (SoundOnPress) new Audio('assets/sounds/press.mp3').play(); // This slows down Freedeck for some reason. Not sure why
-      if (allKeypress[i].getAttribute('data-keys')) {
-        universal.socket.emit('keypress', {
-          macro: true,
-          keys: allKeypress[i].getAttribute('data-keys'),
-          interaction: allKeypress[i].getAttribute('data-interaction')
-        });
-      } else {
-        universal.socket.emit('keypress', {
-          macro: false,
-          name: allKeypress[i].innerHTML,
-          interaction: allKeypress[i].getAttribute('data-interaction')
-        });
-      }
+      universal.socket.emit('keypress', allKeypress[i].getAttribute('data-interaction'));
     };
   }
 

@@ -12,7 +12,7 @@ universal.socket.on('server_connected', function (loginStatus) {
   universal.sendToast('Connected! Checking for login status..');
   if (!loginStatus) {
     loaded = true;
-    universal.socket.emit('c2sr_login', 0);
+    universal.socket.emit('Authenticated', 0);
 
     if (!universal.load('welcomed')) {
       universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');

@@ -4,10 +4,11 @@
 const Pages = {};
 
 function autosort (countOnEP) {
-  let pagesAmount = Sounds.length / universal.iconCount;
+  let pagesAmount = Math.ceil(Sounds.length / universal.iconCount);
+  console.log(pagesAmount)
   let pageCounter = 0;
   let index = 0;
-  pagesAmount = Math.floor(Sounds.length / countOnEP); // Set the amount of pages
+  pagesAmount = Math.ceil(Sounds.length / countOnEP); // Set the amount of pages
   for (let i = 0; i < pagesAmount; i++) {
     Pages[i] = []; // Loop through and clear each page
   }
@@ -24,4 +25,4 @@ function autosort (countOnEP) {
     }
     index++; // Increment sound index/amount
   });
-}
+};

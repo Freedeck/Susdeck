@@ -4,6 +4,7 @@ const fs = require('fs');
 const rob = require('robotjs');
 const sbc = require('../settings/sounds');
 const set = require('../../Settings');
+const Settings = require('../../Settings');
 
 const apiEvents = new Map();
 const sockApiEvents = new Map();
@@ -64,7 +65,7 @@ const init = (io, app) => {
     });
     socket.on('Authenticated', function (sessionID) {
       debug.log('Recieved ' + sessionID + ', checking against session list..');
-      if (sessions.includes(sessionID)) {
+      if (sessions.includes(sessionID) || Settings.UseAuthentication === false) {
         debug.log(sessionID + ' is valid!');
         console.log('Authenticated client @ ' + new Date());
         socket.emit('session_valid');

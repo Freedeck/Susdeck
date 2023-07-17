@@ -12,8 +12,7 @@ universal.socket.on('server_connected', function (loginStatus) {
   universal.sendToast('Connected! Checking for login status..');
   if (!loginStatus) {
     loaded = true;
-    document.querySelector('#loading').style.display = 'none';
-    universal.validSession();
+    universal.socket.emit('c2sr_login', 0);
 
     if (!universal.load('welcomed')) {
       universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');
@@ -76,6 +75,7 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
     keyList.push(sound);
     const btn = document.createElement('button');
     btn.className = 'keypress white-txt';
+    btn.setAttribute('data-interaction', JSON.stringify(sound));
     if (sound.keys) {
       btn.setAttribute('data-multi', true);
       btn.setAttribute('data-keys', sound.keys);
@@ -145,12 +145,14 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
       if (allKeypress[i].getAttribute('data-keys')) {
         universal.socket.emit('keypress', {
           macro: true,
-          keys: allKeypress[i].getAttribute('data-keys')
+          keys: allKeypress[i].getAttribute('data-keys'),
+          interaction: allKeypress[i].getAttribute('data-interaction')
         });
       } else {
         universal.socket.emit('keypress', {
           macro: false,
-          name: allKeypress[i].innerHTML
+          name: allKeypress[i].innerHTML,
+          interaction: allKeypress[i].getAttribute('data-interaction')
         });
       }
     };

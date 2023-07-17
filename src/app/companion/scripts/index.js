@@ -154,14 +154,14 @@ function autoSort () {
 
 // eslint-disable-next-line no-unused-vars
 function np () {
-  if (Pages[currentPage + 1] !== null) {
+  if (Pages[currentPage + 1]) {
     loadPage(currentPage + 1);
   }
 }
 
 // eslint-disable-next-line no-unused-vars
 function bp () {
-  if (Pages[currentPage - 1] !== null) {
+  if (Pages[currentPage - 1]) {
     loadPage(currentPage - 1);
   }
 }

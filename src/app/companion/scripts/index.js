@@ -44,8 +44,8 @@ function loadPage (pageNumber = 0) {
   const allKeypress = document.getElementsByClassName('keypress');
   for (let i = 0; i < allKeypress.length; i++) {
     allKeypress[i].onclick = (ev) => {
-      document.querySelector('#mcip').style.backgroundImage = allKeypress[i].style.backgroundImage;
-      document.querySelector('#mhe').setAttribute('data-orig-name', allKeypress[i].innerText);
+      if (allKeypress[i].style.backgroundImage) document.querySelector('#mcip').style.backgroundImage = allKeypress[i].style.backgroundImage;
+      document.querySelector('#mhe').setAttribute('data-orig-name', this.innerText);
       document.querySelector('#mhe').setAttribute('data-orig-key', allKeypress[i].getAttribute('data-keys'));
       document.querySelector('#mcmultikey').innerHTML = '';
 
@@ -56,8 +56,8 @@ function loadPage (pageNumber = 0) {
           i++;
         });
 
-        document.querySelector('#mhe').innerText = 'Editing ' + allKeypress[i].innerText + ' - Multi Key Macro';
-        document.querySelector('#newname').value = allKeypress[i].innerText;
+        document.querySelector('#mhe').innerText = 'Editing ' + this.innerText + ' - Multi Key Macro';
+        document.querySelector('#newname').value = this.innerText;
 
         document.querySelector('#npl').style.display = 'none';
         document.querySelector('#newpath').style.display = 'none';

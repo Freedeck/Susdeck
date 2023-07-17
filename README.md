@@ -18,22 +18,23 @@ Here's a preview of the login screen:
 ![Freedeck Login preview](https://github.com/freedeck/freedeck/blob/master/demo/preview-login.jpg?raw=true)
 
 Here's a preview of the companion home screen:
-![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-home.png?raw=true)
+![Freedeck Companion Home preview](https://ifarded.lol/captures/Screenshot@2023_07_17_17_42.png)
 
 Here's a preview of the companion theme screen:
-![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-themeing.png?raw=true)
+![Freedeck Companion Home preview](https://ifarded.lol/captures/Screenshot@2023_07_17_17_43.png)
 
 Here's a preview of the companion soundboard screen:
-![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-soundboard.png?raw=true)
+![Freedeck Companion Home preview](https://ifarded.lol/captures/Screenshot@2023_07_17_17_44.png)
+I don't have VB-Cable installed at the moment.
 
 Here's a preview of the companion icon editor screen:
-![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-icon-editor.png?raw=true)
+![Freedeck Companion Home preview](https://ifarded.lol/captures/Screenshot@2023_07_17_17_46_75747.png)
 
 Here's a preview of the companion settings screen:
-![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-settings.png?raw=true)
+![Freedeck Companion Home preview](https://ifarded.lol/captures/Screenshot@2023_07_17_17_46_17257.png)
 
 Here's a preview of the companion experiments screen:
-![Freedeck Companion Home preview](https://github.com/freedeck/freedeck/blob/master/demo/c-experiments.png?raw=true)
+![Freedeck Companion Home preview](https://ifarded.lol/captures/Screenshot@2023_07_17_17_46_49112.png)
 
 ## How do I use Freedeck?
 

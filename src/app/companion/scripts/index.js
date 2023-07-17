@@ -112,6 +112,24 @@ function createNewSound () {
   nMessage.appendChild(nLabel);
   newForm.appendChild(nMessage);
   newDialog.appendChild(newForm);
+  newDialog.appendChild(cancelBtn);
+  newDialog.appendChild(confirmBtn);
+  document.body.appendChild(newDialog);
+  newDialog.showModal();
+  nSel.addEventListener('change', (e) => {
+    confirmBtn.value = nSel.value;
+  });
+  newDialog.addEventListener('close', (e) => {
+    outputBox.value =
+      favDialog.returnValue === 'default'
+        ? 'No return value.'
+        : `ReturnValue: ${newDialog.returnValue}.`; // Have to check for "default" rather than empty string
+  });
+  confirmBtn.addEventListener('click', (event) => {
+    event.preventDefault(); // We don't want to submit this fake form
+    newDialog.close(nSel.value); // Have to send the select box value here.
+    console.log(nSel.value);
+  });
   Sounds.push({
     name: 'New Key',
     path: 'unnamed.mp3'

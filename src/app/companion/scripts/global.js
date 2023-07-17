@@ -91,7 +91,7 @@ function listAudioDevices () {
 
 setTimeout(() => { listAudioDevices(); }, 15);
 
-if (document.querySelectorAll('#sai')) {
+if (document.querySelector('#sai')) {
   document.querySelector('#sai').onchange = function (ev) {
     Susaudio.setSink(document.querySelector('#sai').options[document.querySelector('#sai').selectedIndex].getAttribute('data-sai-id'));
     universal.log('Susaudio', 'Changed sink');

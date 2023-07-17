@@ -3,7 +3,7 @@ const dbgUtil = {
   stat: 'Debug',
   log: function (s, t = '') {
     if (t) t = '@' + t;
-    if (this.is) { console.log('[DEBUG'+t+'] ' + s); }
+    if (this.is) { console.log('[DEBUG' + t + '] ' + s); }
   },
   clog: function (t = '') {
     if (this.is) { console.log(t); }

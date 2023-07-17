@@ -12,7 +12,7 @@ universal.socket.on('server_connected', () => {
   document.querySelector('#console').style.display = 'none';
 });
 
-function loadPage (pageNumber = universal.load('page') ? universal.load('page') : 0) {
+function loadPage (pageNumber = 0) {
   autoSort();
   currentPage = pageNumber;
   keyList = [];
@@ -21,7 +21,7 @@ function loadPage (pageNumber = universal.load('page') ? universal.load('page') 
     myNode.removeChild(myNode.lastChild);
   }
   // eslint-disable-next-line no-undef
-  Pages[pageNumber].forEach(sound => {
+  Pages[currentPage].forEach(sound => {
     keyList.push(sound);
     const btn = document.createElement('button');
     const key = document.createElement('p');
@@ -154,14 +154,14 @@ function autoSort () {
 
 // eslint-disable-next-line no-unused-vars
 function np () {
-  if (Pages[currentPage + 1]) {
+  if (Pages[currentPage + 1] !== null) {
     loadPage(currentPage + 1);
   }
 }
 
 // eslint-disable-next-line no-unused-vars
 function bp () {
-  if (Pages[currentPage - 1]) {
+  if (Pages[currentPage - 1] !== null) {
     loadPage(currentPage - 1);
   }
 }

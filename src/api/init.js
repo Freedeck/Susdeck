@@ -36,7 +36,7 @@ const init = (io, app) => {
     socket.on('keypress', function (keyInput) {
       if (set.UseAuthentication && !sessions.includes(socket.sid)) { socket.emit('session_invalid'); return; };
       keyInput = JSON.parse(keyInput);
-      debug.clog(keyInput)
+      debug.clog(keyInput);
       if (keyInput.name) {
         if (keyInput.name === 'Stop All') io.emit('press-sound', 'Stop All', 'Stop All');
         sbc.Sounds.forEach(sound => {

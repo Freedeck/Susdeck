@@ -7,14 +7,12 @@ const ev = new Event('c-info-change', (socket, args) => {
   if (args.type === 'key_edit') {
     const newObject = {};
     try {
-      const found = sounds.Sounds.find(thing => thing.path === args.path);
-      if (!found) {
-        throw new Error('Unsupported or uneditable sound.');
-      }
+      let found;
+      if (args.path !== undefined) found = sounds.Sounds.find(thing => thing.path === args.path);
+      if (!found) found = sounds.Sounds.find(thing => thing.keys === JSON.stringify(args.ogValues));
       sounds.Sounds.forEach(thing => {
-        console.log(thing.keys, args.keysArr)
-        if ('keys' in thing && JSON.parse(thing.keys) === args.keysArr) newObject.keys = args.keysArr;
-        if (thing.path === args.path && args.path !== '') newObject.path = args.newpath;
+        if (thing.keys === JSON.stringify(args.ogValues)) newObject.keys = JSON.stringify(args.keysArr);
+        if ('path' in thing && thing.path === args.path && args.path !== '') newObject.path = args.newpath;
         newObject.name = args.newname;
         newObject.icon = thing.icon;
       });

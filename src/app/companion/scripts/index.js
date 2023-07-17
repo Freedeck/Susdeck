@@ -52,7 +52,7 @@ function loadPage (pageNumber = 0) {
       if (ev.target.getAttribute('data-multi') && ev.target.getAttribute('data-keys')) {
         klD.splice(0, klD.length);
         ev.target.getAttribute('data-keys').split(',').forEach(key => {
-          klD.push(`<label for="newkey">Key:</label><input type="text" class="btn-key" value='${key}' data-key-num="${i}"/>`);
+          klD.push(`<label for="newkey">Key:</label><input type="text" class="btn-key" value='${key}' data-og-value='${key}' data-key-num="${i}"/>`);
           i++;
         });
 
@@ -64,6 +64,7 @@ function loadPage (pageNumber = 0) {
 
       document.querySelector('#mhe').innerText = 'Editing ' + ev.target.innerText;
       document.querySelector('#newname').value = ev.target.innerText;
+      document.querySelector('#newname').setAttribute('data-og-name', ev.target.innerText);
       if (ev.target.getAttribute('data-path')) document.querySelector('#newpath').value = ev.target.getAttribute('data-path');
 
       modal.style.display = 'block';
@@ -153,11 +154,14 @@ function changeInfo (key) {
   const newpath = document.querySelector('#newpath').value;
   const keys = document.querySelectorAll('.btn-key');
   const keysArr = [];
+  const ogValues = [];
   keys.forEach(k => {
     keysArr.push(k.value);
+    ogValues.push(k.getAttribute('data-og-value'));
   });
   const newname = document.querySelector('#newname').value;
-  universal.emit('c-info-change', { type: 'key_edit', key, keysArr, newpath, newname });
+  const name = document.querySelector('#newname').getAttribute('data-og-name');
+  universal.emit('c-info-change', { type: 'key_edit', key, keysArr, ogValues, newpath, newname, name });
   loadPage();
 }
 

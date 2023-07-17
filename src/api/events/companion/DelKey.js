@@ -8,7 +8,7 @@ const ev = new Event('c-delete-key', (socket, args) => {
 const SoundOnPress = ${sounds.SoundOnPress};
 const soundDir = '../assets/sounds/';
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
-const Sounds = ${JSON.parse(sounds.Sounds)};
+const Sounds = ${JSON.stringify(sounds.Sounds)};
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };`);
   return 'c-change';
 });

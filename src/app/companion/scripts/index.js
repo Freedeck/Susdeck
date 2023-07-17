@@ -119,11 +119,8 @@ function createNewSound () {
   nSel.addEventListener('change', (e) => {
     confirmBtn.value = nSel.value;
   });
-  newDialog.addEventListener('close', (e) => {
-    outputBox.value =
-      favDialog.returnValue === 'default'
-        ? 'No return value.'
-        : `ReturnValue: ${newDialog.returnValue}.`; // Have to check for "default" rather than empty string
+  cancelBtn.addEventListener('click', (e) => {
+    newDialog.remove();
   });
   confirmBtn.addEventListener('click', (event) => {
     event.preventDefault(); // We don't want to submit this fake form

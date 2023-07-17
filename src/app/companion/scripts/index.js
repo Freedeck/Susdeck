@@ -47,8 +47,10 @@ function loadPage (pageNumber = 0) {
       document.querySelector('#mcip').style.backgroundImage = allKeypress[i].style.backgroundImage;
       document.querySelector('#mhe').setAttribute('data-orig-name', allKeypress[i].innerText);
       document.querySelector('#mhe').setAttribute('data-orig-key', allKeypress[i].getAttribute('data-keys'));
+      document.querySelector('#mcmultikey').innerHTML = '';
 
       if (allKeypress[i].getAttribute('data-multi') && allKeypress[i].getAttribute('data-keys')) {
+        klD.splice(0, klD.length);
         allKeypress[i].getAttribute('data-keys').split(',').forEach(key => {
           klD.push(`<label for="newkey">Key:</label><input type="text" value='${key}' data-key-num="${i}" disabled/>`);
           i++;
@@ -126,13 +128,15 @@ function createNewSound () {
     event.preventDefault(); // We don't want to submit this fake form
     newDialog.close(nSel.value); // Have to send the select box value here.
     console.log(nSel.value);
+    const JSONData = {
+      name: 'New Key'
+    };
+    if (nSel.value === 'default') JSONData.path = 'unnamed.mp3';
+    if (nSel.value === 'Keybind') JSONData.keys = JSON.stringify(['A', 'B']);
+    Sounds.push(JSONData);
+    universal.socket.emit('c-newkey', JSONData);
+    loadPage();
   });
-  Sounds.push({
-    name: 'New Key',
-    path: 'unnamed.mp3'
-  });
-  universal.socket.emit('c-newkey', { name: 'New Key', path: 'unnamed.mp3' });
-  loadPage();
 }
 
 // Get the modal

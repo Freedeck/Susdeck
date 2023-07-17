@@ -49,7 +49,6 @@ function loadPage (pageNumber = 0) {
       document.querySelector('#mhe').setAttribute('data-orig-key', allKeypress[i].getAttribute('data-keys'));
 
       if (allKeypress[i].getAttribute('data-multi') && allKeypress[i].getAttribute('data-keys')) {
-        let i = 0;
         allKeypress[i].getAttribute('data-keys').split(',').forEach(key => {
           klD.push(`<label for="newkey">Key:</label><input type="text" value='${key}' data-key-num="${i}" disabled/>`);
           i++;

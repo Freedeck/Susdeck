@@ -28,7 +28,7 @@ function loadPage (pageNumber = 0) {
     btn.className = 'keypress white-txt';
     if (sound.keys) {
       btn.setAttribute('data-multi', true);
-      btn.setAttribute('data-keys', sound.keys);
+      btn.setAttribute('data-keys', JSON.parse(sound.keys).join(','));
       key.innerText = sound.keys;
     }
     if (sound.path) {
@@ -50,7 +50,7 @@ function loadPage (pageNumber = 0) {
 
       if (allKeypress[i].getAttribute('data-multi') && allKeypress[i].getAttribute('data-keys')) {
         let i = 0;
-        JSON.parse(allKeypress[i].getAttribute('data-keys')).forEach(key => {
+        allKeypress[i].getAttribute('data-keys').split(',').forEach(key => {
           klD.push(`<label for="newkey">Key:</label><input type="text" value='${key}' data-key-num="${i}" disabled/>`);
           i++;
         });

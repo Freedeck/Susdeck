@@ -35,26 +35,31 @@ const init = (io, app) => {
 
     socket.on('keypress', function (keyInput) {
       if (set.UseAuthentication && !sessions.includes(socket.sid)) { socket.emit('session_invalid'); return; };
-      keyInput = JSON.parse(keyInput);
-      debug.clog(keyInput);
-      if (keyInput.name) {
-        if (keyInput.name === 'Stop All') io.emit('press-sound', 'Stop All', 'Stop All');
-        sbc.Sounds.forEach(sound => {
-          if (sound.name === keyInput.name) {
-            io.emit('press-sound', sbc.soundDir + sound.path, sound.name);
-          }
+      if (keyInput === null) return;
+      try {
+        keyInput = JSON.parse(keyInput);
+        if (keyInput.name) {
+          if (keyInput.name === 'Alt Tab' || keyInput.name === 'Reload') return;
+          if (keyInput.name === 'Stop All') io.emit('press-sound', 'Stop All', 'Stop All');
+          sbc.Sounds.forEach(sound => {
+            if (sound.name === keyInput.name) {
+              io.emit('press-sound', sbc.soundDir + sound.path, sound.name);
+            }
+          });
+          return;
+        }
+        let keys = [];
+        if (keyInput.keys) keys = JSON.parse(keyInput.keys);
+        keys.forEach(function (key) {
+          key = key.split('}')[0];
+          rob.keyToggle(key, 'down');
+          setTimeout(() => { // Add delay to mimic keyboard
+            rob.keyToggle(key, 'up');
+          }, 50);
         });
-        return;
+      } catch (error) {
+        console.error(error.toString());
       }
-      let keys = [];
-      if (keyInput.keys) keys = JSON.parse(keyInput.keys);
-      keys.forEach(function (key) {
-        key = key.split('}')[0];
-        rob.keyToggle(key, 'down');
-        setTimeout(() => { // Add delay to mimic keyboard
-          rob.keyToggle(key, 'up');
-        }, 50);
-      });
     });
     socket.on('Authenticated', function (sessionID) {
       debug.log('Recieved ' + sessionID + ', checking against session list..');

@@ -12,8 +12,9 @@ const ev = new Event('c-info-change', (socket, args) => {
         throw new Error('Unsupported or uneditable sound.');
       }
       sounds.Sounds.forEach(thing => {
-        if (thing.key === args.key) newObject.key = args.newpath;
-        if (thing.path === args.path) newObject.path = args.newpath;
+        console.log(thing.keys, args.keysArr)
+        if ('keys' in thing && JSON.parse(thing.keys) === args.keysArr) newObject.keys = args.keysArr;
+        if (thing.path === args.path && args.path !== '') newObject.path = args.newpath;
         newObject.name = args.newname;
         newObject.icon = thing.icon;
       });

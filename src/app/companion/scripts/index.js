@@ -44,33 +44,27 @@ function loadPage (pageNumber = 0) {
   const allKeypress = document.getElementsByClassName('keypress');
   for (let i = 0; i < allKeypress.length; i++) {
     allKeypress[i].onclick = (ev) => {
-      if (allKeypress[i].style.backgroundImage) document.querySelector('#mcip').style.backgroundImage = allKeypress[i].style.backgroundImage;
-      document.querySelector('#mhe').setAttribute('data-orig-name', this.innerText);
-      document.querySelector('#mhe').setAttribute('data-orig-key', allKeypress[i].getAttribute('data-keys'));
+      if (ev.target.style.backgroundImage) document.querySelector('#mcip').style.backgroundImage = ev.target.style.backgroundImage;
+      document.querySelector('#mhe').setAttribute('data-orig-name', ev.target.innerText);
+      document.querySelector('#mhe').setAttribute('data-orig-key', ev.target.getAttribute('data-keys'));
       document.querySelector('#mcmultikey').innerHTML = '';
 
-      if (allKeypress[i].getAttribute('data-multi') && allKeypress[i].getAttribute('data-keys')) {
+      if (ev.target.getAttribute('data-multi') && ev.target.getAttribute('data-keys')) {
         klD.splice(0, klD.length);
-        allKeypress[i].getAttribute('data-keys').split(',').forEach(key => {
-          klD.push(`<label for="newkey">Key:</label><input type="text" value='${key}' data-key-num="${i}" disabled/>`);
+        ev.target.getAttribute('data-keys').split(',').forEach(key => {
+          klD.push(`<label for="newkey">Key:</label><input type="text" class="btn-key" value='${key}' data-key-num="${i}"/>`);
           i++;
         });
-
-        document.querySelector('#mhe').innerText = 'Editing ' + this.innerText + ' - Multi Key Macro';
-        document.querySelector('#newname').value = this.innerText;
 
         document.querySelector('#npl').style.display = 'none';
         document.querySelector('#newpath').style.display = 'none';
 
         document.querySelector('#mcmultikey').innerHTML = `${klD.join('\n')}`;
-
-        modal.style.display = 'block';
-        return;
       }
 
-      document.querySelector('#mhe').innerText = 'Editing ' + allKeypress[i].innerText;
-      document.querySelector('#newname').value = allKeypress[i].innerText;
-      document.querySelector('#newpath').value = allKeypress[i].getAttribute('data-path');
+      document.querySelector('#mhe').innerText = 'Editing ' + ev.target.innerText;
+      document.querySelector('#newname').value = ev.target.innerText;
+      if (ev.target.getAttribute('data-path')) document.querySelector('#newpath').value = ev.target.getAttribute('data-path');
 
       modal.style.display = 'block';
     };
@@ -135,7 +129,7 @@ function createNewSound () {
     if (nSel.value === 'Keybind') JSONData.keys = JSON.stringify(['A', 'B']);
     Sounds.push(JSONData);
     universal.socket.emit('c-newkey', JSONData);
-    loadPage();
+    loadPage(currentPage);
   });
 }
 
@@ -157,8 +151,13 @@ if (document.querySelector('#screenSaverActivationTime')) {
 // eslint-disable-next-line no-unused-vars
 function changeInfo (key) {
   const newpath = document.querySelector('#newpath').value;
+  const keys = document.querySelectorAll('.btn-key');
+  const keysArr = [];
+  keys.forEach(k => {
+    keysArr.push(k.value);
+  });
   const newname = document.querySelector('#newname').value;
-  universal.emit('c-info-change', { type: 'key_edit', key, newpath, newname });
+  universal.emit('c-info-change', { type: 'key_edit', key, keysArr, newpath, newname });
   loadPage();
 }
 

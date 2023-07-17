@@ -11,6 +11,8 @@ const ev = new Event('c-info-change', (socket, args) => {
       if (args.path !== undefined) found = sounds.Sounds.find(thing => thing.path === args.path);
       if (!found) found = sounds.Sounds.find(thing => thing.keys === JSON.stringify(args.ogValues));
       sounds.Sounds.forEach(thing => {
+        args.keysArr[0] = args.keysArr[0].toLowerCase();
+        args.keysArr[1] = args.keysArr[1].toLowerCase();
         if (thing.keys === JSON.stringify(args.ogValues)) newObject.keys = JSON.stringify(args.keysArr);
         if ('path' in thing && thing.path === args.path && args.path !== '') newObject.path = args.newpath;
         newObject.name = args.newname;

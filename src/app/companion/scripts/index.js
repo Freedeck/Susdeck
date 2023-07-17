@@ -85,6 +85,33 @@ function DeleteKey (key) {
 // eslint-disable-next-line no-unused-vars
 function createNewSound () {
   // eslint-disable-next-line no-undef
+  const newDialog = document.createElement('dialog');
+  const newForm = document.createElement('form');
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.innerText = 'Cancel';
+  cancelBtn.value = 'cancel';
+  cancelBtn.formMethod = 'dialog';
+  const confirmBtn = document.createElement('button');
+  confirmBtn.value = 'default';
+  confirmBtn.innerText = 'Confirm';
+
+  const nMessage = document.createElement('p');
+  const nLabel = document.createElement('label');
+  nLabel.innerText = 'Type of button?';
+  const nSel = document.createElement('select');
+  const nOptionSoundDefault = document.createElement('option');
+  nOptionSoundDefault.innerText = 'Sound';
+  nOptionSoundDefault.value = 'default';
+  const nOptionKeybind = document.createElement('option');
+  nOptionKeybind.innerText = 'Keybind';
+
+  nSel.appendChild(nOptionSoundDefault);
+  nSel.appendChild(nOptionKeybind);
+  nLabel.appendChild(nSel);
+  nMessage.appendChild(nLabel);
+  newForm.appendChild(nMessage);
+  newDialog.appendChild(newForm);
   Sounds.push({
     name: 'New Key',
     path: 'unnamed.mp3'

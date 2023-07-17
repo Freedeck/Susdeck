@@ -3,8 +3,8 @@
 
 const Settings = {
   UseAuthentication: true, // Turn on authentication (every session/restart will require password)
-  Password: 'Freedecj!123', // If you are using authentication, you will log in with this password.
-  LoginMessage: '', // This message will show for users when they try to login (below "Login to (your name)'s Freedeck")
+  Password: 'Freedeck!123', // If you are using authentication, you will log in with this password.
+  LoginMessage: 'Hey! This is my Freedeck!', // This message will show for users when they try to login (below "Login to (your name)'s Freedeck")
   YourName: 'John Mangoseed', // Shows alongside your login message,
   Port: 5754
 };

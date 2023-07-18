@@ -9,6 +9,14 @@
 #topbar {
     display: flex;
     width: 100vw;
-    height: max-content;
+    align-content: center;
+    justify-content: center;
+    height: 75px;
     background-color: rgba(0,0,0,0.25);
+}
+
+#topbar > button {
+    background-color: rgba(255,0,0,0.5);
+    width: 75px;
+    height: 75px;
 }

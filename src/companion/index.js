@@ -23,7 +23,7 @@ app.whenReady().then(() => {
 app.on('window-all-closed', (ev) => {
   if (process.platform !== 'darwin') {
     app.quit();
-    console.log('Electron shutdown found; stopping server');
+    console.log('Electron shutdown found; stopping');
     process.exit(0);
   }
 });

@@ -3,6 +3,7 @@
 /* eslint-disable no-undef */
 const universal = {
   screensaverStatus: false,
+  version: '0.0.0',
   themes: {
     // Built-in themes.
     Default: [
@@ -173,8 +174,12 @@ document.body.appendChild(notibar);
 
 universal.sendToast('Waiting for host...');
 
-universal.socket.on('server_connected', () => {
+universal.socket.on('server_connected', (authStat, version) => {
   universal.hasConnected = true;
+  universal.version = version;
+  if (document.querySelector('#version')) {
+    document.querySelector('#version').innerText = 'Freedeck v' + universal.version;
+  }
   universal.sendToast('Host connection established!');
   if (!universal.hasConnected) { socket.emit('c-change-client'); }
 });

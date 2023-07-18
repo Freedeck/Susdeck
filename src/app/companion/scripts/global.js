@@ -68,6 +68,10 @@ pages.forEach(page => {
 
 document.body.appendChild(sideNav);
 
+document.querySelector('#topbar > button').onclick = () => {
+  window.close();
+}
+
 experiments.forEach(experiment => {
   if (!document.body.contains(document.querySelector('#experiments'))) return;
   document.querySelector('#exp-count').innerText = `${experiments.length} experiment${experiments.length > 1 ? 's' : ''} available`;

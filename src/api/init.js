@@ -30,7 +30,7 @@ const init = (io, app) => {
 
     // Initial connection
     console.log('Connected to client @ ' + new Date());
-    socket.emit('server_connected', set.UseAuthentication); // Send user confirmation: connected to server
+    socket.emit('server_connected', set.UseAuthentication, require(path.resolve('./package.json')).version); // Send user confirmation: connected to server
     socket.emit('set-theme', fs.readFileSync(path.join(__dirname, '/persistent/theme.sd')).toString()); // Tell client to set the theme
     debug.log('Sent user connection success message', 'SocketAPI:' + socket.id);
 

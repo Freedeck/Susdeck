@@ -2,3 +2,4 @@
 Settings.js
 src/api/persistent/theme.sd
 /build
+src/settings/sounds.js

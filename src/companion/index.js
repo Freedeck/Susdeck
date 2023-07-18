@@ -10,6 +10,10 @@ function createWindow () {
   const window = new BrowserWindow({
     minWidth: 580,
     minHeight: 750,
+    width: 580,
+    height: 750,
+    maxWidth: 580,
+    maxHeight: 750,
     frame: false
   });
   window.setIcon(require('path').join(__dirname, './companion.png'));

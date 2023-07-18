@@ -19,3 +19,11 @@ function createWindow () {
 app.whenReady().then(() => {
   createWindow();
 });
+
+app.on('window-all-closed', (ev) => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+    console.log('Electron shutdown found; stopping server');
+    process.exit(0);
+  }
+});

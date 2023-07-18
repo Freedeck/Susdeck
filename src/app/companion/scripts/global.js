@@ -81,7 +81,7 @@ experiments.forEach(experiment => {
   document.querySelector('#experiments').appendChild(newDiv);
 });
 
-async function listAudioDevices () {
+function listAudioDevices () {
   if (document.title !== 'Freedeck: Companion - Soundboard') return;
   for (let i = 0; i < sai.options.length; i++) {
     document.querySelector('#sai').options.remove(i);
@@ -95,9 +95,6 @@ async function listAudioDevices () {
     if (Susaudio._player.sinkId === device.id) option.selected = true;
   });
 }
-
-setTimeout(async () => { await Susaudio.init(); listAudioDevices(); }, 0);
-
 if (document.querySelector('#sai')) {
   document.querySelector('#sai').onchange = function (ev) {
     Susaudio.setSink(document.querySelector('#sai').options[document.querySelector('#sai').selectedIndex].getAttribute('data-sai-id'));
@@ -110,6 +107,7 @@ document.body.onload = () => {
   freedeckLogo.src = '../assets/icons/companion.png';
   freedeckLogo.className = 'freedeck-logo';
   document.body.appendChild(freedeckLogo);
+  listAudioDevices();
 };
 
 function enableExperiments () {

@@ -30,17 +30,17 @@ body {
 .freedeck-logo {
   position: absolute;
   right: 0px;
-  bottom: 0;
+  bottom: 101px;
   width: 100px;
-  height: 100px;
+  height: 105px;
 }
 
 footer {
   position: fixed;
   left: 0;
-  bottom: 0;
-  height: 10%;
-  width: 25%;
+  bottom: 2%;
+  height: max-content;
+  width: max-content;
   background-color: red;
   color: white;
   text-align: center;

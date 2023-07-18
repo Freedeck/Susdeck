@@ -262,14 +262,6 @@ universal.socket.on('c-change', () => {
   window.location.replace(window.location.href);
 });
 
-fetch('/api/dbg')
-  .then(data =>
-    data.json())
-  .then(data => {
-    universal.isInDebug = data.status;
-    universal.debugStat = data.msg;
-  });
-
 // because theming is cool
 if (!universal.load('theme')) {
   universal.save('theme', 'Default');
@@ -283,7 +275,14 @@ universal.socket.on('custom_theme', themeData => {
   universal.save('custom_theme', themeData);
 });
 
-document.body.onload = () => {
+document.body.onload = async () => {
+  await fetch('/api/dbg')
+    .then(data =>
+      data.json())
+    .then(data => {
+      universal.isInDebug = data.status;
+      universal.debugStat = data.msg;
+    });
   const footer = document.createElement('footer');
   footer.style.display = 'none';
   footer.style.zIndex = '999';
@@ -296,15 +295,15 @@ document.body.onload = () => {
   // Screensaver
   setTimeout(() => {
     if (typeof ScreenSaverActivationTime === 'number' && document.querySelector('#keys')) {
-      setInterval(() => { userAlive = false; }, ScreenSaverActivationTime * 1000); // After x seconds the user is not alive :sob:
+      setInterval(() => { userAlive = false; }, ScreenSaverActivationTime); // After x seconds the user is not alive :sob:
       // For example, 1 sec
 
       setInterval(() => {
         if (!userAlive && !universal.screensaverStatus) {
           document.querySelector('#keys').style.opacity = '0.125';
         }
-      }, ScreenSaverActivationTime * 1000 + 600); // For x.6 seconds, lower this
-      // At 1.6 seconds of inactivity
+      }, ScreenSaverActivationTime * 1000 + 100); // After x.1 seconds, lower opacity
+      // At 1.1 seconds of inactivity
 
       setInterval(() => {
         if (!userAlive) {

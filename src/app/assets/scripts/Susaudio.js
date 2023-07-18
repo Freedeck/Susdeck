@@ -15,6 +15,24 @@ const Susaudio = {
       Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, aud);
     }
   },
+  listAudioDevices: () => {
+    if (document.title !== 'Freedeck: Companion - Soundboard') return;
+    for (let i = 0; i < sai.options.length; i++) {
+      document.querySelector('#sai').options.remove(i);
+    }
+    Susaudio._player.devicesList.forEach(device => {
+      const option = document.createElement('option');
+      option.value = device.name;
+      option.innerText = device.name;
+      option.setAttribute('data-sai-id', device.id);
+      document.querySelector('#sai').appendChild(option);
+      if (Susaudio._player.sinkId === device.id) option.selected = true;
+    });
+    document.querySelector('#sai').onchange = function (ev) {
+      Susaudio.setSink(document.querySelector('#sai').options[document.querySelector('#sai').selectedIndex].getAttribute('data-sai-id'));
+      universal.log('Susaudio', 'Changed sink');
+    };
+  },
   init: async () => {
     Susaudio._player.devicesList = [];
     const devices = await navigator.mediaDevices.enumerateDevices();
@@ -27,6 +45,7 @@ const Susaudio = {
         Susaudio._player.sinkId = device.deviceId;
       }
     });
+    if (document.querySelector('#sai')) Susaudio.listAudioDevices();
   },
   setSink: async (sinkId) => {
     const audio = new Audio();

@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 const soundQueue = [];
 
-(async () => await Susaudio.init())();
+Susaudio.init();
 
 /* eslint-disable no-undef */
 universal.socket.on('press-sound', (sound, name) => {

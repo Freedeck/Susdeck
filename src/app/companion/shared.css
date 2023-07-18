@@ -11,10 +11,12 @@
     width: 100vw;
     align-content: center;
     justify-content: center;
+    -webkit-app-region: drag;
     height: 75px;
 }
 
 #topbar > button {
+    -webkit-app-region: none;
     background-color: rgba(255,0,0,0.5);
     width: 75px;
     height: 75px;

@@ -66,6 +66,7 @@ function loadPage (pageNumber = 0) {
       document.querySelector('#newname').value = ev.target.innerText;
       document.querySelector('#newname').setAttribute('data-og-name', ev.target.innerText);
       if (ev.target.getAttribute('data-path')) document.querySelector('#newpath').value = ev.target.getAttribute('data-path');
+      if (ev.target.getAttribute('data-path')) document.querySelector('#newpath').setAttribute('data-o-path', ev.target.getAttribute('data-path'));
 
       modal.style.display = 'block';
     };
@@ -151,6 +152,7 @@ if (document.querySelector('#screenSaverActivationTime')) {
 
 // eslint-disable-next-line no-unused-vars
 function changeInfo (key) {
+  const oldpath = document.querySelector('#newpath').getAttribute('data-o-path');
   const newpath = document.querySelector('#newpath').value;
   const keys = document.querySelectorAll('.btn-key');
   const keysArr = [];
@@ -161,7 +163,7 @@ function changeInfo (key) {
   });
   const newname = document.querySelector('#newname').value;
   const name = document.querySelector('#newname').getAttribute('data-og-name');
-  universal.emit('c-info-change', { type: 'key_edit', key, keysArr, ogValues, newpath, newname, name });
+  universal.emit('c-info-change', { type: 'key_edit', key, keysArr, ogValues, oldpath, newpath, newname, name });
   loadPage();
 }
 

@@ -1,20 +1,27 @@
 const sounds = require('../../../settings/sounds');
 const fs = require('fs');
 const Event = require('../Event');
+const debug = require('../../../util/debug')
 
 const ev = new Event('c-info-change', (socket, args) => {
   args = JSON.parse(args);
   if (args.type === 'key_edit') {
-    const newObject = {};
     try {
+      const newObject = {};
       let found;
+      found = sounds.Sounds.find(thing => thing.name === args.name);
       if (args.path !== undefined) found = sounds.Sounds.find(thing => thing.path === args.path);
       if (!found) found = sounds.Sounds.find(thing => thing.keys === JSON.stringify(args.ogValues));
+      debug.clog(args)
+      debug.clog(found)
       sounds.Sounds.forEach(thing => {
-        args.keysArr[0] = args.keysArr[0].toLowerCase();
-        args.keysArr[1] = args.keysArr[1].toLowerCase();
+        debug.clog(thing.name, args.name);
+        if (args.keysArr[1]) {
+          args.keysArr[0] = args.keysArr[0].toLowerCase();
+          args.keysArr[1] = args.keysArr[1].toLowerCase();
+        }
         if (thing.keys === JSON.stringify(args.ogValues)) newObject.keys = JSON.stringify(args.keysArr);
-        if ('path' in thing && thing.path === args.path && args.path !== '') newObject.path = args.newpath;
+        if ('path' in thing && thing.path === args.oldpath && args.oldpath !== '') newObject.path = args.newpath;
         newObject.name = args.newname;
         newObject.icon = thing.icon;
       });

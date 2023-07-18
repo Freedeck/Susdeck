@@ -18,15 +18,18 @@
     <div id="main">
         <h2>Settings</h2>
         <h3 id="now-playing"></h3>
-        <h3>Gathering info...</h3>
         <br />
-        <button onclick="Susaudio.stopAll()">Stop All</button>
-        <button onclick="alert(universal.exportTheme())">Export Theme</button>
-        <input id="theme-exported" hidden>
-        <button onclick="universal.socket.emit('c-reset')">Reset Clients</button>
+        <div class="flex">
+            <button onclick="Susaudio.stopAll()">Stop All</button>
+            <button onclick="alert(universal.exportTheme())">Export Theme</button>
+            <input id="theme-exported" hidden>
+            <button onclick="universal.socket.emit('c-reset')">Reset Clients</button>
+        </div>
         <p>Warning: Your custom theme will be removed.</p>
-        <button onclick="universal.socket.emit('c-change')">Reload all Freedeck Sessions</button>
-        <button onclick="enableExperiments()">Toggle Freedeck Experiments</button>
+        <div class="flex">
+            <button onclick="universal.socket.emit('c-change')">Reload all Freedeck Sessions</button>
+            <button onclick="enableExperiments()">Toggle Freedeck Experiments</button>
+        </div>
         <div id="console"></div>
         <div id="keys" style="display: none;"></div>
     </div>

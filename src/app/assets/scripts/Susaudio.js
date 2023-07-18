@@ -16,6 +16,7 @@ const Susaudio = {
     }
   },
   init: async () => {
+    Susaudio._player.devicesList = [];
     const devices = await navigator.mediaDevices.enumerateDevices();
     devices.forEach(device => {
       if (device.kind === 'audiooutput') Susaudio._player.devicesList.push({ name: device.label, id: device.deviceId });
@@ -24,7 +25,7 @@ const Susaudio = {
         audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
         if (universal.load('susaudio_sinkid')) return;
         Susaudio._player.sinkId = device.deviceId;
-      } else Susaudio._player.sinkId = 0;
+      }
     });
   },
   setSink: async (sinkId) => {

@@ -287,10 +287,11 @@ document.body.onload = () => {
   const footer = document.createElement('footer');
   footer.style.display = 'none';
   footer.style.zIndex = '999';
+  if (universal.isInDebug) {
+    footer.innerHTML = '<h3>In ' + universal.debugStat + ' Mode</h3>';
+    footer.style.display = 'block';
+  }
   document.body.appendChild(footer);
-  if (!universal.isInDebug) return;
-  footer.innerHTML = '<h3>In ' + universal.debugStat + ' Mode</h3>';
-  footer.style.display = 'block';
 
   // Screensaver
   setTimeout(() => {

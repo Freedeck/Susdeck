@@ -5,3 +5,10 @@
 #snackbar {
     margin-bottom: 15%;
 }
+
+#topbar {
+    display: flex;
+    width: 100vw;
+    height: max-content;
+    background-color: rgba(0,0,0,0.25);
+}

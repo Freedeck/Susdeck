@@ -8,8 +8,9 @@ const {
 
 function createWindow () {
   const window = new BrowserWindow({
-    width: 580,
-    height: 750
+    minWidth: 580,
+    minHeight: 750,
+    frame: false
   });
   window.setIcon(require('path').join(__dirname, './companion.png'));
   window.loadFile(path.resolve('./src/companion/connector.html'));

@@ -24,6 +24,7 @@ const ev = new Event('c-info-change', (socket, args) => {
         if ('path' in thing && thing.path === args.oldpath && args.oldpath !== '') newObject.path = args.newpath;
         newObject.name = args.newname;
         newObject.icon = thing.icon;
+        if (thing.icon === args.oldicon) newObject.icon = args.icon;
       });
       Object.assign(found, newObject);
     } catch (err) {

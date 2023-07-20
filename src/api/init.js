@@ -111,10 +111,9 @@ const init = (io, app) => {
       const route = require(path.join(__dirname, '/routes/' + routefile));
       // type, route, exec
       // only get supported for now
-      if (route.type === 'get') {
-        apiEvents.set(route.route, route);
-        app.get('/api/' + route.route, (req, res) => route.exec(req, res));
-      }
+      apiEvents.set(route.route, route);
+      if (route.type === 'get') app.get('/api/' + route.route, (req, res) => route.exec(req, res));
+      if (route.type === 'post') app.post('/api/' + route.route, (req, res) => route.exec(req, res));
     });
   });
 

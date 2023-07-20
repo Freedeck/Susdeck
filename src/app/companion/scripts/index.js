@@ -45,6 +45,7 @@ function loadPage (pageNumber = 0) {
   for (let i = 0; i < allKeypress.length; i++) {
     allKeypress[i].onclick = (ev) => {
       if (ev.target.style.backgroundImage) document.querySelector('#mcip').style.backgroundImage = ev.target.style.backgroundImage;
+      document.querySelector('#mcip').setAttribute('data-orig-icon', ev.target.style.backgroundImage);
       document.querySelector('#mhe').setAttribute('data-orig-name', ev.target.innerText);
       document.querySelector('#mhe').setAttribute('data-orig-key', ev.target.getAttribute('data-keys'));
       document.querySelector('#mcmultikey').innerHTML = '';
@@ -67,6 +68,21 @@ function loadPage (pageNumber = 0) {
       document.querySelector('#newname').setAttribute('data-og-name', ev.target.innerText);
       if (ev.target.getAttribute('data-path')) document.querySelector('#newpath').value = ev.target.getAttribute('data-path');
       if (ev.target.getAttribute('data-path')) document.querySelector('#newpath').setAttribute('data-o-path', ev.target.getAttribute('data-path'));
+
+      document.querySelector('#mcip').onclick = () => {
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/api/upload';
+        const fileupload = document.createElement('input');
+        fileupload.type = 'file';
+        fileupload.accept = '.png,.jpg,.jpeg,.gif';
+        form.appendChild(fileupload);
+        fileupload.click();
+        fileupload.onchange = () => {
+          form.submit();
+        };
+        document.body.append(form);
+      };
 
       modal.style.display = 'block';
     };

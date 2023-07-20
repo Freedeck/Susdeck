@@ -2,5 +2,5 @@
 const SoundOnPress = false;
 const ScreenSaverActivationTime = 5;
 const soundDir = '../assets/sounds/';
-const Sounds = [{"name":"RAHH","path":"rah.mp3"}, {"name": "Open Companion to edit this!", "path":"Edit me!"}];
+const Sounds = [{"name": "Open Companion to edit this!", "path":"Edit me!.mp3"}];
 if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };

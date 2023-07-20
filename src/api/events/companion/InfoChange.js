@@ -21,7 +21,7 @@ const ev = new Event('c-info-change', (socket, args) => {
         newObject.name = args.newname;
         newObject.icon = thing.icon;
         if (!thing.icon) newObject.icon = args.icon;
-        if (thing.icon === args.oldicon && args.icon !== args.oldicon) newObject.icon = args.icon;
+        if (thing.icon === args.oldIcon && args.icon !== args.oldIcon) newObject.icon = args.icon;
       });
       Object.assign(found, newObject);
     } catch (err) {
@@ -37,7 +37,7 @@ if (typeof module !== 'undefined') module.exports = { SoundOnPress, ScreenSaverA
 `);
 
     return 'c-change';
-  } else if (args.type === 'ssat_soc') {
+  } else if (args.type === 'screenSaver_soc') {
     fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const SoundOnPress = ${args.soc};
 const ScreenSaverActivationTime = ${args.screenSaverActivationTime};

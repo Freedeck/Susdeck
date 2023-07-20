@@ -70,40 +70,40 @@ function loadPage (pageNumber = 0) {
       if (ev.target.getAttribute('data-path')) document.querySelector('#newpath').setAttribute('data-o-path', ev.target.getAttribute('data-path'));
 
       document.querySelector('#mcip').onclick = () => {
-        // <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-        const dummyframe = document.createElement('iframe');
-        dummyframe.style.display = 'none';
-        dummyframe.id = 'dummyframe';
-        dummyframe.name = 'dummyframe';
+        // <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
+        const dummyFrame = document.createElement('iframe');
+        dummyFrame.style.display = 'none';
+        dummyFrame.id = 'dummyFrame';
+        dummyFrame.name = 'dummyFrame';
         const form = document.createElement('form');
         form.method = 'post';
         form.enctype = 'multipart/form-data';
         form.action = '/api/upload/icon';
-        form.target = 'dummyframe';
-        const fileupload = document.createElement('input');
-        fileupload.type = 'file';
-        fileupload.name = 'file';
-        fileupload.accept = '.png,.jpg,.jpeg,.gif';
-        form.appendChild(fileupload);
-        fileupload.click();
-        fileupload.onchange = () => {
+        form.target = 'dummyFrame';
+        const fileUpload = document.createElement('input');
+        fileUpload.type = 'file';
+        fileUpload.name = 'file';
+        fileUpload.accept = '.png,.jpg,.jpeg,.gif';
+        form.appendChild(fileUpload);
+        fileUpload.click();
+        fileUpload.onchange = () => {
           form.submit();
           setTimeout(() => {
-            content = dummyframe.contentDocument;
+            content = dummyFrame.contentDocument;
             const data = JSON.parse(content.querySelector('pre').innerText);
             document.querySelector('#mcip').setAttribute('data-new-icon', data.newName);
             document.querySelector('#mcip').style.backgroundImage = 'url("../assets/icons/' + data.newName + '")';
             document.querySelector('#mcset').addEventListener('click', (ev) => {
               form.remove();
-              fileupload.remove();
+              fileUpload.remove();
               setTimeout(() => {
-                dummyframe.remove();
+                dummyFrame.remove();
               }, 500);
             });
           }, 250);
         };
         document.body.append(form);
-        document.body.appendChild(dummyframe);
+        document.body.appendChild(dummyFrame);
       };
 
       modal.style.display = 'block';
@@ -193,7 +193,7 @@ function changeInfo (key) {
   const oldpath = document.querySelector('#newpath').getAttribute('data-o-path');
   const newpath = document.querySelector('#newpath').value;
   const keys = document.querySelectorAll('.btn-key');
-  const oldicon = document.querySelector('#mcip').getAttribute('data-orig-icon');
+  const oldIcon = document.querySelector('#mcip').getAttribute('data-orig-icon');
   const icon = document.querySelector('#mcip').getAttribute('data-new-icon');
   const keysArr = [];
   const ogValues = [];
@@ -203,7 +203,7 @@ function changeInfo (key) {
   });
   const newname = document.querySelector('#newname').value;
   const name = document.querySelector('#newname').getAttribute('data-og-name');
-  universal.emit('c-info-change', { type: 'key_edit', oldicon, icon, key, keysArr, ogValues, oldpath, newpath, newname, name });
+  universal.emit('c-info-change', { type: 'key_edit', oldIcon, icon, key, keysArr, ogValues, oldpath, newpath, newname, name });
   loadPage();
 }
 
@@ -211,7 +211,7 @@ function changeInfo (key) {
 function setSet () {
   const soc = document.querySelector('#soc').checked;
   const screenSaverActivationTime = document.querySelector('#screenSaverActivationTime').value;
-  universal.emit('c-info-change', { type: 'ssat_soc', screenSaverActivationTime, soc });
+  universal.emit('c-info-change', { type: 'screenSaver_soc', screenSaverActivationTime, soc });
   universal.socket.emit('c-change');
 }
 

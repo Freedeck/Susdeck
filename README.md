@@ -47,7 +47,7 @@ Freedeck Companion will open.
 This is how you will configure your Freedeck.  
 Now your computer is hosting a server on port 5754 (or your `PORT` in `Settings.js`).  
 Freedeck will tell you in the terminal what IP to go to.
-Get any device and go to `yourlocalip:5754` in a web browser (for iOS, use Safari for best results).  
+Get any device and go to `yourLocalIP:5754` in a web browser (for iOS, use Safari for best results).  
 
 ## iOS EXCLUSIVE
 

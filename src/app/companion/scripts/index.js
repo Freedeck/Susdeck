@@ -91,7 +91,7 @@ function loadPage (pageNumber = 0) {
           setTimeout(() => {
             content = dummyframe.contentDocument;
             const data = JSON.parse(content.querySelector('pre').innerText);
-            
+            document.querySelector('#mcip').style.backgroundImage = 'url("../assets/icons/' + data.newName + '")'
           }, 250);
         };
         document.body.append(form);
@@ -185,6 +185,8 @@ function changeInfo (key) {
   const oldpath = document.querySelector('#newpath').getAttribute('data-o-path');
   const newpath = document.querySelector('#newpath').value;
   const keys = document.querySelectorAll('.btn-key');
+  const oldicon = document.querySelector('#mcip').getAttribute('data-orig-icon');
+  const icon = document.querySelector('#mcip').style.backgroundImage;
   const keysArr = [];
   const ogValues = [];
   keys.forEach(k => {
@@ -193,7 +195,7 @@ function changeInfo (key) {
   });
   const newname = document.querySelector('#newname').value;
   const name = document.querySelector('#newname').getAttribute('data-og-name');
-  universal.emit('c-info-change', { type: 'key_edit', key, keysArr, ogValues, oldpath, newpath, newname, name });
+  universal.emit('c-info-change', { type: 'key_edit', oldicon, icon, key, keysArr, ogValues, oldpath, newpath, newname, name });
   loadPage();
 }
 

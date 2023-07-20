@@ -39,10 +39,8 @@ Here's a preview of the companion experiments screen:
 ## How do I use Freedeck?
 
 **First, you will need any virtual audio cable (Such as VB-Cable, Freedeck's default)**
-Clone the repo, then change `Settings.js.default` to only have it's extension `.js`.  
-Next, modify the settings however you want, you can add authentication, a password, and a message for when somebody tries to login to your Freedeck.  
-
-Now, for the fun part. Run `npm run setup` and then `npm run start`.  
+Now, clone the repo. Run `npm run setup` and then modify the settings however you want: you can add authentication, a password, and a message for when somebody tries to login to your Freedeck.  
+Whenever you're ready, run `npm start` (or `npm run start`).
 
 Freedeck Companion will open.  
 **This is normal!**  
@@ -60,7 +58,7 @@ Next, open the app on your device. It will be full screen.
 
 ## Ok, back to normal
 
-There are preloaded keys, for example `Shooting` will make CoD shooting sounds play through your computer and your VB-Cable.
+There are no preloaded keys, for example `Shooting` will make CoD shooting sounds play through your default output device and your VB-Cable.
 
 ## How do I make my own sounds/macros?
 

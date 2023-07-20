@@ -70,18 +70,32 @@ function loadPage (pageNumber = 0) {
       if (ev.target.getAttribute('data-path')) document.querySelector('#newpath').setAttribute('data-o-path', ev.target.getAttribute('data-path'));
 
       document.querySelector('#mcip').onclick = () => {
+        // <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+        const dummyframe = document.createElement('iframe');
+        dummyframe.style.display = 'none';
+        dummyframe.id = 'dummyframe';
+        dummyframe.name = 'dummyframe';
         const form = document.createElement('form');
         form.method = 'post';
+        form.enctype = 'multipart/form-data';
         form.action = '/api/upload';
+        form.target = 'dummyframe';
         const fileupload = document.createElement('input');
         fileupload.type = 'file';
+        fileupload.name = 'file';
         fileupload.accept = '.png,.jpg,.jpeg,.gif';
         form.appendChild(fileupload);
         fileupload.click();
         fileupload.onchange = () => {
           form.submit();
+          setTimeout(() => {
+            content = dummyframe.contentDocument;
+            const data = JSON.parse(content.querySelector('pre').innerText);
+            
+          }, 250);
         };
         document.body.append(form);
+        document.body.appendChild(dummyframe);
       };
 
       modal.style.display = 'block';

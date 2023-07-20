@@ -4,10 +4,10 @@ const path = require('path');
 
 module.exports = {
   type: 'post',
-  route: 'upload',
+  route: 'upload/sounds',
   exec: (request, response) => {
     const form = new formidable.IncomingForm({
-      uploadDir: path.resolve('./src/app/assets/icons')
+      uploadDir: path.resolve('./src/app/assets/sounds')
     });
     // Parse `req` and upload all associated files
     form.parse(request, function (err, fields, files) {

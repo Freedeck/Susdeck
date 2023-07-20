@@ -38,7 +38,7 @@ const init = (io, app) => {
       if (set.UseAuthentication && !sessions.includes(socket.sid)) { socket.emit('session_invalid'); return; };
       if (keyInput === null) return;
       try {
-        keyInput = JSON.parse(keyInput);
+        if (typeof keyInput !== 'object') keyInput = JSON.parse(keyInput);
 
         if (keyInput.keys) {
           let keys = [];

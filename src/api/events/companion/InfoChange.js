@@ -1,7 +1,6 @@
 const sounds = require('../../../settings/sounds');
 const fs = require('fs');
 const Event = require('../Event');
-const debug = require('../../../util/debug')
 
 const ev = new Event('c-info-change', (socket, args) => {
   args = JSON.parse(args);
@@ -12,10 +11,7 @@ const ev = new Event('c-info-change', (socket, args) => {
       found = sounds.Sounds.find(thing => thing.name === args.name);
       if (args.path !== undefined) found = sounds.Sounds.find(thing => thing.path === args.path);
       if (!found) found = sounds.Sounds.find(thing => thing.keys === JSON.stringify(args.ogValues));
-      debug.clog(args)
-      debug.clog(found)
       sounds.Sounds.forEach(thing => {
-        debug.clog(thing.name, args.name);
         if (args.keysArr[1]) {
           args.keysArr[0] = args.keysArr[0].toLowerCase();
           args.keysArr[1] = args.keysArr[1].toLowerCase();

@@ -1,6 +1,7 @@
 const formidable = require('formidable');
 const { renameSync } = require('fs');
 const path = require('path');
+// const debug = require('../../util/debug');
 
 module.exports = {
   type: 'post',
@@ -16,10 +17,8 @@ module.exports = {
       }
 
       const nfp = files.file[0].filepath;
-      const ext = files.file[0].mimetype.split('/')[1];
-
-      renameSync(nfp, nfp + '.' + ext);
-      response.send({ oldName: files.file[0].originalFilename, newName: files.file[0].newFilename + '.' + ext });
+      renameSync(nfp, nfp + '_' + files.file[0].originalFilename);
+      response.send({ oldName: files.file[0].originalFilename, newName: files.file[0].newFilename + '_' + files.file[0].originalFilename });
     });
   }
 };

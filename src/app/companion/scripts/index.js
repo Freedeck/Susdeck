@@ -93,6 +93,13 @@ function loadPage (pageNumber = 0) {
             const data = JSON.parse(content.querySelector('pre').innerText);
             document.querySelector('#mcip').setAttribute('data-new-icon', data.newName);
             document.querySelector('#mcip').style.backgroundImage = 'url("../assets/icons/' + data.newName + '")';
+            document.querySelector('#mcset').addEventListener('click', (ev) => {
+              form.remove();
+              fileupload.remove();
+              setTimeout(() => {
+                dummyframe.remove();
+              }, 500);
+            });
           }, 250);
         };
         document.body.append(form);

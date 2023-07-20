@@ -91,6 +91,7 @@ function loadPage (pageNumber = 0) {
           setTimeout(() => {
             content = dummyframe.contentDocument;
             const data = JSON.parse(content.querySelector('pre').innerText);
+            document.querySelector('#mcip').setAttribute('data-new-icon', data.newName);
             document.querySelector('#mcip').style.backgroundImage = 'url("../assets/icons/' + data.newName + '")'
           }, 250);
         };
@@ -186,7 +187,7 @@ function changeInfo (key) {
   const newpath = document.querySelector('#newpath').value;
   const keys = document.querySelectorAll('.btn-key');
   const oldicon = document.querySelector('#mcip').getAttribute('data-orig-icon');
-  const icon = document.querySelector('#mcip').style.backgroundImage;
+  const icon = document.querySelector('#mcip').getAttribute('data-new-icon');
   const keysArr = [];
   const ogValues = [];
   keys.forEach(k => {

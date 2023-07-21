@@ -1,6 +1,6 @@
 const Event = require('../Event');
 
-const ev = new Event('c-send-theme', (socket, args) => {
+const ev = new Event('c-send-theme', ({ args }) => {
   return 'custom_theme=' + args;
 });
 

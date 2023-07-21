@@ -1,6 +1,6 @@
 const Event = require('../Event');
 
-const ev = new Event('c-reset', (socket, args) => {
+const ev = new Event('c-reset', () => {
   return 'c-reset';
 });
 

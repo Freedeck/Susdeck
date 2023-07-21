@@ -5,9 +5,14 @@ const rob = require('robotjs');
 const sbc = require('../settings/sounds');
 const set = require('../../Settings');
 const Settings = require('../../Settings');
+const pkg = require('../../package.json');
 
 const apiEvents = new Map();
 const sockApiEvents = new Map();
+
+const metadata = {
+  fdVersion: pkg.version
+};
 
 const init = (io, app) => {
   const loginList = [];
@@ -80,9 +85,9 @@ const init = (io, app) => {
         if (event.event === 'c2sr_login') { socket.emit('session_valid'); }
         debug.log(event.event + ' ran', 'SocketAPI:' + socket.id);
         if (event.async) {
-          await event.callback(socket, args, loginList);
+          await event.callback({ socket, args, loginList, meta: metadata });
         } else {
-          const callback = event.callback(socket, args, loginList);
+          const callback = event.callback({ socket, args, loginList, meta: metadata });
           if (!callback || typeof callback !== 'string') { return; }
           if (callback.startsWith('ValidateSession:')) {
             const person = callback.split(':')[1];

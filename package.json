@@ -10,7 +10,7 @@
     "socket.io": "^4.1.2"
   },
   "scripts": {
-    "setup": "npm i && cp Settings.js.default Settings.js && cp src/settings/sounds.js.default src/settings/sounds.js && echo Configure Freedeck in Settings.js",
+    "setup": "npm i && node src/setup.js",
     "start": "node src/index.js",
     "debug": "node src/index.js - -dbg"
   },

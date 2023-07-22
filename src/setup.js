@@ -91,12 +91,9 @@ const Settings = {
 
 module.exports = Settings;
 `;
-console.log(sob, ssat, ua, passwd, lm, yn, port)
-  if (process.argv[2] === '--i-know-what-im-doing') {
-    console.log('You know what you\'re doing, so I\'m writing these settings');
-    fs.writeFileSync(path.join(path.resolve('./src/settings') + '/sounds.js'), soundsJSDefault);
-    fs.writeFileSync(path.resolve('./Settings.js'), settingsJSDefault);
-  }
+  console.log('[Freedeck] Writing your settings..');
+  fs.writeFileSync(path.join(path.resolve('./src/settings') + '/sounds.js'), soundsJSDefault);
+  fs.writeFileSync(path.resolve('./Settings.js'), settingsJSDefault);
   console.log('[Freedeck] Finished setup, exiting! Start Freedeck with `npm start`.');
   process.exit(0);
 }

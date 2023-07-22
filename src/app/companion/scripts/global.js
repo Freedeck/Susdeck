@@ -36,7 +36,10 @@ const pages = [
 ];
 
 const experiments = [
-
+  {
+    name: 'Upload Sounds',
+    html: '<h1>Test</h1>'
+  }
 ];
 
 const sideNav = document.createElement('div');
@@ -76,8 +79,14 @@ experiments.forEach(experiment => {
   if (!document.body.contains(document.querySelector('#experiments'))) return;
   document.querySelector('#exp-count').innerText = `${experiments.length} experiment${experiments.length > 1 ? 's' : ''} available`;
   const newDiv = document.createElement('div');
+  const enableBtn = document.createElement('button');
+  enableBtn.innerText = 'Toggle Experiment';
+  enableBtn.onclick = () => {
+
+  };
   newDiv.className = 'experiment';
   newDiv.innerHTML = `<p>${experiment.name}</p>${experiment.html}`;
+  newDiv.appendChild(enableBtn);
   document.querySelector('#experiments').appendChild(newDiv);
 });
 
@@ -96,13 +105,13 @@ function enableExperiments () {
       universal.log('Experiments', 'LocalStorage Experiments off');
       alert('Experiments disabled.');
       // Clear the user's custom theme
-      universal.remove('custom_theme');
-      universal.socket.emit('c-del-theme', '');
+      universal.remove('experiments_list');
       universal.log('Experiments', 'Removed theme, requesting refresh');
       universal.socket.emit('c-change');
       return;
     }
     universal.save('experiments', true);
+    universal.save('experiments_list', []);
 
     alert('Experiments enabled.');
     universal.socket.emit('c-change');

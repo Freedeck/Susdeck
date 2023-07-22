@@ -5,7 +5,6 @@ const Pages = {};
 
 function autosort (countOnEP) {
   let pagesAmount = Math.ceil(Sounds.length / universal.iconCount);
-  console.log(pagesAmount)
   let pageCounter = 0;
   let index = 0;
   pagesAmount = Math.ceil(Sounds.length / countOnEP); // Set the amount of pages

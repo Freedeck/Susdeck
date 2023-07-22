@@ -95,6 +95,7 @@ module.exports = Settings;
   console.log('[Freedeck] Writing your settings..');
   fs.writeFileSync(path.join(path.resolve('./src/settings') + '/sounds.js'), soundsJSDefault);
   fs.writeFileSync(path.resolve('./Settings.js'), settingsJSDefault);
+  fs.writeFileSync(path.join(path.resolve('./src/api/persistent') + '/theme.sd'), 'Default');
   console.log('[Freedeck] Finished setup, exiting! Start Freedeck with `npm start`.');
   process.exit(0);
 }

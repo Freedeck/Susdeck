@@ -1,6 +1,4 @@
 /* eslint-disable no-undef */
-const soundQueue = [];
-
 Susaudio.init();
 
 /* eslint-disable no-undef */

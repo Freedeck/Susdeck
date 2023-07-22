@@ -14,7 +14,7 @@ const question = function (q) {
   let response;
 
   return new Promise((resolve, reject) => {
-    console.log(q)
+    console.log(q);
     process.stdin.once('data', (data) => {
       response = data.toString().trim();
       resolve(response);
@@ -34,26 +34,34 @@ question('Play sound on button press?' + ' (false/true) >').then(response => {
   if (!matching.includes(response)) sob = false;
   question('Screensaver activation time?' + ' (number) >').then(ssatr => {
     ssat = ssatr;
-    console.log('=-= Settings Initial Setup =-=');
+    console.log('\n=-= Settings Initial Setup =-=');
     console.log('Each of these are changeable from Settings.js at any time!');
     console.log('-=- Authentication -=-');
     question('Use authentication?' + ' (false/true) >').then(uar => {
       ua = uar;
       if (!matching.includes(uar)) ua = false;
-      question('Password [If not using auth, leave blank!]' + ' (string) >').then(pw => {
-        passwd = pw;
-        question('Login Message [If not using auth, leave blank!]' + ' (string) >').then(lmr => {
-          lm = lmr;
-          question('Your Name [If not using auth, leave blank!]' + ' (string) >').then(ynr => {
-            yn = ynr;
-            question('Port to host server? [Usually 5754]' + ' (number) >').then(response => {
-              if (!Number(response)) response = 5754;
-              port = response;
-              afterResponses(sob, ssat, ua, passwd, lm, yn, port);
+      if (ua === 'false' || ua === false) {
+        question('Port to host server? [Usually 5754]' + ' (number) >').then(response => {
+          if (!Number(response)) response = 5754;
+          port = response;
+          afterResponses(sob, ssat, ua, passwd, lm, yn, port);
+        });
+      } else {
+        question('Password [If not using auth, leave blank!]' + ' (string) >').then(pw => {
+          passwd = pw;
+          question('Login Message [If not using auth, leave blank!]' + ' (string) >').then(lmr => {
+            lm = lmr;
+            question('Your Name [If not using auth, leave blank!]' + ' (string) >').then(ynr => {
+              yn = ynr;
+              question('Port to host server? [Usually 5754]' + ' (number) >').then(response => {
+                if (!Number(response)) response = 5754;
+                port = response;
+                afterResponses(sob, ssat, ua, passwd, lm, yn, port);
+              });
             });
           });
         });
-      });
+      }
     });
   });
 });
@@ -83,9 +91,12 @@ const Settings = {
 
 module.exports = Settings;
 `;
+console.log(sob, ssat, ua, passwd, lm, yn, port)
   if (process.argv[2] === '--i-know-what-im-doing') {
     console.log('You know what you\'re doing, so I\'m writing these settings');
-    fs.writeFileSync(path.join(path.resolve('./src/app/settings') + './sounds.js'), settingsJSDefault);
-    fs.writeFileSync(path.resolve('./Settings.js'), soundsJSDefault);
+    fs.writeFileSync(path.join(path.resolve('./src/settings') + '/sounds.js'), soundsJSDefault);
+    fs.writeFileSync(path.resolve('./Settings.js'), settingsJSDefault);
   }
+  console.log('[Freedeck] Finished setup, exiting! Start Freedeck with `npm start`.');
+  process.exit(0);
 }

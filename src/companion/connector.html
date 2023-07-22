@@ -18,6 +18,9 @@
 	</form>
 	<script>
 		fetch('http://localhost:5754/').then(res=>res.status).then(res => { if(res == 200) window.location.href = 'http://localhost:5754/companion'; })
+		setInterval(() => {
+			fetch('http://localhost:5754/').then(res=>res.status).then(res => { if(res == 200) window.location.href = 'http://localhost:5754/companion'; })
+		}, 500);
 	</script>
 </body>
 </html>

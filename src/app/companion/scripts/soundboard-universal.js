@@ -20,13 +20,6 @@ universal.socket.on('press-sound', (sound, name) => {
 
 if (typeof document.querySelector('#now-playing') !== 'undefined') {
   setInterval(() => {
-    soundQueue.splice(0, soundQueue.length);
-    // eslint-disable-next-line no-undef
-    Susaudio._player.queue.forEach(audio => {
-      if (audio.isSusaudioFB) return;
-      if (!audio.isNotVB) return;
-      soundQueue.push(audio.saName);
-    });
-    document.querySelector('#now-playing').innerText = 'Playing: ' + soundQueue.join(', ');
+    document.querySelector('#now-playing').innerText = 'Playing: ' + Susaudio._player.listQueue.join(', ');
   }, 2);
 }

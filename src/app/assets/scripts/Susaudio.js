@@ -10,6 +10,7 @@ const Susaudio = {
     sinkId: universal.load('susaudio_sinkid') ? universal.load('susaudio_sinkid') : null,
     timeSinceLastRequest: 0,
     queue: [],
+    listQueue: [],
     devicesList: [],
     audioEndedCallback: (aud) => {
       Susaudio._player.queue = _sa_removeFromArray(Susaudio._player.queue, aud);
@@ -72,6 +73,9 @@ const Susaudio = {
     audio.play();
     Susaudio._player.queue.push(audio); // Add this to the queue
     Susaudio._player.timeSinceLastRequest = 0; // Reset time since last request
+    if (sa_isNotVB) return;
+    if (!audio.isNotVB) return;
+    Susaudio._player.listQueue.push(audio.saName);
   },
   clearPlaylist: () => {
     universal.save('susaudio_playlist', '');
@@ -118,6 +122,12 @@ function _sa_removeFromArray (arr, value) {
 
 setInterval(() => {
   Susaudio._player.timeSinceLastRequest++;
+  Susaudio._player.listQueue.splice(0, Susaudio._player.listQueue.length);
+  Susaudio._player.queue.forEach(audio => {
+    if (audio.isSusaudioFB) return;
+    if (!audio.isNotVB) return;
+    Susaudio._player.listQueue.push(audio.saName);
+  });
   if (Susaudio._player.autotuned) {
     Susaudio.changeAllPlayingPitch(Math.floor(Math.random() * (2 - 1 + 1)) + 1);
   }

@@ -21,7 +21,7 @@ const question = function (q) {
     });
   });
 };
-
+console.clear();
 console.log(`Freedeck v${pkg.version} setup`);
 console.log('=-= Sound Initial Setup =-=');
 console.log('Each of these are changeable from Companion at any time!');

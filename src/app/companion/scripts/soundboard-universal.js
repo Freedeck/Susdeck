@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-Susaudio.init();
 
 /* eslint-disable no-undef */
 universal.socket.on('press-sound', (sound, name) => {

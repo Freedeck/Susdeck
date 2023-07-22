@@ -3,7 +3,6 @@
 <img src="https://github.com/freedeck/freedeck/blob/dev/src/app/assets/icons/freedeck.png?raw=true" width='100' height='100'>
 
 Freedeck is the FOSS alternative to the Elgato Stream Deck.  
-Freedeck has had tons of time put into making the user experience as easy as possible, while staying in the boundaries of **3** (standard) dependencies!
 
 ## Join the Discord
 
@@ -39,13 +38,13 @@ Here's a preview of the companion experiments screen:
 ## How do I use Freedeck?
 
 **First, you will need any virtual audio cable (Such as VB-Cable, Freedeck's default)**
-Now, clone the repo. Run `npm run setup` and then modify the settings however you want: you can add authentication, a password, and a message for when somebody tries to login to your Freedeck.  
-Whenever you're ready, run `npm start` (or `npm run start`).
+Now, clone the repo. Run `npm run setup` for an interactive setup experience.  
+From there, whenever you're ready, run `npm start` (or `npm run start`).
 
 Freedeck Companion will open.  
 **This is normal!**  
 This is how you will configure your Freedeck.  
-Now your computer is hosting a server on port 5754 (or your `PORT` in `Settings.js`).  
+Now your computer is hosting a server on port 5754 (or the port you inputted during setup).  
 Freedeck will tell you in the terminal what IP to go to.
 Get any device and go to `yourLocalIP:5754` in a web browser (for iOS, use Safari for best results).  
 Now, add the app to your home screen by pressing the share button.  
@@ -63,13 +62,29 @@ Freedeck processes keys & plays sounds at the front-end, and it uses robotjs & C
 It is very easy to add your own macros/sounds.  
 All you need to do is use Companion!
 To add a sound, start Freedeck with `npm run start`.  
-Wait for Companion to open, and press the *second* paintbrush icon.  
+Wait for Companion to open, and press the paint palette icon.  
 Now, press `New Sound`. You might need to press `Next Page` to scroll through the pages to find the sound.  
 Once you do, click it.  
 You are now able to edit the sound path and name. Icon editing will be supported in the future.  
 
 **Make sure that anything in the `Sound Path` is inside of `src/app/assets/sounds` or it will not work!**  
 Congratulations, you have added your own sound, all using Freedeck Companion's magic.
+
+## Theming?
+
+Freedeck themes are under the paint bucket icon in Companion.  
+You can export and import custom themes, or use the provided ones.  
+An example of custom theme code is:  
+
+```js
+"[{\"icon-count\":8},{\"template-columns\":\"repeat(4,1fr)\"},{\"background-size\":\"400% 400%\"},{\"font-family\":\"Rubik, sans-serif\"},{\"background\":\"45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%\"},{\"modal-color\":\"rgba(0, 179, 255, 1)\"}]"
+```
+
+Each CSS rule is a JSON object in an array.  
+However, `icon-count` and `modal-color` are custom.  
+`modal-color` relates to the icon editing modal in Companion.  
+`icon-count` relates to the amount of icons on your screen. You may need to adjust `template-columns` after to see those icons.  
+Remember that Freedeck puts 3 icons (Stop All, Reload, Icon), so set it to however many icons you want, subtracted by 3.
 
 ## Tested Devices
 

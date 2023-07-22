@@ -48,11 +48,8 @@ This is how you will configure your Freedeck.
 Now your computer is hosting a server on port 5754 (or your `PORT` in `Settings.js`).  
 Freedeck will tell you in the terminal what IP to go to.
 Get any device and go to `yourLocalIP:5754` in a web browser (for iOS, use Safari for best results).  
-
-## iOS EXCLUSIVE
-
-**You must use Safari for this.**  
 Now, add the app to your home screen by pressing the share button.  
+
 Next, open the app on your device. It will be full screen.  
 **Freedeck is best used in landscape/horizontal mode.**
 
@@ -82,7 +79,8 @@ Freedeck has not had many devices tested on it. For now, these are the officiall
 | iPod Touch 7th Gen | Yes.          | Yes.             | Yes.               | Freedeck was made for the iPod Touch 7th gen  |
 | iPhone 12          | Yes.          | Yes.             | Yes.           | No comment |
 | iPhone XR          | Yes.          | Yes.             | Yes.           | No comment |
-| Samsung S22+         | Yes.          | Yes.             | Yes.           | You will need to scroll down to "fullscreen" the app. |
+| Acer Iconia Tab 8  | Yes.       | Yes.       | Yes.        | No comment |
+| Samsung S22+         | Yes.          | Yes.             | Yes.           | No comment |
 | iPad Pro 2nd Gen 10.5" (A10X)          | Yes.          | Yes.             | Yes.           | No comment |
 | Desktop         | Yes.          | No.             | Almost.           | Freedeck is made for touchscreen devices when you can't instantly press a key. |
 

@@ -21,7 +21,7 @@
         <br />
         <div class="flex">
             <button onclick="Susaudio.stopAll()">Stop All</button>
-            <button onclick="alert(universal.exportTheme())">Export Theme</button>
+            <button onclick="universal.sendToast(universal.exportTheme())">Export Theme</button>
             <input id="theme-exported" hidden>
             <button onclick="universal.socket.emit('c-reset')">Reset Clients</button>
         </div>

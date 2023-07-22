@@ -90,13 +90,13 @@ experiments.forEach(experiment => {
     const expl = JSON.parse(universal.load('experiments_list'));
     const exists = expl.find(elem => elem === JSON.stringify(experiment));
     if (exists) {
-      alert('Experiment toggled off');
+      universal.sendToast('Experiment toggled off');
       expl.splice(expl.indexOf(JSON.stringify(experiment)), 1);
       const exists = expl.find(elem => elem === JSON.stringify(experiment));
       newDiv.innerHTML = `${exists ? 'ON' : 'OFF'} <p>${experiment.name}</p>${experiment.html}`;
       newDiv.appendChild(enableBtn);
     } else {
-      alert('Experiment toggled on');
+      universal.sendToast('Experiment toggled on');
       expl.push(JSON.stringify(experiment));
       const exists = expl.find(elem => elem === JSON.stringify(experiment));
       newDiv.innerHTML = `${exists ? 'ON' : 'OFF'} <p>${experiment.name}</p>${experiment.html}`;
@@ -123,7 +123,7 @@ function enableExperiments () {
       if (!confirm('Experiments is already enabled, do you want to turn off experiments?')) return;
       universal.save('experiments', false);
       universal.log('Experiments', 'LocalStorage Experiments off');
-      alert('Experiments disabled.');
+      universal.sendToast('Experiments disabled.');
       // Clear the user's custom theme
       universal.remove('experiments_list');
       universal.log('Experiments', 'Removed theme, requesting refresh');
@@ -133,7 +133,7 @@ function enableExperiments () {
     universal.save('experiments', true);
     universal.save('experiments_list', JSON.stringify([]));
 
-    alert('Experiments enabled.');
+    universal.sendToast('Experiments enabled.');
     universal.socket.emit('c-change');
   }
 }

@@ -58,14 +58,14 @@ There are no preloaded keys, for example `Shooting` will make CoD shooting sound
 
 ## How do I make my own sounds/macros?
 
-Freedeck processes keys & plays sounds at the front-end, and it uses robotjs & Companion to press/play them on your computer.  
+Freedeck processes keys & plays sounds at the front-end, and it uses `robotjs` & Companion to press/play them on your computer.  
 It is very easy to add your own macros/sounds.  
 All you need to do is use Companion!
 To add a sound, start Freedeck with `npm run start`.  
 Wait for Companion to open, and press the paint palette icon.  
 Now, press `New Sound`. You might need to press `Next Page` to scroll through the pages to find the sound.  
 Once you do, click it.  
-You are now able to edit the sound path and name. Icon editing will be supported in the future.  
+You are now able to edit the sound path and name.
 
 **Make sure that anything in the `Sound Path` is inside of `src/app/assets/sounds` or it will not work!**  
 Congratulations, you have added your own sound, all using Freedeck Companion's magic.

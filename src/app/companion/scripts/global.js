@@ -79,6 +79,10 @@ experiments.forEach(experiment => {
   if (!document.body.contains(document.querySelector('#experiments'))) return;
   document.querySelector('#exp-count').innerText = `${experiments.length} experiment${experiments.length > 1 ? 's' : ''} available`;
   const newDiv = document.createElement('div');
+  if (!universal.load('experiments_list')) universal.save('experiments_list', JSON.stringify([]));
+  const expl = JSON.parse(universal.load('experiments_list'));
+  const exists = expl.find(elem => elem === JSON.stringify(experiment));
+  const existsString = exists ? 'ON' : 'OFF';
   const enableBtn = document.createElement('button');
   enableBtn.innerText = 'Toggle Experiment';
   enableBtn.onclick = () => {
@@ -88,14 +92,20 @@ experiments.forEach(experiment => {
     if (exists) {
       alert('Experiment toggled off');
       expl.splice(expl.indexOf(JSON.stringify(experiment)), 1);
+      const exists = expl.find(elem => elem === JSON.stringify(experiment));
+      newDiv.innerHTML = `${exists ? 'ON' : 'OFF'} <p>${experiment.name}</p>${experiment.html}`;
+      newDiv.appendChild(enableBtn);
     } else {
       alert('Experiment toggled on');
       expl.push(JSON.stringify(experiment));
+      const exists = expl.find(elem => elem === JSON.stringify(experiment));
+      newDiv.innerHTML = `${exists ? 'ON' : 'OFF'} <p>${experiment.name}</p>${experiment.html}`;
+      newDiv.appendChild(enableBtn);
     }
     universal.save('experiments_list', JSON.stringify(expl));
   };
   newDiv.className = 'experiment';
-  newDiv.innerHTML = `<p>${experiment.name}</p>${experiment.html}`;
+  newDiv.innerHTML = `${existsString} <p>${experiment.name}</p>${experiment.html}`;
   newDiv.appendChild(enableBtn);
   document.querySelector('#experiments').appendChild(newDiv);
 });

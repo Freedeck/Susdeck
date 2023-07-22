@@ -82,7 +82,17 @@ experiments.forEach(experiment => {
   const enableBtn = document.createElement('button');
   enableBtn.innerText = 'Toggle Experiment';
   enableBtn.onclick = () => {
-
+    if (!universal.load('experiments_list')) universal.save('experiments_list', JSON.stringify([]));
+    const expl = JSON.parse(universal.load('experiments_list'));
+    const exists = expl.find(elem => elem === JSON.stringify(experiment));
+    if (exists) {
+      alert('Experiment toggled off');
+      expl.splice(expl.indexOf(JSON.stringify(experiment)), 1);
+    } else {
+      alert('Experiment toggled on');
+      expl.push(JSON.stringify(experiment));
+    }
+    universal.save('experiments_list', JSON.stringify(expl));
   };
   newDiv.className = 'experiment';
   newDiv.innerHTML = `<p>${experiment.name}</p>${experiment.html}`;
@@ -111,7 +121,7 @@ function enableExperiments () {
       return;
     }
     universal.save('experiments', true);
-    universal.save('experiments_list', []);
+    universal.save('experiments_list', JSON.stringify([]));
 
     alert('Experiments enabled.');
     universal.socket.emit('c-change');

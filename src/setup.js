@@ -72,7 +72,8 @@ const SoundOnPress = ${sob};
 const ScreenSaverActivationTime = ${ssat};
 const soundDir = '../assets/sounds/';
 const Sounds = ${JSON.stringify([{ name: 'Shooting', icon: 'shooting.png', path: 'shooting.mp3' }, { name: 'Footsteps', icon: 'footsteps.png', path: 'loudfootsteps.mp3' }, { name: 'Whoppah', path: 'WHOPPER.mp3', icon: 'whopper.png' }, { name: "Didn't I Do It", icon: 'borzoi.png', path: 'borzio.mp3' }, { name: 'Biggest Bird', icon: 'bird.png', path: 'biggestbird.wav' }, { name: 'Disconnect', icon: 'disconnect.png', path: 'disconnect.mp3' }, { name: 'Vine Boom', icon: 'boom.png', path: 'vineboom.mp3' }, { name: 'Semtex', icon: 'semtex.png', path: 'semtex.mp3' }, { name: 'Huh', path: 'huh.mp3' }, { name: 'Haha', path: 'haha.mp3' }, { name: 'Alt Tab', keys: '["alt","tab"]' }, { name: 'Whoppah Remix', path: 'wopha_remix.wav' }, { name: 'Bugatti', path: 'bugatti.mp3' }, { name: 'Metal Pipe', path: 'metal_pipe.mp3' }, { name: 'RAHH', path: 'rah.mp3' }])};
-if (typeof module !== 'undefined') module.exports = { cfg:{v:'${pkg.version}'}, SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };
+const cfg = {v:'${pkg.version}'}; // Don't touch pls
+if (typeof module !== 'undefined') module.exports = { cfg, SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };
 `;
 
   const settingsJSDefault = `// Welcome to Freedeck internal settings! Here you can.. set.. settings!

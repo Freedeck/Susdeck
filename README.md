@@ -4,6 +4,12 @@
 
 Freedeck is the FOSS alternative to the Elgato Stream Deck.  
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/b18dd7c07b464827a367c50b263bc039)](https://app.codacy.com/gh/Freedeck/Freedeck/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+![Discord](https://img.shields.io/discord/1077430225874468975)
+![GitHub Repo stars](https://img.shields.io/github/stars/Freedeck/Freedeck)
+![GitHub all releases](https://img.shields.io/github/downloads/Freedeck/Freedeck/total)
+
+
 ## Join the Discord
 
 You can join the official Freedeck Discord server over at [https://discord.gg/SdA2YfEb6R](https://discord.gg/SdA2YfEb6R)

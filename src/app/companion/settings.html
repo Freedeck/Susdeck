@@ -31,7 +31,7 @@
             <button onclick="enableExperiments()">Toggle Freedeck Experiments</button>
         </div>
         <div id="console"></div>
-        <div id="list">
+        <div id="list" style="display: flex; flex-direction: column; gap:5px;">
             
         </div>
         <div id="keys"></div>
@@ -51,7 +51,8 @@
         log.split(',').forEach(notif => {
             if(!atob(notif).includes('{')) return;
             const nMeta = JSON.parse(atob(notif));
-            document.querySelector('#list').innerHTML += `<div class="experiment"><p>${nMeta.time}</p><p>${nMeta.page}</p><p>${nMeta.message}</p></div>`;
+            if (!nMeta.timestamp) nMeta.timestamp = 'No time found!';
+            document.querySelector('#list').innerHTML += `<div class="experiment"><p>${nMeta.time}</p><p>${nMeta.page}</p><p>${nMeta.message}</p><p><small>${nMeta.timestamp}</small></p></div>`;
         })
     </script>
 </body>

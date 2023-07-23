@@ -14,6 +14,7 @@ const sockApiInit = require('./api/init').init;
 const port = settings.Port || process.env.PORT || 5754;
 
 try {
+  debug.log('Version matching');
   debug.log('Initializing Socket API');
   sockApiInit(io, app); // Socket API initialize
 

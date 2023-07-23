@@ -50,6 +50,7 @@ const init = (io, app) => {
           keys = JSON.parse(keyInput.keys);
           keys.forEach(function (key) {
             key = key.split('}')[0];
+            if (key === 'none' || key === '') return;
             rob.keyToggle(key, 'down');
             setTimeout(() => { // Add delay to mimic keyboard
               rob.keyToggle(key, 'up');

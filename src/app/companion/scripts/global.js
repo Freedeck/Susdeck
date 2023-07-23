@@ -37,8 +37,8 @@ const pages = [
 
 const experiments = [
   {
-    name: 'Upload Sounds',
-    html: '<h1>Test</h1>'
+    name: 'Show Notification Log in Settings',
+    html: '<h1>DANGEROUS EXPERIMENT</h1><p>This will make your settings page take substantially longer to load.</p>'
   }
 ];
 

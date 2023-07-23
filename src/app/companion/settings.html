@@ -13,7 +13,7 @@
     <button>X</button>
 </div>
 
-<body data-page="Settings">
+<body data-page="Settings"style="overflow: scroll;">
 
     <div id="main">
         <h2>Settings</h2>
@@ -31,7 +31,10 @@
             <button onclick="enableExperiments()">Toggle Freedeck Experiments</button>
         </div>
         <div id="console"></div>
-        <div id="keys" style="display: none;"></div>
+        <div id="list">
+            
+        </div>
+        <div id="keys"></div>
     </div>
     
 
@@ -43,6 +46,13 @@
     <!-- My scripts -->
     <script src="scripts/global.js"></script>
     <script src="scripts/soundboard-universal.js"></script>
+    <script>
+        const log = universal.load('notification_log');
+        log.split(',').forEach(notif => {
+            if(!atob(notif).includes('{')) return;
+            const nMeta = JSON.parse(atob(notif));
+            document.querySelector('#list').innerHTML += `<div class="experiment"><p>${nMeta.time}</p><p>${nMeta.page}</p><p>${nMeta.message}</p></div>`;
+        })
+    </script>
 </body>
-
 </html>

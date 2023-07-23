@@ -154,7 +154,7 @@ const universal = {
       s.className = s.className.replace('show', '');
       s.remove();
     }, 1250);
-    universal.save('notification_log', universal.load('notification_log') + `,${btoa(JSON.stringify({ time: new Date().toTimeString(), page: window.location.pathname, message }))}`);
+    universal.save('notification_log', universal.load('notification_log') + `,${btoa(JSON.stringify({ timestamp: new Date(), time: new Date().toTimeString(), page: window.location.pathname, message }))}`);
   },
   validSession: () => {
     universal.sendToast('Session valid!');

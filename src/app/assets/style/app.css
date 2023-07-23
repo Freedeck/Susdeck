@@ -165,7 +165,7 @@ button:hover {
   border: 1px solid #888;
   width: 80%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  animation-name: animateTop;
+  animation-name: animate-top;
   animation-duration: 0.4s
 }
 
@@ -278,8 +278,8 @@ button:hover {
 
 #toast.show {
   visibility: visible;
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 1s;
-  animation: fadein 0.5s, fadeout 0.5s 1s;
+  -webkit-animation: fade-in 0.5s, fade-out 0.5s 1s;
+  animation: fade-in 0.5s, fade-out 0.5s 1s;
 }
 
 .functions {

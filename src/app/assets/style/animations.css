@@ -1,23 +1,3 @@
-@-webkit-keyframes error-bg {
-    0% {
-        background-position: 100% 0%
-    }
-
-    100% {
-        background-position: 15% 100%
-    }
-}
-
-@-moz-keyframes error-bg {
-    0% {
-        background-position: 100% 0%
-    }
-
-    100% {
-        background-position: 15% 100%
-    }
-}
-
 @keyframes error-bg {
     0% {
         background-position: 100% 0%
@@ -28,7 +8,7 @@
     }
 }
 
-@-webkit-keyframes fadein {
+@keyframes fade-in {
     from {
         bottom: 0;
         opacity: 0;
@@ -40,19 +20,7 @@
     }
 }
 
-@keyframes fadein {
-    from {
-        bottom: 0;
-        opacity: 0;
-    }
-
-    to {
-        bottom: 30px;
-        opacity: 1;
-    }
-}
-
-@-webkit-keyframes fadeout {
+@keyframes fade-out {
     from {
         bottom: 30px;
         opacity: 1;
@@ -64,19 +32,7 @@
     }
 }
 
-@keyframes fadeout {
-    from {
-        bottom: 30px;
-        opacity: 1;
-    }
-
-    to {
-        bottom: 0;
-        opacity: 0;
-    }
-}
-
-@keyframes animateTop {
+@keyframes animate-top {
     from {
         top: -300px;
         opacity: 0
@@ -98,7 +54,7 @@
     }
 }
 
-@keyframes goUp {
+@keyframes go-up {
     from {
         top: 80%;
     }
@@ -107,7 +63,7 @@
     }
 }
 
-@keyframes sizeup {
+@keyframes size-up {
     from {
         opacity: 0;
         transform: scale(0.9);
@@ -118,7 +74,7 @@
     }
 }
 
-@keyframes sizeup_init {
+@keyframes size-up-init {
     from {
         opacity: 0%;
         transform: scale(1);
@@ -129,7 +85,7 @@
     }
 }
 
-@keyframes fadein {
+@keyframes fade-in {
     from{
         opacity: 0%;
         transform: scale(0.9);
@@ -140,7 +96,7 @@
     }
 }
 
-@keyframes sizedown {
+@keyframes size-down {
     from {
         opacity: 100%;
         transform: scale(0.9);

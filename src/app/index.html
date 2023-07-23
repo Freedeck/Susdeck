@@ -36,7 +36,7 @@
     <div id="themechoices" class="experiment"></div>
     <button class="keypress white-txt" onclick="window.location.replace(window.location.href)">Reload This</button>
     <button class="keypress white-txt" onclick="universal.socket.emit('c-change')">Reload All</button>
-    <button class="keypress white-txt" onclick="document.querySelector('#settings').style.animationName = 'sizedown'; setTimeout(()=>{document.querySelector('#settings').style.display = 'none'},250); document.querySelector('#keys').style.animationName = 'sizeup'; document.querySelector('#keys').style.animationDuration = '.5s'; document.querySelector('#keys').style.display = 'grid'; setTimeout(()=>{ document.querySelector('#keys').style.animationDuration = '.25s';},500); universal.remove('hidden')" style="background-image:url('assets/icons/freedeck.png'); background-size: contain;"></button>
+    <button class="keypress white-txt" onclick="document.querySelector('#settings').style.animationName = 'size-down'; setTimeout(()=>{document.querySelector('#settings').style.display = 'none'},250); document.querySelector('#keys').style.animationName = 'size-up'; document.querySelector('#keys').style.animationDuration = '.5s'; document.querySelector('#keys').style.display = 'grid'; setTimeout(()=>{ document.querySelector('#keys').style.animationDuration = '.25s';},500); universal.remove('hidden')" style="background-image:url('assets/icons/freedeck.png'); background-size: contain;"></button>
     <p>Press the Freedeck logo to go back.</p>
     <p>Keep in mind this is a work in progress menu.</p>
     <strong>Most settings are configured in Companion.</strong>

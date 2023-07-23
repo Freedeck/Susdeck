@@ -61,7 +61,7 @@ pages.forEach(page => {
   btnImg.height = '32';
   btn.onmouseenter = (ev) => {
     tooltip.innerText = page.name;
-    tooltip.style.animationName = 'goUp';
+    tooltip.style.animationName = 'go-up';
   };
   btn.onmouseleave = (ev) => {
     tooltip.innerText = '';

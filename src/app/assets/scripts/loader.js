@@ -70,6 +70,10 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
   while (keys.firstChild) {
     keys.removeChild(keys.lastChild); // Remove everything from the previous keys
   }
+  if (!Pages[currentPage]) {
+    loadPage(0);
+    return;
+  }
   // eslint-disable-next-line no-undef
   Pages[currentPage].forEach(sound => { // For each sound in the page create a button
     keyList.push(sound);

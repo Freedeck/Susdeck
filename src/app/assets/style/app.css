@@ -29,7 +29,7 @@ body {
 
 .freedeck-logo {
   position: absolute;
-  right: 0px;
+  right: 0;
   bottom: 101px;
   width: 100px;
   height: 105px;
@@ -174,7 +174,6 @@ button:hover {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-
   height: 15%;
   width: 100%;
   position: fixed;
@@ -217,7 +216,7 @@ button:hover {
 }
 
 #sidebar a:hover {
-  background-color: #8f8f8f !important;
+  background-color: #8f8f8f;
   transform: scale(1.1) rotate(var(--sd-rotationDegrees));
 }
 
@@ -238,8 +237,8 @@ button:hover {
   padding: 20px;
 }
 
-.activePage {
-  background-color: #6b6b6b !important;
+.active-page {
+  background-color: #6b6b6b;
 }
 
 .experiment {

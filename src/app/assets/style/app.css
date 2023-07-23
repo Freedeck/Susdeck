@@ -6,7 +6,7 @@
   --sd-font-family: 'Rubik';
   --sd-background-size: 400% 400%;
   --sd-background: 45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%;
-  --sd-rotationDegrees: 2deg;
+  --sd-rotation-degrees: 2deg;
   --sd-btn-background: rgba(0, 0, 0, 0.5);
   --sd-modal-color: rgb(15, 140, 194);
 }
@@ -69,8 +69,7 @@ button:hover {
 #keys {
   display: grid;
   grid-template-columns: var(--sd-template-columns);
-  grid-column-gap: 7px;
-  grid-row-gap: 2px;
+  gap: 2px 7px;
   animation-duration: .25s;
 }
 
@@ -93,7 +92,7 @@ button:hover {
 }
 
 .white-txt {
-  color: #FFFFFF;
+  color: white;
 }
 
 .info {
@@ -212,7 +211,7 @@ button:hover {
 
 #sidebar a:hover {
   background-color: #8f8f8f;
-  transform: scale(1.1) rotate(var(--sd-rotationDegrees));
+  transform: scale(1.1) rotate(var(--sd-rotation-degrees));
 }
 
 #icon-tip {
@@ -272,7 +271,6 @@ button:hover {
 
 #toast.show {
   visibility: visible;
-  -webkit-animation: fade-in 0.5s, fade-out 0.5s 1s;
   animation: fade-in 0.5s, fade-out 0.5s 1s;
 }
 

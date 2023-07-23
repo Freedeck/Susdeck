@@ -166,7 +166,7 @@ if (document.body.dataset.page) {
 
 document.querySelector('#sidebar').onmouseover = () => {
   const rootElem = document.querySelector(':root');
-  rootElem.style.setProperty('--sd-rotationDegrees', Math.ceil(Math.random() * 15) + 'deg');
+  rootElem.style.setProperty('--sd-rotation-degrees', Math.ceil(Math.random() * 15) + 'deg');
 };
 
 const sharedStylesheet = document.createElement('link');

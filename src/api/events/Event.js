@@ -1,5 +1,5 @@
 const { sockApiEvents } = require('../init');
-const debug = require('../../util/debug')
+const debug = require('../../util/debug');
 
 class Event {
   constructor (event, callback) {

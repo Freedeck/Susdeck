@@ -44,8 +44,8 @@ const experiments = [
 
 Susaudio.init();
 
-const sideNav = document.createElement('div');
-sideNav.id = 'sidebar';
+const side-nav = document.createElement('div');
+side-nav.id = 'sidebar';
 const tooltip = document.createElement('p');
 tooltip.id = 'icon-tip';
 document.body.appendChild(tooltip);
@@ -68,10 +68,10 @@ pages.forEach(page => {
     tooltip.style.animationName = '';
   };
   btn.appendChild(btnImg);
-  sideNav.appendChild(btn);
+  side-nav.appendChild(btn);
 });
 
-document.body.appendChild(sideNav);
+document.body.appendChild(side-nav);
 
 document.querySelector('#topbar > button').onclick = () => {
   window.close();

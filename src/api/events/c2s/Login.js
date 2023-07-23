@@ -3,7 +3,7 @@ const settings = require('../../../../Settings');
 const Event = require('../Event');
 
 const ev = new Event('c2sr_login', (socket, args, loginList) => {
-  if (!settings.UseAuthentication) { socket.emit('session_valid'); return; }
+  if (!settings.UseAuthentication) { socket.emit('session_valid'); return 'Not using authentication!'; }
   const sid = args[0];
   // ID recieved, load into memory so we know it's the same user logging in.
   loginList.push(sid);

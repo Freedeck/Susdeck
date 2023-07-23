@@ -1,4 +1,4 @@
-@-webkit-keyframes errorBg {
+@-webkit-keyframes error-bg {
     0% {
         background-position: 100% 0%
     }
@@ -8,7 +8,7 @@
     }
 }
 
-@-moz-keyframes errorBg {
+@-moz-keyframes error-bg {
     0% {
         background-position: 100% 0%
     }
@@ -18,7 +18,7 @@
     }
 }
 
-@keyframes errorBg {
+@keyframes error-bg {
     0% {
         background-position: 100% 0%
     }
@@ -89,11 +89,11 @@
 }
 
 @media screen and (max-height: 450px) {
-    .sideNav {
+    .side-nav {
         padding-top: 15px;
     }
 
-    .sideNav a {
+    .side-nav a {
         font-size: 18px;
     }
 }
@@ -109,11 +109,11 @@
 
 @keyframes sizeup {
     from {
-        opacity: 0%;
+        opacity: 0;
         transform: scale(0.9);
     }
     to {
-        opacity: 100%;
+        opacity: 1;
         transform: scale(1);
     }
 }

@@ -42,6 +42,8 @@ const experiments = [
   }
 ];
 
+Susaudio.init();
+
 const sideNav = document.createElement('div');
 sideNav.id = 'sidebar';
 const tooltip = document.createElement('p');

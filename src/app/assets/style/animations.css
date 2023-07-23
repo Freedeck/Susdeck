@@ -44,7 +44,7 @@
     }
 }
 
-@media (0px <= width <= 450px) {
+@media (0 <= width <= 450px) {
     .side-nav {
         padding-top: 15px;
     }

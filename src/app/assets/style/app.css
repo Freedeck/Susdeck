@@ -181,8 +181,7 @@ button:hover {
 #themechoices {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-column-gap: 3px;
-  grid-row-gap: 2px;
+  gap: 2px 3px;
 }
 
 #settings {

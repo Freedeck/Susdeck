@@ -20,7 +20,8 @@ body {
   /* width: 100vw; */
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   overscroll-behavior: none;
-  clip-path: inset(0 0 0 0);
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 ::-webkit-scrollbar {

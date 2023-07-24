@@ -167,7 +167,8 @@ let touchstartX = 0;
 let touchendX = 2500;
 
 function checkDirection () {
-  if (touchendX < touchstartX) {
+  const range = touchendX - touchstartX;
+  if (range < -50) {
     // go page up
     if (Pages[currentPage + 1]) {
       loadPage(currentPage + 1);
@@ -175,7 +176,7 @@ function checkDirection () {
       /* empty */
     }
   }
-  if (touchendX > touchstartX) {
+  if (range > 50) {
     // go page down
     if (Pages[currentPage - 1]) {
       loadPage(currentPage - 1);

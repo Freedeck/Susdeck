@@ -16,9 +16,15 @@ body {
   background: linear-gradient(var(--sd-background));
   background-size: var(--sd-background-size);
   animation: error-bg 5s linear infinite;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  /* width: 100vw; */
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  overscroll-behavior: none;
+  clip-path: inset(0 0 0 0);
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 .freedeck-logo {
@@ -38,10 +44,6 @@ footer {
   background-color: red;
   color: white;
   text-align: center;
-}
-
-* {
-  font-family: var(--sd-font-family);
 }
 
 button {
@@ -187,9 +189,10 @@ button:hover {
 #settings {
   display: none;
   animation-duration: .5s;
+  transition-duration: .5s;
   position: absolute;
-  transform: scale(0.9);
-  width: max-content;
+  /* transform: scale(1.0); */
+  width: 100%;
   height: min-content;
   background-color: rgba(0, 0, 0, 0.25);
   border-radius: 12px;
@@ -276,4 +279,8 @@ button:hover {
 .functions {
   display: flex;
   gap: 5px;
+}
+
+* {
+  font-family: var(--sd-font-family);
 }

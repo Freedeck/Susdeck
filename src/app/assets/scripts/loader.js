@@ -186,6 +186,10 @@ function checkDirection () {
   }
 }
 
+document.addEventListener('touchmove', function (event) {
+  event.preventDefault();
+});
+
 document.addEventListener('touchstart', e => {
   touchstartX = e.changedTouches[0].screenX;
 });

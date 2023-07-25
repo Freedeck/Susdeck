@@ -12,7 +12,9 @@
   "scripts": {
     "setup": "npm i && node src/setup.js",
     "start": "node src/index.js",
-    "debug": "node src/index.js - -dbg"
+    "headless": "node src/index.js --headless",
+    "companion": "node src/index.js --no-server",
+    "debug": "node src/index.js --debug"
   },
   "devDependencies": {
     "electron": "^23.1.1",

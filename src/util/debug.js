@@ -10,7 +10,7 @@ const dbgUtil = {
   }
 };
 
-if (process.argv[3] === '-dbg') {
+if (process.argv[2] === '--debug') {
   dbgUtil.is = true;
 }
 

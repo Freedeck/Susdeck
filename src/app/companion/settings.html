@@ -20,6 +20,7 @@
         <h3 id="now-playing"></h3>
         <br />
         <div class="flex">
+            <a href="/"><button>To Freedeck UI</button></a>
             <button onclick="Susaudio.stopAll()">Stop All</button>
             <button onclick="universal.sendToast(universal.exportTheme())">Export Theme</button>
             <input id="theme-exported" hidden>
@@ -27,7 +28,7 @@
         </div>
         <p>Warning: Your custom theme will be removed.</p>
         <div class="flex">
-            <button onclick="universal.socket.emit('c-change')">Reload all Freedeck Sessions</button>
+            <button onclick="universal.socket.emit('c-change')">Remote Reload</button>
             <button onclick="enableExperiments()">Toggle Freedeck Experiments</button>
         </div>
         <div id="console"></div>

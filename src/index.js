@@ -24,9 +24,10 @@ try {
   app.get('/sounds.js', (req, res) => { res.sendFile(path.join(__dirname, '/settings/sounds.js')); }); // Make sounds.js accessible from apps
 
   debug.log('Listening for ' + port);
-  httpServer.listen(port, () => {
+  if (process.argv[2] === '--no-server') require('child_process').exec('npx electron src/companion'); // Start Companion on another process
+  if (process.argv[2] !== '--no-server') httpServer.listen(port, () => {
     console.log('Freedeck v' + require('../package.json').version + ' Web Host is starting - starting Companion');
-    require('child_process').exec('npx electron src/companion'); // Start Companion on another process
+    if (process.argv[2] !== '--headless') require('child_process').exec('npx electron src/companion'); // Start Companion on another process
     Object.keys(getNetworkInterfaces()).forEach(netInterface => {
       console.log('Go to ' + getNetworkInterfaces()[netInterface][0] + ':' + port + ' on your mobile device [Interface ' + netInterface + ']');
     });

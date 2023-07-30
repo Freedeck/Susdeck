@@ -112,6 +112,7 @@ const universal = {
     Object.keys(sUTheme).forEach(key => {
       exportedTheme.push(JSON.stringify(sUTheme[key]));
     });
+    exportedTheme.push(JSON.stringify({ exported_from: universal.version }));
     const exportedThemeStr = JSON.stringify('[' + exportedTheme.join(',') + ']');
 
     universal.save('custom_theme', exportedThemeStr);

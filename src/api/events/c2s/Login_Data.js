@@ -3,7 +3,7 @@ const debug = require('../../../util/debug');
 
 const Event = require('../Event');
 
-const ev = new Event('c2sd_login', (socket, args) => {
+const ev = new Event('c2sd_login', ({ socket, args }) => {
   const password = args;
   debug.log('Recieved password request!');
   if (password === settings.Password) {

@@ -23,7 +23,7 @@ try {
   if (settings.fdv !== fd.version) {
     console.log('[IMPORTANT!]\nYour settings config is out of date. Rerun npm run setup to update it!\nExpected version ' + fd.version +', got ' + settings.fdv);
   }
-  if(sounds.cfg.v !== fd.version) {
+  if (sounds.cfg.v !== fd.version) {
     console.log('[IMPORTANT!]\nYour sound config is out of date. If Freedeck doesn\'t load, rerun npm run setup.\nIf Freedeck functions, use companion to:\n1: Edit any sound from the Icon Editor\n2:Press Set\n3:Update will automagically complete.\nExpected version ' + fd.version + ', got ' + sounds.cfg.v);
   }
   debug.log('Initializing Socket API');

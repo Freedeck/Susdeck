@@ -1,7 +1,6 @@
 /node_modules
-Settings.js
 /build
-/src/settings/sounds.js
-src/settings/sounds.js
+/src/settings/*
+src/settings/*
+Settings.js
 src/api/persistent/theme.sd
-/src/api/persistent/theme.sd

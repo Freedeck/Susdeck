@@ -21,7 +21,7 @@ try {
   debug.log('Version matching');
   // Do config versions match the hosts?
   if (settings.fdv !== fd.version) {
-    console.log('[IMPORTANT!]\nYour settings config is out of date. Rerun npm run setup to update it!\nExpected version ' + fd.version +', got ' + settings.fdv);
+    console.log('[IMPORTANT!]\nYour settings config is out of date. Rerun npm run setup to update it!\nExpected version ' + fd.version + ', got ' + settings.fdv);
   }
   if (sounds.cfg.v !== fd.version) {
     console.log('[IMPORTANT!]\nYour sound config is out of date. If Freedeck doesn\'t load, rerun npm run setup.\nIf Freedeck functions, use companion to:\n1: Edit any sound from the Icon Editor\n2:Press Set\n3:Update will automagically complete.\nExpected version ' + fd.version + ', got ' + sounds.cfg.v);
@@ -44,7 +44,7 @@ try {
       console.log('Web Host is starting - launching Companion');
       if (process.argv[2] !== '--headless') require('child_process').exec('npx electron src/companion'); // Start Companion on another process
       Object.keys(getNetworkInterfaces()).forEach(netInterface => {
-        console.log('Go to ' + getNetworkInterfaces()[netInterface][0] + ':' + port + ' on your mobile device [Interface ' + netInterface + ']')
+        console.log('Go to ' + getNetworkInterfaces()[netInterface][0] + ':' + port + ' on your mobile device [Interface ' + netInterface + ']');
       });
     });
   }

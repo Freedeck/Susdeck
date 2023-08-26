@@ -73,7 +73,6 @@ function loadPage (pageNumber = 0) {
   for (let i = 0; i < allKeypress.length; i++) {
     allKeypress[i].onclick = (ev) => {
       if (ev.target.getAttribute('data-unedit')) return;
-      document.querySelector('#mcip').style.backgroundImage = '';
       if (ev.target.style.backgroundImage) document.querySelector('#mcip').style.backgroundImage = ev.target.style.backgroundImage;
       document.querySelector('#mcip').setAttribute('data-orig-icon', ev.target.style.backgroundImage);
       document.querySelector('#mhe').setAttribute('data-orig-name', ev.target.innerText);

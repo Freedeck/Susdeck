@@ -11,18 +11,15 @@ const ev = new Event('c-info-change', ({ socket, args, meta }) => {
       found = sounds.Sounds.find(thing => thing.name === args.name);
       if (args.path !== undefined) found = sounds.Sounds.find(thing => thing.path === args.path);
       if (!found) found = sounds.Sounds.find(thing => thing.keys === JSON.stringify(args.ogValues));
-      sounds.Sounds.forEach(thing => {
-        if (args.keysArr[1]) {
-          args.keysArr[0] = args.keysArr[0].toLowerCase();
-          args.keysArr[1] = args.keysArr[1].toLowerCase();
-        }
-        if (thing.keys === JSON.stringify(args.ogValues)) newObject.keys = JSON.stringify(args.keysArr);
-        if ('path' in thing && thing.path === args.oldpath && args.oldpath !== '') newObject.path = args.newpath;
-        newObject.name = args.newname;
-        newObject.icon = thing.icon;
-        if (!thing.icon) newObject.icon = args.icon;
-        if (thing.icon === args.oldIcon && args.icon !== args.oldIcon) newObject.icon = args.icon;
-      });
+      if (args.keysArr[1]) {
+        args.keysArr[0] = args.keysArr[0].toLowerCase();
+        args.keysArr[1] = args.keysArr[1].toLowerCase();
+      }
+      if (found.keys === JSON.stringify(args.ogValues)) newObject.keys = JSON.stringify(args.keysArr);
+      if ('path' in found && found.path === args.oldpath && args.oldpath !== '') newObject.path = args.newpath;
+      newObject.name = args.newname;
+      if (!found.icon) newObject.icon = args.icon;
+      if (found.icon === args.oldIcon && args.icon !== args.oldIcon) newObject.icon = args.icon;
       Object.assign(found, newObject);
     } catch (err) {
       console.log('Error!', err);

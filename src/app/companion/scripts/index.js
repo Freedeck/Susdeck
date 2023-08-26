@@ -7,7 +7,13 @@ const klD = [];
 
 universal.socket.on('server_connected', () => {
   universal.socket.emit('c-connected');
-  if (document.querySelector('#keys')) loadPage();
+  if (document.querySelector('#keys')) {
+    loadPage();
+    setTimeout(() => {
+      np();
+      bp();
+    });
+  }
   document.querySelector('#console').style.display = 'none';
 });
 

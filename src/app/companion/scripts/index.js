@@ -82,9 +82,11 @@ function loadPage (pageNumber = 0) {
 
       if (ev.target.getAttribute('data-multi') && ev.target.getAttribute('data-keys')) {
         klD.splice(0, klD.length);
+        ai = 1;
         ev.target.getAttribute('data-keys').split(',').forEach(key => {
-          klD.push(`<label for="newkey">Key:</label><input type="text" class="btn-key" value='${key}' data-og-value='${key}' data-key-num="${i}"/>`);
+          klD.push(`<label for="newkey">Key ${ai}:</label><input type="text" class="btn-key" value='${key}' data-og-value='${key}' data-key-num="${i}"/>`);
           i++;
+          ai++;
         });
 
         document.querySelector('#npl').style.display = 'none';

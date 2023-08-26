@@ -175,7 +175,7 @@ document.body.appendChild(notibar);
 
 universal.sendToast('Waiting for host...');
 
-universal.socket.on('server_connected', (authStat, version) => {
+universal.socket.on('server_connected', async (authStat, version) => {
   universal.hasConnected = true;
   universal.version = version;
   if (document.querySelector('#version')) {
@@ -183,6 +183,22 @@ universal.socket.on('server_connected', (authStat, version) => {
   }
   universal.sendToast('Host connection established!');
   if (!universal.hasConnected) { socket.emit('c-change-client'); }
+
+  await fetch('/api/dbg')
+    .then(data =>
+      data.json())
+    .then(data => {
+      universal.isInDebug = data.status;
+      universal.debugStat = data.msg;
+    });
+  const footer = document.createElement('footer');
+  footer.style.display = 'none';
+  footer.style.zIndex = '999';
+  if (universal.isInDebug) {
+    footer.innerHTML = '<h3>In ' + universal.debugStat + ' Mode</h3>';
+    footer.style.display = 'block';
+  }
+  document.body.appendChild(footer);
 });
 
 universal.socket.on('server_shutdown', () => {
@@ -277,22 +293,6 @@ universal.socket.on('custom_theme', themeData => {
 });
 
 document.body.onload = async () => {
-  await fetch('/api/dbg')
-    .then(data =>
-      data.json())
-    .then(data => {
-      universal.isInDebug = data.status;
-      universal.debugStat = data.msg;
-    });
-  const footer = document.createElement('footer');
-  footer.style.display = 'none';
-  footer.style.zIndex = '999';
-  if (universal.isInDebug) {
-    footer.innerHTML = '<h3>In ' + universal.debugStat + ' Mode</h3>';
-    footer.style.display = 'block';
-  }
-  document.body.appendChild(footer);
-
   // Screensaver
   setTimeout(() => {
     if (typeof ScreenSaverActivationTime === 'number' && document.querySelector('#keys')) {

@@ -6,6 +6,13 @@
     margin-bottom: 15%;
 }
 
+.sb-dbg-sound {
+    background-color: rgba(0,0,0, 0.75);
+    color: white;
+    overflow: visible;
+    border-radius: 5px;
+}
+
 #topbar {
     display: flex;
     width: 100vw;

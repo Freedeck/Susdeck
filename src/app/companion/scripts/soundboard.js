@@ -7,11 +7,13 @@ const countOnEachPage = 8;
 universal.socket.on('server_connected', () => {
   universal.socket.emit('c-connected');
   document.querySelector('#console').style.display = 'none';
-  if (universal.isInDebug === true) {
-    Sounds.forEach(function (s) {
-      document.querySelector('#keys').innerHTML += `<div><h3>${s.name}</h3><h4>${soundDir + s.path}</h4></div>`;
-    });
-  }
+  setTimeout(() => {
+    if (universal.isInDebug === true) {
+      Sounds.forEach(function (s) {
+        document.querySelector('#keys').innerHTML += `<div class="sb-dbg-sound"><h4>${s.name}</h4><p>${soundDir + s.path}</p></div>`;
+      });
+    }
+  }, 150);
 });
 
 function volChanged () {

@@ -42,13 +42,16 @@
                     <div id="mcmultikey">
 
                     </div>
-                    <label id="npl" for="newpath">Sound Path:</label>
-                    <input type="text" id="newpath" value=""/>
+                    <label id="npl" for="newpath" style="display:none;">Sound Path:</label>
+                    <input type="text" id="newpath" style="display:none;" value=""/>
                     <p>Icon Preview</p>
-                    <button id="mcip"></button>
-                    <!-- data-orig-key data-orig-name -->
-                    <button id="mcdel" onclick="DeleteKey({ name: document.querySelector('#mhe').getAttribute('data-orig-name') });">Delete</button>
-                    <button id="mcset" onclick="changeInfo(document.querySelector('#mhe').getAttribute('data-orig-key'));"class="white-txt">Set</button>
+                    <div style="display: flex; gap: 5px;">
+                        <button id="mcip"></button>
+                        <button id="mcsu" style="display: none;">Upload Sound [NEW!]</button>
+                        <!-- data-orig-key data-orig-name -->
+                        <button id="mcdel" onclick="DeleteKey({ name: document.querySelector('#mhe').getAttribute('data-orig-name') });">Delete Button</button>
+                        <button id="mcset" onclick="changeInfo(document.querySelector('#mhe').getAttribute('data-orig-key'));"class="white-txt">Set</button>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <h3>Freedeck Companion</h3>

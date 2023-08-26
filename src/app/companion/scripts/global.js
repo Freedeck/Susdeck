@@ -36,10 +36,10 @@ const pages = [
 ];
 
 const experiments = [
-  {
-    name: 'Show Notification Log in Settings',
-    html: '<h1>DANGEROUS EXPERIMENT</h1><p>This will make your settings page take substantially longer to load.</p>'
-  }
+  // {
+  //   name: 'Show Notification Log in Settings',
+  //   html: '<h1>DANGEROUS EXPERIMENT</h1><p>This will make your settings page take substantially longer to load.</p>'
+  // }
 ];
 
 Susaudio.init();

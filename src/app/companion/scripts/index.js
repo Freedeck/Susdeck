@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 const keys = document.querySelector('#keys');
 const Pages = {};
-const countOnEachPage = 8;
 let currentPage = pageNumber = universal.load('page') ? universal.load('page') : 0;
 let keyList = [];
 const klD = [];
@@ -13,7 +12,7 @@ universal.socket.on('server_connected', () => {
 });
 
 function loadPage (pageNumber = 0) {
-  autoSort();
+  autoSort(universal.iconCount);
   currentPage = pageNumber;
   keyList = [];
   const myNode = document.querySelector('#keys');
@@ -66,49 +65,63 @@ function loadPage (pageNumber = 0) {
       document.querySelector('#mhe').innerText = 'Editing ' + ev.target.innerText;
       document.querySelector('#newname').value = ev.target.innerText;
       document.querySelector('#newname').setAttribute('data-og-name', ev.target.innerText);
+      document.querySelector('#mcsu').style.display = 'none';
       if (ev.target.getAttribute('data-path')) document.querySelector('#newpath').value = ev.target.getAttribute('data-path');
       if (ev.target.getAttribute('data-path')) document.querySelector('#newpath').setAttribute('data-o-path', ev.target.getAttribute('data-path'));
+      if (ev.target.getAttribute('data-path')) document.querySelector('#mcsu').style.display = 'block';
 
       document.querySelector('#mcip').onclick = () => {
-        // <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
-        const dummyFrame = document.createElement('iframe');
-        dummyFrame.style.display = 'none';
-        dummyFrame.id = 'dummyFrame';
-        dummyFrame.name = 'dummyFrame';
-        const form = document.createElement('form');
-        form.method = 'post';
-        form.enctype = 'multipart/form-data';
-        form.action = '/api/upload/icon';
-        form.target = 'dummyFrame';
-        const fileUpload = document.createElement('input');
-        fileUpload.type = 'file';
-        fileUpload.name = 'file';
-        fileUpload.accept = '.png,.jpg,.jpeg,.gif';
-        form.appendChild(fileUpload);
-        fileUpload.click();
-        fileUpload.onchange = () => {
-          form.submit();
-          setTimeout(() => {
-            content = dummyFrame.contentDocument;
-            const data = JSON.parse(content.querySelector('pre').innerText);
-            document.querySelector('#mcip').setAttribute('data-new-icon', data.newName);
-            document.querySelector('#mcip').style.backgroundImage = 'url("../assets/icons/' + data.newName + '")';
-            document.querySelector('#mcset').addEventListener('click', (ev) => {
-              form.remove();
-              fileUpload.remove();
-              setTimeout(() => {
-                dummyFrame.remove();
-              }, 500);
-            });
-          }, 250);
-        };
-        document.body.append(form);
-        document.body.appendChild(dummyFrame);
+        upload('icon', '.png,.jpg,.jpeg,.gif');
+      };
+
+      document.querySelector('#mcsu').onclick = () => {
+        upload('sounds', '.mp3,.wav,.mp4');
       };
 
       modal.style.display = 'block';
     };
   }
+}
+
+function upload (path, accept) {
+  // <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
+  const dummyFrame = document.createElement('iframe');
+  dummyFrame.style.display = 'none';
+  dummyFrame.id = 'dummyFrame';
+  dummyFrame.name = 'dummyFrame';
+  const form = document.createElement('form');
+  form.method = 'post';
+  form.enctype = 'multipart/form-data';
+  form.action = '/api/upload/' + path;
+  form.target = 'dummyFrame';
+  const fileUpload = document.createElement('input');
+  fileUpload.type = 'file';
+  fileUpload.name = 'file';
+  fileUpload.accept = accept;
+  form.appendChild(fileUpload);
+  fileUpload.click();
+  fileUpload.onchange = () => {
+    form.submit();
+    setTimeout(() => {
+      content = dummyFrame.contentDocument;
+      const data = JSON.parse(content.querySelector('pre').innerText);
+      if (path === 'icon') {
+        document.querySelector('#mcip').setAttribute('data-new-icon', data.newName);
+        document.querySelector('#mcip').style.backgroundImage = 'url("../assets/icons/' + data.newName + '")';
+      } else {
+        document.querySelector('#newpath').value = data.newName;
+      }
+      document.querySelector('#mcset').addEventListener('click', (ev) => {
+        form.remove();
+        fileUpload.remove();
+        setTimeout(() => {
+          dummyFrame.remove();
+        }, 500);
+      });
+    }, 250);
+  };
+  document.body.append(form);
+  document.body.appendChild(dummyFrame);
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -223,24 +236,28 @@ universal.socket.on('companion_info', function (screenSaverActivationTime, soc) 
   };
 });
 
-function autoSort () {
-  // eslint-disable-next-line no-undef
-  const pagesAmount = Sounds.length / countOnEachPage;
-  for (let i = 0; i < pagesAmount; i++) {
-    Pages[i] = [];
-  }
+function autoSort (countOnEP) {
+  let pagesAmount = Math.ceil(Sounds.length / universal.iconCount);
   let pageCounter = 0;
   let index = 0;
-  // eslint-disable-next-line no-undef
-  Sounds.forEach(sound => {
-    Pages[pageCounter].push(sound);
-    if (index === countOnEachPage) {
-      pageCounter++;
-      index = 0;
+  pagesAmount = Math.ceil(Sounds.length / countOnEP); // Set the amount of pages
+  for (let i = 0; i < pagesAmount; i++) {
+    Pages[i] = []; // Loop through and clear each page
+  }
+
+  pageCounter = 0; // Start on page 0
+  index = 0; // Alongside sound 0
+
+  Sounds.forEach(sound => { // Loop through each sound
+    Pages[pageCounter].push(sound); // Add it to a page
+    if (index === countOnEP) { // However, if we reach the max icon count for the screen,
+      pageCounter++; // Increment the page
+      index = 0; // And reset the sound amount counter
+      return;
     }
-    index++;
+    index++; // Increment sound index/amount
   });
-}
+};
 
 // eslint-disable-next-line no-unused-vars
 function np () {

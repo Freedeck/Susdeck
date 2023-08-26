@@ -10,11 +10,16 @@ universal.socket.on('server_connected', () => {
   setTimeout(() => {
     if (universal.isInDebug === true) {
       Sounds.forEach(function (s) {
-        document.querySelector('#keys').innerHTML += `<div class="sb-dbg-sound"><h4>${s.name}</h4><p>${soundDir + s.path}</p></div>`;
+        document.querySelector('#gsl').style.display = 'block';
+        document.querySelector('#keys').innerHTML += `<div class="sb-dbg-sound">${s.name}:${soundDir + s.path}</div>`;
       });
     }
   }, 150);
 });
+
+function gsl () {
+  // IMPL SOON
+}
 
 function volChanged () {
   const volumeSlider = document.querySelector('#out-vol');

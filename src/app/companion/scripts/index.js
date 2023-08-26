@@ -25,9 +25,18 @@ function loadPage (pageNumber = 0) {
   while (myNode.firstChild) {
     myNode.removeChild(myNode.lastChild);
   }
-  Pages[currentPage].push({ name: 'Stop All', unedit: true });
-  Pages[currentPage].push({ name: 'Reload', unedit: true });
-  Pages[currentPage].push({ name: 'Settings', unedit: true });
+  const utils = [
+    {
+      name: 'Stop All'
+    },
+    {
+      name: 'Reload'
+    },
+    {
+      name: 'Settings'
+    }
+  ];
+
   // eslint-disable-next-line no-undef
   Pages[currentPage].forEach(sound => {
     keyList.push(sound);
@@ -50,6 +59,14 @@ function loadPage (pageNumber = 0) {
     }
     btn.innerText = sound.name;
     keys.appendChild(btn);
+  });
+
+  utils.forEach((util) => {
+    const tempButton = document.createElement('button');
+    tempButton.className = 'keypress white-txt';
+    tempButton.innerText = util.name;
+    tempButton.setAttribute('data-unedit', true);
+    keys.appendChild(tempButton);
   });
 
   const allKeypress = document.getElementsByClassName('keypress');

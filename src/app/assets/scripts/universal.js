@@ -7,8 +7,8 @@ const universal = {
   themes: {
     // Built-in themes.
     Default: [
-      { 'icon-count': 8 },
-      { 'template-columns': 'repeat(4,1fr)' },
+      { 'icon-count': 11 },
+      { 'template-columns': 'repeat(5,2fr)' },
       { 'background-size': '400% 400%' },
       { 'font-family': 'Rubik, sans-serif' },
       { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' },
@@ -47,9 +47,9 @@ const universal = {
       { 'btn-background': 'rgba(180, 190, 254, 0.15)' },
       { 'modal-color': 'rgb(203, 166, 247)' }
     ],
-    'Compact Default': [
-      { 'icon-count': 11 },
-      { 'template-columns': 'repeat(5,1fr)' },
+    'Old Default': [
+      { 'icon-count': 8 },
+      { 'template-columns': 'repeat(4,1fr)' },
       { 'background-size': '400% 400%' },
       { 'font-family': 'Rubik, sans-serif' },
       { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' },

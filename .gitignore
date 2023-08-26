@@ -5,3 +5,4 @@ src/settings/*
 Settings.js
 src/api/persistent/theme.sd
 src/app/assets/sounds/*
+src/app/assets/icons/*

@@ -211,5 +211,4 @@ Object.keys(universal.themes).forEach(key => {
 });
 
 function fard () {
-  document.querySelector('#setow').innerText = universal.load('owner_name') + "'s Freedeck: Settings (scroll)";
 }

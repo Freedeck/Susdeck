@@ -25,6 +25,9 @@ function loadPage (pageNumber = 0) {
   while (myNode.firstChild) {
     myNode.removeChild(myNode.lastChild);
   }
+  Pages[currentPage].push({ name: 'Stop All', unedit: true });
+  Pages[currentPage].push({ name: 'Reload', unedit: true });
+  Pages[currentPage].push({ name: 'Settings', unedit: true });
   // eslint-disable-next-line no-undef
   Pages[currentPage].forEach(sound => {
     keyList.push(sound);
@@ -35,6 +38,9 @@ function loadPage (pageNumber = 0) {
       btn.setAttribute('data-multi', true);
       btn.setAttribute('data-keys', JSON.parse(sound.keys).join(','));
       key.innerText = sound.keys;
+    }
+    if (sound.unedit) {
+      btn.setAttribute('data-unedit', true);
     }
     if (sound.path) {
       btn.setAttribute('data-path', sound.path);
@@ -49,6 +55,7 @@ function loadPage (pageNumber = 0) {
   const allKeypress = document.getElementsByClassName('keypress');
   for (let i = 0; i < allKeypress.length; i++) {
     allKeypress[i].onclick = (ev) => {
+      if (ev.target.getAttribute('data-unedit')) return;
       document.querySelector('#mcip').style.backgroundImage = '';
       if (ev.target.style.backgroundImage) document.querySelector('#mcip').style.backgroundImage = ev.target.style.backgroundImage;
       document.querySelector('#mcip').setAttribute('data-orig-icon', ev.target.style.backgroundImage);

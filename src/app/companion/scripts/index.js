@@ -260,7 +260,7 @@ function changeInfo (key) {
   const newname = document.querySelector('#newname').value;
   const uuid = document.querySelector('#uuid').value;
   const name = document.querySelector('#newname').getAttribute('data-og-name');
-  universal.emit('c-info-change', { type: 'key_edit', uuid oldIcon, icon, key, keysArr, ogValues, oldpath, newpath, newname, name });
+  universal.emit('c-info-change', { type: 'key_edit', uuid, oldIcon, icon, key, keysArr, ogValues, oldpath, newpath, newname, name });
   loadPage();
 }
 

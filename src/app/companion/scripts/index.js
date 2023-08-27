@@ -29,13 +29,16 @@ function loadPage (pageNumber = 0) {
   }
   const utils = [
     {
-      name: 'Stop All'
+      name: 'Stop All',
+      i: 997
     },
     {
-      name: 'Reload'
+      name: 'Reload',
+      i: 998
     },
     {
-      name: 'Settings'
+      name: 'Settings',
+      i: 997
     }
   ];
 
@@ -51,11 +54,10 @@ function loadPage (pageNumber = 0) {
 
   if (Pages[pageNumber].length > 0) {
     utils.forEach((util) => {
-      const tempButton = document.createElement('button');
-      tempButton.className = 'keypress white-txt';
-      tempButton.innerText = util.name;
-      tempButton.setAttribute('data-unedit', true);
-      keys.appendChild(tempButton);
+      keyList.push(util);
+      btn = createButton(util);
+      btn.setAttribute('data-unedit', true);
+      keys.appendChild(btn);
     });
   }
 

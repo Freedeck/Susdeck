@@ -1,5 +1,6 @@
 const ex = require('express');
 const path = require('path');
+const fs = require('fs');
 const httpLib = require('http');
 
 const app = ex();
@@ -50,11 +51,38 @@ try {
     snd: sounds.cfg.v == fd.version
   };
 
-  if (vCheck.set || vCheck.snd) {
+  debug.log('Settings v' + settings.fdv, 'Sounds v', sounds.cfg.v, 'Freedeck v' + fd.version);
+
+  if (!vCheck.set || !vCheck.snd) {
+    debug.log('Failed ver check, set:', vCheck.set, 'sound:', vCheck.snd);
     console.log('[IMPORTANT!]\nFreedeck is out of sync with v' + fd.version + '\nAffected configs:');
-    if (vCheck.set) console.log('- Settings');
-    if (vCheck.snd) console.log('- Sounds');
+    if (!vCheck.set) console.log('- Settings');
+    if (!vCheck.snd) console.log('- Sounds');
     console.log('[IMPORTANT!] These configs will be updated and you will need to start Freedeck again.');
+    // Just reset them all llol
+    fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
+const SoundOnPress = ${sounds.SoundOnPress};
+const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
+const soundDir = '../assets/sounds/';
+const Sounds = ${JSON.stringify(sounds.Sounds)};
+if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };
+`);
+    fs.writeFileSync('./Settings.js', `// Welcome to Freedeck internal settings! Here you can.. set.. settings!
+// True for yes, false for no
+
+const Settings = {
+	UseAuthentication: ${settings.UseAuthentication}, // Turn on authentication (every session/restart will require password)
+	Password: '${settings.Password}', // If you are using authentication, you will log in with this password.
+	LoginMessage: '${settings.LoginMessage}', // This message will show for users when they try to login (below "Login to (your name)'s Freedeck")
+	YourName: '${settings.YourName}', // Shows alongside your login message,
+	Port: ${settings.Port},
+
+	// Don't touch!!!
+	fdv: '${fd.version}'
+}
+module.exports = Settings;
+`);
+    process.exit(0);
   }
 } catch (err) {
   console.log('Presumably fatal error:', err);

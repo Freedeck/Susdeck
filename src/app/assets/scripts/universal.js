@@ -215,11 +215,6 @@ universal.socket.on('server_notification', (message) => {
   universal.sendToast(message);
 });
 
-universal.socket.on('updated_settings', () => {
-  alert('Updated your settings data. You will need to restart Freedeck.');
-  window.close();
-});
-
 universal.socket.on('set-theme', (theme) => {
   universal.save('theme', theme);
 

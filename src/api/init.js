@@ -102,6 +102,7 @@ const init = (io, app) => {
             io.emit('custom_theme', t);
           }
           if (callback.startsWith('c-reset')) {
+            Object.keys(require.cache).forEach(function (key) { delete require.cache[key]; });
             io.emit('c-reset');
           }
         }

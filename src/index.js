@@ -20,12 +20,6 @@ try {
   console.log('Freedeck v' + fd.version);
   debug.log('Version matching');
   // Do config versions match the hosts?
-  if (settings.fdv !== fd.version) {
-    console.log('[IMPORTANT!]\nYour settings config is out of date. Rerun npm run setup to update it!\nExpected version ' + fd.version + ', got ' + settings.fdv);
-  }
-  if (sounds.cfg.v !== fd.version) {
-    console.log('[IMPORTANT!]\nYour sound config is out of date. If Freedeck doesn\'t load, rerun npm run setup.\nIf Freedeck functions, use companion to:\n1: Edit any sound from the Icon Editor\n2:Press Set\n3:Update will automagically complete.\nExpected version ' + fd.version + ', got ' + sounds.cfg.v);
-  }
   debug.log('Initializing Socket API');
   sockApiInit(io, app); // Socket API initialize
 
@@ -47,6 +41,20 @@ try {
         console.log('Go to ' + getNetworkInterfaces()[netInterface][0] + ':' + port + ' on your mobile device [Interface ' + netInterface + ']');
       });
     });
+  }
+
+  const vCheck = {
+    // eslint-disable-next-line eqeqeq
+    set: settings.fdv == fd.version,
+    // eslint-disable-next-line eqeqeq
+    snd: sounds.cfg.v == fd.version
+  };
+
+  if (vCheck.set || vCheck.snd) {
+    console.log('[IMPORTANT!]\nFreedeck is out of sync with v' + fd.version + '\nAffected configs:');
+    if (vCheck.set) console.log('- Settings');
+    if (vCheck.snd) console.log('- Sounds');
+    console.log('[IMPORTANT!] These configs will be updated and you will need to start Freedeck again.');
   }
 } catch (err) {
   console.log('Presumably fatal error:', err);

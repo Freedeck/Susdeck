@@ -15,6 +15,8 @@ universal.socket.on('server_connected', () => {
     });
   }
   document.querySelector('#console').style.display = 'none';
+
+  universal.socket.emit('c2s_ver_match');
 });
 
 function loadPage (pageNumber = 0) {

@@ -41,10 +41,13 @@ question('Play sound on button press?' + ' (false/true) >').then(response => {
       ua = uar;
       if (!matching.includes(uar)) ua = false;
       if (ua === 'false' || ua === false) {
-        question('Port to host server? [Usually 5754]' + ' (number) >').then(response => {
-          if (!Number(response)) response = 5754;
-          port = response;
-          afterResponses(sob, ssat, ua, passwd, lm, yn, port);
+        question('Your Name [If not using auth, leave blank!]' + ' (string) >').then(ynr => {
+          yn = ynr;
+          question('Port to host server? [Usually 5754]' + ' (number) >').then(response => {
+            if (!Number(response)) response = 5754;
+            port = response;
+            afterResponses(sob, ssat, ua, 'Unset!', 'Unset!', yn, port);
+          });
         });
       } else {
         question('Password [If not using auth, leave blank!]' + ' (string) >').then(pw => {

@@ -87,14 +87,14 @@ if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, S
 // True for yes, false for no
 
 const Settings = {
-	UseAuthentication: ${settings.UseAuthentication}, // Turn on authentication (every session/restart will require password)
-	Password: '${settings.Password}', // If you are using authentication, you will log in with this password.
-	LoginMessage: '${settings.LoginMessage}', // This message will show for users when they try to login (below "Login to (your name)'s Freedeck")
-	YourName: '${settings.YourName}', // Shows alongside your login message,
-	Port: ${settings.Port},
+UseAuthentication: ${settings.UseAuthentication}, // Turn on authentication (every session/restart will require password)
+Password: '${settings.Password}', // If you are using authentication, you will log in with this password.
+LoginMessage: '${settings.LoginMessage}', // This message will show for users when they try to login (below "Login to (your name)'s Freedeck")
+YourName: '${settings.YourName}', // Shows alongside your login message,
+Port: ${settings.Port},
 
-	// Don't touch!!!
-	fdv: '${fd.version}'
+// Don't touch!!!
+fdv: '${fd.version}'
 }
 module.exports = Settings;
 `);

@@ -40,10 +40,13 @@ function loadPage (pageNumber = 0) {
   ];
 
   // eslint-disable-next-line no-undef
+  i = 0;
   Pages[currentPage].forEach(sound => {
+    sound.i = 0;
     keyList.push(sound);
     btn = createButton(sound);
     keys.appendChild(btn);
+    i++;
   });
 
   if (Pages[pageNumber].length > 0) {
@@ -178,6 +181,7 @@ function createButton (sound) {
     btn.style.backgroundImage = "url('../assets/icons/" + sound.icon + "')";
   }
   btn.setAttribute('data-uuid', sound.uuid);
+  btn.setAttribute('data-i', sound.i);
   btn.innerText = sound.name;
   return btn;
 }

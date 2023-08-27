@@ -44,6 +44,22 @@ try {
     });
   }
 
+  sounds.Sounds.forEach(sound => {
+    if (!sound.uuid) {
+      debug.log('Sound ' + sound.name + ' has no UUID, fixing');
+      sound.uuid = 'FDA-' + require('crypto').randomBytes(8).toString('hex');
+    }
+  });
+  fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
+const SoundOnPress = ${sounds.SoundOnPress};
+const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
+const soundDir = '../assets/sounds/';
+const Sounds = ${JSON.stringify(sounds.Sounds)};
+if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };
+`);
+  delete require.cache[require.resolve(path.resolve('./src/settings/sounds.js'))];
+  debug.log('UUID check finished.');
+
   const vCheck = {
     // eslint-disable-next-line eqeqeq
     set: settings.fdv == fd.version,

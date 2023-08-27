@@ -8,7 +8,7 @@ const klD = [];
 universal.socket.on('server_connected', () => {
   universal.socket.emit('c-connected');
   if (document.querySelector('#keys')) {
-    loadPage();
+    loadPage(currentPage);
     setTimeout(() => {
       np();
       bp();
@@ -128,10 +128,12 @@ function upload (path, accept) {
   form.enctype = 'multipart/form-data';
   form.action = '/api/upload/' + path;
   form.target = 'dummyFrame';
+  form.style.display = 'none';
   const fileUpload = document.createElement('input');
   fileUpload.type = 'file';
   fileUpload.name = 'file';
   fileUpload.accept = accept;
+  fileUpload.style.display = 'none';
   form.appendChild(fileUpload);
   fileUpload.click();
   fileUpload.onchange = () => {
@@ -210,13 +212,17 @@ function createNewSound () {
     newDialog.close(nSel.value); // Have to send the select box value here.
     console.log(nSel.value);
     const JSONData = {
-      name: 'New Key'
+      name: 'New Key',
+      uuid: 'CA-' + Math.random().toString().substring(2, 6)
     };
     if (nSel.value === 'default') JSONData.path = 'unnamed.mp3';
     if (nSel.value === 'Keybind') JSONData.keys = JSON.stringify(['A', 'B']);
     Sounds.push(JSONData);
     universal.socket.emit('c-newkey', JSONData);
     loadPage(currentPage);
+    setTimeout(() => {
+      let kps = document.querySelectorAll('.keypress');
+    })
   });
 }
 

@@ -42,25 +42,7 @@ function loadPage (pageNumber = 0) {
   // eslint-disable-next-line no-undef
   Pages[currentPage].forEach(sound => {
     keyList.push(sound);
-    const btn = document.createElement('button');
-    const key = document.createElement('p');
-    btn.className = 'keypress white-txt';
-    if (sound.keys) {
-      btn.setAttribute('data-multi', true);
-      btn.setAttribute('data-keys', JSON.parse(sound.keys).join(','));
-      key.innerText = sound.keys;
-    }
-    if (sound.unedit) {
-      btn.setAttribute('data-unedit', true);
-    }
-    if (sound.path) {
-      btn.setAttribute('data-path', sound.path);
-    }
-    if (sound.icon) {
-      btn.style.backgroundImage = "url('../assets/icons/" + sound.icon + "')";
-    }
-    btn.setAttribute('data-uuid', sound.uuid);
-    btn.innerText = sound.name;
+    btn = createButton(sound);
     keys.appendChild(btn);
   });
 
@@ -72,6 +54,10 @@ function loadPage (pageNumber = 0) {
     keys.appendChild(tempButton);
   });
 
+  setupAllKeypresses();
+}
+
+function setupAllKeypresses() {
   const allKeypress = document.getElementsByClassName('keypress');
   for (let i = 0; i < allKeypress.length; i++) {
     allKeypress[i].onclick = (ev) => {
@@ -169,6 +155,29 @@ function DeleteKey (key) {
   universal.socket.emit('c-delete-key', { name: key.name });
 }
 
+function createButton (sound) {
+  const btn = document.createElement('button');
+  const key = document.createElement('p');
+  btn.className = 'keypress white-txt';
+  if (sound.keys) {
+    btn.setAttribute('data-multi', true);
+    btn.setAttribute('data-keys', JSON.parse(sound.keys).join(','));
+    key.innerText = sound.keys;
+  }
+  if (sound.unedit) {
+    btn.setAttribute('data-unedit', true);
+  }
+  if (sound.path) {
+    btn.setAttribute('data-path', sound.path);
+  }
+  if (sound.icon) {
+    btn.style.backgroundImage = "url('../assets/icons/" + sound.icon + "')";
+  }
+  btn.setAttribute('data-uuid', sound.uuid);
+  btn.innerText = sound.name;
+  return btn;
+}
+
 // eslint-disable-next-line no-unused-vars
 function createNewSound () {
   // eslint-disable-next-line no-undef
@@ -213,19 +222,21 @@ function createNewSound () {
     event.preventDefault(); // We don't want to submit this fake form
     newDialog.close(nSel.value); // Have to send the select box value here.
     console.log(nSel.value);
+    myUuid = 'CA-' + Math.random().toString().substring(2, 6);
     const JSONData = {
       name: 'New Key',
-      uuid: 'CA-' + Math.random().toString().substring(2, 6)
+      uuid: myUuid
     };
     if (nSel.value === 'default') JSONData.path = 'unnamed.mp3';
     if (nSel.value === 'Keybind') JSONData.keys = JSON.stringify(['A', 'B']);
     Sounds.push(JSONData);
     universal.socket.emit('c-newkey', JSONData);
-    loadPage(currentPage);
-    setTimeout(() => {
-      let kps = document.querySelectorAll('.keypress');
-    console.log(kps[kps.length - 4])
-    })
+    keyList.push(JSONData);
+    btn = createButton(JSONData);
+    keys.appendChild(btn);
+    setupAllKeypresses(true);
+    btn.click();
+    btn.remove();
   });
 }
 

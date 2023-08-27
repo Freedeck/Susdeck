@@ -46,18 +46,20 @@ function loadPage (pageNumber = 0) {
     keys.appendChild(btn);
   });
 
-  utils.forEach((util) => {
-    const tempButton = document.createElement('button');
-    tempButton.className = 'keypress white-txt';
-    tempButton.innerText = util.name;
-    tempButton.setAttribute('data-unedit', true);
-    keys.appendChild(tempButton);
-  });
+  if (Pages[pageNumber].length > 0) {
+    utils.forEach((util) => {
+      const tempButton = document.createElement('button');
+      tempButton.className = 'keypress white-txt';
+      tempButton.innerText = util.name;
+      tempButton.setAttribute('data-unedit', true);
+      keys.appendChild(tempButton);
+    });
+  }
 
   setupAllKeypresses();
 }
 
-function setupAllKeypresses() {
+function setupAllKeypresses () {
   const allKeypress = document.getElementsByClassName('keypress');
   for (let i = 0; i < allKeypress.length; i++) {
     allKeypress[i].onclick = (ev) => {
@@ -138,8 +140,10 @@ function upload (path, accept) {
       document.querySelector('#mcset').addEventListener('click', (ev) => {
         form.remove();
         fileUpload.remove();
+        document.querySelector('#mcset').disabled = false;
         setTimeout(() => {
           dummyFrame.remove();
+          document.querySelector('#mcset').disabled = false;
         }, 500);
       });
     }, 250);
@@ -316,14 +320,14 @@ function autoSort (countOnEP) {
 
 // eslint-disable-next-line no-unused-vars
 function np () {
-  if (Pages[currentPage + 1]) {
+  if (Pages[currentPage + 1] && Pages[currentPage + 1].length > 0) {
     loadPage(currentPage + 1);
   }
 }
 
 // eslint-disable-next-line no-unused-vars
 function bp () {
-  if (Pages[currentPage - 1]) {
+  if (Pages[currentPage - 1] && Pages[currentPage - 1].length > 0) {
     loadPage(currentPage - 1);
   }
 }

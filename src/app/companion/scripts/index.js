@@ -59,6 +59,7 @@ function loadPage (pageNumber = 0) {
     if (sound.icon) {
       btn.style.backgroundImage = "url('../assets/icons/" + sound.icon + "')";
     }
+    btn.setAttribute('data-uuid', sound.uuid);
     btn.innerText = sound.name;
     keys.appendChild(btn);
   });
@@ -100,6 +101,7 @@ function loadPage (pageNumber = 0) {
       document.querySelector('#newname').value = ev.target.innerText;
       document.querySelector('#newname').setAttribute('data-og-name', ev.target.innerText);
       document.querySelector('#mcsu').style.display = 'none';
+      document.querySelector('#uuid').value = ev.target.getAttribute('data-uuid');
       if (ev.target.getAttribute('data-path')) document.querySelector('#newpath').value = ev.target.getAttribute('data-path');
       if (ev.target.getAttribute('data-path')) document.querySelector('#newpath').setAttribute('data-o-path', ev.target.getAttribute('data-path'));
       if (ev.target.getAttribute('data-path')) document.querySelector('#mcsu').style.display = 'block';
@@ -222,6 +224,7 @@ function createNewSound () {
     loadPage(currentPage);
     setTimeout(() => {
       let kps = document.querySelectorAll('.keypress');
+    console.log(kps[kps.length - 4])
     })
   });
 }
@@ -255,8 +258,9 @@ function changeInfo (key) {
     ogValues.push(k.getAttribute('data-og-value'));
   });
   const newname = document.querySelector('#newname').value;
+  const uuid = document.querySelector('#uuid').value;
   const name = document.querySelector('#newname').getAttribute('data-og-name');
-  universal.emit('c-info-change', { type: 'key_edit', oldIcon, icon, key, keysArr, ogValues, oldpath, newpath, newname, name });
+  universal.emit('c-info-change', { type: 'key_edit', uuid oldIcon, icon, key, keysArr, ogValues, oldpath, newpath, newname, name });
   loadPage();
 }
 

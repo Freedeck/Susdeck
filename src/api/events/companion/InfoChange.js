@@ -8,7 +8,7 @@ const ev = new Event('c-info-change', ({ socket, args, meta }) => {
     try {
       const newObject = {};
       let found;
-      found = sounds.Sounds.find(thing => thing.name === args.name);
+      found = sounds.Sounds.find(thing => thing.uuid === args.uuid);
       if (args.path !== undefined) found = sounds.Sounds.find(thing => thing.path === args.path);
       if (!found) found = sounds.Sounds.find(thing => thing.keys === JSON.stringify(args.ogValues));
       if (args.keysArr[1]) {

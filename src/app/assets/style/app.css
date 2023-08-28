@@ -31,6 +31,12 @@ body {
 .freedeck-logo {
   width: 75px;
   height: 75px;
+  transition-duration: .5s;
+}
+
+.freedeck-logo:hover {
+  transform: scale(1.1);
+  cursor: grab;
 }
 
 footer {
@@ -158,6 +164,7 @@ button:hover {
   padding: 0;
   border: 1px solid #888;
   width: 80%;
+  z-index: 2;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   animation-name: animate-top;
   animation-duration: 0.4s

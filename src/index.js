@@ -36,7 +36,9 @@ try {
   }
   if (process.argv[2] !== '--no-server') {
     httpServer.listen(port, () => {
-      console.log('Web Host is starting - launching Companion');
+      let str = '';
+      if (process.argv[2] !== '--headless') str = '- launching Companion';
+      console.log('Freedeck Web Host started', str);
       if (process.argv[2] !== '--headless') require('child_process').exec('npx electron src/companion'); // Start Companion on another process
       Object.keys(getNetworkInterfaces()).forEach(netInterface => {
         console.log('Go to ' + getNetworkInterfaces()[netInterface][0] + ':' + port + ' on your mobile device [Interface ' + netInterface + ']');

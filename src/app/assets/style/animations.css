@@ -56,11 +56,11 @@
 
 @keyframes go-up {
     from {
-        top: 80%;
+        top: 100%;
     }
     
     to {
-        top: 77%;
+        top: 92%;
     }
 }
 

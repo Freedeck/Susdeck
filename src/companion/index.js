@@ -8,11 +8,11 @@ const {
 
 function createWindow () {
   const window = new BrowserWindow({
-    minWidth: 580,
+    minWidth: 675,
     minHeight: 750,
-    width: 580,
+    width: 840,
     height: 750,
-    maxWidth: 580,
+    maxWidth: 840,
     maxHeight: 750,
     frame: false
   });

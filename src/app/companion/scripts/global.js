@@ -8,19 +8,19 @@ const pages = [
     icon: 'img/home.svg'
   },
   {
-    name: 'Themes',
-    page: 'themes.html',
-    icon: 'img/themes.svg'
+    name: 'Icons',
+    page: 'iconEditor.html',
+    icon: 'img/icon.svg'
   },
   {
-    name: 'Soundboard',
+    name: 'Sounds',
     page: 'soundboard.html',
     icon: 'img/sounds.svg'
   },
   {
-    name: 'Icon Editor',
-    page: 'iconEditor.html',
-    icon: 'img/icon.svg'
+    name: 'Themes',
+    page: 'themes.html',
+    icon: 'img/themes.svg'
   },
   {
     name: 'Settings',
@@ -49,6 +49,13 @@ sidenav.id = 'sidebar';
 const tooltip = document.createElement('p');
 tooltip.id = 'icon-tip';
 document.body.appendChild(tooltip);
+
+document.body.onload = () => {
+  const freedeckLogo = document.createElement('img');
+  freedeckLogo.src = '../assets/icons/companion.png';
+  freedeckLogo.className = 'freedeck-logo';
+  sidenav.appendChild(freedeckLogo);
+};
 
 pages.forEach(page => {
   if (page.experimental && universal.load('experiments') !== 'true') return;
@@ -111,13 +118,6 @@ experiments.forEach(experiment => {
   newDiv.appendChild(enableBtn);
   document.querySelector('#experiments').appendChild(newDiv);
 });
-
-document.body.onload = () => {
-  const freedeckLogo = document.createElement('img');
-  freedeckLogo.src = '../assets/icons/companion.png';
-  freedeckLogo.className = 'freedeck-logo';
-  document.body.appendChild(freedeckLogo);
-};
 
 function enableExperiments () {
   if (confirm('Are you sure you want to turn on experiments?')) {

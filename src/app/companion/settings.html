@@ -21,20 +21,34 @@
         <br />
         <div class="flex">
             <button onclick="Susaudio.stopAll()">Stop All</button>
-            <button onclick="universal.sendToast(universal.exportTheme())">Export Theme</button>
-            <input id="theme-exported" hidden>
-            <button onclick="universal.socket.emit('c-reset')">Reset Clients</button>
-        </div>
-        <p>Warning: Your custom theme will be removed.</p>
-        <div class="flex">
             <button onclick="universal.socket.emit('c-change')">Remote Reload</button>
+            <button onclick="reset()">Reset Clients</button>
             <button onclick="enableExperiments()">Toggle Freedeck Experiments</button>
+        </div>
+        <br />
+        <div id="themechoices" class="experiment"></div>
+        <br />
+        <input id="theme-exported" placeholder="Exported Theme" disabled>
+        <br />
+        <div class="functions">
+            <input type="text" id="theme-import" placeholder="Freedeck Theme Code">
+            <button onclick="importTheme()">Import Theme</button>
+            <button onclick="universal.exportTheme()">Export Theme</button>
+            <button onclick="removeTheme()">Remove Custom Theme</button>
+            <button onclick="universal.socket.emit('c-change')">Reload all Freedeck Sessions</button>
         </div>
         <div id="console"></div>
         <div id="list" style="display: flex; flex-direction: column; gap:5px;"></div>
         <div id="keys"></div>
     </div>
     
+    <script>
+        const reset = () => {
+            if(confirm("Are you sure you want to reset? Your custom theme will be removed on reset.")) {
+                universal.socket.emit('c-reset')
+            }
+        }
+    </script>
 
     <!-- Libraries -->
     <script src="/socket.io/socket.io.js"></script>
@@ -43,6 +57,7 @@
     <script src="../../sounds.js"></script>
     <!-- My scripts -->
     <script src="scripts/global.js"></script>
+    <script src="scripts/theming.js"></script>
     <script src="scripts/soundboard-universal.js"></script>
 </body>
 </html>

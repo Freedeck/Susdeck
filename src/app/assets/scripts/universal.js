@@ -120,6 +120,7 @@ const universal = {
 
     expt.value = exportedThemeStr;
     expt.hidden = false;
+    expt.disabled = false;
     return exportedThemeStr;
   },
   importTheme: (themeJSONData) => {

@@ -17,7 +17,7 @@ const Susaudio = {
     }
   },
   listAudioDevices: () => {
-    if (document.title !== 'Freedeck: Companion - Soundboard') return;
+    if (document.title !== 'Freedeck: Companion - Home') return;
     for (let i = 0; i < sai.options.length; i++) {
       document.querySelector('#sai').options.remove(i);
     }

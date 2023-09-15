@@ -44,19 +44,5 @@
     <!-- My scripts -->
     <script src="scripts/global.js"></script>
     <script src="scripts/soundboard-universal.js"></script>
-    <script>
-        const expl = universal.load('experiments_list');
-        if(expl.indexOf({ name: 'Show Notification Log in Settings' }) === 1) {
-            const log = universal.load('notification_log');
-            log.split(',').forEach(notif => {
-                if(!atob(notif).includes('{')) return;
-                const nMeta = JSON.parse(atob(notif));
-                if (!nMeta.timestamp) nMeta.timestamp = 'No time found!';
-                document.querySelector('#list').innerHTML += `<div class="experiment"><p>${nMeta.time}</p><p>${nMeta.page}</p><p>${nMeta.message}</p><p><small>${nMeta.timestamp}</small></p></div>`;
-            })
-        } else {
-
-        }
-    </script>
 </body>
 </html>

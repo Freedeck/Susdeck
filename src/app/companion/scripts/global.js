@@ -13,11 +13,6 @@ const pages = [
     icon: 'img/icon.svg'
   },
   {
-    name: 'Sounds',
-    page: 'soundboard.html',
-    icon: 'img/sounds.svg'
-  },
-  {
     name: 'Themes',
     page: 'themes.html',
     icon: 'img/themes.svg'

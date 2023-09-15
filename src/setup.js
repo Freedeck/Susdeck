@@ -10,7 +10,7 @@ const pkg = require(path.resolve('./package.json'));
 //   output: process.stdout
 // });
 
-const question = function (q) {
+const question = (q) => {
   let response;
 
   return new Promise((resolve, reject) => {

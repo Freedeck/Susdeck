@@ -253,7 +253,7 @@ function createNewSound () {
 // Get the modal
 const modal = document.querySelector('#myModal');
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
+window.onclick = (event) => {
   if (event.target === modal) {
     modal.style.display = 'none';
   }
@@ -293,7 +293,7 @@ function setSet () {
   universal.socket.emit('c-change');
 }
 
-universal.socket.on('companion_info', function (screenSaverActivationTime, soc) {
+universal.socket.on('companion_info', (screenSaverActivationTime, soc) => {
   if (document.querySelector('#screenSaverActivationTime')) {
     document.querySelector('#soc').checked = soc;
     document.querySelector('#screenSaverActivationTime').value = screenSaverActivationTime;

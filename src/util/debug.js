@@ -1,11 +1,11 @@
 const dbgUtil = {
   is: false,
   stat: 'Debug',
-  log: function (s, t = '') {
+  log: (s, t = '') => {
     if (t) t = '@' + t;
     if (this.is) { console.log('[DEBUG' + t + '] ' + s); }
   },
-  clog: function (t = '') {
+  clog: (t = '') => {
     if (this.is) { console.log(t); }
   }
 };

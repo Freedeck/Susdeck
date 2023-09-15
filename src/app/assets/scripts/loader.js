@@ -8,7 +8,7 @@ let currentPage = universal.load('page') ? universal.load('page') : 0;
 
 universal.remove('hidden');
 
-universal.socket.on('server_connected', function (loginStatus) {
+universal.socket.on('server_connected', (loginStatus) => {
   universal.sendToast('Connected! Checking for login status..');
   if (!loginStatus) {
     loaded = true;
@@ -31,7 +31,7 @@ universal.socket.on('server_connected', function (loginStatus) {
   }
 });
 
-universal.socket.on('s2ca_login', function (nextLoc, loginMsg, ownerName) { // When we get the green light to login
+universal.socket.on('s2ca_login', (nextLoc, loginMsg, ownerName) => { // When we get the green light to login
   loaded = true; // Keep page from reloading
   universal.sendToast('Request received by server, let\'s log in.');
   universal.save('login_msg', loginMsg);
@@ -186,7 +186,7 @@ function checkDirection () {
   }
 }
 
-document.addEventListener('touchmove', function (event) {
+document.addEventListener('touchmove', (event) => {
   event.preventDefault();
 });
 

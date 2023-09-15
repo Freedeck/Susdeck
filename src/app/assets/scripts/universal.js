@@ -78,16 +78,16 @@ const universal = {
   createTempHWID: () => {
     return Math.floor(Math.random() * 2048);
   },
-  log: function (sender, data) {
+  log: (sender, data) => {
     universal.socket.emit('c2s_log', `[Companion/${sender}] ${data}`);
   },
-  save: function (name, value) {
+  save: (name, value) => {
     localStorage.setItem('_sd_' + name, value);
   },
-  load: function (name) {
+  load: (name) => {
     return localStorage.getItem('_sd_' + name);
   },
-  remove: function (name) {
+  remove: (name) => {
     return localStorage.removeItem('_sd_' + name);
   },
   socket: io(),
@@ -95,7 +95,7 @@ const universal = {
     if (typeof data === 'object') data = JSON.stringify(data);
     universal.socket.emit(event, data);
   },
-  connectionOn: function (event, callback) {
+  connectionOn: (event, callback) => {
     universal.socket.on(event, callback);
   },
   setTheme: (t) => {
@@ -122,7 +122,7 @@ const universal = {
     expt.hidden = false;
     return exportedThemeStr;
   },
-  importTheme: function (themeJSONData) {
+  importTheme: (themeJSONData) => {
     const themeData = JSON.parse(themeJSONData);
     const themeName = themeData.name;
     const themeRules = themeData.data;

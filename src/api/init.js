@@ -20,7 +20,7 @@ const init = (io, app) => {
 
   debug.log('Adding socket events', 'SocketAPI');
 
-  fs.readdirSync(path.join(__dirname, '/events')).forEach(function (file) {
+  fs.readdirSync(path.join(__dirname, '/events')).forEach((file) => {
     if (file === 'Event.js') return;
     fs.readdirSync(path.join(__dirname, '/events/' + file)).forEach(cEvent => {
       const query = require(path.join(__dirname, '/events/' + file + '/' + cEvent));
@@ -28,7 +28,7 @@ const init = (io, app) => {
     });
   });
 
-  io.on('connection', function (socket) {
+  io.on('connection', (socket) => {
     // Give sockets a randomized ID
     socket.id = Math.random().toString().substring(2, 4) + require('crypto').randomBytes(8 + 2).toString('hex');
     debug.log('New connection - new socket ID generated: ' + socket.id);
@@ -39,7 +39,7 @@ const init = (io, app) => {
     socket.emit('set-theme', fs.readFileSync(path.join(__dirname, '/persistent/theme.sd')).toString()); // Tell client to set the theme
     debug.log('Sent user connection success message', 'SocketAPI:' + socket.id);
 
-    socket.on('keypress', function (keyInput) {
+    socket.on('keypress', (keyInput) => {
       if (set.UseAuthentication && !sessions.includes(socket.sid)) { socket.emit('session_invalid'); return; };
       if (keyInput === null) return;
       try {
@@ -48,7 +48,7 @@ const init = (io, app) => {
         if (keyInput.keys) {
           let keys = [];
           keys = JSON.parse(keyInput.keys);
-          keys.forEach(function (key) {
+          keys.forEach((key) => {
             key = key.split('}')[0];
             if (key === 'none' || key === '') return;
             rob.keyToggle(key, 'down');
@@ -69,7 +69,7 @@ const init = (io, app) => {
         console.error(error.toString());
       }
     });
-    socket.on('Authenticated', function (sessionID) {
+    socket.on('Authenticated', (sessionID) => {
       debug.log('Recieved ' + sessionID + ', checking against session list..');
       if (sessions.includes(sessionID) || Settings.UseAuthentication === false) {
         debug.log(sessionID + ' is valid!');
@@ -81,8 +81,8 @@ const init = (io, app) => {
         socket.emit('session_invalid');
       }
     });
-    sockApiEvents.forEach(function (event) {
-      socket.on(event.event, async function (args) {
+    sockApiEvents.forEach((event) => {
+      socket.on(event.event, async (args) => {
         if (event.event === 'c2sr_login') { socket.emit('session_valid'); }
         debug.log(event.event + ' ran', 'SocketAPI:' + socket.id);
         if (event.async) {
@@ -102,7 +102,7 @@ const init = (io, app) => {
             io.emit('custom_theme', t);
           }
           if (callback.startsWith('c-reset')) {
-            Object.keys(require.cache).forEach(function (key) { delete require.cache[key]; });
+            Object.keys(require.cache).forEach((key) => { delete require.cache[key]; });
             io.emit('c-reset');
           }
         }
@@ -128,7 +128,7 @@ const init = (io, app) => {
   // catching signals and do something before exit
   ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
     'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM', 'exit'
-  ].forEach(function (sig) {
+  ].forEach((sig) => {
     process.on(sig, () => {
       terminator(sig);
       debug.log('Signal received: ' + sig);

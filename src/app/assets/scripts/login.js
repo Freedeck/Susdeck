@@ -5,7 +5,7 @@ universal.socket.on('server_connected', () => {
   universal.socket.emit('c2sr_login_cont', universal.load('temp_hwid'));
 });
 
-universal.socket.on('user_ack_cont', function (status) {
+universal.socket.on('user_ack_cont', (status) => {
   if (status === 'session_expired') {
     universal.save('session', '');
     window.location.replace('../../index.html');

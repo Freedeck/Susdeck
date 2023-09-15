@@ -9,7 +9,7 @@ universal.socket.on('server_connected', () => {
   document.querySelector('#console').style.display = 'none';
   setTimeout(() => {
     if (universal.isInDebug === true) {
-      Sounds.forEach(function (s) {
+      Sounds.forEach((s) => {
         document.querySelector('#gsl').style.display = 'block';
         document.querySelector('#keys').innerHTML += `<div class="sb-dbg-sound">${s.name}:${soundDir + s.path}</div>`;
       });

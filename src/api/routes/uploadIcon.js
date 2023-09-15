@@ -11,7 +11,7 @@ module.exports = {
       uploadDir: path.resolve('./src/app/assets/icons')
     });
     // Parse `req` and upload all associated files
-    form.parse(request, function (err, fields, files) {
+    form.parse(request, (err, fields, files) => {
       if (err) {
         return response.status(400).json({ error: err.message });
       }

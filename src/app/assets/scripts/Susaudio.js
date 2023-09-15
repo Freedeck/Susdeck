@@ -29,7 +29,7 @@ const Susaudio = {
       document.querySelector('#sai').appendChild(option);
       if (Susaudio._player.sinkId === device.id) option.selected = true;
     });
-    document.querySelector('#sai').onchange = function (ev) {
+    document.querySelector('#sai').onchange = (ev) => {
       Susaudio.setSink(document.querySelector('#sai').options[document.querySelector('#sai').selectedIndex].getAttribute('data-sai-id'));
       universal.log('Susaudio', 'Changed sink');
     };
@@ -115,7 +115,7 @@ stopAudio = (audio) => {
 };
 // other functions
 function _sa_removeFromArray (arr, value) {
-  return arr.filter(function (ele) {
+  return arr.filter((ele) => {
     return ele !== value; // Filter out
   });
 }

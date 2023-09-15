@@ -191,6 +191,13 @@ button:hover {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 2px 3px;
+  padding: 10px;
+}
+
+#themechoices > button:hover {
+  background-color: rgba(0,0,0, 0.15);
+  color: white;
+  border: none;
 }
 
 #settings {

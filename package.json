@@ -10,11 +10,12 @@
     "socket.io": "^4.1.2"
   },
   "scripts": {
-    "setup": "npm i && node src/setup.js",
+    "setup": "node src/setup.js",
     "start": "node src/index.js",
     "headless": "node src/index.js --headless",
     "companion": "node src/index.js --no-server",
-    "debug": "node src/index.js --debug"
+    "debug": "node src/index.js --debug",
+    "postinstall": "npm run setup"
   },
   "devDependencies": {
     "electron": "^23.1.1",

@@ -23,7 +23,7 @@
             <button onclick="Susaudio.stopAll()">Stop All</button>
             <button onclick="universal.socket.emit('c-change')">Remote Reload</button>
             <button onclick="reset()">Reset Clients</button>
-            <button onclick="enableExperiments()">Toggle Freedeck Experiments</button>
+            <!-- <button onclick="enableExperiments()">Toggle Freedeck Experiments</button> -->
         </div>
         <br />
         <div id="themechoices" class="experiment"></div>
@@ -35,7 +35,6 @@
             <button onclick="importTheme()">Import Theme</button>
             <button onclick="universal.exportTheme()">Export Theme</button>
             <button onclick="removeTheme()">Remove Custom Theme</button>
-            <button onclick="universal.socket.emit('c-change')">Reload all Freedeck Sessions</button>
         </div>
         <div id="console"></div>
         <div id="list" style="display: flex; flex-direction: column; gap:5px;"></div>

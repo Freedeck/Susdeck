@@ -152,7 +152,6 @@ function loadPage (pageNumber = currentPage) { // Setup the Freedeck page w/ sou
   for (let i = 0; i < allKeypress.length; i++) {
     allKeypress[i].onmouseup = (ev) => {
       // eslint-disable-next-line no-undef
-      if (SoundOnPress) new Audio('assets/sounds/press.mp3').play(); // This slows down Freedeck for some reason. Not sure why
       universal.socket.emit('keypress', allKeypress[i].getAttribute('data-interaction'));
     };
   }

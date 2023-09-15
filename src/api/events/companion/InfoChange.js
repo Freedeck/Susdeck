@@ -27,21 +27,19 @@ const ev = new Event('c-info-change', ({ socket, args, meta }) => {
     }
 
     fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
-const SoundOnPress = ${sounds.SoundOnPress};
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
 const soundDir = '../assets/sounds/';
 const Sounds = ${JSON.stringify(sounds.Sounds)};
-if (typeof module !== 'undefined') module.exports = { cfg:{v:'${meta.fdVersion}'}, SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };
+if (typeof module !== 'undefined') module.exports = { cfg:{v:'${meta.fdVersion}'}, ScreenSaverActivationTime, soundDir, Sounds };
 `);
 
     return 'c-change';
   } else if (args.type === 'screenSaver_soc') {
     fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
-const SoundOnPress = ${args.soc};
 const ScreenSaverActivationTime = ${args.screenSaverActivationTime};
 const soundDir = '../assets/sounds/';
 const Sounds = ${JSON.stringify(sounds.Sounds)};
-if (typeof module !== 'undefined') module.exports = { cfg:{v:'${meta.fdVersion}'}, SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };
+if (typeof module !== 'undefined') module.exports = { cfg:{v:'${meta.fdVersion}'}, ScreenSaverActivationTime, soundDir, Sounds };
 `);
   }
 });

@@ -9,11 +9,10 @@ const ev = new Event('c-delete-key', ({ socket, args, meta }) => {
   }
   sounds.Sounds.splice(sounds.Sounds.indexOf({ name: args.name }), 1);
   fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
-const SoundOnPress = ${sounds.SoundOnPress};
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
 const soundDir = '../assets/sounds/';
 const Sounds = ${JSON.stringify(sounds.Sounds)};
-if (typeof module !== 'undefined') module.exports = { cfg:{v:'${meta.fdVersion}'}, SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };`);
+if (typeof module !== 'undefined') module.exports = { cfg:{v:'${meta.fdVersion}'}, ScreenSaverActivationTime, soundDir, Sounds };`);
   return 'c-change';
 });
 

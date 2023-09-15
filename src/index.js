@@ -53,11 +53,10 @@ try {
     }
   });
   fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
-const SoundOnPress = ${sounds.SoundOnPress};
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
 const soundDir = '../assets/sounds/';
 const Sounds = ${JSON.stringify(sounds.Sounds)};
-if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };
+if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, ScreenSaverActivationTime, soundDir, Sounds };
 `);
   delete require.cache[require.resolve(path.resolve('./src/settings/sounds.js'))];
   debug.log('UUID check finished.');
@@ -79,11 +78,10 @@ if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, S
     console.log('[IMPORTANT!] These configs will be updated and you will need to start Freedeck again.');
     // Just reset them all llol
     fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
-const SoundOnPress = ${sounds.SoundOnPress};
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
 const soundDir = '../assets/sounds/';
 const Sounds = ${JSON.stringify(sounds.Sounds)};
-if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };
+if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, ScreenSaverActivationTime, soundDir, Sounds };
 `);
     fs.writeFileSync('./Settings.js', `// Welcome to Freedeck internal settings! Here you can.. set.. settings!
 // True for yes, false for no

@@ -287,15 +287,13 @@ function changeInfo (key) {
 
 // eslint-disable-next-line no-unused-vars
 function setSet () {
-  const soc = document.querySelector('#soc').checked;
   const screenSaverActivationTime = document.querySelector('#screenSaverActivationTime').value;
-  universal.emit('c-info-change', { type: 'screenSaver_soc', screenSaverActivationTime, soc });
+  universal.emit('c-info-change', { type: 'screenSaver_soc', screenSaverActivationTime });
   universal.socket.emit('c-change');
 }
 
-universal.socket.on('companion_info', (screenSaverActivationTime, soc) => {
+universal.socket.on('companion_info', (screenSaverActivationTime) => {
   if (document.querySelector('#screenSaverActivationTime')) {
-    document.querySelector('#soc').checked = soc;
     document.querySelector('#screenSaverActivationTime').value = screenSaverActivationTime;
     document.querySelector('#amt').innerText = document.querySelector('#screenSaverActivationTime').value + ' seconds';
   };

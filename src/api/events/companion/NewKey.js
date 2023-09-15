@@ -5,11 +5,10 @@ const fs = require('fs');
 const ev = new Event('c-newkey', ({ args, meta }) => {
   sounds.Sounds.push(args);
   fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
-const SoundOnPress = ${sounds.SoundOnPress};
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
 const soundDir = '../assets/sounds/';
 const Sounds = ${JSON.stringify(sounds.Sounds)};
-if (typeof module !== 'undefined') module.exports = { cfg:{v:'${meta.fdVersion}'}, SoundOnPress, ScreenSaverActivationTime, soundDir, Sounds };
+if (typeof module !== 'undefined') module.exports = { cfg:{v:'${meta.fdVersion}'}, ScreenSaverActivationTime, soundDir, Sounds };
 `);
 });
 

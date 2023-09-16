@@ -9,7 +9,7 @@ universal.socket.on('server_connected', () => {
   universal.socket.emit('c-connected');
   if (document.querySelector('#keys')) {
     loadPage(currentPage);
-    setTimeout(() => {
+    setTimeout(() => { // Wait for page init
       np();
       bp();
     });
@@ -133,7 +133,7 @@ const upload = (path, accept) => {
   fileUpload.click();
   fileUpload.onchange = () => {
     form.submit();
-    setTimeout(() => {
+    setTimeout(() => { // Form parse wait
       content = dummyFrame.contentDocument;
       const data = JSON.parse(content.querySelector('pre').innerText);
       if (path === 'icon') {
@@ -146,7 +146,7 @@ const upload = (path, accept) => {
         form.remove();
         fileUpload.remove();
         document.querySelector('#mcset').disabled = false;
-        setTimeout(() => {
+        setTimeout(() => { // Let data process
           dummyFrame.remove();
           document.querySelector('#mcset').disabled = false;
         }, 500);

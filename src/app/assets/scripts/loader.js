@@ -129,10 +129,8 @@ const loadPage = (pageNumber = currentPage) => { // Setup the Freedeck page w/ s
         document.querySelector('#settings').style.animationName = 'size-up-init';
         document.querySelector('#keys').style.animationName = 'size-down';
         fard();
-        setTimeout(() => {
-          document.querySelector('#keys').style.display = 'none';
-          universal.save('hidden', true);
-        }, 250);
+        document.querySelector('#keys').style.display = 'none';
+        universal.save('hidden', true);
       };
       keys.appendChild(freedeck);
       return;

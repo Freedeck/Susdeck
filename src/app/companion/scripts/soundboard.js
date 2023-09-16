@@ -7,7 +7,7 @@ const countOnEachPage = 8;
 universal.socket.on('server_connected', () => {
   universal.socket.emit('c-connected');
   document.querySelector('#console').style.display = 'none';
-  setTimeout(() => {
+  setTimeout(() => { // Wait for universal load
     if (universal.isInDebug === true) {
       Sounds.forEach((s) => {
         document.querySelector('#gsl').style.display = 'block';

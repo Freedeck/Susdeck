@@ -294,8 +294,7 @@ universal.socket.on('custom_theme', themeData => {
 });
 
 document.body.onload = async () => {
-  // Screensaver
-  setTimeout(() => {
+  setTimeout(() => { // Screensaver
     if (typeof ScreenSaverActivationTime === 'number' && document.querySelector('#keys')) {
       setInterval(() => { userAlive = false; }, ScreenSaverActivationTime); // After x seconds the user is not alive :sob:
       // For example, 1 sec

@@ -19,7 +19,7 @@ universal.socket.on('server_connected', () => {
   universal.socket.emit('c2s_ver_match');
 });
 
-function loadPage (pageNumber = 0) {
+const loadPage = (pageNumber = 0) => {
   autoSort(universal.iconCount);
   currentPage = pageNumber;
   keyList = [];
@@ -62,9 +62,9 @@ function loadPage (pageNumber = 0) {
   }
 
   setupAllKeypresses();
-}
+};
 
-function setupAllKeypresses () {
+const setupAllKeypresses = () => {
   const allKeypress = document.getElementsByClassName('keypress');
   for (let i = 0; i < allKeypress.length; i++) {
     allKeypress[i].onclick = (ev) => {
@@ -110,9 +110,9 @@ function setupAllKeypresses () {
       modal.style.display = 'block';
     };
   }
-}
+};
 
-function upload (path, accept) {
+const upload = (path, accept) => {
   // <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
   const dummyFrame = document.createElement('iframe');
   dummyFrame.style.display = 'none';
@@ -155,16 +155,16 @@ function upload (path, accept) {
   };
   document.body.append(form);
   document.body.appendChild(dummyFrame);
-}
+};
 
 // eslint-disable-next-line no-unused-vars
-function DeleteKey (key) {
+const DeleteKey = (key) => {
   // eslint-disable-next-line no-undef
   Sounds.splice(Sounds.indexOf({ name: key.name }), 1);
   universal.socket.emit('c-delete-key', { name: key.name });
-}
+};
 
-function createButton (sound) {
+const createButton = (sound) => {
   const btn = document.createElement('button');
   const key = document.createElement('p');
   btn.className = 'keypress white-txt';
@@ -186,10 +186,10 @@ function createButton (sound) {
   btn.setAttribute('data-i', sound.i);
   btn.innerText = sound.name;
   return btn;
-}
+};
 
 // eslint-disable-next-line no-unused-vars
-function createNewSound () {
+const createNewSound = () => {
   // eslint-disable-next-line no-undef
   const newDialog = document.createElement('dialog');
   const newForm = document.createElement('form');
@@ -248,7 +248,7 @@ function createNewSound () {
     btn.click();
     btn.remove();
   });
-}
+};
 
 // Get the modal
 const modal = document.querySelector('#myModal');
@@ -266,7 +266,7 @@ if (document.querySelector('#screenSaverActivationTime')) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function changeInfo (key) {
+const changeInfo = (key) => {
   const oldpath = document.querySelector('#newpath').getAttribute('data-o-path');
   const newpath = document.querySelector('#newpath').value;
   const keys = document.querySelectorAll('.btn-key');
@@ -286,11 +286,11 @@ function changeInfo (key) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function setSet () {
+const setSet = () => {
   const screenSaverActivationTime = document.querySelector('#screenSaverActivationTime').value;
   universal.emit('c-info-change', { type: 'screenSaver_soc', screenSaverActivationTime });
   universal.socket.emit('c-change');
-}
+};
 
 universal.socket.on('companion_info', (screenSaverActivationTime) => {
   if (document.querySelector('#screenSaverActivationTime')) {
@@ -299,7 +299,7 @@ universal.socket.on('companion_info', (screenSaverActivationTime) => {
   };
 });
 
-function autoSort (countOnEP) {
+const autoSort = (countOnEP) => {
   let pagesAmount = Math.ceil(Sounds.length / universal.iconCount);
   let pageCounter = 0;
   let index = 0;
@@ -323,15 +323,15 @@ function autoSort (countOnEP) {
 };
 
 // eslint-disable-next-line no-unused-vars
-function np () {
+const np = () => {
   if (Pages[currentPage + 1] && Pages[currentPage + 1].length !== 0) {
     loadPage(currentPage + 1);
   }
-}
+};
 
 // eslint-disable-next-line no-unused-vars
-function bp () {
+const bp = () => {
   if (Pages[currentPage - 1] && Pages[currentPage - 1].length !== 0) {
     loadPage(currentPage - 1);
   }
-}
+};

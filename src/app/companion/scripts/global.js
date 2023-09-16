@@ -109,7 +109,7 @@ experiments.forEach(experiment => {
   document.querySelector('#experiments').appendChild(newDiv);
 });
 
-function enableExperiments () {
+const enableExperiments = () => {
   if (confirm('Are you sure you want to turn on experiments?')) {
     if (universal.load('experiments') === 'true') {
       if (!confirm('Experiments is already enabled, do you want to turn off experiments?')) return;
@@ -130,7 +130,7 @@ function enableExperiments () {
   }
 }
 
-function importTheme () {
+const importTheme = () => {
   theme = document.querySelector('#theme-import').value;
   if (theme === '' || theme === ' ') {
     universal.remove('custom_theme');
@@ -141,14 +141,14 @@ function importTheme () {
   universal.save('custom_theme', theme);
   universal.socket.emit('c-send-theme', theme);
   universal.socket.emit('c-change');
-}
+};
 
-function removeTheme () {
+const removeTheme = () => {
   theme = document.querySelector('#theme-import').value;
   universal.remove('custom_theme');
   universal.socket.emit('c-del-theme', theme);
   universal.socket.emit('c-change');
-}
+};
 
 if (document.body.dataset.page) {
   document.title = 'Freedeck: Companion - ' + document.body.dataset.page;

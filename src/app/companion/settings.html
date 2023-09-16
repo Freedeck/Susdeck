@@ -18,7 +18,6 @@
     <div id="main">
         <h2>Settings</h2>
         <h3 id="now-playing"></h3>
-        <br />
         <div class="flex">
             <button onclick="Susaudio.stopAll()">Stop All</button>
             <button onclick="universal.socket.emit('c-change')">Remote Reload</button>
@@ -43,7 +42,7 @@
     
     <script>
         const reset = () => {
-            if(confirm("Are you sure you want to reset? Your custom theme will be removed on reset.")) {
+            if(confirm("Are you sure you want to reset? Your custom theme alongside all other settings will be removed on reset.")) {
                 universal.socket.emit('c-reset')
             }
         }

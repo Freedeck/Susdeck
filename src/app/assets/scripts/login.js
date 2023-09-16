@@ -24,7 +24,7 @@ universal.socket.on('s2cs_login', (sessionID, g) => {
 });
 
 // eslint-disable-next-line no-unused-vars
-function submit () {
+const submit () => {
   universal.sendToast('Logging you in..');
   universal.socket.emit('c2sd_login', document.querySelector('#password').value);
 }

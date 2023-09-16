@@ -3,7 +3,7 @@
 // Page sorter! No more manual pages!
 const Pages = {};
 
-function autosort (countOnEP) {
+const autosort = (countOnEP) => {
   let pagesAmount = Math.ceil(Sounds.length / universal.iconCount);
   let pageCounter = 0;
   let index = 0;

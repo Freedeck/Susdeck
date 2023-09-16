@@ -134,7 +134,7 @@ const init = (io, app) => {
     });
   });
 
-  function terminator (sig) {
+  const terminator = (sig) => {
     if (typeof sig === 'string') {
       // call your async task here and then call process.exit() after async task is done
       io.emit('server_shutdown');
@@ -145,7 +145,7 @@ const init = (io, app) => {
     setTimeout(() => { // give clients time to change page
       process.exit(0);
     }, 260);
-  }
+  };
 };
 
 module.exports = { init, apiEvents, sockApiEvents };

@@ -6,7 +6,7 @@ const {
   BrowserWindow
 } = electron;
 
-function createWindow () {
+const createWindow = () => {
   const window = new BrowserWindow({
     minWidth: 675,
     minHeight: 750,
@@ -18,7 +18,7 @@ function createWindow () {
   });
   window.setIcon(require('path').join(__dirname, './companion.png'));
   window.loadFile(path.resolve('./src/companion/connector.html'));
-}
+};
 
 app.whenReady().then(() => {
   createWindow();

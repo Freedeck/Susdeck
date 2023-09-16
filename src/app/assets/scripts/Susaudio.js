@@ -114,7 +114,7 @@ stopAudio = (audio) => {
   audio.currentTime = 0;
 };
 // other functions
-function _sa_removeFromArray (arr, value) {
+const _sa_removeFromArray = (arr, value) => {
   return arr.filter((ele) => {
     return ele !== value; // Filter out
   });

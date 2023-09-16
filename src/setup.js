@@ -65,7 +65,7 @@ question('Screensaver activation time?' + ' (number) >').then(ssatr => {
   });
 });
 
-function afterResponses (ssat, ua, passwd, lm, yn, port) {
+const afterResponses (ssat, ua, passwd, lm, yn, port) => {
   const soundsJSDefault = `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const ScreenSaverActivationTime = ${ssat};
 const soundDir = '../assets/sounds/';

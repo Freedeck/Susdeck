@@ -17,24 +17,24 @@ universal.socket.on('server_connected', () => {
   }, 150);
 });
 
-function gsl () {
+const gsl = () => {
   // IMPL SOON
-}
+};
 
-function volChanged () {
+const volChanged = () => {
   const volumeSlider = document.querySelector('#out-vol');
   Susaudio._player.volume = volumeSlider.value;
   Susaudio._player.queue.forEach(audio => {
     Susaudio._player.volume = volumeSlider.value;
     audio.volume = Susaudio._player.volume;
   });
-}
+};
 
-function pbrChanged () {
+const pbrChanged = () => {
   const volumeSlider = document.querySelector('#out-pbr');
   Susaudio._player.pitch = volumeSlider.value;
   Susaudio._player.queue.forEach(audio => {
     Susaudio._player.pitch = volumeSlider.value;
     audio.playbackRate = Susaudio._player.pitch;
   });
-}
+};

@@ -42,7 +42,7 @@ Here's a preview of the companion experiments screen:
 ## How do I use Freedeck?
 
 **First, you will need any virtual audio cable (Such as VB-Cable, Freedeck's default)**
-Now, clone the repo. Run `npm run setup` for an interactive setup experience.  
+Now, clone the repo. Run `npm i` for an interactive setup experience.  
 From there, whenever you're ready, run `npm start` (or `npm run start`).
 
 Freedeck Companion will open.  
@@ -58,14 +58,14 @@ Next, open the app on your device. It will be full screen.
 
 ## Ok, back to normal
 
-There are no preloaded keys, for example `Shooting` will make CoD shooting sounds play through your default output device and your VB-Cable.
+There are a few preloaded keys, for example `Shooting` will make CoD shooting sounds play through your default output device and your VB-Cable.
 
 ## How do I make my own sounds/macros?
 
 Freedeck processes keys & plays sounds at the front-end, and it uses `robotjs` & Companion to press/play them on your computer.  
 It is very easy to add your own macros/sounds.  
 All you need to do is use Companion!
-To add a sound, start Freedeck with `npm run start`.  
+To add a sound, start Freedeck with `npm start` (If you haven't already).  
 Wait for Companion to open, and press the paint palette icon.  
 Now, press `New Sound`. You might need to press `Next Page` to scroll through the pages to find the sound.  
 Once you do, click it.  

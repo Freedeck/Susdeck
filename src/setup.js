@@ -61,7 +61,7 @@ question('Screensaver activation time?' + ' (number) >').then(ssatr => {
   });
 });
 
-const afterResponses (ssat, ua, passwd, lm, yn, port) => {
+const afterResponses = (ssat, ua, passwd, lm, yn, port) => {
   const soundsJSDefault = `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const ScreenSaverActivationTime = ${ssat};
 const soundDir = '../assets/sounds/';
@@ -93,4 +93,4 @@ module.exports = Settings;
   fs.writeFileSync(path.join(path.resolve('./src/api/persistent') + '/theme.sd'), 'Default');
   console.log('[Freedeck] Finished setup, exiting! Start Freedeck with `npm start`.');
   process.exit(0);
-}
+};

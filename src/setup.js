@@ -5,11 +5,6 @@ const fs = require('fs');
 
 const pkg = require(path.resolve('./package.json'));
 
-// const rl = readline.createInterface({
-//   input: process.stdin,
-//   output: process.stdout
-// });
-
 const question = (q) => {
   let response;
 
@@ -21,6 +16,7 @@ const question = (q) => {
     });
   });
 };
+
 console.clear();
 console.log(`Freedeck v${pkg.version} setup`);
 console.log('=-= Sound Initial Setup =-=');

@@ -118,7 +118,7 @@ const _sa_removeFromArray = (arr, value) => {
   return arr.filter((ele) => {
     return ele !== value; // Filter out
   });
-}
+};
 
 setInterval(() => {
   Susaudio._player.timeSinceLastRequest++;

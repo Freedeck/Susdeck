@@ -159,7 +159,7 @@ const loadPage = (pageNumber = currentPage) => { // Setup the Freedeck page w/ s
   if (universal.load('hidden')) {
     document.querySelector('#keys').style.display = 'none';
   }
-}
+};
 
 /* eslint-disable no-undef */
 let touchstartX = 0;

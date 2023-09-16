@@ -128,7 +128,7 @@ const enableExperiments = () => {
     universal.sendToast('Experiments enabled.');
     universal.socket.emit('c-change');
   }
-}
+};
 
 const importTheme = () => {
   theme = document.querySelector('#theme-import').value;

@@ -105,7 +105,7 @@ const init = (io, app) => {
             sessions.push(person);
           }
           if (callback.type === 'requested_login') {
-            debug.log('User with SID ' + callback.data + ' requested login.', 'SAPI Auth');
+            debug.log('User with TempHWID ' + callback.data + ' requested login.', 'SAPI Auth');
           }
           if (callback.type === 'req_login_ack') {
             debug.log('User with SID ' + callback.data + ' is allowed to use login form.', 'SAPI Auth');

@@ -76,7 +76,7 @@ const universal = {
     return atob(universal.load('session'));
   },
   createTempHWID: () => {
-    return Math.floor(Math.random() * 2048);
+    return Math.floor(Math.random() * 2048 + 5754);
   },
   log: (sender, data) => {
     universal.socket.emit('c2s_log', `[Companion/${sender}] ${data}`);

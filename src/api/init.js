@@ -120,6 +120,9 @@ const init = (io, app) => {
             const t = callback.data;
             io.emit('custom_theme', t);
           }
+          if (callback.type === 'incorrect_password') {
+            debug.log('Incorrect password', 'SAPI Auth');
+          }
           if (callback.type === 'c-reset') {
             Object.keys(require.cache).forEach((key) => { delete require.cache[key]; });
             io.emit('c-reset');

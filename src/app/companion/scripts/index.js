@@ -292,7 +292,7 @@ const setSet = () => {
   universal.socket.emit('c-change');
 };
 
-universal.socket.on('companion_info', (screenSaverActivationTime) => {
+universal.socket.on('companion_info', (screenSaverActivationTime, myId) => {
   if (document.querySelector('#screenSaverActivationTime')) {
     document.querySelector('#screenSaverActivationTime').value = screenSaverActivationTime;
     document.querySelector('#amt').innerText = document.querySelector('#screenSaverActivationTime').value + ' seconds';

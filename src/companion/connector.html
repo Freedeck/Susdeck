@@ -6,20 +6,33 @@
 	<title>Companion: Startup</title>
 </head>
 <body>
-	<form>
 		<h1>Freedeck Connect</h1>
 		<h2>Freedeck has failed to connect to the server.</h2>
+		<p><strong>Freedeck is trying to connect to a locally hosted server right now.</strong></p>
 		<p>Either the server took too long to start, you're hosting it elsewhere, or it's just coincidence.</p>
-		<p>Anyways, input the IP. It's local, so if you think the server is on, just press Connect.</p>
+		<p>Anyways, input the Web Host URL. It's local, so if you think the server is on, just press Connect.</p>
 		<p>You may have to press it a couple of times for whatever reason.</p>
-		<label for="url" id="stat">IP of your Freedeck (If you don't know what this means, leave it as is!</label>
+		<label for="url" id="stat">URL of your Freedeck (If you don't know what this means, leave it as is!</label>
 		<input id="url" name="url" value="http://localhost:5754" type="url">
-		<input type="submit" value="Connect" onclick="const url = document.querySelector('#url').value; fetch(url).then(res=>res.status).then(res => { if(res == 200) window.location.href = document.querySelector('#url').value+'/companion'; }).finally(() => {document.querySelector('#stat').innerText = 'Server is offline! Start it and try again!'})		">
-	</form>
+		<p>This should look like <code>http://192.168.x.x</code></p>
+		<button type="submit" value="Connect" onclick="urla = document.querySelector('#url').value; trygrab(urla)">Connect</button>
+		<div class="output"></div>
 	<script>
-		fetch('http://localhost:5754/').then(res=>res.status).then(res => { if(res == 200) window.location.href = 'http://localhost:5754/companion'; })
+		let urla = 'http://localhost:5754'
+		let tryDo = true;
+		function trygrab(urlb) {
+			fetch(urlb)
+			.then(res=>res.status)
+			.then(res => { 
+				if(res == 200) window.location.href = urlb + '/companion'; 
+			})
+			.catch(err => {
+				document.querySelector('.output').innerText = err + ' | URL: ' + urlb;
+			})
+		}
 		setInterval(() => {
-			fetch('http://localhost:5754/').then(res=>res.status).then(res => { if(res == 200) window.location.href = 'http://localhost:5754/companion'; })
+			if (!tryDo) return;
+			trygrab(urla);
 		}, 500);
 	</script>
 </body>

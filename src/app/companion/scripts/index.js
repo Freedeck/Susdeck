@@ -324,6 +324,7 @@ const autoSort = (countOnEP) => {
 
 // eslint-disable-next-line no-unused-vars
 const np = () => {
+  currentPage = Number(currentPage);
   if (Pages[currentPage + 1] && Pages[currentPage + 1].length !== 0) {
     loadPage(currentPage + 1);
   }
@@ -331,6 +332,7 @@ const np = () => {
 
 // eslint-disable-next-line no-unused-vars
 const bp = () => {
+  currentPage = Number(currentPage);
   if (Pages[currentPage - 1] && Pages[currentPage - 1].length !== 0) {
     loadPage(currentPage - 1);
   }

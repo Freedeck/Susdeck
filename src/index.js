@@ -12,14 +12,15 @@ const settings = require('../Settings');
 const getNetworkInterfaces = require('./util/network');
 const sounds = require('./settings/sounds');
 const fd = require('../package.json');
+const picocolors = require('./util/picocolors');
 const sockApiInit = require('./api/init').init;
 
 const port = settings.Port || process.env.PORT || 5754;
 
 try {
   console.clear();
-  console.log(debug.is)
-  console.log('Freedeck v' + fd.version);
+  console.log(picocolors.blue('Freedeck v' + fd.version));
+  if (debug.is) debug.log('- Using debug mode');
   debug.log('Version matching');
   // Do config versions match the hosts?
   debug.log('Initializing Socket API');
@@ -39,10 +40,10 @@ try {
     httpServer.listen(port, () => {
       let str = '';
       if (process.argv[2] !== '--headless') str = '- launching Companion';
-      console.log('Freedeck Web Host started', str);
+      console.log(picocolors.blue('Freedeck Web Host started'), picocolors.blue(str));
       if (process.argv[2] !== '--headless') require('child_process').exec('npx electron src/companion'); // Start Companion on another process
       Object.keys(getNetworkInterfaces()).forEach(netInterface => {
-        console.log('Go to ' + getNetworkInterfaces()[netInterface][0] + ':' + port + ' on your mobile device [Interface ' + netInterface + ']');
+        console.log(picocolors.bgBlue('Go to ' + getNetworkInterfaces()[netInterface][0] + ':' + port + ' on your mobile device [Interface ' + netInterface + ']'));
       });
     });
   }
@@ -73,10 +74,10 @@ if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, S
 
   if (!vCheck.set || !vCheck.snd) {
     debug.log('Failed ver check, set:', vCheck.set, 'sound:', vCheck.snd);
-    console.log('[IMPORTANT!]\nFreedeck is out of sync with v' + fd.version + '\nAffected configs:');
+    console.log(picocolors.red('[IMPORTANT!]\nFreedeck is out of sync with v' + fd.version + '\nAffected configs:'));
     if (!vCheck.set) console.log('- Settings');
     if (!vCheck.snd) console.log('- Sounds');
-    console.log('[IMPORTANT!] These configs will be updated and you will need to start Freedeck again.');
+    console.log(picocolors.red('[IMPORTANT!] These configs will be updated and you will need to start Freedeck again.'));
     // Just reset them all llol
     fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
@@ -102,5 +103,5 @@ module.exports = Settings;
     process.exit(0);
   }
 } catch (err) {
-  console.log('Presumably fatal error:', err);
+  console.log(picocolors.red('Presumably fatal error:'), err);
 }

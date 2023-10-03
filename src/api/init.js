@@ -5,6 +5,7 @@ const rob = require('robotjs');
 const sbc = require('../settings/sounds');
 const set = require('../../Settings');
 const pkg = require('../../package.json');
+const picocolors = require('../util/picocolors');
 
 const apiEvents = new Map();
 const sockApiEvents = new Map();
@@ -33,7 +34,7 @@ const init = (io, app) => {
     debug.log('New connection - new socket ID generated: ' + socket.id);
 
     // Initial connection
-    console.log('Connected to client @ ' + new Date());
+    console.log(picocolors.green('Connected to client @ ' + new Date()));
     socket.emit('server_connected', set.UseAuthentication, require(path.resolve('./package.json')).version); // Send user confirmation: connected to server
     socket.emit('set-theme', fs.readFileSync(path.join(__dirname, '/persistent/theme.sd')).toString()); // Tell client to set the theme
     debug.log('Sent user connection success message', 'SAPI ID:' + socket.id);
@@ -71,7 +72,7 @@ const init = (io, app) => {
       debug.log('Recieved ' + sessionID + ', checking against session list..');
       if (sessions.includes(sessionID) || set.UseAuthentication === false) {
         debug.log(sessionID + ' is valid!');
-        console.log('Authenticated client @ ' + new Date());
+        console.log(picocolors.green('Authenticated client @ ' + new Date()));
         socket.emit('session_valid');
         socket.sid = sessionID;
       } else {

@@ -22,6 +22,7 @@ const Susaudio = {
       document.querySelector('#sai').options.remove(i);
     }
     Susaudio._player.devicesList.forEach(device => {
+      if (device.name.includes('Speakers') || device.name.includes('Output')) return;
       const option = document.createElement('option');
       option.value = device.name;
       option.innerText = device.name;

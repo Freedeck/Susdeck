@@ -70,8 +70,11 @@ const init = (io, app) => {
     });
     socket.on('Authenticated', (sessionID) => {
       debug.log('Recieved ' + sessionID + ', checking against session list..');
-      if (sessions.includes(sessionID) || set.UseAuthentication === false) {
-        debug.log(sessionID + ' is valid!');
+      if (sessions.includes(sessionID) || (set.UseAuthentication === false && sessionID === 0)) {
+        debug.log(sessionID + ' is valid!', 'SAPI Auth');
+        if (set.UseAuthentication === false && sessionID === 0) {
+          debug.log('Authentication is off, potentially unsecure client.', 'SAPI Auth');
+        }
         console.log(picocolors.green('Authenticated client @ ' + new Date()));
         socket.emit('session_valid');
         socket.sid = sessionID;

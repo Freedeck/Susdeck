@@ -33,7 +33,7 @@ try {
 
   debug.log('Listening for ' + port);
   if (process.argv[2] === '--no-server') {
-    console.log('Companion is starting in serverless mode!');
+    console.log('Companion is starting in standalone mode!');
     require('child_process').exec('npx electron src/companion'); // Start Companion on another process
   }
   if (process.argv[2] !== '--no-server') {

@@ -42,6 +42,6 @@ const Sounds = ${JSON.stringify(sounds.Sounds)};
 if (typeof module !== 'undefined') module.exports = { cfg:{v:'${meta.fdVersion}'}, ScreenSaverActivationTime, soundDir, Sounds };
 `);
   }
-});
+}, true);
 
 module.exports = ev;

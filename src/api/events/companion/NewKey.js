@@ -11,6 +11,6 @@ const Sounds = ${JSON.stringify(sounds.Sounds)};
 if (typeof module !== 'undefined') module.exports = { cfg:{v:'${meta.fdVersion}'}, ScreenSaverActivationTime, soundDir, Sounds };
 `);
   return { type: 'c-newkey' };
-});
+}, true);
 
 module.exports = ev;

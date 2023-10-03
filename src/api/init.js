@@ -17,7 +17,7 @@ const init = (io, app) => {
   const loginList = [];
   const sessions = [];
 
-  debug.log('Adding socket events', 'SocketAPI');
+  debug.log('Adding socket events', 'SAPI');
 
   fs.readdirSync(path.join(__dirname, '/events')).forEach((file) => {
     if (file === 'Event.js') return;
@@ -36,7 +36,7 @@ const init = (io, app) => {
     console.log('Connected to client @ ' + new Date());
     socket.emit('server_connected', set.UseAuthentication, require(path.resolve('./package.json')).version); // Send user confirmation: connected to server
     socket.emit('set-theme', fs.readFileSync(path.join(__dirname, '/persistent/theme.sd')).toString()); // Tell client to set the theme
-    debug.log('Sent user connection success message', 'SocketAPI:' + socket.id);
+    debug.log('Sent user connection success message', 'SAPI ID:' + socket.id);
 
     socket.on('keypress', (keyInput) => {
       if (set.UseAuthentication && !sessions.includes(socket.sid)) { socket.emit('session_invalid'); return; };
@@ -75,7 +75,7 @@ const init = (io, app) => {
         socket.emit('session_valid');
         socket.sid = sessionID;
       } else {
-        debug.log(sessionID + ' is invalid, kicking out user..', 'SocketAPI:' + socket.id);
+        debug.log(sessionID + ' is invalid, kicking out user..', 'SAPI ID:' + socket.id);
         socket.emit('session_invalid');
       }
     });
@@ -119,7 +119,7 @@ const init = (io, app) => {
     });
   });
 
-  debug.log('Adding HTTP endpoints', 'SocketAPI');
+  debug.log('Adding HTTP endpoints', 'SAPI');
   // Now HTTP debug methods
   fs.readdir(path.join(__dirname, '/routes'), (err, files) => {
     if (err) { throw new Error(err); }

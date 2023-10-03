@@ -15,7 +15,6 @@ const ev = new Event('c2sd_login', ({ socket, args }) => {
     socket.sessionID = sid;
     let path = '/';
     if (hwid.endsWith('cm')) path += 'companion';
-    console.log(hwid)
     socket.emit('s2cs_login', sid, path);
     return { type: 'validate_session', data: sid };
   } else {

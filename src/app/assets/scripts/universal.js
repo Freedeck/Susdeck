@@ -169,6 +169,8 @@ const universal = {
   hasConnected: false
 };
 
+const loading = document.querySelector('#loading') ? document.querySelector('#loading') : document.createElement('div');
+
 const notibar = document.createElement('div');
 notibar.id = 'snackbar';
 
@@ -266,14 +268,14 @@ universal.socket.on('s2ca_incorrect_pass', () => {
 
 universal.socket.on('session_valid', () => {
   loaded = true; // Keep page from reloading
-  document.querySelector('#loading').style.display = 'none';
+  loading.style.display = 'none';
 });
 
 universal.socket.on('session_invalid', () => { // The server has restarted, and your session is invalid
   localStorage.setItem('_sdsession', '');
   if (document.body.contains(document.querySelector('#keys'))) document.querySelector('#keys').remove();
-  document.querySelector('#loading').style.display = 'block';
-  document.querySelector('#loading').innerHTML = `<h1>Freedeck</h1>
+  loading.style.display = 'block';
+  loading.innerHTML = `<h1>Freedeck</h1>
   Please wait a moment..
   <div id='console'></div>`;
   universal.save('temp_hwid', universal.createTempHWID()); // Create a temporary session ID for logging in

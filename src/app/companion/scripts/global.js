@@ -130,6 +130,34 @@ const enableExperiments = () => {
   }
 };
 
+universal.socket.on('server_connected', (loginStatus) => {
+  universal.sendToast('Connected! Checking for login status..');
+  if (!loginStatus) {
+    universal.socket.emit('Authenticated', universal.createTempHWID() + 'cm');
+  } else {
+    if (universal.load('session')) { // If _sdsession exists login
+      universal.socket.emit('Authenticated', universal.load('session'));
+      universal.sendToast('Sending server session ID..');
+    } else {
+      universal.sendToast('Not logged in, requesting login');
+      universal.save('temp_hwid', universal.createTempHWID() + 'cm'); // Create a temporary session ID for logging in
+      universal.socket.emit('c2sr_login', universal.load('temp_hwid')); // Request login form with session ID
+    }
+  }
+});
+
+universal.socket.on('session_valid', () => {
+  universal.validSession();
+});
+
+universal.socket.on('s2ca_login', (nextLoc, loginMsg, ownerName) => { // When we get the green light to login
+  loaded = true; // Keep page from reloading
+  universal.sendToast('Request received by server, let\'s log in.');
+  universal.save('login_msg', loginMsg);
+  universal.save('owner_name', ownerName); // Save the login message and owner's name
+  window.location.href = nextLoc; // Next, move the page over to login page that server sends back
+});
+
 const importTheme = () => {
   theme = document.querySelector('#theme-import').value;
   if (theme === '' || theme === ' ') {

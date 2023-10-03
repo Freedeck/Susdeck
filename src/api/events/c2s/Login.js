@@ -10,7 +10,7 @@ const ev = new Event('c2sr_login', ({ socket, args, loginList }) => {
   socket.sid = sid;
 
   // We'll confirm that we want to take user to the login page.
-  socket.emit('s2ca_login', 'assets/tools/login.html', settings.LoginMessage, settings.YourName);
+  socket.emit('s2ca_login', '/assets/tools/login.html', settings.LoginMessage, settings.YourName);
   return { type: 'requested_login', data: sid };
 });
 

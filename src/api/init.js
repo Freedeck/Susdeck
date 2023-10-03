@@ -70,15 +70,16 @@ const init = (io, app) => {
     });
     socket.on('Authenticated', (sessionID) => {
       debug.log('Recieved ' + sessionID + ', checking against session list..');
-      if (sessions.includes(sessionID) || (set.UseAuthentication === false && sessionID === 0)) {
+      if (sessions.includes(sessionID) || set.UseAuthentication === false) {
         debug.log(sessionID + ' is valid!', 'SAPI Auth');
-        if (set.UseAuthentication === false && sessionID === 0) {
+        if (set.UseAuthentication === false) {
           debug.log('Authentication is off, potentially unsecure client.', 'SAPI Auth');
           if (!loginList.includes(sessionID)) loginList.push(sessionID);
         }
         console.log(picocolors.green('Authenticated client @ ' + new Date()));
         socket.emit('session_valid');
         socket.sid = sessionID;
+        if (!loginList.includes(sessionID)) loginList.push(sessionID);
       } else {
         debug.log(sessionID + ' is invalid, kicking out user..', 'SAPI ID:' + socket.id);
         socket.emit('session_invalid');
@@ -86,9 +87,9 @@ const init = (io, app) => {
     });
     sockApiEvents.forEach((event) => {
       socket.on(event.event, async (args) => {
-        if (event.event === 'c2sr_login') { socket.emit('session_valid'); }
+        // if (event.event === 'c2sr_login') { socket.emit('session_valid'); }
         if (event.prot) {
-          if (socket.sid === undefined || !loginList.includes(socket.sid)) socket.emit('noauth'); return;
+          if (socket.sid === undefined || !loginList.includes(socket.sid)) { socket.emit('noauth'); return; }
         }
         debug.log(event.event + ' ran', 'SAPI ID:' + socket.id);
         if (event.async) {
@@ -97,6 +98,7 @@ const init = (io, app) => {
           const callback = event.callback({ socket, args, loginList, meta: metadata });
           if (callback.type === 'companion_conn') {
             debug.log('Companion is connected to server.', 'SAPI');
+            socket.companion = true;
           }
           if (callback.type === 'validate_session') {
             const person = callback.data;

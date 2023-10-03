@@ -12,7 +12,7 @@ universal.socket.on('server_connected', (loginStatus) => {
   universal.sendToast('Connected! Checking for login status..');
   if (!loginStatus) {
     loaded = true;
-    universal.socket.emit('Authenticated', 0);
+    universal.socket.emit('Authenticated', universal.createTempHWID());
 
     if (!universal.load('welcomed')) {
       universal.sendToast('Welcome to Freedeck! Press any button to play a sound on your computer!');

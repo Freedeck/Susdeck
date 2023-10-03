@@ -161,6 +161,7 @@ const universal = {
   validSession: () => {
     universal.sendToast('Session valid!');
     document.title = universal.load('owner_name') + '\'s Freedeck';
+    universal.remove('temp_hwid');
   },
   isDevBranch: false,
   iconCount: 8,
@@ -254,7 +255,7 @@ universal.socket.on('set-theme', (theme) => {
           try {
             autosort(property[key]);
           } catch (err) {
-            console.log('Autosort failed: ' + err.toString());
+            console.log('Autosort failed: ' + err.toString() + ' [This is not fatal]');
           }
         }
       });
@@ -272,13 +273,12 @@ universal.socket.on('session_valid', () => {
 });
 
 universal.socket.on('session_invalid', () => { // The server has restarted, and your session is invalid
-  localStorage.setItem('_sdsession', '');
+  universal.remove('session');
   if (document.body.contains(document.querySelector('#keys'))) document.querySelector('#keys').remove();
   loading.style.display = 'block';
   loading.innerHTML = `<h1>Freedeck</h1>
   Please wait a moment..
   <div id='console'></div>`;
-  universal.save('temp_hwid', universal.createTempHWID()); // Create a temporary session ID for logging in
   universal.socket.emit('c2sr_login', universal.load('temp_hwid')); // Request login form with session ID
 });
 

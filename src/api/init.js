@@ -86,49 +86,53 @@ const init = (io, app) => {
       }
     });
     sockApiEvents.forEach((event) => {
-      socket.on(event.event, async (args) => {
-        // if (event.event === 'c2sr_login') { socket.emit('session_valid'); }
-        if (event.prot) {
-          if (socket.sid === undefined || !sessions.includes(socket.sid)) { socket.emit('noauth'); return; }
-        }
-        debug.log(event.event + ' ran', 'SAPI ID:' + socket.id);
-        if (event.async) {
-          await event.callback({ socket, args, loginList, meta: metadata });
-        } else {
-          const callback = event.callback({ socket, args, loginList, meta: metadata });
-          if (callback.type === 'companion_conn') {
-            debug.log('Companion is connected to server.', 'SAPI');
-            socket.companion = true;
+      try {
+        socket.on(event.event, async (args) => {
+          // if (event.event === 'c2sr_login') { socket.emit('session_valid'); }
+          if (event.prot) {
+            if (socket.sid === undefined || !sessions.includes(socket.sid)) { socket.emit('noauth'); return; }
           }
-          if (callback.type === 'validate_session') {
-            const person = callback.data;
-            sessions.push(person);
+          debug.log(event.event + ' ran', 'SAPI ID:' + socket.id);
+          if (event.async) {
+            await event.callback({ socket, args, loginList, meta: metadata });
+          } else {
+            const callback = event.callback({ socket, args, loginList, meta: metadata });
+            if (callback.type === 'companion_conn') {
+              debug.log('Companion is connected to server.', 'SAPI');
+              socket.companion = true;
+            }
+            if (callback.type === 'validate_session') {
+              const person = callback.data;
+              sessions.push(person);
+            }
+            if (callback.type === 'requested_login') {
+              debug.log('User with TempHWID ' + callback.data + ' requested login.', 'SAPI Auth');
+            }
+            if (callback.type === 'req_login_ack') {
+              debug.log('User with SID ' + callback.data + ' is allowed to use login form.', 'SAPI Auth');
+            }
+            if (callback.type === 'req_login_fail') {
+              debug.log('User with SID ' + callback.data + ' is not allowed to use login form.', 'SAPI Auth');
+            }
+            if (callback.type === 'c-change') {
+              io.emit('c-change');
+            }
+            if (callback.type === 'custom_theme') {
+              const t = callback.data;
+              io.emit('custom_theme', t);
+            }
+            if (callback.type === 'incorrect_password') {
+              debug.log('Incorrect password', 'SAPI Auth');
+            }
+            if (callback.type === 'c-reset') {
+              Object.keys(require.cache).forEach((key) => { delete require.cache[key]; });
+              io.emit('c-reset');
+            }
           }
-          if (callback.type === 'requested_login') {
-            debug.log('User with TempHWID ' + callback.data + ' requested login.', 'SAPI Auth');
-          }
-          if (callback.type === 'req_login_ack') {
-            debug.log('User with SID ' + callback.data + ' is allowed to use login form.', 'SAPI Auth');
-          }
-          if (callback.type === 'req_login_fail') {
-            debug.log('User with SID ' + callback.data + ' is not allowed to use login form.', 'SAPI Auth');
-          }
-          if (callback.type === 'c-change') {
-            io.emit('c-change');
-          }
-          if (callback.type === 'custom_theme') {
-            const t = callback.data;
-            io.emit('custom_theme', t);
-          }
-          if (callback.type === 'incorrect_password') {
-            debug.log('Incorrect password', 'SAPI Auth');
-          }
-          if (callback.type === 'c-reset') {
-            Object.keys(require.cache).forEach((key) => { delete require.cache[key]; });
-            io.emit('c-reset');
-          }
-        }
-      });
+        });
+      } catch (err) {
+        console.error(picocolors.bgRed('ERROR!') + err);
+      }
     });
   });
 

@@ -254,7 +254,7 @@ universal.socket.on('set-theme', (theme) => {
           try {
             autosort(property[key]);
           } catch (err) {
-            universal.log('Autosorter', 'Failed: is client companion?');
+            console.log('Autosort failed: ' + err.toString());
           }
         }
       });

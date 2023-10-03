@@ -23,24 +23,24 @@ const universal = {
       { 'modal-color': 'rgba(245, 162, 29, 1)' }
     ],
     Dark: [
-      { 'icon-count': 8 },
-      { 'template-columns': 'repeat(4,1fr)' },
+      { 'icon-count': 11 },
+      { 'template-columns': 'repeat(5,2fr)' },
       { 'background-size': '400% 400%' },
       { 'font-family': 'Rubik, sans-serif' },
       { background: '45deg, rgba(59, 59, 59, 1) 0%, rgba(94, 94, 94, 1) 33%, rgba(59, 59, 59, 1) 66%, rgba(87, 87, 87, 1) 100%' },
       { 'modal-color': 'rgba(0,0,0, 0.75)' }
     ],
     Blue: [
-      { 'icon-count': 8 },
-      { 'template-columns': 'repeat(4,1fr)' },
+      { 'icon-count': 11 },
+      { 'template-columns': 'repeat(5,2fr)' },
       { background: '45deg, rgba(0, 183, 255, 1) 0%, rgba(33, 192, 255, 1) 33%, rgba(0, 183, 255, 1) 66%, rgba(33, 192, 255, 1) 100%' },
       { 'background-size': '400% 400%' },
       { 'font-family': 'Roboto, sans-serif' },
       { 'modal-color': 'rgba(33, 192, 255, 1)' }
     ],
     'Catppuccin Mocha': [
-      { 'icon-count': 8 },
-      { 'template-columns': 'repeat(4,1fr)' },
+      { 'icon-count': 11 },
+      { 'template-columns': 'repeat(5,2fr)' },
       { 'background-size': '400% 400%' },
       { 'font-family': 'Rubik, sans-serif' },
       { background: '45deg, rgba(30, 30, 40, 1) 0%, rgba(49,50,68, 1) 33%, rgba(30, 30, 40, 1) 66%, rgba(49,50,68, 1) 100%' },

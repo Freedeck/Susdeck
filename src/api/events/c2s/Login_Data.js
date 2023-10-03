@@ -13,7 +13,7 @@ const ev = new Event('c2sd_login', ({ socket, args }) => {
     debug.log('Adding ' + sid + ' to session ids');
     socket.sessionID = sid;
     socket.emit('s2cs_login', sid, '../../');
-    return 'ValidateSession:' + sid;
+    return { type: 'validate_session', data: sid };
   } else {
     socket.emit('s2ca_incorrect_pass');
   }

@@ -1,7 +1,7 @@
 const Event = require('../Event');
 
 const ev = new Event('c-del-theme', () => {
-  return 'custom_theme=del';
+  return { type: 'custom_theme', data: 'del' };
 });
 
 module.exports = ev;

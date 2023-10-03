@@ -48,7 +48,6 @@ const init = (io, app) => {
           let keys = [];
           keys = JSON.parse(keyInput.keys);
           keys.forEach((key) => {
-            key = key.split('}')[0];
             if (key === 'none' || key === '') return;
             rob.keyToggle(key, 'down');
             setTimeout(() => { // Add delay to mimic keyboard
@@ -83,24 +82,35 @@ const init = (io, app) => {
     sockApiEvents.forEach((event) => {
       socket.on(event.event, async (args) => {
         if (event.event === 'c2sr_login') { socket.emit('session_valid'); }
-        debug.log(event.event + ' ran', 'SocketAPI:' + socket.id);
+        debug.log(event.event + ' ran', 'SAPI ID:' + socket.id);
         if (event.async) {
           await event.callback({ socket, args, loginList, meta: metadata });
         } else {
           const callback = event.callback({ socket, args, loginList, meta: metadata });
-          if (!callback || typeof callback !== 'string') { return; }
-          if (callback.startsWith('ValidateSession:')) {
-            const person = callback.split(':')[1];
+          if (callback.type === 'companion_conn') {
+            debug.log('Companion is connected to server.', 'SAPI');
+          }
+          if (callback.type === 'validate_session') {
+            const person = callback.data;
             sessions.push(person);
           }
-          if (callback.startsWith('c-change')) {
+          if (callback.type === 'requested_login') {
+            debug.log('User with SID ' + callback.data + ' requested login.', 'SAPI Auth');
+          }
+          if (callback.type === 'req_login_ack') {
+            debug.log('User with SID ' + callback.data + ' is allowed to use login form.', 'SAPI Auth');
+          }
+          if (callback.type === 'req_login_fail') {
+            debug.log('User with SID ' + callback.data + ' is not allowed to use login form.', 'SAPI Auth');
+          }
+          if (callback.type === 'c-change') {
             io.emit('c-change');
           }
-          if (callback.startsWith('custom_theme=')) {
-            const t = callback.split('=')[1];
+          if (callback.type === 'custom_theme') {
+            const t = callback.data;
             io.emit('custom_theme', t);
           }
-          if (callback.startsWith('c-reset')) {
+          if (callback.type === 'c-reset') {
             Object.keys(require.cache).forEach((key) => { delete require.cache[key]; });
             io.emit('c-reset');
           }

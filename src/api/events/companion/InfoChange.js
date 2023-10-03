@@ -33,7 +33,7 @@ const Sounds = ${JSON.stringify(sounds.Sounds)};
 if (typeof module !== 'undefined') module.exports = { cfg:{v:'${meta.fdVersion}'}, ScreenSaverActivationTime, soundDir, Sounds };
 `);
 
-    return 'c-change';
+    return { type: 'c-change' };
   } else if (args.type === 'screenSaver_soc') {
     fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const ScreenSaverActivationTime = ${args.screenSaverActivationTime};

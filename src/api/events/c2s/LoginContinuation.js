@@ -7,10 +7,10 @@ const ev = new Event('c2sr_login_cont', ({ socket, args, loginList }) => {
     loginList.splice(loginList.indexOf(sid), 1);
     // Hello
     socket.emit('user_ack_cont');
-    return 'User ' + sid + ' is continuing login';
+    return { type: 'req_login_ack', data: sid };
   }
   socket.emit('user_ack_cont', 'session_expired');
-  return 'No continue login';
+  return { type: 'req_login_fail', data: sid };
 });
 
 module.exports = ev;

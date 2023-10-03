@@ -18,6 +18,7 @@ const port = settings.Port || process.env.PORT || 5754;
 
 try {
   console.clear();
+  console.log(debug.is)
   console.log('Freedeck v' + fd.version);
   debug.log('Version matching');
   // Do config versions match the hosts?

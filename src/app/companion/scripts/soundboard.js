@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars, no-undef */
-const keys = document.querySelector('#keys');
-const Pages = {};
+if (keys !== document.querySelector('#keys')) keys = document.querySelector('#keys');
+if (!Pages) Pages = {};
 const q = [];
 const countOnEachPage = 8;
 

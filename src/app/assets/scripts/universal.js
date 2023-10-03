@@ -206,6 +206,10 @@ universal.socket.on('server_shutdown', () => {
   window.location.replace('/assets/tools/offline.html');
 });
 
+universal.socket.on('noauth', () => {
+  universal.sendToast('You are not authorized to do this action!');
+});
+
 universal.socket.on('c-reset', () => {
   universal.remove('welcomed');
   universal.remove('custom_theme');

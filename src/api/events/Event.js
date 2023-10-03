@@ -2,15 +2,16 @@ const { sockApiEvents } = require('../init');
 const debug = require('../../util/debug');
 
 class Event {
-  constructor (event, callback) {
+  constructor (event, callback, protectedB = false) {
     this.eventStr = event;
     this.callbackFn = callback;
-    sockApiEvents.set(event, { callback: this.callbackFn, event: this.eventStr });
+    this.prot = protectedB;
+    sockApiEvents.set(event, { callback: this.callbackFn, event: this.eventStr, prot: this.prot });
     debug.log(event, 'Events');
   }
 
   init () {
-    sockApiEvents.set(this.eventStr, { callback: this.callbackFn, event: this.eventStr });
+    sockApiEvents.set(this.eventStr, { callback: this.callbackFn, event: this.eventStr, prot: this.prot });
   }
 
   set event (event) {
@@ -21,12 +22,20 @@ class Event {
     this.callbackFn = callback;
   }
 
+  set protection (prot) {
+    this.prot = prot;
+  }
+
   get event () {
     return this.eventStr;
   }
 
   get callback () {
     return this.callbackFn;
+  }
+
+  get protection () {
+    return this.prot;
   }
 }
 

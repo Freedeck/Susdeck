@@ -10,8 +10,8 @@ universal.socket.on('server_connected', () => {
   setTimeout(() => { // Wait for universal load
     if (universal.isInDebug === true) {
       Sounds.forEach((s) => {
-        document.querySelector('#gsl').style.display = 'block';
-        document.querySelector('#keys').innerHTML += `<div class="sb-dbg-sound">${s.name}:${soundDir + s.path}</div>`;
+        // document.querySelector('#gsl').style.display = 'block';
+        // keys.innerHTML += `<div class="sb-dbg-sound">${s.name}:${soundDir + s.path}</div>`;
       });
     }
   }, 150);

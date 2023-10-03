@@ -74,6 +74,7 @@ const init = (io, app) => {
         debug.log(sessionID + ' is valid!', 'SAPI Auth');
         if (set.UseAuthentication === false && sessionID === 0) {
           debug.log('Authentication is off, potentially unsecure client.', 'SAPI Auth');
+          if (!loginList.includes(sessionID)) loginList.push(sessionID);
         }
         console.log(picocolors.green('Authenticated client @ ' + new Date()));
         socket.emit('session_valid');
@@ -86,6 +87,9 @@ const init = (io, app) => {
     sockApiEvents.forEach((event) => {
       socket.on(event.event, async (args) => {
         if (event.event === 'c2sr_login') { socket.emit('session_valid'); }
+        if (event.prot) {
+          if (socket.sid === undefined || !loginList.includes(socket.sid)) socket.emit('noauth'); return;
+        }
         debug.log(event.event + ' ran', 'SAPI ID:' + socket.id);
         if (event.async) {
           await event.callback({ socket, args, loginList, meta: metadata });

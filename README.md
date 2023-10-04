@@ -15,29 +15,20 @@ You can join the official Freedeck Discord server over at [https://discord.gg/Sd
 
 ## What does it look like?
 
-These screenshots were taken on the iPod Touch 7th gen.
-![Freedeck UI preview](https://github.com/freedeck/freedeck/blob/master/demo/preview.jpg?raw=true)
+This screenshots was taken on the iPod Touch 7th gen.
+![Freedeck UI preview](https://aidens.dev/captures/imgs/Freedeck_460_Default.png)
 
 Here's a preview of the login screen:
-![Freedeck Login preview](https://github.com/freedeck/freedeck/blob/master/demo/preview-login.jpg?raw=true)
+![Freedeck Login preview](https://aidens.dev/captures/imgs/Screenshot@2023_10_03_19_17_36291-aidens.png)
 
-Here's a preview of the companion home screen:
-![Freedeck Companion Home preview](https://ifarded.lol/captures/Screenshot@2023_07_22_09_21_83904.png)
+Here's a preview of the Companion Home screen:
+![Freedeck Companion Home preview](https://aidens.dev/captures/imgs/Screenshot@2023_10_03_19_18_58431-aidens.png)
 
-Here's a preview of the companion theme screen:
-![Freedeck Companion Home preview](https://ifarded.lol/captures/Screenshot@2023_07_22_09_21_69019.png)
+Here's a preview of the Companion Icon screen:
+![Freedeck Companion Home preview](https://aidens.dev/captures/imgs/Screenshot@2023_10_03_19_18_74555-aidens.png)
 
-Here's a preview of the companion soundboard screen:
-![Freedeck Companion Home preview](https://ifarded.lol/captures/Screenshot@2023_07_22_09_21_11365.png)
-
-Here's a preview of the companion icon editor screen:
-![Freedeck Companion Home preview](https://ifarded.lol/captures/Screenshot@2023_07_22_09_21_57364.png)
-
-Here's a preview of the companion settings screen:
-![Freedeck Companion Home preview](https://ifarded.lol/captures/Screenshot@2023_07_22_09_22_45142.png)
-
-Here's a preview of the companion experiments screen:
-![Freedeck Companion Home preview](https://ifarded.lol/captures/Screenshot@2023_07_22_09_22_79888.png)
+Here's a preview of the Companion Settings screen:
+![Freedeck Companion Home preview](https://aidens.dev/captures/imgs/Screenshot@2023_10_03_19_19_81345-aidens.png)
 
 ## How do I use Freedeck?
 

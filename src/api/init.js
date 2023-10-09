@@ -9,6 +9,7 @@ const picocolors = require('../util/picocolors');
 
 const apiEvents = new Map();
 const sockApiEvents = new Map();
+const plugins = new Map();
 
 const metadata = {
   fdVersion: pkg.version
@@ -27,6 +28,12 @@ const init = (io, app) => {
       const query = require(path.join(__dirname, '/events/' + file + '/' + cEvent));
       query.init();
     });
+  });
+
+  fs.readdirSync(path.resolve('./plugins')).forEach((file) => {
+    const Query = require(path.resolve('./plugins/' + file));
+    const plugin = new Query();
+    plugin.init();
   });
 
   const SAPI_EVENT_ADD = new Date();
@@ -89,6 +96,11 @@ const init = (io, app) => {
         debug.log(sessionID + ' is invalid, kicking out user..', 'SAPI ID:' + socket.id);
         socket.emit('session_invalid');
       }
+    });
+    plugins.forEach((plug) => {
+      socket.on(plug.type, (data) => {
+        plug.FDPlugin.hookEvent(data);
+      });
     });
     sockApiEvents.forEach((event) => {
       try {
@@ -183,4 +195,4 @@ const init = (io, app) => {
   debug.log(picocolors.blue('SAPI initialized in ' + (SAPI_INIT_END.getTime() - SAPI_INIT_START.getTime()) + 'ms!'), 'INIT');
 };
 
-module.exports = { init, apiEvents, sockApiEvents };
+module.exports = { init, apiEvents, sockApiEvents, plugins };

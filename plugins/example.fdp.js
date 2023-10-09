@@ -3,7 +3,10 @@ const FDPlugin = require('../src/api/FDPlugin');
 class examplePlugin extends FDPlugin {
   constructor () {
     super('Example Mod', 'Freedeck Api Example!', 'Freedeck.Plugins.Example');
-    this.init();
+  }
+
+  onInitialize () {
+    console.log('Initizliaing');
   }
 
   onEvent (data) {

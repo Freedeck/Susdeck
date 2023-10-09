@@ -1,4 +1,4 @@
-const { plugins } = require('./init');
+const { plugins, sockApiEvents } = require('./init');
 const debug = require('../util/debug');
 
 class FDPlugin {
@@ -6,13 +6,19 @@ class FDPlugin {
     this.nameStr = name;
     this.authorStr = author;
     this.typeStr = type;
+    this.initEvent = this.onInitialize;
     this.hookEvent = this.onEvent;
     plugins.set(this.nameStr, { author: this.authorStr, type: this.typeStr, name: this.nameStr, FDPlugin: this });
     debug.log(name + ' | Plugin', 'Plugins');
+    this.onInitialize();
   }
 
-  onEvent (data) {
+  onInitialize (data) {
     return data;
+  }
+
+  registerEvent (type, callback, protectedB = false) {
+    return sockApiEvents.set(this.typeStr + type, { callback, event: this.typeStr + type, prot: protectedB });
   }
 
   init () {

@@ -1,4 +1,4 @@
-const { plugins, sockApiEvents } = require('./init');
+const { plugins } = require('./init');
 const debug = require('../util/debug');
 
 class FDPlugin {
@@ -15,10 +15,6 @@ class FDPlugin {
 
   onInitialize (data) {
     return data;
-  }
-
-  registerEvent (type, callback, protectedB = false) {
-    return sockApiEvents.set(this.typeStr + type, { callback, event: this.typeStr + type, prot: protectedB });
   }
 
   init () {

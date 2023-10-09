@@ -110,7 +110,8 @@ if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, S
 
 const Settings = {
   UseAuthentication: ${settings.UseAuthentication}, // Turn on authentication (every session/restart will require password)
-  Password: '${createHash(settings.Password)}', // If you are using authentication, you will log in with this password.
+  // Your password is here, but in SHA-512!
+  Password: '${createHash(settings.Password)}',
   LoginMessage: '${settings.LoginMessage}', // This message will show for users when they try to login (below "Login to (your name)'s Freedeck")
   YourName: '${settings.YourName}', // Shows alongside your login message,
   Port: ${settings.Port},

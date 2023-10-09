@@ -76,7 +76,8 @@ if (typeof module !== 'undefined') module.exports = { cfg, ScreenSaverActivation
 
 const Settings = {
   UseAuthentication: ${ua}, // Turn on authentication (every session/restart will require password)
-  Password: '${createHash(passwd)}', // If you are using authentication, you will log in with this password.
+  // Your password is here, but in SHA-512!
+  Password: '${createHash(passwd)}',
   LoginMessage: '${lm}', // This message will show for users when they try to login (below "Login to (your name)'s Freedeck")
   YourName: '${yn}', // Shows alongside your login message,
   Port: ${port},

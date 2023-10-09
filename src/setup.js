@@ -67,25 +67,18 @@ const afterResponses = (ssat, ua, passwd, lm, yn, port) => {
 const ScreenSaverActivationTime = ${ssat};
 const soundDir = '../assets/sounds/';
 const Sounds = ${JSON.stringify([{ name: 'Shooting', icon: 'shooting.png', path: 'shooting.mp3' }, { name: 'Footsteps', icon: 'footsteps.png', path: 'loudfootsteps.mp3' }, { name: 'Whoppah', path: 'WHOPPER.mp3', icon: 'whopper.png' }, { name: "Didn't I Do It", icon: 'borzoi.png', path: 'borzio.mp3' }, { name: 'Biggest Bird', icon: 'bird.png', path: 'biggestbird.wav' }, { name: 'Disconnect', icon: 'disconnect.png', path: 'disconnect.mp3' }, { name: 'Vine Boom', icon: 'boom.png', path: 'vineboom.mp3' }, { name: 'Semtex', icon: 'semtex.png', path: 'semtex.mp3' }, { name: 'Huh', path: 'huh.mp3' }, { name: 'Haha', path: 'haha.mp3' }, { name: 'Alt Tab', keys: '["alt","tab"]' }, { name: 'Whoppah Remix', path: 'wopha_remix.wav' }, { name: 'Bugatti', path: 'bugatti.mp3' }, { name: 'Metal Pipe', path: 'metal_pipe.mp3' }, { name: 'RAHH', path: 'rah.mp3' }])};
-const cfg = {v:'${pkg.version}'}; // Don't touch pls
-if (typeof module !== 'undefined') module.exports = { cfg, ScreenSaverActivationTime, soundDir, Sounds };
+if (typeof module !== 'undefined') module.exports = { cfg:{v:'${pkg.version}'}, ScreenSaverActivationTime, soundDir, Sounds };
 `;
 
-  const settingsJSDefault = `// Welcome to Freedeck internal settings! Here you can.. set.. settings!
-// True for yes, false for no
-
+  const settingsJSDefault = `// These settings are autoset by setup.
 const Settings = {
-  UseAuthentication: ${ua}, // Turn on authentication (every session/restart will require password)
-  // Your password is here, but in SHA-512!
+  UseAuthentication: ${ua},
   Password: '${passwd === 'Unset!' ? passwd : createHash(passwd)}',
-  LoginMessage: '${lm}', // This message will show for users when they try to login (below "Login to (your name)'s Freedeck")
-  YourName: '${yn}', // Shows alongside your login message,
+  LoginMessage: '${lm}',
+  YourName: '${yn}',
   Port: ${port},
-
-  // Don't touch!!!
   fdv: '${pkg.version}'
 };
-
 module.exports = Settings;
 `;
   console.log('[Freedeck] Writing your settings..');

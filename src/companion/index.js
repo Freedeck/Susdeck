@@ -12,8 +12,6 @@ const createWindow = () => {
     minHeight: 750,
     width: 840,
     height: 750,
-    maxWidth: 840,
-    maxHeight: 750,
     frame: false
   });
   window.setIcon(require('path').join(__dirname, './companion.png'));

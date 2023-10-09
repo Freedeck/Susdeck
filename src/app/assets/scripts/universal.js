@@ -4,6 +4,7 @@
 const universal = {
   screensaverStatus: false,
   version: '0.0.0',
+  saves: [],
   themes: {
     // Built-in themes.
     Default: [
@@ -76,13 +77,14 @@ const universal = {
     return atob(universal.load('session'));
   },
   createTempHWID: () => {
-    return Math.floor(Math.random() * 2048 + 5754);
+    return Math.ceil(Math.random() * 4096 + 2047);
   },
   log: (sender, data) => {
     universal.socket.emit('c2s_log', `[Companion/${sender}] ${data}`);
   },
   save: (name, value) => {
     localStorage.setItem('_sd_' + name, value);
+    universal.saves.push({ name, value });
   },
   load: (name) => {
     return localStorage.getItem('_sd_' + name);

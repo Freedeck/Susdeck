@@ -74,12 +74,7 @@ function updateFDConfig () {
       sound.uuid = 'FDA-' + require('crypto').randomBytes(8).toString('hex');
     }
   });
-  fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
-const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
-const soundDir = '../assets/sounds/';
-const Sounds = ${JSON.stringify(sounds.Sounds)};
-if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, ScreenSaverActivationTime, soundDir, Sounds };
-`);
+  RewriteSounds();
   delete require.cache[require.resolve(path.resolve('./src/settings/sounds.js'))];
   debug.log('UUID check finished.');
 
@@ -99,24 +94,14 @@ if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, S
     if (!vCheck.snd) console.log('- Sounds');
     console.log(picocolors.red('[IMPORTANT!] These configs will be updated and you will need to start Freedeck again.'));
     // Just reset them all llol
-    fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
-const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
-const soundDir = '../assets/sounds/';
-const Sounds = ${JSON.stringify(sounds.Sounds)};
-if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, ScreenSaverActivationTime, soundDir, Sounds };
-`);
-    fs.writeFileSync('./Settings.js', `// Welcome to Freedeck internal settings! Here you can.. set.. settings!
-// True for yes, false for no
-
+    RewriteSounds();
+    fs.writeFileSync('./Settings.js', `// These settings are autoset by setup.
 const Settings = {
-  UseAuthentication: ${settings.UseAuthentication}, // Turn on authentication (every session/restart will require password)
-  // Your password is here, but in SHA-512!
+  UseAuthentication: ${settings.UseAuthentication},
   Password: '${createHash(settings.Password)}',
-  LoginMessage: '${settings.LoginMessage}', // This message will show for users when they try to login (below "Login to (your name)'s Freedeck")
-  YourName: '${settings.YourName}', // Shows alongside your login message,
+  LoginMessage: '${settings.LoginMessage}',
+  YourName: '${settings.YourName}',
   Port: ${settings.Port},
-
-  // Don't touch!!!
   fdv: '${fd.version}'
 };
 module.exports = Settings;
@@ -126,4 +111,13 @@ module.exports = Settings;
 
   const UPDATE_CHECK_TIME = new Date();
   debug.log(picocolors.blue('Update check finished in ' + (UPDATE_CHECK_TIME.getTime() - INIT_START_TIME.getTime()) + 'ms!') + ' (Relative to init start)', 'INIT');
+}
+
+function RewriteSounds () {
+  fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
+const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
+const soundDir = '../assets/sounds/';
+const Sounds = ${JSON.stringify(sounds.Sounds)};
+if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, ScreenSaverActivationTime, soundDir, Sounds };
+`);
 }

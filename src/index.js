@@ -15,14 +15,15 @@ const fd = require('../package.json');
 const picocolors = require('./util/picocolors');
 const sockApiInit = require('./api/init').init;
 
+const INIT_START_TIME = new Date();
+
 const port = settings.Port || process.env.PORT || 5754;
 
 try {
   console.clear();
   console.log(picocolors.blue('Freedeck v' + fd.version));
-  if (debug.is) debug.log('- Using debug mode');
-  debug.log('Version matching');
-  // Do config versions match the hosts?
+  if (debug.is) debug.log('Using debug mode');
+
   debug.log('Initializing Socket API');
   sockApiInit(io, app); // Socket API initialize
 
@@ -31,23 +32,41 @@ try {
 
   app.get('/sounds.js', (req, res) => { res.sendFile(path.join(__dirname, '/settings/sounds.js')); }); // Make sounds.js accessible from apps
 
-  debug.log('Listening for ' + port);
   if (process.argv[2] === '--no-server') {
     console.log('Companion is starting in standalone mode!');
     require('child_process').exec('npx electron src/companion'); // Start Companion on another process
   }
-  if (process.argv[2] !== '--no-server') {
-    httpServer.listen(port, () => {
-      let str = '';
-      if (process.argv[2] !== '--headless') str = '- launching Companion';
-      console.log(picocolors.blue('Freedeck Web Host started'), picocolors.blue(str));
-      if (process.argv[2] !== '--headless') require('child_process').exec('npx electron src/companion'); // Start Companion on another process
-      Object.keys(getNetworkInterfaces()).forEach(netInterface => {
-        console.log(picocolors.bgBlue('Go to ' + getNetworkInterfaces()[netInterface][0] + ':' + port + ' on your mobile device [Interface ' + netInterface + ']'));
-      });
-    });
-  }
+  if (process.argv[2] !== '--no-server') hostServer();
 
+  updateFDConfig();
+} catch (err) {
+  console.log(picocolors.red('Presumably fatal error:'), err);
+}
+
+const INIT_END_TIME = new Date();
+console.log(picocolors.blue('Initialized in ' + (INIT_END_TIME.getTime() - INIT_START_TIME.getTime()) + 'ms!'));
+
+function launchCompanion () {
+  require('child_process').exec('npx electron src/companion');
+  return '- launching Companion';
+}
+
+function hostServer () {
+  debug.log('Listening on port ' + port);
+  httpServer.listen(port, () => {
+    let str = '';
+    if (process.argv[2] !== '--headless') str = launchCompanion();
+    console.log(picocolors.blue('Freedeck Web Host started'), picocolors.blue(str));
+    Object.keys(getNetworkInterfaces()).forEach(netInterface => {
+      const ipPort = getNetworkInterfaces()[netInterface][0] + ':' + port;
+      console.log(picocolors.bgBlue('Go to ' + ipPort + ' on your mobile device [Interface ' + netInterface + ']'));
+    });
+  });
+  const SERVER_START_TIME = new Date();
+  debug.log(picocolors.blue('Server started in ' + (SERVER_START_TIME.getTime() - INIT_START_TIME.getTime()) + 'ms!') + ' (Relative to init start)', 'INIT');
+}
+
+function updateFDConfig () {
   sounds.Sounds.forEach(sound => {
     if (!sound.uuid) {
       debug.log('Sound ' + sound.name + ' has no UUID, fixing');
@@ -102,6 +121,7 @@ module.exports = Settings;
 `);
     process.exit(0);
   }
-} catch (err) {
-  console.log(picocolors.red('Presumably fatal error:'), err);
+
+  const UPDATE_CHECK_TIME = new Date();
+  debug.log(picocolors.blue('Update check finished in ' + (UPDATE_CHECK_TIME.getTime() - INIT_START_TIME.getTime()) + 'ms!') + ' (Relative to init start)', 'INIT');
 }

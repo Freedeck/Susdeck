@@ -19,6 +19,7 @@ const init = (io, app) => {
   const sessions = [];
 
   debug.log('Adding socket events', 'SAPI');
+  const SAPI_INIT_START = new Date();
 
   fs.readdirSync(path.join(__dirname, '/events')).forEach((file) => {
     if (file === 'Event.js') return;
@@ -28,9 +29,13 @@ const init = (io, app) => {
     });
   });
 
+  const SAPI_EVENT_ADD = new Date();
+  debug.log(picocolors.blue('SAPI events added in ' + (SAPI_EVENT_ADD.getTime() - SAPI_INIT_START.getTime()) + 'ms!') + ' (Relative to SAPI init)', 'INIT');
+
   io.on('connection', (socket) => {
     // Give sockets a randomized ID
     socket.id = Math.random().toString().substring(2, 4) + require('crypto').randomBytes(8 + 2).toString('hex');
+    socket.conn = new Date().getTime();
     debug.log('New connection - new socket ID generated: ' + socket.id);
 
     // Initial connection
@@ -138,17 +143,17 @@ const init = (io, app) => {
 
   debug.log('Adding HTTP endpoints', 'SAPI');
   // Now HTTP debug methods
-  fs.readdir(path.join(__dirname, '/routes'), (err, files) => {
-    if (err) { throw new Error(err); }
-    files.forEach(routefile => {
-      const route = require(path.join(__dirname, '/routes/' + routefile));
-      // type, route, exec
-      // only get supported for now
-      apiEvents.set(route.route, route);
-      if (route.type === 'get') app.get('/api/' + route.route, (req, res) => route.exec(req, res));
-      if (route.type === 'post') app.post('/api/' + route.route, (req, res) => route.exec(req, res));
-    });
+  fs.readdirSync(path.join(__dirname, '/routes')).forEach(routefile => {
+    const route = require(path.join(__dirname, '/routes/' + routefile));
+    // type, route, exec
+    // only get supported for now
+    apiEvents.set(route.route, route);
+    if (route.type === 'get') app.get('/api/' + route.route, (req, res) => route.exec(req, res));
+    if (route.type === 'post') app.post('/api/' + route.route, (req, res) => route.exec(req, res));
+    debug.log(route.route + ' | HTTP endpoint added', 'Events');
   });
+  const SAPI_HTTP_ADD = new Date();
+  debug.log(picocolors.blue('HTTP endpoints added in ' + (SAPI_HTTP_ADD.getTime() - SAPI_INIT_START.getTime()) + 'ms!') + ' (Relative to SAPI init)', 'INIT');
 
   // Now, before exit
   // catching signals and do something before exit
@@ -173,6 +178,8 @@ const init = (io, app) => {
       process.exit(0);
     }, 260);
   };
+  const SAPI_INIT_END = new Date();
+  debug.log(picocolors.blue('SAPI initialized in ' + (SAPI_INIT_END.getTime() - SAPI_INIT_START.getTime()) + 'ms!'), 'INIT');
 };
 
 module.exports = { init, apiEvents, sockApiEvents };

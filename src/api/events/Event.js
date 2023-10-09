@@ -7,7 +7,7 @@ class Event {
     this.callbackFn = callback;
     this.prot = protectedB;
     sockApiEvents.set(event, { callback: this.callbackFn, event: this.eventStr, prot: this.prot });
-    debug.log(event, 'Events');
+    debug.log(event + ' | Socket event added', 'Events');
   }
 
   init () {

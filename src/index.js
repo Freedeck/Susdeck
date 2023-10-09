@@ -114,6 +114,12 @@ module.exports = Settings;
 }
 
 function RewriteSounds () {
+  sounds.Sounds.forEach(snd => {
+    if (!snd.type) {
+      debug.log('No sound type found for ' + snd.name + ', assuming default.');
+      snd.type = 'built-in';
+    };
+  });
   fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
 const soundDir = '../assets/sounds/';

@@ -94,6 +94,6 @@ module.exports = Settings;
   fs.writeFileSync(path.resolve('./Settings.js'), settingsJSDefault);
   if (!fs.existsSync(path.resolve('./src/api/persistent'))) fs.mkdirSync(path.resolve('./src/api/persistent'));
   fs.writeFileSync(path.join(path.resolve('./src/api/persistent') + '/theme.sd'), 'Default');
-  console.log('[Freedeck] Finished setup, exiting! Start Freedeck with `npm start`.');
+  console.log('[Freedeck] Finished setup, exiting!');
   process.exit(0);
 };

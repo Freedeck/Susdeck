@@ -29,7 +29,6 @@
 
             <div class="modal-content">
                 <div class="modal-header" id="mh">
-                    <span class="close" onclick="modal.style.display = 'none'">&times;</span>
                     <h2 id="mhe"></h2>
                 </div>
                 <div class="modal-body" id="mc">
@@ -51,7 +50,7 @@
                     <p>Icon Preview</p>
                     <div style="display: flex; gap: 5px;">
                         <button id="mcip"></button>
-                        <button id="mcsu" style="display: none;">Upload Sound [NEW!]</button>
+                        <button id="mcsu" style="display: none;">Upload Sound</button>
                         <!-- data-orig-key data-orig-name -->
                         <button id="mcdel" onclick="DeleteKey({ name: document.querySelector('#mhe').getAttribute('data-orig-name') });">Delete Button</button>
                         <button id="mcset" onclick="changeInfo(document.querySelector('#mhe').getAttribute('data-orig-key'));"class="white-txt">Set</button>

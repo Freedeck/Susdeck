@@ -3,7 +3,9 @@
 }
 
 #snackbar {
-    margin-bottom: 15%;
+    position: absolute;
+    bottom: 2rem;
+    right: 50%;
 }
 
 .sb-dbg-sound {
@@ -25,8 +27,13 @@
 #topbar > button {
     -webkit-app-region: none;
     background-color: rgba(255,0,0,0.5);
+    color: black;
     width: 75px;
     height: 75px;
+}
+
+#topbar > button:hover {
+    color: white;   
 }
 
 .flex {

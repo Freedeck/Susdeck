@@ -9,6 +9,12 @@
   --sd-rotation-degrees: 2deg;
   --sd-btn-background: rgba(0, 0, 0, 0.5);
   --sd-modal-color: rgb(15, 140, 194);
+  --sd-btn-w: 6rem;
+  --sd-btn-h: 6rem;
+
+  --sd-col: white;
+
+  --sd-font-size: 15px;
 }
 
 body {
@@ -52,16 +58,19 @@ footer {
 
 button {
   background-color: var(--sd-btn-background);
+  color: var(--sd-col);
   border-radius: 8px;
-  width: 100px;
-  height: 100px;
+  width: var(--sd-btn-w);
+  height: var(--sd-btn-h);
   background-size: 100% auto;
 }
 
 .button {
+  background-color: var(--sd-btn-background);
+  color: var(--sd-col);
   border-radius: 8px;
-  width: 100px;
-  height: 100px;
+  width: var(--sd-btn-w);
+  height: var(--sd-btn-h);
 }
 
 button {
@@ -252,7 +261,7 @@ button:hover {
 #main {
   transition: margin-left .5s;
   padding: 20px;
-  margin-left: 87px;
+  margin-left: 4.35rem;
 }
 
 .active-page {

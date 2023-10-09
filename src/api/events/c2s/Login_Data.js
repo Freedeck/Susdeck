@@ -13,6 +13,7 @@ const ev = new Event('c2sd_login', ({ socket, args }) => {
     const sid = require('crypto').randomBytes(8).toString('hex');
     debug.log('Adding ' + sid + ' to session ids');
     socket.sessionID = sid;
+    socket.twid = hwid;
     let path = '/';
     if (hwid.endsWith('cm')) path += 'companion';
     socket.emit('s2cs_login', sid, path);

@@ -15,6 +15,7 @@
   --sd-col: white;
 
   --sd-font-size: 15px;
+  --sd-icon-tip-fs: 1.5rem;
 }
 
 body {
@@ -46,9 +47,10 @@ body {
 }
 
 footer {
-  position: fixed;
-  left: 0;
-  bottom: 2%;
+  position: absolute;
+  z-index: -5754;
+  bottom: 0;
+  right: 0;
   height: max-content;
   width: max-content;
   background-color: red;
@@ -136,20 +138,6 @@ button:hover {
   border-radius: 8px;
 }
 
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
 .modal-header {
   padding: 2px 16px;
   background-color: var(--sd-modal-color);
@@ -234,7 +222,6 @@ button:hover {
   width: max-content;
   height: max-content;
   text-decoration: none;
-  font-size: 25px;
   color: #818181;
   display: block;
   transition: 0.3s;
@@ -252,7 +239,7 @@ button:hover {
   position: absolute;
   top: 92%;
   z-index: 2;
-  font-size: large;
+  font-size: var(--sd-icon-tip-fs);
   justify-content: center;
   animation-duration: .25s;
   animation-timing-function: ease-in-out;

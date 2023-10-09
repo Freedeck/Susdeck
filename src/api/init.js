@@ -103,7 +103,7 @@ const init = (io, app) => {
           } else {
             const callback = event.callback({ socket, args, loginList, meta: metadata });
             if (callback.type === 'companion_conn') {
-              debug.log('Companion is connected to server.', 'SAPI');
+              debug.log('Companion is connected to server.', 'SAPI ID: ' + socket.id);
               socket.companion = true;
             }
             if (callback.type === 'validate_session') {

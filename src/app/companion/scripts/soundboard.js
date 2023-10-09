@@ -4,19 +4,6 @@ if (!Pages) Pages = {};
 const q = [];
 const countOnEachPage = 8;
 
-universal.socket.on('server_connected', () => {
-  universal.socket.emit('c-connected');
-  document.querySelector('#console').style.display = 'none';
-  setTimeout(() => { // Wait for universal load
-    if (universal.isInDebug === true) {
-      Sounds.forEach((s) => {
-        // document.querySelector('#gsl').style.display = 'block';
-        // keys.innerHTML += `<div class="sb-dbg-sound">${s.name}:${soundDir + s.path}</div>`;
-      });
-    }
-  }, 150);
-});
-
 const gsl = () => {
   // IMPL SOON
 };

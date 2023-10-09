@@ -2,6 +2,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const { createHash } = require('./util/crypto');
 
 const pkg = require(path.resolve('./package.json'));
 
@@ -75,7 +76,7 @@ if (typeof module !== 'undefined') module.exports = { cfg, ScreenSaverActivation
 
 const Settings = {
   UseAuthentication: ${ua}, // Turn on authentication (every session/restart will require password)
-  Password: '${passwd}', // If you are using authentication, you will log in with this password.
+  Password: '${createHash(passwd)}', // If you are using authentication, you will log in with this password.
   LoginMessage: '${lm}', // This message will show for users when they try to login (below "Login to (your name)'s Freedeck")
   YourName: '${yn}', // Shows alongside your login message,
   Port: ${port},

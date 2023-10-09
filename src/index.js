@@ -13,6 +13,7 @@ const getNetworkInterfaces = require('./util/network');
 const sounds = require('./settings/sounds');
 const fd = require('../package.json');
 const picocolors = require('./util/picocolors');
+const { createHash } = require('./util/crypto');
 const sockApiInit = require('./api/init').init;
 
 const INIT_START_TIME = new Date();
@@ -109,7 +110,7 @@ if (typeof module !== 'undefined') module.exports = { cfg:{v:'${fd.version}'}, S
 
 const Settings = {
   UseAuthentication: ${settings.UseAuthentication}, // Turn on authentication (every session/restart will require password)
-  Password: '${settings.Password}', // If you are using authentication, you will log in with this password.
+  Password: '${createHash(settings.Password)}', // If you are using authentication, you will log in with this password.
   LoginMessage: '${settings.LoginMessage}', // This message will show for users when they try to login (below "Login to (your name)'s Freedeck")
   YourName: '${settings.YourName}', // Shows alongside your login message,
   Port: ${settings.Port},

@@ -22,19 +22,19 @@ console.clear();
 console.log(`Freedeck v${pkg.version} setup`);
 console.log('=-= Sound Initial Setup =-=');
 console.log('Each of these are changeable from Companion at any time!');
-const matching = [false, true, 'false', 'true'];
+const setters = { false: false, true: true, yes: true, no: false };
 // eslint-disable-next-line no-var
 var ssat, ua, passwd, lm, yn, port;
 
-question('Screensaver activation time?' + ' (number) >').then(ssatr => {
+question('Screensaver activation time?' + ' (number, max: 15) >').then(ssatr => {
+  if (Number(ssatr) >= 15) ssatr = 15;
   ssat = ssatr;
   console.log('\n=-= Settings Initial Setup =-=');
   console.log('Each of these are changeable from Settings.js at any time!');
   console.log('-=- Authentication -=-');
-  question('Use authentication?' + ' (false/true) >').then(uar => {
-    ua = uar;
-    if (!matching.includes(uar)) ua = false;
-    if (ua === 'false' || ua === false) {
+  question('Use authentication?' + ' (yes/no) >').then(uar => {
+    ua = setters[uar.toLowerCase()];
+    if (ua === false) {
       question('Your Name [If not using auth, leave blank!]' + ' (string) >').then(ynr => {
         yn = ynr;
         question('Port to host server? [Usually 5754]' + ' (number) >').then(response => {
@@ -44,11 +44,11 @@ question('Screensaver activation time?' + ' (number) >').then(ssatr => {
         });
       });
     } else {
-      question('Password [If not using auth, leave blank!]' + ' (string) >').then(pw => {
+      question('Password' + ' (string) >').then(pw => {
         passwd = pw;
-        question('Login Message [If not using auth, leave blank!]' + ' (string) >').then(lmr => {
+        question('Login Message' + ' (string) >').then(lmr => {
           lm = lmr;
-          question('Your Name [If not using auth, leave blank!]' + ' (string) >').then(ynr => {
+          question('Your Name' + ' (string) >').then(ynr => {
             yn = ynr;
             question('Port to host server? [Usually 5754]' + ' (number) >').then(response => {
               if (!Number(response)) response = 5754;
@@ -77,7 +77,7 @@ if (typeof module !== 'undefined') module.exports = { cfg, ScreenSaverActivation
 const Settings = {
   UseAuthentication: ${ua}, // Turn on authentication (every session/restart will require password)
   // Your password is here, but in SHA-512!
-  Password: '${createHash(passwd)}',
+  Password: '${passwd === 'Unset!' ? passwd : createHash(passwd)}',
   LoginMessage: '${lm}', // This message will show for users when they try to login (below "Login to (your name)'s Freedeck")
   YourName: '${yn}', // Shows alongside your login message,
   Port: ${port},
@@ -92,6 +92,7 @@ module.exports = Settings;
   if (!fs.existsSync(path.resolve('./src/settings'))) fs.mkdirSync(path.resolve('./src/settings'));
   fs.writeFileSync(path.join(path.resolve('./src/settings') + '/sounds.js'), soundsJSDefault);
   fs.writeFileSync(path.resolve('./Settings.js'), settingsJSDefault);
+  if (!fs.existsSync(path.resolve('./src/api/persistent'))) fs.mkdirSync(path.resolve('./src/api/persistent'));
   fs.writeFileSync(path.join(path.resolve('./src/api/persistent') + '/theme.sd'), 'Default');
   console.log('[Freedeck] Finished setup, exiting! Start Freedeck with `npm start`.');
   process.exit(0);

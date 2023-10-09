@@ -90,6 +90,7 @@ const setupAllKeypresses = () => {
         document.querySelector('#mcmultikey').innerHTML = `${klD.join('\n')}`;
       }
 
+      document.querySelector('#type').value = ev.target.getAttribute('data-type');
       document.querySelector('#mhe').innerText = 'Editing ' + ev.target.innerText;
       document.querySelector('#newname').value = ev.target.innerText;
       document.querySelector('#newname').setAttribute('data-og-name', ev.target.innerText);
@@ -173,6 +174,9 @@ const createButton = (sound) => {
     btn.setAttribute('data-keys', JSON.stringify(sound.keys));
     key.innerText = sound.keys;
   }
+  if (sound.type) {
+    btn.setAttribute('data-type', sound.type);
+  }
   if (sound.unedit) {
     btn.setAttribute('data-unedit', true);
   }
@@ -232,10 +236,11 @@ const createNewSound = () => {
     event.preventDefault(); // We don't want to submit this fake form
     newDialog.close(nSel.value); // Have to send the select box value here.
     console.log(nSel.value);
-    myUuid = 'CA-' + Math.random().toString().substring(2, 6);
+    myUuid = 'CA-' + Math.random().toString().substring(2, 7);
     const JSONData = {
       name: 'New Key',
-      uuid: myUuid
+      uuid: myUuid,
+      type: 'CA-Custom'
     };
     if (nSel.value === 'default') JSONData.path = 'unnamed.mp3';
     if (nSel.value === 'Keybind') JSONData.keys = JSON.stringify(['A', 'B']);

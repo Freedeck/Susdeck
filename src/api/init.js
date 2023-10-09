@@ -130,6 +130,7 @@ const init = (io, app) => {
               debug.log('Incorrect password', 'SAPI Auth');
             }
             if (callback.type === 'c-reset') {
+              fs.writeFileSync(path.resolve('./src/api/persistent/theme.sd'), 'Default');
               Object.keys(require.cache).forEach((key) => { delete require.cache[key]; });
               io.emit('c-reset');
             }

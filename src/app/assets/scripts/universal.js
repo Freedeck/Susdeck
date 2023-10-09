@@ -29,7 +29,8 @@ const universal = {
       { 'background-size': '400% 400%' },
       { 'font-family': 'Rubik, sans-serif' },
       { background: '45deg, rgba(59, 59, 59, 1) 0%, rgba(94, 94, 94, 1) 33%, rgba(59, 59, 59, 1) 66%, rgba(87, 87, 87, 1) 100%' },
-      { 'modal-color': 'rgba(0,0,0, 0.75)' }
+      { 'modal-color': 'rgba(0,0,0, 0.75)' },
+      { color: 'rgba(255,255,255)' }
     ],
     Blue: [
       { 'icon-count': 11 },

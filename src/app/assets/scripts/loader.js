@@ -199,11 +199,11 @@ document.addEventListener('touchend', e => {
 const tc = document.querySelector('#themechoices');
 Object.keys(universal.themes).forEach(key => {
   const newButton = document.createElement('button');
-  newButton.className = 'keypress white-txt';
+  newButton.className = 'keypress white-txt tc';
   newButton.onclick = () => {
     universal.setTheme(key);
   };
-  newButton.innerText = key + ' Theme';
+  newButton.innerText = key;
   tc.appendChild(newButton);
 });
 

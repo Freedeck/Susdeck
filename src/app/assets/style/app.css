@@ -12,13 +12,19 @@
   --sd-btn-w: 6rem;
   --sd-btn-h: 6rem;
 
+  --sd-btn-rad: 8px;
+
+  --sd-modal-bg: white;
+
   --sd-col: white;
+  --sd-txt-col: black;
 
   --sd-font-size: 15px;
   --sd-icon-tip-fs: 1.5rem;
 }
 
 body {
+  color: var(--sd-txt-col);
   background: rgba(255, 0, 89, 1);
   background: linear-gradient(var(--sd-background));
   background-size: var(--sd-background-size);
@@ -58,10 +64,14 @@ footer {
   text-align: center;
 }
 
+.tc {
+  height: 3rem;
+}
+
 button {
   background-color: var(--sd-btn-background);
   color: var(--sd-col);
-  border-radius: 8px;
+  border-radius: var(--sd-btn-rad);
   width: var(--sd-btn-w);
   height: var(--sd-btn-h);
   background-size: 100% auto;
@@ -70,7 +80,7 @@ button {
 .button {
   background-color: var(--sd-btn-background);
   color: var(--sd-col);
-  border-radius: 8px;
+  border-radius: var(--sd-btn-rad);
   width: var(--sd-btn-w);
   height: var(--sd-btn-h);
 }
@@ -146,6 +156,7 @@ button:hover {
 
 .modal-body {
   padding: 2px 16px;
+  background-color: var(--sd-modal-bg);
 }
 
 .modal-footer {

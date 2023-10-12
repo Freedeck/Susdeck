@@ -42,12 +42,14 @@ const universal = {
     ],
     'Catppuccin Mocha': [
       { 'icon-count': 11 },
+      { 'txt-col': '#cdd6f4 ' },
       { 'template-columns': 'repeat(5,2fr)' },
       { 'background-size': '400% 400%' },
       { 'font-family': 'Rubik, sans-serif' },
       { background: '45deg, rgba(30, 30, 40, 1) 0%, rgba(49,50,68, 1) 33%, rgba(30, 30, 40, 1) 66%, rgba(49,50,68, 1) 100%' },
       { 'btn-background': 'rgba(180, 190, 254, 0.15)' },
-      { 'modal-color': 'rgb(203, 166, 247)' }
+      { 'modal-color': 'rgb(203, 166, 247)' },
+      { 'modal-bg': '#45475a' }
     ],
     'Old Default': [
       { 'icon-count': 8 },
@@ -72,7 +74,24 @@ const universal = {
       { 'font-family': 'Rubik, sans-serif' },
       { background: '45deg, rgba(51,255,119, 1) 0%, rgba(41,250,0, 1) 33%, rgba(51,255,119, 1) 66%, rgba(41,250,0, 1) 100%' },
       { 'modal-color': 'rgba(255, 190, 106, 1)' }
-    ]
+    ],
+    Gruggly: [
+      { 'icon-count': 11 },
+      { 'template-columns': 'repeat(5,1fr)' },
+      { 'background-size': '400% 400%' },
+      { 'font-family': 'Rubik, sans-serif' },
+      { background: '45deg, #4A412A 0%, #4A412A 33%, #4A412A 66%, #4A412A 100%' },
+      { 'modal-color': 'rgba(255, 190, 106, 1)' }
+    ],
+    Circular: [
+      { 'icon-count': 11 },
+      { 'btn-rad': '100px' },
+      { 'template-columns': 'repeat(5,2fr)' },
+      { 'background-size': '400% 400%' },
+      { 'font-family': 'Rubik, sans-serif' },
+      { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' },
+      { 'modal-color': 'rgba(0, 179, 255, 1)' }
+    ],
   },
   retrieveSession: () => {
     return atob(universal.load('session'));
@@ -109,7 +128,7 @@ const universal = {
   exportTheme: () => {
     // Get the theme and export back its root changeable properties
     // This will make importing themes so much easier
-    const currentTheme = universal.load('theme');
+    const currentTheme = universal.load('theme').trim();
     const sUTheme = universal.themes[currentTheme];
     const exportedTheme = [];
     Object.keys(sUTheme).forEach(key => {
@@ -247,7 +266,7 @@ universal.socket.on('set-theme', (theme) => {
       });
     });
   } else {
-    const userTheme = universal.themes[universal.load('theme')];
+    const userTheme = universal.themes[universal.load('theme').trim()];
 
     userTheme.forEach(property => {
       Object.keys(property).forEach(key => {

@@ -56,6 +56,7 @@ const loadPage = (pageNumber = 0) => {
     utils.forEach((util) => {
       keyList.push(util);
       btn = createButton(util);
+      btn.className = 'sortignore';
       btn.setAttribute('data-unedit', true);
       keys.appendChild(btn);
     });

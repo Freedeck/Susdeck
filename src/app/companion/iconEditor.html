@@ -53,7 +53,8 @@
                         <button id="mcsu" style="display: none;">Upload Sound</button>
                         <!-- data-orig-key data-orig-name -->
                         <button id="mcdel" onclick="DeleteKey({ name: document.querySelector('#mhe').getAttribute('data-orig-name') });">Delete Button</button>
-                        <button id="mcset" onclick="changeInfo(document.querySelector('#mhe').getAttribute('data-orig-key'));"class="white-txt">Set</button>
+                        <button id="mcset" onclick="changeInfo(document.querySelector('#mhe').getAttribute('data-orig-key'));" class="white-txt">Set</button>
+                        <button id="mcnp" onclick="sortNP(document.querySelector('#mhe').getAttribute('data-orig-name'), document.querySelector('#uuid').value)">Move to next page</button>
                     </div>
                 </div>
                 <div class="modal-footer">

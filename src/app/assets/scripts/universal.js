@@ -181,7 +181,6 @@ const universal = {
     universal.save('notification_log', universal.load('notification_log') + `,${btoa(JSON.stringify({ timestamp: new Date(), time: new Date().toTimeString(), page: window.location.pathname, message }))}`);
   },
   validSession: () => {
-    universal.sendToast('Logged in!');
     universal.remove('temp_hwid');
   },
   isDevBranch: false,

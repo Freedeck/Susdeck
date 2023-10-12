@@ -18,6 +18,9 @@
     justify-content: center;
     -webkit-app-region: drag;
     height: 75px;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
 }
 
 #topbar > button {

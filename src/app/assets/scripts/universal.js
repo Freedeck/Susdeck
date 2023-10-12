@@ -182,7 +182,6 @@ const universal = {
   },
   validSession: () => {
     universal.sendToast('Logged in!');
-    document.title = universal.load('owner_name') + '\'s Freedeck';
     universal.remove('temp_hwid');
   },
   isDevBranch: false,

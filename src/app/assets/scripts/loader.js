@@ -9,7 +9,6 @@ let currentPage = universal.load('page') ? universal.load('page') : 0;
 universal.remove('hidden');
 
 universal.socket.on('server_connected', (loginStatus) => {
-  universal.sendToast('Connected! Checking for login status..');
   if (!loginStatus) {
     loaded = true;
     universal.socket.emit('Authenticated', universal.createTempHWID());
@@ -21,7 +20,6 @@ universal.socket.on('server_connected', (loginStatus) => {
   } else {
     if (universal.load('session')) { // If _sdsession exists login
       universal.socket.emit('Authenticated', universal.load('session'));
-      universal.sendToast('Sending server session ID..');
     } else {
       universal.sendToast('Not logged in, requesting login');
       loaded = true;

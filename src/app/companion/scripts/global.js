@@ -131,13 +131,11 @@ const enableExperiments = () => {
 };
 
 universal.socket.on('server_connected', (loginStatus) => {
-  universal.sendToast('Connected! Checking for login status..');
   if (!loginStatus) {
     universal.socket.emit('Authenticated', String(universal.createTempHWID()) + 'cm');
   } else {
     if (universal.load('session')) { // If _sdsession exists login
       universal.socket.emit('Authenticated', universal.load('session'));
-      universal.sendToast('Sending server session ID..');
     } else {
       universal.sendToast('Not logged in, requesting login');
       universal.save('temp_hwid', universal.createTempHWID() + 'cm'); // Create a temporary session ID for logging in

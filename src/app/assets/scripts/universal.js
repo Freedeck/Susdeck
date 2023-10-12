@@ -181,7 +181,7 @@ const universal = {
     universal.save('notification_log', universal.load('notification_log') + `,${btoa(JSON.stringify({ timestamp: new Date(), time: new Date().toTimeString(), page: window.location.pathname, message }))}`);
   },
   validSession: () => {
-    universal.sendToast('Session valid!');
+    universal.sendToast('Logged in!');
     document.title = universal.load('owner_name') + '\'s Freedeck';
     universal.remove('temp_hwid');
   },
@@ -199,7 +199,6 @@ notibar.id = 'snackbar';
 
 document.body.appendChild(notibar);
 
-universal.sendToast('Waiting for host...');
 
 universal.socket.on('server_connected', async (authStat, version) => {
   universal.hasConnected = true;
@@ -207,7 +206,6 @@ universal.socket.on('server_connected', async (authStat, version) => {
   if (document.querySelector('#version')) {
     document.querySelector('#version').innerText = 'Freedeck v' + universal.version;
   }
-  universal.sendToast('Host connection established!');
   if (!universal.hasConnected) { socket.emit('c-change-client'); }
 
   await fetch('/api/dbg')

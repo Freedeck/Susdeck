@@ -93,6 +93,7 @@ const universal = {
       { 'modal-color': 'rgba(0, 179, 255, 1)' }
     ],
   },
+  plugins: [],
   retrieveSession: () => {
     return atob(universal.load('session'));
   },
@@ -197,9 +198,8 @@ notibar.id = 'snackbar';
 
 document.body.appendChild(notibar);
 
-universal.socket.on('plugins', (plugins) => {
-  console.log(plugins);
-});
+// eslint-disable-next-line no-return-assign
+universal.socket.on('plugins', list => universal.plugins = list);
 
 universal.socket.on('server_connected', async (authStat, version) => {
   universal.hasConnected = true;

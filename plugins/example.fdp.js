@@ -6,6 +6,11 @@ class examplePlugin extends FDPlugin {
     super('Example Mod', 'Freedeck Api Example!', 'Freedeck.Plugins.Example');
   }
 
+  onButtonPressed (soundData, buttonData) {
+    console.log('Yepperoni');
+    return { type: 'none', data: [soundData, buttonData] };
+  }
+
   onInitialize () {
     console.log('Registering events..');
     FreedeckAPI.registerEvent('etest', this.onEventTest);
@@ -17,8 +22,8 @@ class examplePlugin extends FDPlugin {
     const args = data.args;
     const meta = data.meta;
     console.log('Server version', meta.fdVersion);
-    console.log('Socket ID: ', socket.id);
-    console.log('Socket SID: ', socket.sid);
+    console.log('Socket ID:', socket.id);
+    console.log('Socket SID:', socket.sid);
     console.log('Args:', args);
     return { type: 'none' };
   }

@@ -51,7 +51,7 @@ console.log(picocolors.blue('Initialized in ' + (INIT_END_TIME.getTime() - INIT_
 function FixNullIssue () {
   const a = [];
   sounds.Sounds.forEach(sound => {
-    if (sound === null) sound = { name: '_fd_spacer', uuid: 'FDS-' + require('crypto').randomBytes(8).toString('hex'); };
+    if (sound === null) sound = { name: '_fd_spacer', uuid: 'FDS-' + require('crypto').randomBytes(8).toString('hex') };
     a.push(sound);
   });
   sounds.Sounds = a;

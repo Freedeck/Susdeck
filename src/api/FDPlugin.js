@@ -42,11 +42,11 @@ class FDPlugin {
    * }
    */
   onButtonPressed (soundData, buttonData) {
-    return { soundData, buttonData };
+    return { type: 'none', data: [soundData, buttonData]};
   }
 
   init () {
-    plugins.set(this.nameStr, { author: this.authorStr, type: this.typeStr, name: this.nameStr, FDPlugin: this });
+    plugins.set(this.typeStr, { author: this.authorStr, type: this.typeStr, name: this.nameStr, FDPlugin: this });
   }
 
   set name (name) {

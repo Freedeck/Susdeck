@@ -197,6 +197,9 @@ notibar.id = 'snackbar';
 
 document.body.appendChild(notibar);
 
+universal.socket.on('plugins', (plugins) => {
+  console.log(plugins);
+});
 
 universal.socket.on('server_connected', async (authStat, version) => {
   universal.hasConnected = true;

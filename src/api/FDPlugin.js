@@ -16,9 +16,8 @@ class FDPlugin {
     this.initEvent = this.onInitialize;
     this.hookEvent = this.onEvent;
     this.hookKey = this.onButtonPressed;
-    plugins.set(this.nameStr, { author: this.authorStr, type: this.typeStr, name: this.nameStr, FDPlugin: this });
+    this.init();
     debug.log(name + ' | Plugin', 'Plugins');
-    this.onInitialize();
   }
 
   /**
@@ -47,6 +46,7 @@ class FDPlugin {
 
   init () {
     plugins.set(this.typeStr, { author: this.authorStr, type: this.typeStr, name: this.nameStr, FDPlugin: this });
+    this.onInitialize();
   }
 
   set name (name) {

@@ -1,11 +1,16 @@
 const onUpdate = (evt) => {
   const item = evt.item;
-  const nidx = evt.newIndex;
-  const oidx = evt.oldDraggableIndex;
+  let nidx = evt.newIndex;
+  let oidx = evt.oldDraggableIndex;
 
+  if(universal.load('page') == 0) {
+
+  } else {
+    oidx = (universal.load('page') * universal.iconCount) + evt.oldDraggableIndex + 1;
+    nidx = (universal.load('page')  * universal.iconCount) + evt.newIndex + 1;
+  }
   const name = item.innerText;
   const uuid = item.getAttribute('data-uuid');
-
   universal.socket.emit('c-sort', { name, uuid, nidx, oidx });
 };
 

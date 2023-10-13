@@ -1,17 +1,17 @@
 /* eslint-disable no-undef */
 const keys = document.querySelector('#keys');
 const Pages = {};
-let currentPage = pageNumber = universal.load('page') ? universal.load('page') : 0;
+let currentPage = universal.load('page');
 let keyList = [];
 const klD = [];
 
 universal.socket.on('server_connected', () => {
   universal.socket.emit('c-connected');
   if (document.querySelector('#keys')) {
-    loadPage(currentPage);
     setTimeout(() => { // Wait for page init
       np();
       bp();
+      loadPage(currentPage);
     });
   }
   document.querySelector('#console').style.display = 'none';
@@ -23,6 +23,7 @@ const loadPage = (pageNumber = 0) => {
   autoSort(universal.iconCount);
   currentPage = pageNumber;
   keyList = [];
+  universal.save('page', currentPage);
   const myNode = document.querySelector('#keys');
   while (myNode.firstChild) {
     myNode.removeChild(myNode.lastChild);
@@ -190,6 +191,11 @@ const createButton = (sound) => {
   btn.setAttribute('data-uuid', sound.uuid);
   btn.setAttribute('data-i', sound.i);
   btn.innerText = sound.name;
+  if (sound.name === '_fd_spacer') {
+    btn.className += ' spacer';
+    btn.innerText = '';
+    btn.setAttribute('data-unedit', true);
+  }
   return btn;
 };
 

@@ -1,9 +1,17 @@
 const Event = require('../Event');
 const sounds = require('../../../settings/sounds');
 const fs = require('fs');
+const debug = require('../../../util/debug');
+const fd = require('../../../../package.json');
 
 const ev = new Event('c-sort', ({ socket, args, meta }) => {
   sounds.Sounds = arrayMove(sounds.Sounds, args.oidx, args.nidx);
+  let a = [];
+  sounds.Sounds.forEach(sound => {
+    if (sound === null) sound = { name: '_fd_spacer', uuid: 'FDS-' + require('crypto').randomBytes(8).toString('hex') };
+    a.push(sound);
+  });
+  sounds.Sounds = a;
   fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};
 const soundDir = '../assets/sounds/';

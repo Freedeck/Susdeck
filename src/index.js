@@ -31,6 +31,7 @@ try {
   debug.log('Initializing HTTP routes');
   app.use('/', ex.static('./src/app')); // Initialize HTTP routes for main web app directory
 
+  FixNullIssue();
   app.get('/sounds.js', (req, res) => { res.sendFile(path.join(__dirname, '/settings/sounds.js')); }); // Make sounds.js accessible from apps
 
   if (process.argv[2] === '--no-server') {
@@ -46,6 +47,15 @@ try {
 
 const INIT_END_TIME = new Date();
 console.log(picocolors.blue('Initialized in ' + (INIT_END_TIME.getTime() - INIT_START_TIME.getTime()) + 'ms!'));
+
+function FixNullIssue () {
+  const a = [];
+  sounds.Sounds.forEach(sound => {
+    if (sound === null) sound = { name: '_fd_spacer', uuid: 'FDS-' + require('crypto').randomBytes(8).toString('hex'); };
+    a.push(sound);
+  });
+  sounds.Sounds = a;
+}
 
 function launchCompanion () {
   require('child_process').exec('npx electron src/companion');

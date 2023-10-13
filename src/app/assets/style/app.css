@@ -23,6 +23,10 @@
   --sd-icon-tip-fs: 1.5rem;
 }
 
+.spacer {
+  opacity: 0;
+}
+
 body {
   color: var(--sd-txt-col);
   background: rgba(255, 0, 89, 1);

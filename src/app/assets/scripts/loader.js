@@ -86,6 +86,10 @@ const loadPage = (pageNumber = currentPage) => { // Setup the Freedeck page w/ s
       btn.style.backgroundImage = "url('assets/icons/" + sound.icon + "')";
     }
     btn.innerText = sound.name;
+    if (sound.name === '_fd_spacer') {
+      btn.className += ' spacer';
+      btn.innerText = '';
+    }
     keys.appendChild(btn);
   });
 

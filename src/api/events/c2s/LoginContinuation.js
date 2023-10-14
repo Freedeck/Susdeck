@@ -1,7 +1,7 @@
 const Event = require('../Event');
 
 const ev = new Event('c2sr_login_cont', ({ socket, args, loginList }) => {
-  const sid = args[0];
+  const sid = args;
   if (loginList.includes(sid)) {
     // Indeed it is the same user logging in.
     loginList.splice(loginList.indexOf(sid), 1);

@@ -49,11 +49,39 @@ module.exports = Settings;
   fs.writeFileSync(path.resolve('./Settings.js'), settingsJSDefault);
   if (!fs.existsSync(path.resolve('./src/api/persistent'))) fs.mkdirSync(path.resolve('./src/api/persistent'));
   fs.writeFileSync(path.join(path.resolve('./src/api/persistent') + '/theme.sd'), 'Default');
+  if (process.argv[2] === '--share') {
+    console.log('** SHAREABLE CONFIG: ' + btoa(JSON.stringify({ s: ssat, u: ua, p: btoa(passwd), l: lm, y: yn, po: port, v: pkg.version, pah: createHash(passwd), ha: createHash(ssat + ua + passwd + lm + yn + port) })));
+  }
+
   if (immedExit) {
     console.log('[Freedeck] Finished setup, exiting!');
     process.exit(0);
   }
 };
+
+if (process.argv[2] === '--config') {
+  console.log('***** USING PRECONFIGURED SETTINGS *****');
+  let coded = atob(process.argv[3]);
+  coded = JSON.parse(coded);
+  let integrity = 'OK';
+  if (createHash(atob(coded.p)) !== coded.pah) integrity = 'Password hash does not match';
+  if (createHash(coded.s + coded.u + atob(coded.p) + coded.l + coded.y + coded.po) !== coded.ha) integrity = 'Config hash does not match';
+  if (integrity !== 'OK') {
+    console.log('** Unable to verify integrity of config. Exiting!');
+    console.log('** Reason: ' + integrity);
+    process.exit(1);
+  }
+  afterResponses(coded.s, coded.u, atob(coded.p), coded.l, coded.y, coded.po, false);
+  console.log('***** PRECONFIGURED SETTINGS USED:');
+  console.log('***** SCREENSAVER ACTIVATION TIME: ' + coded.s);
+  console.log('***** USE AUTHENTICATION: ' + coded.u);
+  console.log('***** PASSWORD: ' + atob(coded.p));
+  console.log('***** LOGIN MESSAGE: ' + coded.l);
+  console.log('***** YOUR NAME: ' + coded.y);
+  console.log('***** PORT: ' + coded.po);
+  console.log('***** END OF PRECONFIGURED SETTINGS *****');
+  process.exit(0);
+}
 
 if (process.argv[2] === '--demo') {
   afterResponses(15, true, 'fd', 'Freedeck, the FOSS alternative to Elgato\\\'s Stream Deck.', 'John Mangoseed', 5754, false);

@@ -71,8 +71,8 @@ const init = (io, app) => {
       try {
         if (typeof keyInput !== 'object') keyInput = JSON.parse(keyInput);
         if (keyInput.type !== 'CA-Custom' || keyInput.type !== 'built-in') {
-          if (plugins.get(keyInput.type) && plugins.get(keyInput.type).FDPlugin.disabled === false) {
-            plugins.get(keyInput.type).FDPlugin.hookKey(sbc, keyInput);
+          if (pluginsFiltered.get(keyInput.type) && pluginsFiltered.get(keyInput.type).FDPlugin.disabled === false) {
+            pluginsFiltered.get(keyInput.type).FDPlugin.hookKey(sbc, keyInput);
             return;
           }
         }

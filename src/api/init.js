@@ -38,6 +38,12 @@ const init = (io, app) => {
     plugin.init();
   });
 
+  const pluginsFiltered = new Map();
+  plugins.forEach((plug) => {
+    if (plug.origin === true) return;
+    pluginsFiltered.set(plug.type, plug);
+  });
+
   const SAPI_EVENT_ADD = new Date();
   debug.log(picocolors.blue('SAPI events added in ' + (SAPI_EVENT_ADD.getTime() - SAPI_INIT_START.getTime()) + 'ms!') + ' (Relative to SAPI init)', 'INIT');
 
@@ -51,7 +57,7 @@ const init = (io, app) => {
     // Initial connection
     console.log(picocolors.green('Connected to client @ ' + new Date()));
     socket.emit('server_connected', set.UseAuthentication, require(path.resolve('./package.json')).version); // Send user confirmation: connected to server
-    socket.emit('plugins', Array.from(plugins.keys()));
+    socket.emit('plugins', Array.from(pluginsFiltered));
     socket.emit('set-theme', fs.readFileSync(path.join(__dirname, '/persistent/theme.sd')).toString()); // Tell client to set the theme
     debug.log('Sent user connection success message', 'SAPI ID:' + socket.id);
 

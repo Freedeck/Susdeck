@@ -44,8 +44,13 @@ class FDPlugin {
   }
 
   init (data) {
-    plugins.set(this.typeStr, { author: this.authorStr, type: this.typeStr, name: this.nameStr, FDPlugin: this });
+    if (this.disabled) return;
+    plugins.set(this.typeStr, { author: this.authorStr, type: this.typeStr, name: this.nameStr, origin: true, FDPlugin: this });
     this.onInitialize(data);
+  }
+
+  registerNewType (name, type) {
+    plugins.set(type, { author: this.authorStr, type, name: name, FDPlugin: this });
   }
 
   set name (name) {

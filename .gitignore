@@ -9,3 +9,4 @@ src/app/assets/icons/*
 src/api/persistent/theme.sd
 src/api/persistent/theme.sd
 /plugins/*
+plugins/*

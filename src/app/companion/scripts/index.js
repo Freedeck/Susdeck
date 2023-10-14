@@ -219,14 +219,12 @@ const createNewSound = () => {
   const nLabel = document.createElement('label');
   nLabel.innerText = 'Type of button?  ';
   const nSel = document.createElement('select');
-  const nOptionSoundDefault = document.createElement('option');
-  nOptionSoundDefault.innerText = 'Sound';
-  nOptionSoundDefault.value = 'default';
-  const nOptionKeybind = document.createElement('option');
-  nOptionKeybind.innerText = 'Keybind';
 
-  nSel.appendChild(nOptionSoundDefault);
-  nSel.appendChild(nOptionKeybind);
+  nSel.appendChild(createOpt('Sound', 'default'));
+  nSel.appendChild(createOpt('Keybind', 'Keybind'));
+  universal.plugins.forEach(plugin => {
+    nSel.appendChild(createOpt(plugin[1].name, plugin[1].type));
+  });
   nLabel.appendChild(nSel);
   nMessage.appendChild(nLabel);
   newForm.appendChild(nMessage);
@@ -246,11 +244,11 @@ const createNewSound = () => {
     event.preventDefault(); // We don't want to submit this fake form
     newDialog.close(nSel.value); // Have to send the select box value here.
     console.log(nSel.value);
-    myUuid = 'CA-' + Math.random().toString().substring(2, 7);
+    let myUuid = 'CA-' + Math.random().toString().substring(2, 7);
     const JSONData = {
       name: 'New Key',
       uuid: myUuid,
-      type: 'CA-Custom'
+      type: nSel.value
     };
     if (nSel.value === 'default') JSONData.path = 'unnamed.mp3';
     if (nSel.value === 'Keybind') JSONData.keys = JSON.stringify(['A', 'B']);
@@ -263,6 +261,13 @@ const createNewSound = () => {
     btn.click();
     btn.remove();
   });
+};
+
+const createOpt = (name, value) => {
+  const nopt = document.createElement('option');
+  nopt.innerText = name;
+  nopt.value = value;
+  return nopt;
 };
 
 // Get the modal

@@ -130,7 +130,8 @@ function RewriteSounds () {
   sounds.Sounds.forEach(snd => {
     if (!snd.type) {
       debug.log('No sound type found for ' + snd.name + ', assuming default.');
-      snd.type = 'built-in';
+      if (snd.path) snd.type = 'Sound';
+      if (snd.keys) snd.type = 'Keybind';
     };
   });
   fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */

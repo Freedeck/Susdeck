@@ -3,11 +3,11 @@ const onUpdate = (evt) => {
   let nidx = evt.newIndex;
   let oidx = evt.oldDraggableIndex;
 
-  if(universal.load('page') == 0) {
+  if(universal.load('page') === 0) {
 
   } else {
     oidx = (universal.load('page') * universal.iconCount) + evt.oldDraggableIndex + 1;
-    nidx = (universal.load('page')  * universal.iconCount) + evt.newIndex + 1;
+    nidx = (universal.load('page') * universal.iconCount) + evt.newIndex + 1;
   }
   const name = item.innerText;
   const uuid = item.getAttribute('data-uuid');

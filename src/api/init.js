@@ -55,7 +55,7 @@ const init = (io, app) => {
     debug.log('Sent user connection success message', 'SAPI ID:' + socket.id);
 
     socket.on('keypress', (keyInput) => {
-      if (set.UseAuthentication && !sessions.includes(socket.sid)) { socket.emit('session_invalid'); return; };
+      if (set.UseAuthentication && !sessions.includes(socket.sid)) { socket.emit('session_invalid'); return; }
       if (keyInput === null) return;
       try {
         if (typeof keyInput !== 'object') keyInput = JSON.parse(keyInput);
@@ -66,8 +66,7 @@ const init = (io, app) => {
           }
         }
         if (keyInput.keys) {
-          let keys = [];
-          keys = JSON.parse(keyInput.keys);
+          const keys = JSON.parse(keyInput.keys);
           keys.forEach((key) => {
             if (key === 'none' || key === '') return;
             rob.keyToggle(key, 'down');

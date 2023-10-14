@@ -1,12 +1,10 @@
 const Event = require('../Event');
 const sounds = require('../../../settings/sounds');
 const fs = require('fs');
-const debug = require('../../../util/debug');
-const fd = require('../../../../package.json');
 
 const ev = new Event('c-sort', ({ socket, args, meta }) => {
   sounds.Sounds = arrayMove(sounds.Sounds, args.oidx, args.nidx);
-  let a = [];
+  const a = [];
   sounds.Sounds.forEach(sound => {
     if (sound === null) sound = { name: '_fd_spacer', uuid: 'FDS-' + require('crypto').randomBytes(8).toString('hex') };
     a.push(sound);

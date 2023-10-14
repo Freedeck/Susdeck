@@ -92,7 +92,7 @@ const universal = {
       { 'font-family': 'Rubik, sans-serif' },
       { background: '45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%' },
       { 'modal-color': 'rgba(0, 179, 255, 1)' }
-    ],
+    ]
   },
   plugins: [],
   retrieveSession: () => {
@@ -153,18 +153,9 @@ const universal = {
   importTheme: (themeJSONData) => {
     const themeData = JSON.parse(themeJSONData);
     const themeName = themeData.name;
-    const themeRules = themeData.data;
-
-    universal.themes[themeName] = themeRules;
-  },
-  grantExperiments: () => {
-    universal.save('experiments', true);
-    universal.socket.emit('c-client-reload');
+    universal.themes[themeName] = themeData.data;
   },
   isInDebug: false,
-  isExperimental: () => {
-    return universal.load('experiments') ? universal.load('experiments') : 'false';
-  },
   clearToasts: () => {
     document.querySelectorAll('#toast').forEach(elem => elem.remove());
   },

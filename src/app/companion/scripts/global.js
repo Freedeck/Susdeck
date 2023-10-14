@@ -2,16 +2,7 @@
 /* eslint-disable no-unused-vars */
 
 const pages = [
-  {
-    name: 'Home',
-    page: 'index.html',
-    icon: 'img/home.svg'
-  },
-  {
-    name: 'Icons',
-    page: 'iconEditor.html',
-    icon: 'img/icon.svg'
-  }
+
 ];
 
 Susaudio.init();

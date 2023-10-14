@@ -76,6 +76,8 @@ const setupAllKeypresses = () => {
       document.querySelector('#mhe').setAttribute('data-orig-name', ev.target.innerText);
       document.querySelector('#mhe').setAttribute('data-orig-key', ev.target.getAttribute('data-keys'));
       document.querySelector('#mcmultikey').innerHTML = '';
+      document.querySelector('#npl').style.display = 'inline';
+      document.querySelector('#newpath').style.display = 'inline';
 
       if (ev.target.getAttribute('data-multi') && ev.target.getAttribute('data-keys')) {
         klD.splice(0, klD.length);
@@ -89,7 +91,7 @@ const setupAllKeypresses = () => {
         document.querySelector('#npl').style.display = 'none';
         document.querySelector('#newpath').style.display = 'none';
 
-        document.querySelector('#mcmultikey').innerHTML = `${klD.join('\n')}`;
+        document.querySelector('#mcmultikey').innerHTML = `<h3>Keys</h3>${klD.join('\n')}`;
       }
 
       document.querySelector('#type').value = ev.target.getAttribute('data-type');
@@ -215,7 +217,7 @@ const createNewSound = () => {
 
   const nMessage = document.createElement('p');
   const nLabel = document.createElement('label');
-  nLabel.innerText = 'Type of button?';
+  nLabel.innerText = 'Type of button?  ';
   const nSel = document.createElement('select');
   const nOptionSoundDefault = document.createElement('option');
   nOptionSoundDefault.innerText = 'Sound';
@@ -231,6 +233,7 @@ const createNewSound = () => {
   newDialog.appendChild(newForm);
   newDialog.appendChild(cancelBtn);
   newDialog.appendChild(confirmBtn);
+  newDialog.style.backgroundColor = 'var(--sd-modal-bg)';
   document.body.appendChild(newDialog);
   newDialog.showModal();
   nSel.addEventListener('change', (e) => {

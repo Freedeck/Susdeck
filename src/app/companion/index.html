@@ -38,6 +38,53 @@
         </div>
         <br /> <br />
         <details>
+            <summary><h2>Icon Editor</h2></summary>
+            <div class="functions">
+                <button onclick="createNewSound()">New Button</button>
+                <button onclick="bp()">Previous Page</button>
+                <button onclick="np()">Next Page</button>
+            </div>
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header" id="mh">
+                        <h2 id="mhe"></h2>
+                    </div>
+                    <div class="modal-body" id="mc">
+                        <label for="newname"><h3>Name</h3></label>
+                        <input type="text" id="newname" value="" />
+                        <br />
+                        <div id="mcmultikey"></div>
+                        <h3>Information</h3>
+                        <label id="npl" for="newpath">Sound Name:</label>
+                        <input id="newpath" value="" disabled/>
+                        <br/>
+                        <label id="ul" for="uuid">UUID:</label>
+                        <input id="uuid" disabled>
+                        <br/>
+                        <label id="ty" for="type">Sound Type:</label>
+                        <input id="type" disabled>
+                        <h3>Options</h3>
+                        <div class="functions">
+                            <button id="mcip"></button>
+                            <button id="mcsu" style="display: none;">Upload Sound</button>
+                            <!-- data-orig-key data-orig-name -->
+                            <button id="mcdel" onclick="DeleteKey({ name: document.querySelector('#mhe').getAttribute('data-orig-name') });">Delete Button</button>
+                            <button id="mcset" onclick="changeInfo(document.querySelector('#mhe').getAttribute('data-orig-key'));" class="white-txt">Set</button>
+                            <button id="mcnp" onclick="sortNP(document.querySelector('#mhe').getAttribute('data-orig-name'), document.querySelector('#uuid').value)">Move to next page</button>
+                            <button id="mcnp" onclick="sortBP(document.querySelector('#mhe').getAttribute('data-orig-name'), document.querySelector('#uuid').value)">Move to last page</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <h3>Freedeck Companion</h3>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div id="keys" style="background-color: rgba(0, 0, 0, 0.19); padding: 15px; border-radius: 15px;">
+            </div>
+        </details>
+        <br/>
+        <details>
             <summary><h2>Themes</h2></summary>
             <div id="themechoices" class="experiment"></div>
             <details>
@@ -74,12 +121,14 @@
 
     <!-- Libraries -->
     <script src="/socket.io/socket.io.js"></script>
+    <script src="scripts/Sortable.min.js"></script>
     <script src="../assets/scripts/universal.js"></script>
     <script src="../assets/scripts/Susaudio.js"></script>
     <script src="../../sounds.js"></script>
     <!-- My scripts -->
     <script src="scripts/index.js"></script>
     <script src="scripts/global.js"></script>
+    <script src="scripts/sorts.js"></script>
     <script src="scripts/theming.js"></script>
     <script src="scripts/soundboard.js"></script>
     <script src="scripts/soundboard-universal.js"></script>

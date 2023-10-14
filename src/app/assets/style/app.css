@@ -23,6 +23,8 @@
   --sd-icon-tip-fs: 1.5rem;
 
   --sd-input-bg: #FFFFFF;
+
+  --sd-logo-size: 75px;
 }
 
 .spacer {
@@ -71,18 +73,18 @@ body {
 }
 
 .freedeck-logo {
-  width: 75px;
-  height: 75px;
+  width: var(--sd-logo-size);
+  height: var(--sd-logo-size);
   transition-duration: .5s;
 }
 
 .freedeck-logo:hover {
-  transform: scale(1.1);
-  cursor: grab;
+  /*transform: scale(1.1);*/
+  cursor: crosshair;
 }
 
 footer {
-  position: absolute;
+  position: fixed;
   z-index: -5754;
   bottom: 0;
   right: 0;
@@ -213,9 +215,11 @@ button:hover {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  height: 12%;
-  width: 35%;
-  max-width: 35%;
+  height: var(--sd-logo-size);
+  max-height: var(--sd-logo-size);
+  min-width: var(--sd-logo-size);
+  max-width: var(--sd-logo-size);
+  padding: 5px;
   border-radius: 15px;
   position: fixed;
   z-index: 1;
@@ -269,6 +273,7 @@ button:hover {
 
 #sidebar a:hover {
   background-color: #8f8f8f;
+
   transform: scale(1.1) rotate(var(--sd-rotation-degrees));
 }
 

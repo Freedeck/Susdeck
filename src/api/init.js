@@ -121,6 +121,7 @@ const init = (io, app) => {
             await event.callback({ socket, args, loginList, meta: metadata });
           } else {
             const callback = event.callback({ socket, args, loginList, meta: metadata });
+            if (!callback) return;
             if (callback.type === 'companion_conn') {
               debug.log('Companion is connected to server.', 'SAPI ID: ' + socket.id);
               socket.companion = true;

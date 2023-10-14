@@ -16,7 +16,7 @@
     "companion": "node src/index.js --no-server",
     "debug": "node src/index.js --debug",
     "setup-demo-config": "node src/setup.js --demo",
-    "demo": "npm run setup-demo-config && npm run start",
+    "demo": "npm run setup-demo-config && node src/index.js --demo",
     "postinstall": "npm run setup"
   },
   "devDependencies": {

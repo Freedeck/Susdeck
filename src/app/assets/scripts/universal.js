@@ -199,8 +199,6 @@ universal.socket.on('plugins', list => universal.plugins = list);
 universal.socket.on('server_connected', async (authStat, version) => {
   universal.hasConnected = true;
   universal.version = version;
-  universal.remove('session');
-  universal.remove('temp_hwid');
   if (document.querySelector('#version')) {
     document.querySelector('#version').innerText = 'Freedeck v' + universal.version;
   }
@@ -297,6 +295,8 @@ universal.socket.on('session_invalid', () => { // The server has restarted, and 
   loading.innerHTML = `<h1>Freedeck</h1>
   Please wait a moment..
   <div id='console'></div>`;
+  universal.remove('session');
+  universal.remove('temp_hwid');
   universal.socket.emit('c2sr_login', universal.load('temp_hwid')); // Request login form with session ID
 });
 

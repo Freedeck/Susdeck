@@ -41,6 +41,9 @@ try {
   if (process.argv[2] !== '--no-server') hostServer();
 
   updateFDConfig();
+  if (process.argv[2] === '--demo') {
+    console.log(picocolors.green('Demo mode enabled!'));
+  }
 } catch (err) {
   console.log(picocolors.red('Presumably fatal error:'), err);
 }

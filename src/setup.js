@@ -56,7 +56,7 @@ module.exports = Settings;
 };
 
 if (process.argv[2] === '--demo') {
-  afterResponses(15, true, 'fd', 'Freedeck, the FOSS alternative to Elgato\'s Stream Deck.', 'John Mangoseed', 5754, false);
+  afterResponses(15, true, 'fd', 'Freedeck, the FOSS alternative to Elgato\\\'s Stream Deck.', 'John Mangoseed', 5754, false);
   console.log('***** DEMO MODE ENABLED! *****');
   console.log('- PASSWORD: fd');
   console.log('- PORT: 5754');

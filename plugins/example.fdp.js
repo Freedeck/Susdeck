@@ -3,7 +3,7 @@ const FreedeckAPI = require('../src/api/FreedeckAPI');
 
 class examplePlugin extends FDPlugin {
   constructor () {
-    super('Example Mod', 'Freedeck Api Example!', 'Freedeck.Plugins.Example');
+    super('Example Mod', 'Freedeck Api Example!', 'Freedeck.Plugins.Example', true);
   }
 
   onButtonPressed (soundData, buttonData) {
@@ -11,8 +11,7 @@ class examplePlugin extends FDPlugin {
     return { type: 'none', data: [soundData, buttonData] };
   }
 
-  onInitialize () {
-    console.log('Registering events..');
+  onInitialize (data) {
     FreedeckAPI.registerEvent('etest', this.onEventTest);
     FreedeckAPI.registerEvent('etest2', this.onOtherEventTest);
   }

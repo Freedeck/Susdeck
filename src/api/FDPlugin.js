@@ -7,16 +7,15 @@ class FDPlugin {
    * @param {string} name - The name of your plugin
    * @param {string} author - The author of this plugin
    * @param {string} type - The namespace for this plugin
+   * @param {boolean} disabled - Is your plugin disabled?
    * @example new MyPlugin("My Cool Plugin!", "John Mangoseed", "Mangoseed.MyFirstPlugin")
    */
-  constructor (name, author, type) {
+  constructor (name, author, type, disabled = false) {
     this.nameStr = name;
     this.authorStr = author;
     this.typeStr = type;
-    this.initEvent = this.onInitialize;
-    this.hookEvent = this.onEvent;
+    this.disabled = disabled;
     this.hookKey = this.onButtonPressed;
-    this.init();
     debug.log(name + ' | Plugin', 'Plugins');
   }
 
@@ -44,9 +43,9 @@ class FDPlugin {
     return { type: 'none', data: [soundData, buttonData]};
   }
 
-  init () {
+  init (data) {
     plugins.set(this.typeStr, { author: this.authorStr, type: this.typeStr, name: this.nameStr, FDPlugin: this });
-    this.onInitialize();
+    this.onInitialize(data);
   }
 
   set name (name) {

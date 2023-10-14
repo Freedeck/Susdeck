@@ -19,26 +19,13 @@
         <h2>Settings</h2>
         <h3 id="now-playing"></h3>
         <div class="flex">
-            <button onclick="Susaudio.stopAll()">Stop All</button>
-            <button onclick="universal.socket.emit('c-change')">Remote Reload</button>
             <button onclick="reset()">Reset Clients</button>
-            <!-- <button onclick="enableExperiments()">Toggle Freedeck Experiments</button> -->
         </div>
         <br />
-        <h3>Themes</h3>
-        <div id="themechoices" class="experiment"></div>
-        <br />
-        <input id="theme-exported" placeholder="Exported Theme" disabled>
-        <br />
-        <div class="functions">
-            <input type="text" id="theme-import" placeholder="Freedeck Theme Code">
-            <button onclick="importTheme()">Import Theme</button>
-            <button onclick="universal.exportTheme()">Export Theme</button>
-            <button onclick="removeTheme()">Remove Custom Theme</button>
-        </div>
         <div id="console"></div>
         <div id="list" style="display: flex; flex-direction: column; gap:5px;"></div>
         <div id="keys"></div>
+        <br>
     </div>
 
     <script>
@@ -47,6 +34,7 @@
                 universal.socket.emit('c-reset')
             }
         }
+
     </script>
 
     <!-- Libraries -->

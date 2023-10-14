@@ -27,7 +27,8 @@ const arrayMove = (arr, oldIndex, newIndex) => {
 
 new Sortable(document.querySelector('#keys'), {
   onUpdate,
-  filter: '.sortignore'
+  filter: '.sortignore',
+  preventOnFilter: true
 });
 
 const sortNP = (name, uuid) => {
@@ -35,6 +36,7 @@ const sortNP = (name, uuid) => {
   const idx = Sounds.indexOf(found);
   const lnp = universal.iconCount + idx;
   universal.socket.emit('c-sort', { name: found.name, uuid: found.uuid, nidx: lnp, oidx: idx });
+  universal.socket.emit('c-change');
 };
 
 const sortBP = (name, uuid) => {
@@ -42,4 +44,5 @@ const sortBP = (name, uuid) => {
   const idx = Sounds.indexOf(found);
   const lnp = Math.abs(idx - universal.iconCount);
   universal.socket.emit('c-sort', { name: found.name, uuid: found.uuid, nidx: lnp, oidx: idx });
+  universal.socket.emit('c-change');
 };

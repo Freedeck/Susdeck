@@ -21,10 +21,35 @@
 
   --sd-font-size: 15px;
   --sd-icon-tip-fs: 1.5rem;
+
+  --sd-input-bg: #FFFFFF;
 }
 
 .spacer {
   opacity: 0;
+}
+details {
+  text-decoration-style: none;
+}
+details summary {
+  cursor: pointer;
+}
+
+details summary > * {
+  display: inline;
+}
+details > summary {
+  list-style: none;
+  background-color: rgba(0,0,0,0.15);
+  width: max-content;
+  padding: 1.25rem;
+  border-radius: var(--sd-btn-rad);
+}
+
+input {
+  background-color: var(--sd-input-bg);
+  border: 0;
+  border-radius: 0.5rem;
 }
 
 body {

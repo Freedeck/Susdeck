@@ -49,7 +49,8 @@ const universal = {
       { background: '45deg, rgba(30, 30, 40, 1) 0%, rgba(49,50,68, 1) 33%, rgba(30, 30, 40, 1) 66%, rgba(49,50,68, 1) 100%' },
       { 'btn-background': 'rgba(180, 190, 254, 0.15)' },
       { 'modal-color': 'rgb(203, 166, 247)' },
-      { 'modal-bg': '#45475a' }
+      { 'modal-bg': '#45475a' },
+      { 'input-bg': '#313244' }
     ],
     'Old Default': [
       { 'icon-count': 8 },

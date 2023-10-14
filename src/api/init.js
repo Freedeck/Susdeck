@@ -140,6 +140,9 @@ const init = (io, app) => {
             if (callback.type === 'c-change') {
               io.emit('c-change');
             }
+            if (callback.type === 'c-set-ico') {
+              io.emit('c-set-ico', callback.data);
+            }
             if (callback.type === 'custom_theme') {
               const t = callback.data;
               io.emit('custom_theme', t);

@@ -35,6 +35,18 @@
         <label for="out-pbr"><strong>Playback Rate</strong></label><input type="range" min="0" max="2" value="1" step="0.1" id="out-pbr" onchange="pbrChanged()">
         <p>These are set as you slide the sliders!</p>
         <div id="console"></div>
+        <h2>Themes</h2>
+        <div id="themechoices" class="experiment"></div>
+        <details>
+            <summary><h3>Theme Tools</h3></summary>
+            <div class="functions">
+                <input type="text" id="theme-import" placeholder="Freedeck Theme Code">
+                <button onclick="importTheme()">Import Theme</button>
+                <button onclick="universal.exportTheme()">Export Theme</button>
+                <button onclick="removeTheme()">Remove Custom Theme</button>
+            </div>
+            <input id="theme-exported" placeholder="Exported Theme" disabled>
+        </details>
     </div>
 
     <!-- Libraries -->
@@ -45,6 +57,7 @@
     <!-- My scripts -->
     <script src="scripts/index.js"></script>
     <script src="scripts/global.js"></script>
+    <script src="scripts/theming.js"></script>
     <script src="scripts/soundboard.js"></script>
     <script src="scripts/soundboard-universal.js"></script>
 </body>

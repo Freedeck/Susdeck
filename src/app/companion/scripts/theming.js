@@ -1,6 +1,6 @@
 /* eslint-disable no-undef, no-unused-vars */
 
-const tc = document.querySelector('#themechoices');
+const thc = document.querySelector('#themechoices');
 Object.keys(universal.themes).forEach(key => {
   const newbutton = document.createElement('button');
   newbutton.className = 'tc';
@@ -8,5 +8,5 @@ Object.keys(universal.themes).forEach(key => {
     universal.setTheme(key);
   };
   newbutton.innerText = key;
-  tc.appendChild(newbutton);
+  thc.appendChild(newbutton);
 });

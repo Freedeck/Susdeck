@@ -16,20 +16,7 @@ const pages = [
     name: 'Settings',
     page: 'settings.html',
     icon: 'img/settings.svg'
-  },
-  {
-    name: 'Experiments',
-    page: 'experiments.html',
-    icon: 'img/experiments.svg',
-    experimental: true
   }
-];
-
-const experiments = [
-  // {
-  //   name: 'Show Notification Log in Settings',
-  //   html: '<h1>DANGEROUS EXPERIMENT</h1><p>This will make your settings page take substantially longer to load.</p>'
-  // }
 ];
 
 Susaudio.init();
@@ -48,7 +35,6 @@ document.body.onload = () => {
 };
 
 pages.forEach(page => {
-  if (page.experimental && universal.load('experiments') !== 'true') return;
   const btn = document.createElement('a');
   btn.href = page.page;
   const btnImg = document.createElement('img');
@@ -74,61 +60,10 @@ document.querySelector('#topbar > button').onclick = () => {
   window.close();
 };
 
-experiments.forEach(experiment => {
-  if (!document.body.contains(document.querySelector('#experiments'))) return;
-  document.querySelector('#exp-count').innerText = `${experiments.length} experiment${experiments.length > 1 ? 's' : ''} available`;
-  const newDiv = document.createElement('div');
-  if (!universal.load('experiments_list')) universal.save('experiments_list', JSON.stringify([]));
-  const expl = JSON.parse(universal.load('experiments_list'));
-  const exists = expl.find(elem => elem === JSON.stringify(experiment));
-  const existsString = exists ? 'ON' : 'OFF';
-  const enableBtn = document.createElement('button');
-  enableBtn.innerText = 'Toggle Experiment';
-  enableBtn.onclick = () => {
-    if (!universal.load('experiments_list')) universal.save('experiments_list', JSON.stringify([]));
-    const expl = JSON.parse(universal.load('experiments_list'));
-    const exists = expl.find(elem => elem === JSON.stringify(experiment));
-    if (exists) {
-      universal.sendToast('Experiment toggled off');
-      expl.splice(expl.indexOf(JSON.stringify(experiment)), 1);
-      const exists = expl.find(elem => elem === JSON.stringify(experiment));
-      newDiv.innerHTML = `${exists ? 'ON' : 'OFF'} <p>${experiment.name}</p>${experiment.html}`;
-      newDiv.appendChild(enableBtn);
-    } else {
-      universal.sendToast('Experiment toggled on');
-      expl.push(JSON.stringify(experiment));
-      const exists = expl.find(elem => elem === JSON.stringify(experiment));
-      newDiv.innerHTML = `${exists ? 'ON' : 'OFF'} <p>${experiment.name}</p>${experiment.html}`;
-      newDiv.appendChild(enableBtn);
-    }
-    universal.save('experiments_list', JSON.stringify(expl));
-  };
-  newDiv.className = 'experiment';
-  newDiv.innerHTML = `${existsString} <p>${experiment.name}</p>${experiment.html}`;
-  newDiv.appendChild(enableBtn);
-  document.querySelector('#experiments').appendChild(newDiv);
-});
-
-const enableExperiments = () => {
-  if (confirm('Are you sure you want to turn on experiments?')) {
-    if (universal.load('experiments') === 'true') {
-      if (!confirm('Experiments is already enabled, do you want to turn off experiments?')) return;
-      universal.save('experiments', false);
-      universal.log('Experiments', 'LocalStorage Experiments off');
-      universal.sendToast('Experiments disabled.');
-      // Clear the user's custom theme
-      universal.remove('experiments_list');
-      universal.log('Experiments', 'Removed theme, requesting refresh');
-      universal.socket.emit('c-change');
-      return;
-    }
-    universal.save('experiments', true);
-    universal.save('experiments_list', JSON.stringify([]));
-
-    universal.sendToast('Experiments enabled.');
-    universal.socket.emit('c-change');
-  }
-};
+if(universal.load('experiments')) {
+  universal.remove('experiments');
+  universal.remove('experiments_list');
+}
 
 universal.socket.on('server_connected', (loginStatus) => {
   if (!loginStatus) {

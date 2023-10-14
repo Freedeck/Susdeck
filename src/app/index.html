@@ -33,11 +33,18 @@
   </noscript>
   <div id="keys" style="display: none;"></div>
   <div id="settings">
-    <div id="themechoices" class="experiment"></div>
-    <button class="keypress white-txt" onclick="window.location.replace(window.location.href)">Reload This</button>
+    <h2>On-Deck Settings</h2>
+    <div style="display: flex; flex-direction: row; gap: 4px"></div>
+    <details>
+      <summary>Themes</summary>
+      <div id="themechoices" class="experiment"></div>
+    </details>
+    <details>
+      <summary>Companion</summary>
+      <a href="/companion"><button class="keypress white-txt">To Companion</button></a>
+    </details>
     <button class="keypress white-txt" onclick="universal.socket.emit('c-change')">Reload All</button>
     <button class="keypress white-txt" onclick="document.querySelector('#settings').style.animationName = 'size-down'; setTimeout(()=>{document.querySelector('#settings').style.display = 'none'},250); document.querySelector('#keys').style.animationName = 'size-up'; document.querySelector('#keys').style.animationDuration = '.5s'; document.querySelector('#keys').style.display = 'grid'; setTimeout(()=>{ document.querySelector('#keys').style.animationDuration = '.25s';},500); universal.remove('hidden')">Back</button>
-    <a href="/companion"><button class="keypress white-txt">To Companion</button></a>
   </div>
   <div id="root"></div>
 

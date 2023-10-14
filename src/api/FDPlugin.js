@@ -40,7 +40,7 @@ class FDPlugin {
    * }
    */
   onButtonPressed (soundData, buttonData) {
-    return { type: 'none', data: [soundData, buttonData]};
+    return { type: 'none', data: [soundData, buttonData] };
   }
 
   init (data) {

@@ -50,7 +50,7 @@ class FDPlugin {
   }
 
   registerNewType (name, type) {
-    plugins.set(type, { author: this.authorStr, type, name: name, FDPlugin: this });
+    plugins.set(type, { author: this.authorStr, type, name, FDPlugin: this });
   }
 
   set name (name) {

@@ -15,6 +15,7 @@
     "headless": "node src/index.js --headless",
     "companion": "node src/index.js --no-server",
     "debug": "node src/index.js --debug",
+    "setup-demo-config": "node src/setup.js --demo",
     "postinstall": "npm run setup"
   },
   "devDependencies": {

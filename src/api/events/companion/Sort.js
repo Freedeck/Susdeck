@@ -2,7 +2,7 @@ const Event = require('../Event');
 const sounds = require('../../../settings/sounds');
 const fs = require('fs');
 
-const ev = new Event('c-sort', ({ socket, args, meta }) => {
+const ev = new Event('c-sort', ({ args, meta }) => {
   sounds.Sounds = arrayMove(sounds.Sounds, args.oidx, args.nidx);
   const a = [];
   sounds.Sounds.forEach(sound => {

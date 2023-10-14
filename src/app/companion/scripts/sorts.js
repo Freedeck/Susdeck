@@ -3,7 +3,7 @@ const onUpdate = (evt) => {
   let nidx = evt.newIndex;
   let oidx = evt.oldDraggableIndex;
 
-  if(universal.load('page') === 0) {
+  if (universal.load('page') === 0) {
 
   } else {
     oidx = (universal.load('page') * universal.iconCount) + evt.oldDraggableIndex + 1;

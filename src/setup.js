@@ -20,13 +20,11 @@ const question = (q) => {
 
 console.clear();
 console.log(`Freedeck v${pkg.version} setup`);
-console.log('=-= Sound Initial Setup =-=');
-console.log('Each of these are changeable from Companion at any time!');
 const setters = { false: false, true: true, yes: true, no: false };
 // eslint-disable-next-line no-var
 var ssat, ua, passwd, lm, yn, port;
 
-const afterResponses = (ssat, ua, passwd, lm, yn, port) => {
+const afterResponses = (ssat, ua, passwd, lm, yn, port, immedExit = true) => {
   const soundsJSDefault = `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const ScreenSaverActivationTime = ${ssat};
 const soundDir = '../assets/sounds/';
@@ -51,12 +49,14 @@ module.exports = Settings;
   fs.writeFileSync(path.resolve('./Settings.js'), settingsJSDefault);
   if (!fs.existsSync(path.resolve('./src/api/persistent'))) fs.mkdirSync(path.resolve('./src/api/persistent'));
   fs.writeFileSync(path.join(path.resolve('./src/api/persistent') + '/theme.sd'), 'Default');
-  console.log('[Freedeck] Finished setup, exiting!');
-  process.exit(0);
+  if (immedExit) {
+    console.log('[Freedeck] Finished setup, exiting!');
+    process.exit(0);
+  }
 };
 
 if (process.argv[2] === '--demo') {
-  afterResponses(15, true, 'fd', 'Freedeck, the FOSS alternative to Elgato\'s Stream Deck.', 'John Mangoseed', 5754);
+  afterResponses(15, true, 'fd', 'Freedeck, the FOSS alternative to Elgato\'s Stream Deck.', 'John Mangoseed', 5754, false);
   console.log('***** DEMO MODE ENABLED! *****');
   console.log('- PASSWORD: fd');
   console.log('- PORT: 5754');
@@ -66,6 +66,8 @@ if (process.argv[2] === '--demo') {
   process.exit(0);
 }
 
+console.log('=-= Companion Setup =-=');
+console.log('Each of these are changeable from Companion at any time!');
 question('Screensaver activation time?' + ' (number, max: 15) >').then(ssatr => {
   if (Number(ssatr) >= 15) ssatr = 15;
   ssat = ssatr;

@@ -210,16 +210,16 @@ button:hover {
 #sidebar {
   /* Pure magic right here. */
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  height: 65%;
-  width: 15%;
-  max-width: 87px;
+  height: 12%;
+  width: 35%;
+  max-width: 35%;
   border-radius: 15px;
   position: fixed;
   z-index: 1;
-  top: 20%;
+  bottom: 0;
   left: 0;
   opacity: 0.1;
   background-color: #111;
@@ -288,7 +288,7 @@ button:hover {
 #main {
   transition: margin-left .5s;
   padding: 20px;
-  margin-left: 4.35rem;
+  /*margin-left: 4.35rem;*/
 }
 
 .active-page {

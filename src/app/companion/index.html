@@ -21,33 +21,56 @@
         <input type="range" min="1" step="1" max="15" id="screenSaverActivationTime">
         <label for="screenSaverActivationTime">Screensaver activation time (seconds):</label>
         <label for="screenSaverActivationTime" id="amt">5</label>
+        <br />
+        <input type="range" min="0" max="1" step="0.1" value="1" id="out-vol" onchange="volChanged()">
+        <label for="out-vol">Volume</label>
+        <br />
+        <input type="range" min="0" max="2" value="1" step="0.1" id="out-pbr" onchange="pbrChanged()">
+        <label for="out-pbr">Playback Rate</label>
+        <br />
+        <select id="sai"></select>
+        <label for="sai">Select Output <strong>(VB-Cable)</strong></label>
         <br /> <br />
         <div class="functions">
             <button onclick="setSet()">Set</button>
             <button onclick="universal.socket.emit('c-change')">Remote Reload</button>
             <button onclick="universal.socket.emit('press-sound', 'Stop All', 'Stop All')">Stop All</button>
-            <a href="/"><button>To Freedeck UI</button></a>
         </div>
-        <h2>Sound Setup</h2>
-        <label for="sai"><strong>Select Source (VB-Cable)</strong></label><select id="sai"></select>
         <br /> <br />
-        <label for="out-vol"><strong>Volume</strong></label><input type="range" min="0" max="1" step="0.1" value="1" id="out-vol" onchange="volChanged()">
-        <label for="out-pbr"><strong>Playback Rate</strong></label><input type="range" min="0" max="2" value="1" step="0.1" id="out-pbr" onchange="pbrChanged()">
-        <p>These are set as you slide the sliders!</p>
-        <div id="console"></div>
-        <h2>Themes</h2>
-        <div id="themechoices" class="experiment"></div>
         <details>
-            <summary><h3>Theme Tools</h3></summary>
+            <summary><h2>Themes</h2></summary>
+            <div id="themechoices" class="experiment"></div>
+            <details>
+                <summary><h3>Theme Tools</h3></summary>
+                <div class="functions">
+                    <input type="text" id="theme-import" placeholder="Freedeck Theme Code">
+                    <button onclick="importTheme()">Import Theme</button>
+                    <button onclick="universal.exportTheme()">Export Theme</button>
+                    <button onclick="removeTheme()">Remove Custom Theme</button>
+                </div>
+                <input id="theme-exported" placeholder="Exported Theme" disabled>
+            </details>
+        </details>
+        <br/>
+        <details>
+            <summary><h2>Danger Zone</h2></summary>
             <div class="functions">
-                <input type="text" id="theme-import" placeholder="Freedeck Theme Code">
-                <button onclick="importTheme()">Import Theme</button>
-                <button onclick="universal.exportTheme()">Export Theme</button>
-                <button onclick="removeTheme()">Remove Custom Theme</button>
+                <a href="/"><button>To Freedeck UI</button></a>
+                <button onclick="reset()">Reset</button>
             </div>
-            <input id="theme-exported" placeholder="Exported Theme" disabled>
         </details>
     </div>
+    <div id="console"></div>
+
+
+    <script>
+      const reset = () => {
+        if(confirm("Are you sure you want to reset? Your custom theme alongside all other settings will be removed on reset.")) {
+          universal.socket.emit('c-reset')
+        }
+      }
+
+    </script>
 
     <!-- Libraries -->
     <script src="/socket.io/socket.io.js"></script>

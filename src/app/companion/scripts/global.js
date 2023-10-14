@@ -11,11 +11,6 @@ const pages = [
     name: 'Icons',
     page: 'iconEditor.html',
     icon: 'img/icon.svg'
-  },
-  {
-    name: 'Settings',
-    page: 'settings.html',
-    icon: 'img/settings.svg'
   }
 ];
 

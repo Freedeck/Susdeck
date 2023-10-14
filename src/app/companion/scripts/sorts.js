@@ -12,6 +12,7 @@ const onUpdate = (evt) => {
   const name = item.innerText;
   const uuid = item.getAttribute('data-uuid');
   universal.socket.emit('c-sort', { name, uuid, nidx, oidx });
+  universal.reloadAllButThisClient();
 };
 
 const arrayMove = (arr, oldIndex, newIndex) => {

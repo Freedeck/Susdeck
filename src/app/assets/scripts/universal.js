@@ -127,6 +127,9 @@ const universal = {
     universal.socket.emit('c-theme', t);
     universal.socket.emit('c-change');
   },
+  reloadAllButThisClient: () => {
+    universal.socket.emit('c-change-ex');
+  },
   exportTheme: () => {
     // Get the theme and export back its root changeable properties
     // This will make importing themes so much easier

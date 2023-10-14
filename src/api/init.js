@@ -18,6 +18,7 @@ const metadata = {
 const init = (io, app) => {
   const loginList = [];
   const sessions = [];
+  const connections = [];
 
   debug.log('Adding socket events', 'SAPI');
   const SAPI_INIT_START = new Date();
@@ -44,6 +45,7 @@ const init = (io, app) => {
     socket.id = Math.random().toString().substring(2, 4) + require('crypto').randomBytes(8 + 2).toString('hex');
     socket.conn = new Date().getTime();
     debug.log('New connection - new socket ID generated: ' + socket.id);
+    connections.push(socket);
 
     // Initial connection
     console.log(picocolors.green('Connected to client @ ' + new Date()));
@@ -139,6 +141,12 @@ const init = (io, app) => {
             }
             if (callback.type === 'c-change') {
               io.emit('c-change');
+            }
+            if (callback.type === 'c-change-ex') {
+              connections.forEach(sock => {
+                if (sock === callback.data) return;
+                sock.emit('c-change');
+              });
             }
             if (callback.type === 'c-set-ico') {
               io.emit('c-set-ico', callback.data);

@@ -199,6 +199,8 @@ universal.socket.on('plugins', list => universal.plugins = list);
 universal.socket.on('server_connected', async (authStat, version) => {
   universal.hasConnected = true;
   universal.version = version;
+  universal.remove('session');
+  universal.remove('temp_hwid');
   if (document.querySelector('#version')) {
     document.querySelector('#version').innerText = 'Freedeck v' + universal.version;
   }

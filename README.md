@@ -15,20 +15,20 @@ You can join the official Freedeck Discord server over at [https://discord.gg/Sd
 
 ## What does it look like?
 
-This screenshots was taken on the iPod Touch 7th gen.
-![Freedeck UI preview](https://aidens.dev/captures/imgs/Freedeck_460_Default.png)
+This screenshot was taken on the iPod Touch 7th gen.
+![Freedeck UI preview](https://aidens.dev/captures/imgs/Freedeck_500_Default.png)
 
-Here's a preview of the login screen:
+Here's a preview of the login screen (Companion, but it looks the same for the Client):
 ![Freedeck Login preview](https://aidens.dev/captures/imgs/Screenshot@2023_10_03_19_17_36291-aidens.png)
 
 Here's a preview of the Companion Home screen:
-![Freedeck Companion Home preview](https://aidens.dev/captures/imgs/Screenshot@2023_10_03_19_18_58431-aidens.png)
+![Freedeck Companion Home preview](https://aidens.dev/captures/imgs/Screenshot@2023_10_13_21_23_97146-aidens.png)
 
-Here's a preview of the Companion Icon screen:
-![Freedeck Companion Home preview](https://aidens.dev/captures/imgs/Screenshot@2023_10_03_19_18_74555-aidens.png)
+Here's a preview of the Companion Icon Editor:
+![Freedeck Companion Home preview](https://aidens.dev/captures/imgs/Screenshot@2023_10_13_21_23_94203-aidens.png)
 
-Here's a preview of the Companion Settings screen:
-![Freedeck Companion Home preview](https://aidens.dev/captures/imgs/Screenshot@2023_10_03_19_19_81345-aidens.png)
+Here's a preview of the Companion Theming screen:
+![Freedeck Companion Home preview](https://aidens.dev/captures/imgs/Screenshot@2023_10_13_21_24_19395-aidens.png)
 
 ## How do I use Freedeck?
 
@@ -58,16 +58,14 @@ It is very easy to add your own macros/sounds.
 All you need to do is use Companion!
 To add a sound, start Freedeck with `npm start` (If you haven't already).  
 Wait for Companion to open, and press the paint palette icon.  
-Now, press `New Sound`. You might need to press `Next Page` to scroll through the pages to find the sound.  
-Once you do, click it.  
-You are now able to edit the sound path and name.
+Now, press `New Button`. You will be greeted with a modal that will let you configure every part of the button.
 
-**Make sure that anything in the `Sound Path` is inside of `src/app/assets/sounds` or it will not work!**  
+**Sounds are uploaded by pressing Upload Sound! This will only show up for Sound buttons!**  
 Congratulations, you have added your own sound, all using Freedeck Companion's magic.
 
 ## Theming?
 
-Freedeck themes are under the paint bucket icon in Companion.  
+Freedeck themes are under the "Themes" button in Companion.  
 You can export and import custom themes, or use the provided ones.  
 An example of custom theme code is:  
 
@@ -79,7 +77,7 @@ Each CSS rule is a JSON object in an array.
 However, `icon-count` and `modal-color` are custom.  
 `modal-color` relates to the icon editing modal in Companion.  
 `icon-count` relates to the amount of icons on your screen. You may need to adjust `template-columns` after to see those icons.  
-Remember that Freedeck puts 3 icons (Stop All, Reload, Icon), so set it to however many icons you want, subtracted by 3.
+Remember that Freedeck puts 3 icons (Stop All, Reload, On-Deck), so set it to however many icons you want, subtracted by 3.
 
 ## Tested Devices
 

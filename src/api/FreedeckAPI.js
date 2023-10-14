@@ -1,5 +1,7 @@
 /* eslint-disable no-tabs */
-const { sockApiEvents } = require('./init');
+const { sockApiEvents,
+	notificationQueue
+} = require('./init');
 
 const FreedeckAPI = {
   /**
@@ -12,6 +14,10 @@ const FreedeckAPI = {
 	 */
   registerEvent: (type, callback, protectedB = false) => {
     return sockApiEvents.set(type, { callback, event: type, prot: protectedB });
+  },
+
+  pushNotification: (notification) => {
+    return notificationQueue.push(notification);
   }
 };
 

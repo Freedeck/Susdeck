@@ -10,6 +10,8 @@ const picocolors = require('../util/picocolors');
 const apiEvents = new Map();
 const sockApiEvents = new Map();
 const plugins = new Map();
+const notificationQueue = [];
+const pluginsFiltered = new Map();
 
 const metadata = {
   fdVersion: pkg.version
@@ -38,12 +40,6 @@ const init = (io, app) => {
     plugin.init();
   });
 
-  const pluginsFiltered = new Map();
-  plugins.forEach((plug) => {
-    if (plug.origin === true) return;
-    pluginsFiltered.set(plug.type, plug);
-  });
-
   const SAPI_EVENT_ADD = new Date();
   debug.log(picocolors.blue('SAPI events added in ' + (SAPI_EVENT_ADD.getTime() - SAPI_INIT_START.getTime()) + 'ms!') + ' (Relative to SAPI init)', 'INIT');
 
@@ -58,8 +54,16 @@ const init = (io, app) => {
     console.log(picocolors.green('Connected to client @ ' + new Date()));
     socket.emit('server_connected', set.UseAuthentication, require(path.resolve('./package.json')).version); // Send user confirmation: connected to server
     socket.emit('plugins', Array.from(pluginsFiltered));
+    socket.emit('plugins-origins', Array.from(plugins));
     socket.emit('set-theme', fs.readFileSync(path.join(__dirname, '/persistent/theme.sd')).toString()); // Tell client to set the theme
     debug.log('Sent user connection success message', 'SAPI ID:' + socket.id);
+
+    setInterval(() => {
+      notificationQueue.forEach(notification => {
+        io.emit('server_notification', notification);
+        notificationQueue.splice(notificationQueue.indexOf(notification), 1);
+      });
+    }, 20);
 
     socket.on('keypress', (keyInput) => {
       if (set.UseAuthentication && !sessions.includes(socket.sid)) { socket.emit('session_invalid'); return; }
@@ -219,4 +223,4 @@ const init = (io, app) => {
   debug.log(picocolors.blue('SAPI initialized in ' + (SAPI_INIT_END.getTime() - SAPI_INIT_START.getTime()) + 'ms!'), 'INIT');
 };
 
-module.exports = { init, apiEvents, sockApiEvents, plugins };
+module.exports = { init, apiEvents, sockApiEvents, plugins, pluginsFiltered, notificationQueue };

@@ -285,6 +285,16 @@ if (document.querySelector('#screenSaverActivationTime')) {
   };
 }
 
+universal.socket.on('plugins-origins', (data) => {
+  data.forEach(plug => {
+    const newPlug = document.createElement('div');
+    const plugData = plug[1];
+    newPlug.className = 'plugin';
+    newPlug.innerText = plugData.name + ' by ' + plugData.author + ' | ' + plugData.type;
+    document.querySelector('.plugins').appendChild(newPlug);
+  });
+});
+
 // eslint-disable-next-line no-unused-vars
 const changeInfo = (key) => {
   const oldpath = document.querySelector('#newpath').getAttribute('data-o-path');

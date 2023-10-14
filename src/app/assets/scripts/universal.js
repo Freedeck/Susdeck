@@ -95,6 +95,7 @@ const universal = {
     ]
   },
   plugins: [],
+  pluginOrigins: [],
   retrieveSession: () => {
     return atob(universal.load('session'));
   },
@@ -195,6 +196,7 @@ document.body.appendChild(notibar);
 
 // eslint-disable-next-line no-return-assign
 universal.socket.on('plugins', list => universal.plugins = list);
+universal.socket.on('plugins-origins', list => universal.pluginOrigins = list);
 
 universal.socket.on('server_connected', async (authStat, version) => {
   universal.hasConnected = true;

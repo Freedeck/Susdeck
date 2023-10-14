@@ -54,6 +54,13 @@ input {
   border-radius: 0.5rem;
 }
 
+.plugins {
+  background-color: rgba(0,0,0,0.25);
+  border-radius: 12px;
+  padding: 5px;
+  width: max-content;
+}
+
 body {
   color: var(--sd-txt-col);
   background: rgba(255, 0, 89, 1);

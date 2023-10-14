@@ -1,4 +1,4 @@
-const { plugins } = require('./init');
+const { plugins, pluginsFiltered } = require('./init');
 const debug = require('../util/debug');
 
 class FDPlugin {
@@ -50,7 +50,7 @@ class FDPlugin {
   }
 
   registerNewType (name, type) {
-    plugins.set(type, { author: this.authorStr, type, name, FDPlugin: this });
+    pluginsFiltered.set(type, { author: this.authorStr, type, name, FDPlugin: this });
   }
 
   set name (name) {

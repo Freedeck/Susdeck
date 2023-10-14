@@ -32,6 +32,7 @@ const init = (io, app) => {
   });
 
   fs.readdirSync(path.resolve('./plugins')).forEach((file) => {
+    if (!file.endsWith('.fdp.js')) return;
     const Query = require(path.resolve('./plugins/' + file));
     const plugin = new Query();
     plugin.init();

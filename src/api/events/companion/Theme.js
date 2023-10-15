@@ -6,7 +6,7 @@ const Event = require('../Event');
 const ev = new Event('fd.companion.theme', ({ args }) => {
   debug.log('Set theme: ' + args);
   fs.writeFileSync(path.join(path.dirname(require.main.filename) + '/api/persistent/theme.sd'), args);
-  return { type: 'c-change' };
+  return { type: 'change' };
 }, true);
 
 module.exports = ev;

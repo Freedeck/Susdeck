@@ -192,16 +192,16 @@ const init = (io, app) => {
     if (callback.type === 'req_login_fail') {
       debug.log('User with SID ' + callback.data + ' is not allowed to use login form.', 'SAPI Auth');
     }
-    if (callback.type === 'c-change') {
+    if (callback.type === 'change') {
       io.emit('fd.companion.change');
     }
-    if (callback.type === 'c-change-ex') {
+    if (callback.type === 'change-ex') {
       connections.forEach(sock => {
         if (sock === callback.data) return;
         sock.emit('fd.companion.change');
       });
     }
-    if (callback.type === 'c-set-ico') {
+    if (callback.type === 'set-ico') {
       io.emit('fd.companion.set-ico', callback.data);
     }
     if (callback.type === 'redir') {
@@ -214,7 +214,7 @@ const init = (io, app) => {
     if (callback.type === 'incorrect_password') {
       debug.log('Incorrect password', 'SAPI Auth');
     }
-    if (callback.type === 'c-reset') {
+    if (callback.type === 'reset') {
       fs.writeFileSync(path.resolve('./src/api/persistent/theme.sd'), 'Default');
       Object.keys(require.cache).forEach((key) => { delete require.cache[key]; });
       io.emit('fd.companion.reset');

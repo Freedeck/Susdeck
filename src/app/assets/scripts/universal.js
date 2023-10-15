@@ -182,7 +182,7 @@ const universal = {
   },
   isDevBranch: false,
   iconCount: 8,
-  debugStat: 'Debug',
+  debugStat: 'Dev',
   root: document.querySelector(':root'),
   hasConnected: false
 };

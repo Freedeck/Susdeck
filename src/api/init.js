@@ -33,6 +33,9 @@ const init = (io, app) => {
     });
   });
 
+  const SAPI_EVENT_ADD = new Date();
+  debug.log(picocolors.blue('SAPI events added in ' + (SAPI_EVENT_ADD.getTime() - SAPI_INIT_START.getTime()) + 'ms!') + ' (Relative to SAPI init)', 'INIT');
+
   fs.readdirSync(path.resolve('./plugins')).forEach((file) => {
     if (!file.endsWith('.fdp.js')) return;
     const Query = require(path.resolve('./plugins/' + file));
@@ -40,8 +43,8 @@ const init = (io, app) => {
     plugin.init();
   });
 
-  const SAPI_EVENT_ADD = new Date();
-  debug.log(picocolors.blue('SAPI events added in ' + (SAPI_EVENT_ADD.getTime() - SAPI_INIT_START.getTime()) + 'ms!') + ' (Relative to SAPI init)', 'INIT');
+  const SAPI_PLUG_ADD = new Date();
+  debug.log(picocolors.blue('SAPI plugins added in ' + (SAPI_PLUG_ADD.getTime() - SAPI_INIT_START.getTime()) + 'ms!') + ' (Relative to SAPI init)', 'INIT');
 
   io.on('connection', (socket) => {
     // Give sockets a randomized ID
@@ -158,7 +161,7 @@ const init = (io, app) => {
   apiEvents.forEach(ev => {
     if (ev.type === 'get') app.get('/api/' + ev.route, (req, res) => ev.exec(req, res));
     if (ev.type === 'post') app.post('/api/' + ev.route, (req, res) => ev.exec(req, res));
-    debug.log(ev.route + ' | HTTP endpoint added', 'Events');
+    debug.log(ev.route + ' | Endpoint added', 'HTTP');
   });
   const SAPI_HTTP_ADD = new Date();
   debug.log(picocolors.blue('HTTP endpoints added in ' + (SAPI_HTTP_ADD.getTime() - SAPI_INIT_START.getTime()) + 'ms!') + ' (Relative to SAPI init)', 'INIT');

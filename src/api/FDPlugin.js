@@ -17,7 +17,9 @@ class FDPlugin {
     this.disabled = disabled;
     this.isData = isData;
     this.hookKey = this.onButtonPressed;
-    debug.log(name + ' | Plugin', 'Plugins');
+    let str = 'Plugin added';
+    if (this.disabled) str = 'Plugin is disabled';
+    debug.log(name + ' | ' + type + ' | ' + str, 'Plugins');
   }
 
   /**

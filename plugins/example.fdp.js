@@ -3,7 +3,7 @@ const FreedeckAPI = require('../src/api/FreedeckAPI');
 
 class examplePlugin extends FDPlugin {
   constructor () {
-    super('Example Mod', 'Freedeck Api Example!', 'Freedeck.Plugins.Example', true);
+    super('Example Mod', 'Freedeck Api Example!', 'fd.plugins.example', true);
   }
 
   onButtonPressed (soundData, buttonData) {

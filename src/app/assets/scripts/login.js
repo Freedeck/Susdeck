@@ -2,10 +2,10 @@
 
 universal.socket.on('server_connected', () => {
   loaded = true;
-  universal.socket.emit('c2sr_login_cont', universal.load('temp_hwid'));
+  universal.socket.emit('fd.c2s.login.loaded', universal.load('temp_hwid'));
 });
 
-universal.socket.on('user_ack_cont', (status) => {
+universal.socket.on('fd.c2s.login.form', (status) => {
   if (status === 'session_expired') {
     universal.save('session', '');
     window.location.replace('../../index.html');
@@ -17,7 +17,7 @@ universal.socket.on('user_ack_cont', (status) => {
   document.querySelector('#login').style.display = 'block';
 });
 
-universal.socket.on('s2cs_login', (sessionID, g) => {
+universal.socket.on('fd.c2s.login.valid', (sessionID, g) => {
   // This session ID is actually kinda important
   universal.save('session', sessionID);
   window.location.href = g;
@@ -26,5 +26,5 @@ universal.socket.on('s2cs_login', (sessionID, g) => {
 // eslint-disable-next-line no-unused-vars
 const submit = () => {
   universal.sendToast('Logging you in..');
-  universal.socket.emit('c2sd_login', [document.querySelector('#password').value, universal.load('temp_hwid')]);
+  universal.socket.emit('fd.c2s.login.data', [document.querySelector('#password').value, universal.load('temp_hwid')]);
 };

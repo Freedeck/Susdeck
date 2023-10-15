@@ -60,7 +60,7 @@ universal.socket.on('server_connected', (loginStatus) => {
     } else {
       universal.sendToast('Not logged in, requesting login');
       universal.save('temp_hwid', universal.createTempHWID() + 'cm'); // Create a temporary session ID for logging in
-      universal.socket.emit('c2sr_login', universal.load('temp_hwid')); // Request login form with session ID
+      universal.socket.emit('fd.c2s.login.request', universal.load('temp_hwid')); // Request login form with session ID
     }
   }
 });
@@ -69,7 +69,7 @@ universal.socket.on('session_valid', () => {
   universal.validSession();
 });
 
-universal.socket.on('s2ca_login', (nextLoc, loginMsg, ownerName) => { // When we get the green light to login
+universal.socket.on('fd.c2s.login.request_accepted', (nextLoc, loginMsg, ownerName) => { // When we get the green light to login
   loaded = true; // Keep page from reloading
   universal.sendToast('Request received by server, let\'s log in.');
   universal.save('login_msg', loginMsg);

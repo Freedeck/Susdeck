@@ -103,7 +103,7 @@ const universal = {
     return Math.ceil(Math.random() * 4096 + 2047);
   },
   log: (sender, data) => {
-    universal.socket.emit('c2s_log', `[Companion/${sender}] ${data}`);
+    universal.socket.emit('fd.c2s.data.log', `[Companion/${sender}] ${data}`);
   },
   save: (name, value) => {
     localStorage.setItem('_sd_' + name, value);
@@ -282,7 +282,7 @@ universal.socket.on('set-theme', (theme) => {
   }
 });
 
-universal.socket.on('s2ca_incorrect_pass', () => {
+universal.socket.on('fd.c2s.login.incorrect_password', () => {
   universal.sendToast('Incorrect password!');
 });
 
@@ -300,7 +300,7 @@ universal.socket.on('session_invalid', () => { // The server has restarted, and 
   <div id='console'></div>`;
   universal.remove('session');
   universal.remove('temp_hwid');
-  universal.socket.emit('c2sr_login', universal.load('temp_hwid')); // Request login form with session ID
+  universal.socket.emit('fd.c2s.login.request', universal.load('temp_hwid')); // Request login form with session ID
 });
 
 universal.socket.on('fd.companion.change', () => {

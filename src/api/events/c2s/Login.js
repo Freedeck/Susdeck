@@ -2,7 +2,7 @@ const settings = require('../../../../Settings');
 
 const Event = require('../Event');
 
-const ev = new Event('c2sr_login', ({ socket, args, loginList }) => {
+const ev = new Event('fd.c2s.login.request', ({ socket, args, loginList }) => {
   const sid = args[0];
   if (!sid) return;
   if (settings.UseAuthentication === false) { socket.emit('session_valid'); loginList.push(sid); return { type: 'authoff' }; }
@@ -11,7 +11,7 @@ const ev = new Event('c2sr_login', ({ socket, args, loginList }) => {
   socket.sid = sid;
 
   // We'll confirm that we want to take user to the login page.
-  socket.emit('s2ca_login', '/assets/tools/login.html', settings.LoginMessage, settings.YourName);
+  socket.emit('fd.c2s.login.request_accepted', '/assets/tools/login.html', settings.LoginMessage, settings.YourName);
   return { type: 'requested_login', data: sid };
 });
 

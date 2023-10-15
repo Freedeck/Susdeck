@@ -4,7 +4,7 @@ const debug = require('../../../util/debug');
 
 const Event = require('../Event');
 
-const ev = new Event('c2sd_login', ({ socket, args }) => {
+const ev = new Event('fd.c2s.login.data', ({ socket, args }) => {
   const password = args[0];
   const hwid = args[1];
   debug.log('Recieved password request!');
@@ -17,10 +17,10 @@ const ev = new Event('c2sd_login', ({ socket, args }) => {
     socket.twid = hwid;
     let path = '/';
     if (hwid.endsWith('cm')) path += 'companion';
-    socket.emit('s2cs_login', sid, path);
+    socket.emit('fd.c2s.login.valid', sid, path);
     return { type: 'validate_session', data: sid };
   } else {
-    socket.emit('s2ca_incorrect_pass');
+    socket.emit('fd.c2s.login.incorrect_password');
     return { type: 'incorrect_password' };
   }
 });

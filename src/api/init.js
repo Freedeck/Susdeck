@@ -73,7 +73,11 @@ const init = (io, app) => {
         if (keyInput.type !== 'CA-Custom' || keyInput.type !== 'built-in') {
           if (pluginsFiltered.get(keyInput.type) && pluginsFiltered.get(keyInput.type).FDPlugin.disabled === false) {
             const callback = pluginsFiltered.get(keyInput.type).FDPlugin.hookKey(sbc, keyInput);
-            doCallbacks(callback, socket, io);
+            try {
+              doCallbacks(callback, socket, io);
+            } catch (err) {
+              console.error(err);
+            }
             return;
           }
         }
@@ -117,14 +121,8 @@ const init = (io, app) => {
       }
     });
     sockApiEvents.forEach((event) => {
-      // plugins.forEach((plug) => {
-      //   socket.on(plug.type, (data) => {
-      //     plug.FDPlugin.hookEvent(data);
-      //   });
-      // });
       try {
         socket.on(event.event, async (args) => {
-          // if (event.event === 'c2sr_login') { socket.emit('session_valid'); }
           if (event.prot) {
             if (socket.sid === undefined || !sessions.includes(socket.sid)) { socket.emit('noauth'); return; }
           }
@@ -134,7 +132,11 @@ const init = (io, app) => {
           } else {
             const callback = event.callback({ socket, args, loginList, meta: metadata });
             if (!callback) return;
-            doCallbacks(callback, socket,io);
+            try {
+              doCallbacks(callback, socket, io);
+            } catch (err) {
+              console.error(err);
+            }
           }
         });
       } catch (err) {

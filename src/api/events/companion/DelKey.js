@@ -2,7 +2,7 @@ const sounds = require('../../../settings/sounds');
 const fs = require('fs');
 const Event = require('../Event');
 
-const ev = new Event('c-delete-key', ({ socket, args, meta }) => {
+const ev = new Event('fd.companion.delete-key', ({ socket, args, meta }) => {
   if (sounds.Sounds.length === 1) {
     socket.emit('server_notification', 'You must have at least 1 button!');
     return false;

@@ -2,7 +2,7 @@ const sounds = require('../../../settings/sounds');
 const Event = require('../Event');
 const fs = require('fs');
 
-const ev = new Event('c-newkey', ({ args, meta }) => {
+const ev = new Event('fd.companion.newkey', ({ args, meta }) => {
   sounds.Sounds.push(args);
   fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};

@@ -72,7 +72,9 @@ const init = (io, app) => {
         if (typeof keyInput !== 'object') keyInput = JSON.parse(keyInput);
         if (keyInput.type !== 'CA-Custom' || keyInput.type !== 'built-in') {
           if (pluginsFiltered.get(keyInput.type) && pluginsFiltered.get(keyInput.type).FDPlugin.disabled === false) {
-            const callback = pluginsFiltered.get(keyInput.type).FDPlugin.hookKey(sbc, keyInput);
+            const plugin = pluginsFiltered.get(keyInput.type).FDPlugin;
+            const callback = plugin.hookKey(sbc, keyInput);
+            debug.log(keyInput.type + ' ran', 'SAPI ID:' + socket.id);
             try {
               doCallbacks(callback, socket, io);
             } catch (err) {
@@ -191,16 +193,16 @@ const init = (io, app) => {
       debug.log('User with SID ' + callback.data + ' is not allowed to use login form.', 'SAPI Auth');
     }
     if (callback.type === 'c-change') {
-      io.emit('c-change');
+      io.emit('fd.companion.change');
     }
     if (callback.type === 'c-change-ex') {
       connections.forEach(sock => {
         if (sock === callback.data) return;
-        sock.emit('c-change');
+        sock.emit('fd.companion.change');
       });
     }
     if (callback.type === 'c-set-ico') {
-      io.emit('c-set-ico', callback.data);
+      io.emit('fd.companion.set-ico', callback.data);
     }
     if (callback.type === 'redir') {
       socket.emit('redir', callback.data);
@@ -215,7 +217,7 @@ const init = (io, app) => {
     if (callback.type === 'c-reset') {
       fs.writeFileSync(path.resolve('./src/api/persistent/theme.sd'), 'Default');
       Object.keys(require.cache).forEach((key) => { delete require.cache[key]; });
-      io.emit('c-reset');
+      io.emit('fd.companion.reset');
     }
   }
 

@@ -1,6 +1,6 @@
 const Event = require('../Event');
 
-const ev = new Event('c-del-theme', () => {
+const ev = new Event('fd.companion.del-theme', () => {
   return { type: 'custom_theme', data: 'del' };
 }, true);
 

@@ -1,6 +1,6 @@
 const Event = require('../Event');
 
-const ev = new Event('c-reset', () => {
+const ev = new Event('fd.companion.reset', () => {
   return { type: 'c-reset' };
 }, true);
 

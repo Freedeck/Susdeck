@@ -2,7 +2,7 @@ const sounds = require('../../../settings/sounds');
 const fs = require('fs');
 const Event = require('../Event');
 
-const ev = new Event('c-info-change', ({ socket, args, meta }) => {
+const ev = new Event('fd.companion.info-change', ({ socket, args, meta }) => {
   args = JSON.parse(args);
   if (args.type === 'key_edit') {
     try {

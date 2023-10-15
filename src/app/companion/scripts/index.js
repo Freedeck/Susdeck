@@ -6,7 +6,7 @@ let keyList = [];
 const klD = [];
 
 universal.socket.on('server_connected', () => {
-  universal.socket.emit('c-connected');
+  universal.socket.emit('fd.companion.connected');
   if (document.querySelector('#keys')) {
     setTimeout(() => { // Wait for page init
       np();
@@ -166,7 +166,7 @@ const upload = (path, accept) => {
 const DeleteKey = (key) => {
   // eslint-disable-next-line no-undef
   Sounds.splice(Sounds.indexOf({ name: key.name }), 1);
-  universal.socket.emit('c-delete-key', { name: key.name });
+  universal.socket.emit('fd.companion.delete-key', { name: key.name });
 };
 
 const createButton = (sound) => {
@@ -253,7 +253,7 @@ const createNewSound = () => {
     if (nSel.value === 'default') JSONData.path = 'unnamed.mp3';
     if (nSel.value === 'Keybind') JSONData.keys = JSON.stringify(['A', 'B']);
     Sounds.push(JSONData);
-    universal.socket.emit('c-newkey', JSONData);
+    universal.socket.emit('fd.companion.newkey', JSONData);
     keyList.push(JSONData);
     btn = createButton(JSONData);
     keys.appendChild(btn);
@@ -311,15 +311,15 @@ const changeInfo = (key) => {
   const newname = document.querySelector('#newname').value;
   const uuid = document.querySelector('#uuid').value;
   const name = document.querySelector('#newname').getAttribute('data-og-name');
-  universal.emit('c-info-change', { type: 'key_edit', uuid, oldIcon, icon, key, keysArr, ogValues, oldpath, newpath, newname, name });
+  universal.emit('fd.companion.info-change', { type: 'key_edit', uuid, oldIcon, icon, key, keysArr, ogValues, oldpath, newpath, newname, name });
   loadPage();
 };
 
 // eslint-disable-next-line no-unused-vars
 const setSet = () => {
   const screenSaverActivationTime = document.querySelector('#screenSaverActivationTime').value;
-  universal.emit('c-info-change', { type: 'screenSaver_soc', screenSaverActivationTime });
-  universal.socket.emit('c-change');
+  universal.emit('fd.companion.info-change', { type: 'screenSaver_soc', screenSaverActivationTime });
+  universal.socket.emit('fd.companion.change');
 };
 
 universal.socket.on('companion_info', (screenSaverActivationTime, myId) => {

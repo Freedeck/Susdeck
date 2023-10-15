@@ -125,11 +125,11 @@ const universal = {
   },
   setTheme: (t) => {
     universal.save('theme', t);
-    universal.socket.emit('c-theme', t);
-    universal.socket.emit('c-change');
+    universal.socket.emit('fd.companion.theme', t);
+    universal.socket.emit('fd.companion.change');
   },
   reloadAllButThisClient: () => {
-    universal.socket.emit('c-change-ex');
+    universal.socket.emit('fd.companion.change-ex');
   },
   exportTheme: () => {
     // Get the theme and export back its root changeable properties
@@ -205,7 +205,7 @@ universal.socket.on('server_connected', async (authStat, version) => {
   if (document.querySelector('#version')) {
     document.querySelector('#version').innerText = 'Freedeck v' + universal.version;
   }
-  if (!universal.hasConnected) { socket.emit('c-change-client'); }
+  if (!universal.hasConnected) { socket.emit('fd.companion.change-client'); }
 
   await fetch('/api/dbg')
     .then(data =>
@@ -232,7 +232,7 @@ universal.socket.on('noauth', () => {
   universal.sendToast('You are not authorized to do this action!');
 });
 
-universal.socket.on('c-reset', () => {
+universal.socket.on('fd.companion.reset', () => {
   universal.remove('welcomed');
   universal.remove('custom_theme');
   window.location.replace(window.location.href);
@@ -248,7 +248,7 @@ universal.socket.on('set-theme', (theme) => {
   if (universal.load('custom_theme')) {
     const theme2 = universal.load('custom_theme');
     const parsed = JSON.parse(JSON.parse(theme2));
-    universal.socket.emit('c-send-theme', theme2);
+    universal.socket.emit('fd.companion.send-theme', theme2);
     parsed.forEach(property => {
       Object.keys(property).forEach(key => {
         universal.root.style.setProperty(`--sd-${key}`, property[key]);
@@ -303,7 +303,7 @@ universal.socket.on('session_invalid', () => { // The server has restarted, and 
   universal.socket.emit('c2sr_login', universal.load('temp_hwid')); // Request login form with session ID
 });
 
-universal.socket.on('c-change', () => {
+universal.socket.on('fd.companion.change', () => {
   window.location.replace(window.location.href);
 });
 

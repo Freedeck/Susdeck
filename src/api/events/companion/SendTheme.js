@@ -1,6 +1,6 @@
 const Event = require('../Event');
 
-const ev = new Event('c-send-theme', ({ args }) => {
+const ev = new Event('fd.companion.send-theme', ({ args }) => {
   return { type: 'custom_theme', data: args };
 }, true);
 

@@ -33,7 +33,7 @@
         <br /> <br />
         <div class="functions">
             <button onclick="setSet()">Set</button>
-            <button onclick="universal.socket.emit('c-change')">Remote Reload</button>
+            <button onclick="universal.socket.emit('fd.companion.change')">Remote Reload</button>
             <button onclick="universal.socket.emit('press-sound', 'Stop All', 'Stop All')">Stop All</button>
         </div>
         <br /> <br />
@@ -118,7 +118,7 @@
     <script>
       const reset = () => {
         if(confirm("Are you sure you want to reset? Your custom theme alongside all other settings will be removed on reset.")) {
-          universal.socket.emit('c-reset')
+          universal.socket.emit('fd.companion.reset')
         }
       }
 

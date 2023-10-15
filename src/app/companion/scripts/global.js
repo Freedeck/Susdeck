@@ -81,20 +81,20 @@ const importTheme = () => {
   theme = document.querySelector('#theme-import').value;
   if (theme === '' || theme === ' ') {
     universal.remove('custom_theme');
-    universal.socket.emit('c-del-theme', theme);
-    universal.socket.emit('c-change');
+    universal.socket.emit('fd.companion.del-theme', theme);
+    universal.socket.emit('fd.companion.change');
     return;
   }
   universal.save('custom_theme', theme);
-  universal.socket.emit('c-send-theme', theme);
-  universal.socket.emit('c-change');
+  universal.socket.emit('fd.companion.send-theme', theme);
+  universal.socket.emit('fd.companion.change');
 };
 
 const removeTheme = () => {
   theme = document.querySelector('#theme-import').value;
   universal.remove('custom_theme');
-  universal.socket.emit('c-del-theme', theme);
-  universal.socket.emit('c-change');
+  universal.socket.emit('fd.companion.del-theme', theme);
+  universal.socket.emit('fd.companion.change');
 };
 
 if (document.body.dataset.page) {

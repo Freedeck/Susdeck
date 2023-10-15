@@ -1,6 +1,6 @@
 {
   "name": "freedeck",
-  "version": "5.1.0",
+  "version": "5.2.0-dev",
   "main": "src/index.js",
   "description": "The FOSS Elgato Stream Deck alternative",
   "dependencies": {

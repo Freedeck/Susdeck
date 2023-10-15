@@ -35,15 +35,48 @@ new Sortable(document.querySelector('#keys'), {
 const sortNP = (name, uuid) => {
   const found = Sounds.find(thing => thing.uuid === uuid);
   const idx = Sounds.indexOf(found);
-  const lnp = universal.iconCount + idx;
-  universal.socket.emit('fd.companion.sort', { name: found.name, uuid: found.uuid, nidx: lnp, oidx: idx });
+  const cop = (universal.load('page') * universal.iconCount) + universal.iconCount;
+  const lnp = cop + 4;
+  // console.log(found, idx, lnp)
+  // universal.socket.emit('fd.companion.sort', { name: found.name, uuid: found.uuid, nidx: lnp, oidx: idx });
+
+  universal.socket.emit('fd.companion.info-change', JSON.stringify({
+    type: 'key_edit',
+    uuid,
+    oldIcon: '',
+    icon: null,
+    key: 'null',
+    keysArr: [],
+    ogValues: [],
+    oldpath: null,
+    newpath: '',
+    newname: name,
+    name,
+    page: universal.load('page'),
+    newPage: Number(universal.load('page')) + 1
+  }));
+
   universal.socket.emit('fd.companion.change');
 };
 
 const sortBP = (name, uuid) => {
   const found = Sounds.find(thing => thing.uuid === uuid);
   const idx = Sounds.indexOf(found);
-  const lnp = Math.abs(idx - universal.iconCount);
-  universal.socket.emit('fd.companion.sort', { name: found.name, uuid: found.uuid, nidx: lnp, oidx: idx });
+  const lnp = Math.abs((universal.load('page') * universal.iconCount) - idx);
+  universal.socket.emit('fd.companion.info-change', JSON.stringify({
+    type: 'key_edit',
+    uuid,
+    oldIcon: '',
+    icon: null,
+    key: 'null',
+    keysArr: [],
+    ogValues: [],
+    oldpath: null,
+    newpath: '',
+    newname: name,
+    name,
+    page: universal.load('page'),
+    newPage: Number(universal.load('page')) - 1
+  }));
   universal.socket.emit('fd.companion.change');
 };

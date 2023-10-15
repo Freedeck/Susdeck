@@ -6,6 +6,7 @@ const ev = new Event('fd.companion.info-change', ({ socket, args, meta }) => {
   args = JSON.parse(args);
   if (args.type === 'key_edit') {
     try {
+      console.log(args)
       const newObject = {};
       let found;
       found = sounds.Sounds.find(thing => thing.uuid === args.uuid);
@@ -20,6 +21,7 @@ const ev = new Event('fd.companion.info-change', ({ socket, args, meta }) => {
       newObject.name = args.newname;
       if (!found.icon) newObject.icon = args.icon;
       if (found.icon === args.oldIcon && args.icon !== args.oldIcon) newObject.icon = args.icon;
+      if (args.page) newObject.page = args.newPage;
       Object.assign(found, newObject);
     } catch (err) {
       console.log('Error!', err);

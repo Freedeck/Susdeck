@@ -16,7 +16,6 @@ universal.socket.on('server_connected', () => {
   }
   document.querySelector('#console').style.display = 'none';
 });
-
 const loadPage = (pageNumber = 0) => {
   autoSort(universal.iconCount);
   currentPage = pageNumber;
@@ -332,6 +331,7 @@ const autoSort = (countOnEP) => {
   let pageCounter = 0;
   let index = 0;
   pagesAmount = Math.ceil(Sounds.length / countOnEP); // Set the amount of pages
+  Sounds.forEach(snd => pagesAmount += snd.page ? 1 : 0);
   for (let i = 0; i < pagesAmount; i++) {
     Pages[i] = []; // Loop through and clear each page
   }
@@ -340,7 +340,13 @@ const autoSort = (countOnEP) => {
   index = 0; // Alongside sound 0
 
   Sounds.forEach(sound => { // Loop through each sound
+    if (sound.page) {
+      if (!Pages[sound.page]) Pages[sound.page] = [];
+      Pages[sound.page].push(sound);
+      return;
+    }
     Pages[pageCounter].push(sound); // Add it to a page
+    sound.page = pageCounter; // Set the page
     if (index === countOnEP) { // However, if we reach the max icon count for the screen,
       pageCounter++; // Increment the page
       index = 0; // And reset the sound amount counter

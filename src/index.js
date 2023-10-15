@@ -54,7 +54,7 @@ console.log(picocolors.blue('Initialized in ' + (INIT_END_TIME.getTime() - INIT_
 function FixNullIssue () {
   const a = [];
   sounds.Sounds.forEach(sound => {
-    if (sound === null) sound = { name: '_fd_spacer', uuid: 'FDS-' + require('crypto').randomBytes(8).toString('hex') };
+    if (sound === null) return;
     a.push(sound);
   });
   sounds.Sounds = a;
@@ -133,6 +133,9 @@ function RewriteSounds () {
       snd.type = 'None';
       if (snd.path) snd.type = 'Sound';
       if (snd.keys) snd.type = 'Keybind';
+    }
+    if (snd.name === '_fd_spacer') {
+      sounds.Sounds.splice(sounds.Sounds.indexOf(snd), 1);
     }
   });
   fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */

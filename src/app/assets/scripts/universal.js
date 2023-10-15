@@ -175,7 +175,11 @@ const universal = {
       s.className = s.className.replace('show', '');
       s.remove();
     }, 1250);
-    universal.save('notification_log', universal.load('notification_log') + `,${btoa(JSON.stringify({ timestamp: new Date(), time: new Date().toTimeString(), page: window.location.pathname, message }))}`);
+    try {
+      universal.save('notification_log', universal.load('notification_log') + `,${btoa(JSON.stringify({ timestamp: new Date(), time: new Date().toTimeString(), page: window.location.pathname, message }))}`);
+    } catch(err) {
+      universal.log('Companion', 'Couldn\'t save to notification log!');
+    }
   },
   validSession: () => {
     universal.remove('temp_hwid');

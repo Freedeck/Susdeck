@@ -6,9 +6,10 @@ const ev = new Event('fd.companion.sort', ({ args, meta }) => {
   sounds.Sounds = arrayMove(sounds.Sounds, args.oidx, args.nidx);
   const a = [];
   sounds.Sounds.forEach(sound => {
-    if (sound === null) sound = { name: '_fd_spacer', uuid: 'FDS-' + require('crypto').randomBytes(8).toString('hex') };
+    if (sound === null) return;
     a.push(sound);
   });
+  sounds.Sounds = [];
   sounds.Sounds = a;
   fs.writeFileSync('./src/settings/sounds.js', `/* eslint-disable quotes, quote-props, indent, no-unused-vars */
 const ScreenSaverActivationTime = ${sounds.ScreenSaverActivationTime};

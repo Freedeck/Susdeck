@@ -1,6 +1,8 @@
 /* eslint-disable no-tabs */
-const { sockApiEvents,
-	notificationQueue
+const {
+  sockApiEvents,
+  notificationQueue,
+  apiEvents
 } = require('./init');
 
 const FreedeckAPI = {
@@ -12,10 +14,12 @@ const FreedeckAPI = {
 	 * @param {boolean} protectedB - Is this protected by socket authentication?
 	 * @returns
 	 */
-  registerEvent: (type, callback, protectedB = false) => {
-    return sockApiEvents.set(type, { callback, event: type, prot: protectedB });
+  registerEvent: (type, callback, plugin, protectedB = false) => {
+    return sockApiEvents.set(type, { callback, event: type, prot: protectedB, FDPlugin: plugin });
   },
-
+  registerEndpoint: (type, route, exec) => {
+    return apiEvents.set(type, { type, route, exec });
+  },
   pushNotification: (notification) => {
     return notificationQueue.push(notification);
   }

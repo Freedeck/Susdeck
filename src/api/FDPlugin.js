@@ -10,11 +10,12 @@ class FDPlugin {
    * @param {boolean} disabled - Is your plugin disabled?
    * @example new MyPlugin("My Cool Plugin!", "John Mangoseed", "Mangoseed.MyFirstPlugin")
    */
-  constructor (name, author, type, disabled = false) {
+  constructor (name, author, type, disabled = false, isData = false) {
     this.nameStr = name;
     this.authorStr = author;
     this.typeStr = type;
     this.disabled = disabled;
+    this.isData = isData;
     this.hookKey = this.onButtonPressed;
     debug.log(name + ' | Plugin', 'Plugins');
   }
@@ -40,11 +41,12 @@ class FDPlugin {
    * }
    */
   onButtonPressed (soundData, buttonData) {
-    return { type: 'none', data: [soundData, buttonData] };
+
   }
 
   init (data) {
     if (this.disabled) return;
+    if (this.isData) return;
     plugins.set(this.typeStr, { author: this.authorStr, type: this.typeStr, name: this.nameStr, origin: true, FDPlugin: this });
     this.onInitialize(data);
   }

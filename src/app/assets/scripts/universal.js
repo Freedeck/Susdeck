@@ -307,6 +307,11 @@ universal.socket.on('c-change', () => {
   window.location.replace(window.location.href);
 });
 
+universal.socket.on('redir', (url) => {
+  console.log('redir')
+  window.location.replace(url);
+});
+
 // because theming is cool
 if (!universal.load('theme')) {
   universal.save('theme', 'Default');

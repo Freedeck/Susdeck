@@ -72,7 +72,8 @@ const init = (io, app) => {
         if (typeof keyInput !== 'object') keyInput = JSON.parse(keyInput);
         if (keyInput.type !== 'CA-Custom' || keyInput.type !== 'built-in') {
           if (pluginsFiltered.get(keyInput.type) && pluginsFiltered.get(keyInput.type).FDPlugin.disabled === false) {
-            pluginsFiltered.get(keyInput.type).FDPlugin.hookKey(sbc, keyInput);
+            const callback = pluginsFiltered.get(keyInput.type).FDPlugin.hookKey(sbc, keyInput);
+            doCallbacks(callback, socket, io);
             return;
           }
         }
@@ -115,12 +116,12 @@ const init = (io, app) => {
         socket.emit('session_invalid');
       }
     });
-    plugins.forEach((plug) => {
-      socket.on(plug.type, (data) => {
-        plug.FDPlugin.hookEvent(data);
-      });
-    });
     sockApiEvents.forEach((event) => {
+      // plugins.forEach((plug) => {
+      //   socket.on(plug.type, (data) => {
+      //     plug.FDPlugin.hookEvent(data);
+      //   });
+      // });
       try {
         socket.on(event.event, async (args) => {
           // if (event.event === 'c2sr_login') { socket.emit('session_valid'); }
@@ -133,47 +134,7 @@ const init = (io, app) => {
           } else {
             const callback = event.callback({ socket, args, loginList, meta: metadata });
             if (!callback) return;
-            if (callback.type === 'companion_conn') {
-              debug.log('Companion is connected to server.', 'SAPI ID: ' + socket.id);
-              socket.companion = true;
-            }
-            if (callback.type === 'validate_session') {
-              const person = callback.data;
-              sessions.push(person);
-            }
-            if (callback.type === 'requested_login') {
-              debug.log('User with TempHWID ' + callback.data + ' requested login.', 'SAPI Auth');
-            }
-            if (callback.type === 'req_login_ack') {
-              debug.log('User with SID ' + callback.data + ' is allowed to use login form.', 'SAPI Auth');
-            }
-            if (callback.type === 'req_login_fail') {
-              debug.log('User with SID ' + callback.data + ' is not allowed to use login form.', 'SAPI Auth');
-            }
-            if (callback.type === 'c-change') {
-              io.emit('c-change');
-            }
-            if (callback.type === 'c-change-ex') {
-              connections.forEach(sock => {
-                if (sock === callback.data) return;
-                sock.emit('c-change');
-              });
-            }
-            if (callback.type === 'c-set-ico') {
-              io.emit('c-set-ico', callback.data);
-            }
-            if (callback.type === 'custom_theme') {
-              const t = callback.data;
-              io.emit('custom_theme', t);
-            }
-            if (callback.type === 'incorrect_password') {
-              debug.log('Incorrect password', 'SAPI Auth');
-            }
-            if (callback.type === 'c-reset') {
-              fs.writeFileSync(path.resolve('./src/api/persistent/theme.sd'), 'Default');
-              Object.keys(require.cache).forEach((key) => { delete require.cache[key]; });
-              io.emit('c-reset');
-            }
+            doCallbacks(callback, socket,io);
           }
         });
       } catch (err) {
@@ -189,9 +150,11 @@ const init = (io, app) => {
     // type, route, exec
     // only get supported for now
     apiEvents.set(route.route, route);
-    if (route.type === 'get') app.get('/api/' + route.route, (req, res) => route.exec(req, res));
-    if (route.type === 'post') app.post('/api/' + route.route, (req, res) => route.exec(req, res));
-    debug.log(route.route + ' | HTTP endpoint added', 'Events');
+  });
+  apiEvents.forEach(ev => {
+    if (ev.type === 'get') app.get('/api/' + ev.route, (req, res) => ev.exec(req, res));
+    if (ev.type === 'post') app.post('/api/' + ev.route, (req, res) => ev.exec(req, res));
+    debug.log(ev.route + ' | HTTP endpoint added', 'Events');
   });
   const SAPI_HTTP_ADD = new Date();
   debug.log(picocolors.blue('HTTP endpoints added in ' + (SAPI_HTTP_ADD.getTime() - SAPI_INIT_START.getTime()) + 'ms!') + ' (Relative to SAPI init)', 'INIT');
@@ -206,6 +169,53 @@ const init = (io, app) => {
       debug.log('Signal received: ' + sig);
     });
   });
+
+  const doCallbacks = (callback, socket, io) => {
+    if (callback.type === 'companion_conn') {
+      debug.log('Companion is connected to server.', 'SAPI ID: ' + socket.id);
+      socket.companion = true;
+    }
+    if (callback.type === 'validate_session') {
+      const person = callback.data;
+      sessions.push(person);
+    }
+    if (callback.type === 'requested_login') {
+      debug.log('User with TempHWID ' + callback.data + ' requested login.', 'SAPI Auth');
+    }
+    if (callback.type === 'req_login_ack') {
+      debug.log('User with SID ' + callback.data + ' is allowed to use login form.', 'SAPI Auth');
+    }
+    if (callback.type === 'req_login_fail') {
+      debug.log('User with SID ' + callback.data + ' is not allowed to use login form.', 'SAPI Auth');
+    }
+    if (callback.type === 'c-change') {
+      io.emit('c-change');
+    }
+    if (callback.type === 'c-change-ex') {
+      connections.forEach(sock => {
+        if (sock === callback.data) return;
+        sock.emit('c-change');
+      });
+    }
+    if (callback.type === 'c-set-ico') {
+      io.emit('c-set-ico', callback.data);
+    }
+    if (callback.type === 'redir') {
+      socket.emit('redir', callback.data);
+    }
+    if (callback.type === 'custom_theme') {
+      const t = callback.data;
+      io.emit('custom_theme', t);
+    }
+    if (callback.type === 'incorrect_password') {
+      debug.log('Incorrect password', 'SAPI Auth');
+    }
+    if (callback.type === 'c-reset') {
+      fs.writeFileSync(path.resolve('./src/api/persistent/theme.sd'), 'Default');
+      Object.keys(require.cache).forEach((key) => { delete require.cache[key]; });
+      io.emit('c-reset');
+    }
+  }
 
   const terminator = (sig) => {
     if (typeof sig === 'string') {

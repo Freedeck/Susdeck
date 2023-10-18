@@ -6,6 +6,10 @@ const eventNames = {
     login_data_ack: 'fd.login_data.ack',
 
     information: 'fd.info',
+
+    keypress: 'fd.keypress',
+
+    not_trusted: 'fd.trust.fail'
 }
 
 if ('exports' in module) module.exports = eventNames;

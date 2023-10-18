@@ -16,4 +16,8 @@ universal.config.sounds.forEach((soundT) => {
     btn.setAttribute('data-page', universal.page.toString());
     btn.setAttribute('data-index', sound.pos.index.toString());
     btn.innerText = key;
+
+    btn.addEventListener('click', (ev) => {
+        universal.send(universal.events.keypress, JSON.stringify({event: ev, btn: JSON.parse(btn.getAttribute('data-interaction'))}));
+    })
 });

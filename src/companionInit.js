@@ -1,15 +1,12 @@
-import { app, BrowserWindow } from 'electron';
-
-let mainWindow: BrowserWindow | null = null;
-
+const { app, BrowserWindow } = require('electron');
 app.on('ready', () => {
-    mainWindow = new BrowserWindow({
+    const mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
-        nodeIntegration: false,
+            nodeIntegration: false,
         },
     });
 
-    mainWindow.loadFile(`file://${__dirname}/public/companion/index.html`).then(r => console.log(r));
+    mainWindow.loadURL(`http://localhost:5754/companion/index.html`).then(r => console.log(r));
 });

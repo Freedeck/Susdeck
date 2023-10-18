@@ -23,6 +23,10 @@ const universal = {
                 universal.events = JSON.parse(data).events;
                 universal.config = JSON.parse(data).cfg;
                 universal._init = true;
+
+                universal.on(universal.events.not_trusted, () => {
+                    console.log('Not trusted to do this action.')
+                })
                 resolve(true);
             })
         })

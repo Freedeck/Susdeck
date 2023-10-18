@@ -1,8 +1,13 @@
+const path = require("path");
 const cfg = {
     sounds: [
         {'Name': {
             'uuid': 'abcdef',
             'type': 'fd.sound',
+            'data': {
+                'file': 'abcdef.mp4',
+                'path': path.resolve('./src/public/sounds/')
+            },
             'pos': {
                 'page': 0,
                 'index': 3

@@ -34,6 +34,7 @@ const universal = {
         _player: {
             sink: 0,
         },
+        stopAll: () => universal.audioClient._nowPlaying.forEach(audio => audio.stop()),
         play: async (file, name) => {
             const audioInstance = new Audio(file);
             if (universal.audioClient._player.sink !== 0)  audioInstance.setSinkId(universal.audioClient._player.sink);
@@ -66,6 +67,7 @@ const universal = {
                     const interaction = JSON.parse(interactionData).sound;
                     if (user !== 'Companion') return;
                     if (interaction.type !== 'fd.sound') return;
+                    if (interaction.name === 'Stop All') { universal.audioClient.stopAll(); return; }
                     universal.audioClient.play(interaction.data.path + '/' + interaction.data.file, interactionData.name);
                 })
 
@@ -79,6 +81,9 @@ const universal = {
                 })
 
                 universal.on(universal.events.login, (auth) => universal.authStatus = auth);
+
+                universal.keys.id = 'keys';
+                if (!document.querySelector('#keys')) document.body.appendChild(universal.keys);
 
                 resolve(true);
             })

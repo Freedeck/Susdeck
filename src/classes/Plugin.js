@@ -15,7 +15,15 @@ module.exports = class Plugin {
         }
     }
 
+    registerNewType (name, type) {
+        // console.log(types.get(type));
+    }
+
     onInitialize () {
+        return true;
+    }
+
+    onButton (interaction) {
         return true;
     }
 }

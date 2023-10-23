@@ -10,4 +10,9 @@ module.exports = class MyPlugin extends Plugin {
         console.log('Example plugin loaded.')
         return true;
     }
+
+    onButton(interaction) {
+        console.log('Plugin instantiated,button was presed' + interaction.type)
+        return true;
+    }
 }

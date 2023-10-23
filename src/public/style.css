@@ -1,0 +1,55 @@
+:root {
+    --fd-template-columns: repeat(5, 2fr);
+    --fd-font-family: 'Rubik';
+    --fd-background-size: 400% 400%;
+    --fd-background: 45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%;
+    --fd-rotation-degrees: 2deg;
+    --fd-btn-background: rgba(0, 0, 0, 0.5);
+    --fd-modal-color: rgb(15, 140, 194);
+    --fd-btn-w: 6rem;
+    --fd-btn-h: 6rem;
+
+    --fd-btn-rad: 8px;
+
+    --fd-modal-bg: white;
+
+    --fd-col: white;
+    --fd-txt-col: black;
+
+    --fd-font-size: 15px;
+    --fd-icon-tip-fs: 1.5rem;
+
+    --fd-input-bg: #FFFFFF;
+
+    --fd-logo-size: 75px;
+}
+
+@keyframes error-bg {
+    0% {
+        background-position: 100% 0%
+    }
+
+    100% {
+        background-position: 15% 100%
+    }
+}
+
+body {
+    background: rgba(255, 0, 89, 1);
+    background: linear-gradient(var(--fd-background));
+    background-size: var(--fd-background-size);
+    animation: error-bg 5s linear infinite;
+}
+
+#keys {
+    display: grid;
+    grid-template-columns: var(--fd-template-columns);
+    gap: 2px 7px;
+}
+
+.button {
+    width: var(--fd-btn-w);
+    height: var(--fd-btn-h);
+    border-radius: var(--fd-btn-rad);
+    background-color: var(--fd-btn-background);
+}

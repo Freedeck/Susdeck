@@ -5,8 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "start": "electron .",
-    "companion": "electron . --companion-only",
-    "server": "node src/index.js --server-only",
+    "companion": "electron . companion",
+    "server": "node src/index.js server",
+    "debug-server": "node src/index.js server debug",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

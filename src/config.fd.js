@@ -8,15 +8,28 @@ const cfg = {
                 'file': 'vine-boom.mp3',
                 'path': '/sounds/'
             },
-            'pos': {
-                'page': 0,
-                'index': 3
-            }
-        }}
+            'pos': 3
+        }},
+        {'Example Plugin Test': {
+            'uuid': 'ghijkl',
+            'type': 'fd.plugins.example',
+            'data': {
+                'test': true
+            },
+            'pos': 2
+        }},
+        {'Play YTMD TEst': {
+                'uuid': 'mnopqr',
+                'type': 'roi.ytmd-controller.play',
+                'data': {
+                    'test': true
+                },
+                'pos': 1
+            }},
     ],
     screenSaverActivationTime: 15,
     soundOnPress: false,
-    iconCountPerPage: 12,
+    iconCountPerPage: 15,
 };
 
 if (typeof window !== "undefined") window['cfg'] = cfg;

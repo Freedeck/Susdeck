@@ -10,7 +10,6 @@ module.exports = {
                 // yes
                 socket.emit(eventNames.login_data_ack, true);
                 socket.tlidMatch = true;
-                console.log('Matching TLID');
             } else {
                 socket.emit(eventNames.login_data_ack, false);
                 socket.tlidMatch = false;

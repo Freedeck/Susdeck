@@ -9,6 +9,7 @@ const server = http.createServer(app);
 const io = new socketIO.Server(server);
 
 const handlers = new Map();
+const plugins = require('./pluginLoader');
 
 if (process.argv[2] !== '--server-only') require('./companionInit');
 if (process.argv[2] === '--companion-only') return;
@@ -20,8 +21,6 @@ fs.readdirSync(path.resolve('./src/handlers')).forEach((file) => {
     console.log('New handler', handler.name);
 });
 
-const plugins = require('./pluginLoader');
-const {hash} = require("./secrets.fd");
 
 io.on('connection', (socket) => {
     handlers.forEach(handler => {

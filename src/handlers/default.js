@@ -1,5 +1,6 @@
 const eventNames = require('./eventNames');
 const cfg = require('../config.fd');
+const plugins = require('../pluginLoader');
 
 module.exports = {
     name: 'Main',
@@ -10,7 +11,12 @@ module.exports = {
         socket.on('disconnect', () => console.log('Client disconnected'));
         socket.on(eventNames.client_greet, (user) => {
             console.log('Client ' + user + ' has greeted server at ' + new Date());
-            socket.emit(eventNames.information, JSON.stringify({ id: socket.id, tempLoginID: socket.tempLoginID, events: eventNames, cfg }));
+            let tPlugObj = {};
+            for (const key in plugins.keys()) {
+                tPlugObj[key] = plugins.get(key).type;
+            }
+            socket.emit(eventNames.information, JSON.stringify({ id: socket.id, tempLoginID: socket.tempLoginID, plugins: tPlugObj, events: eventNames, cfg }));
+            socket.emit(eventNames.log, JSON.stringify({sender: 'Server', data: 'Socket has connected'}))
         })
     }
 }

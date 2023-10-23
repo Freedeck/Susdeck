@@ -12,7 +12,7 @@ universal.config.sounds.forEach((soundT) => {
     let sound = soundT[key];
     const btn = document.querySelector('.unset-' + sound.pos.index);
     btn.className = key + ' keypress';
-    btn.setAttribute('data-interaction', JSON.stringify(sound));
+    btn.setAttribute('data-interaction', JSON.stringify({sound, name: key}));
     btn.setAttribute('data-page', universal.page.toString());
     btn.setAttribute('data-index', sound.pos.index.toString());
     btn.innerText = key;

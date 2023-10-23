@@ -9,7 +9,9 @@ const eventNames = {
 
     keypress: 'fd.keypress',
 
-    not_trusted: 'fd.trust.fail'
+    not_trusted: 'fd.trust.fail',
+
+    log: 'fd.log'
 }
 
 if ('exports' in module) module.exports = eventNames;

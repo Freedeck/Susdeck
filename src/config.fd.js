@@ -5,8 +5,8 @@ const cfg = {
             'uuid': 'abcdef',
             'type': 'fd.sound',
             'data': {
-                'file': 'abcdef.mp4',
-                'path': path.resolve('./src/public/sounds/')
+                'file': 'vine-boom.mp3',
+                'path': '/sounds/'
             },
             'pos': {
                 'page': 0,

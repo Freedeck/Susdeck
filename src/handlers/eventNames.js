@@ -11,7 +11,9 @@ const eventNames = {
 
     not_trusted: 'fd.trust.fail',
 
-    log: 'fd.log'
+    log: 'fd.log',
+
+    plugin_info: 'fd.plugin_data'
 }
 
 if ('exports' in module) module.exports = eventNames;

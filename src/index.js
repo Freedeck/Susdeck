@@ -21,6 +21,7 @@ fs.readdirSync(path.resolve('./src/handlers')).forEach((file) => {
 });
 
 const plugins = require('./pluginLoader');
+const {hash} = require("./secrets.fd");
 
 io.on('connection', (socket) => {
     handlers.forEach(handler => {
@@ -30,5 +31,4 @@ io.on('connection', (socket) => {
 });
 
 app.use(express.static(path.join(__dirname, './public')));
-
 server.listen(5754, () => console.log('listening on *:3000'));

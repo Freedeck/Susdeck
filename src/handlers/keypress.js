@@ -2,7 +2,7 @@ const eventNames = require('./eventNames');
 const cfg = require('../config.fd');
 
 module.exports = {
-    name: 'Keypresses',
+    name: 'Keypress Handler',
     id: 'fd.handlers.keypress',
     exec: ({socket, plugins, io}) => {
         socket.on(eventNames.keypress, (ev) => {

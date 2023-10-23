@@ -6,7 +6,8 @@ module.exports = class MyPlugin extends Plugin {
         super('My First Plugin', 'Freedeck', 'fd.plugins.example');
     }
 
-    onInitialize() {
+    onInitialize () {
         console.log('Example plugin loaded.')
+        return true;
     }
 }

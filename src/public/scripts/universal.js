@@ -2,6 +2,7 @@ const universal = {
     _socket: io(),
     _information: {},
     _init: false,
+    _authStatus: false,
     page: 0,
     events: {},
     config: {},
@@ -51,6 +52,7 @@ const universal = {
             universal.on('fd.info', (data) => {
                 const parsed = JSON.parse(data);
                 universal._information = JSON.parse(data);
+                universal._pluginData = {};
                 universal.events = parsed.events;
                 universal.config = parsed.cfg;
                 universal.plugins = parsed.plugins;
@@ -71,6 +73,12 @@ const universal = {
                     data = JSON.parse(data);
                     console.log(data.sender + ': ' + data.data);
                 })
+
+                universal.on(universal.events.plugin_info, (data) => {
+                    universal._pluginData[JSON.parse(data).requested] = JSON.parse(data).response;
+                })
+
+                universal.on(universal.events.login, (auth) => universal.authStatus = auth);
 
                 resolve(true);
             })

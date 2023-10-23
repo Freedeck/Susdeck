@@ -9,6 +9,13 @@ module.exports = class Plugin {
         this.author = author;
         this.id = id;
         this.disabled = disabled;
-        console.log('Plugins not implemented, but ' + name + ' "init".')
+        this.hasInit = this.onInitialize();
+        if (!this.hasInit) {
+            console.log('Plugin didn\'t initialize?');
+        }
+    }
+
+    onInitialize () {
+        return true;
     }
 }

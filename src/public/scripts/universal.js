@@ -3,6 +3,7 @@ const universal = {
     _information: {},
     _init: false,
     _authStatus: false,
+    _serverRequiresAuth: true,
     page: 0,
     events: {},
     config: {},
@@ -57,6 +58,7 @@ const universal = {
                 universal.events = parsed.events;
                 universal.config = parsed.cfg;
                 universal.plugins = parsed.plugins;
+                universal._serverRequiresAuth = universal.config.useAuthentication;
                 universal._init = true;
 
                 universal.on(universal.events.not_trusted, () => {

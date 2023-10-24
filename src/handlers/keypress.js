@@ -1,12 +1,13 @@
 const eventNames = require('./eventNames');
 const debug = require('../utils/debug');
+const cfg = require('../loaders/settingsCache').settings();
 
 module.exports = {
     name: 'Keypress Handler',
     id: 'fd.handlers.keypress',
     exec: ({socket, types, plugins, io}) => {
         socket.on(eventNames.keypress, (ev) => {
-            if (socket.auth !== true) {
+            if (socket.auth !== true && cfg.useAuthentication) {
                 socket.emit(eventNames.not_auth);
                 return;
             }

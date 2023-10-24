@@ -70,6 +70,11 @@ const universal = {
                 universal._serverRequiresAuth = universal.config.useAuthentication;
                 universal._init = true;
 
+                if (!universal.load('welcomed')) {
+                    universal.sendToast('Welcome to Freedeck.')
+                    universal.save('welcomed', 'true');
+                }
+
                 universal.save('tempLoginID', parsed.tempLoginID);
 
                 universal.on(universal.events.not_trusted, () => universal.sendToast('Not trusted to do this action.'))

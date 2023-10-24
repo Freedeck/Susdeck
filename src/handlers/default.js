@@ -1,6 +1,6 @@
 const eventNames = require('./eventNames');
-const cfg = require('../config.fd');
-const plugins = require('../pluginLoader').plugins;
+const cfg = require('../configs/config.fd');
+const plugins = require('../loaders/pluginLoader').plugins;
 const debug = require("../utils/debug");
 const picocolors = require('../utils/picocolors');
 

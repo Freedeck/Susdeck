@@ -1,5 +1,5 @@
 const eventNames = require('./eventNames');
-const cfg = require('../config.fd');
+const cfg = require('../configs/config.fd');
 const debug = require('../utils/debug');
 
 module.exports = {

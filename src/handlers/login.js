@@ -1,5 +1,5 @@
 const eventNames = require('./eventNames');
-const sec = require('../secrets.fd');
+const sec = require('../configs/secrets.fd');
 
 module.exports = {
     name: 'Login',

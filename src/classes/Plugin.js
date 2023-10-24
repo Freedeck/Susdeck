@@ -1,3 +1,6 @@
+const path = require("path");
+const types = require(path.resolve('./src/pluginLoader.js'))
+
 module.exports = class Plugin {
     name;
     author;
@@ -16,7 +19,7 @@ module.exports = class Plugin {
     }
 
     registerNewType (name, type) {
-        // console.log(types.get(type));
+        types.types().set(type, {instance: this, display: name});
     }
 
     onInitialize () {

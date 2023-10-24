@@ -3,6 +3,7 @@ const path = require('path');
 
 const pl = {
     _plc: new Map(),
+    _tyc: new Map(),
     plugins: () => {
         if (pl._plc.length > 0) pl.updPlug();
         return pl._plc;
@@ -16,7 +17,7 @@ const pl = {
         })
     },
     types: () => {
-        return new Map();
+        return pl._tyc;
     }
 };
 

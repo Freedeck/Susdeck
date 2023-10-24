@@ -15,7 +15,7 @@ const server = http.createServer(app);
 const io = new socketIO.Server(server);
 
 const handlers = new Map();
-const pl = require('./loaders/pluginLoader');
+const pl = require(path.resolve('./src/loaders/pluginLoader'));
 const plugins = pl.plugins;
 
 fs.readdirSync(path.resolve('./src/handlers')).forEach((file) => {
@@ -25,7 +25,7 @@ fs.readdirSync(path.resolve('./src/handlers')).forEach((file) => {
 });
 const types = pl.types;
 
-pl.updPlug();
+pl.update();
 
 io.on('connection', (socket) => {
     try {

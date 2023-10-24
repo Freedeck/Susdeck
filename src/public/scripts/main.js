@@ -4,7 +4,7 @@ await universal.init('Main');
 
 for (let i = 0; i < universal.config.iconCountPerPage - 3; i++){
     let tempDiv = document.createElement("div");
-    tempDiv.className = 'button k-' + i;
+    tempDiv.className = 'button k-' + i + ' unset';
     universal.keys.appendChild(tempDiv);
 }
 
@@ -14,6 +14,7 @@ universal.config.sounds.forEach(sound => {
     const keyObject = document.querySelector('.k-' + snd.pos);
     keyObject.setAttribute('data-interaction', JSON.stringify(snd));
     keyObject.innerText = k;
+    keyObject.className = keyObject.className.replace('unset','');
     keyObject.onclick = (ev) => {
         universal.send(universal.events.keypress, JSON.stringify({event: ev, btn: snd}))
     };

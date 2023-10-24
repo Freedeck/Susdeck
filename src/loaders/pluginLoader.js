@@ -5,10 +5,10 @@ const pl = {
     _plc: new Map(),
     _tyc: new Map(),
     plugins: () => {
-        if (pl._plc.length > 0) pl.updPlug();
+        if (pl._plc.length > 0) pl.update();
         return pl._plc;
     },
-    updPlug: () => {
+    update: () => {
         fs.readdirSync(path.resolve('./plugins')).forEach((file) => {
             const plugin = require(path.resolve(`./plugins/${file}`));
             const instantiated = new plugin();

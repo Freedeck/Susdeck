@@ -1,6 +1,6 @@
 const path = require("path");
 const Plugin = require(path.resolve('./src/classes/Plugin'));
-// const FreedeckAPI = require('../src/api/FreedeckAPI');
+const FreedeckAPI = require(path.resolve('./src/classes/FreedeckAPI'));
 
 module.exports = class YTMD extends Plugin {
   _apiUrl = 'http://192.168.5.69:9863'; // Replace this with your API url.
@@ -13,24 +13,25 @@ module.exports = class YTMD extends Plugin {
   }
 
   onButton (buttonData) {
+    console.log(buttonData.type)
     if (buttonData.type === this._prefix + 'play') {
       this.sendCommand('track-pause');
       if (!this._playerData.isPaused) {
-        // FreedeckAPI.pushNotification(this._songData.title + ' by ' + this._songData.author + ' | Paused!');
+        FreedeckAPI.pushNotification(this._songData.title + ' by ' + this._songData.author + ' | Paused!');
       } else {
-        // FreedeckAPI.pushNotification(this._songData.title + ' by ' + this._songData.author + ' | Playing!');
+        FreedeckAPI.pushNotification(this._songData.title + ' by ' + this._songData.author + ' | Playing!');
       }
     }
 
     if (buttonData.type === this._prefix + 'now-playing') {
-      // FreedeckAPI.pushNotification('Now listening to: ' + this._songData.title + ' by ' + this._songData.author);
+      FreedeckAPI.pushNotification('Now listening to: ' + this._songData.title + ' by ' + this._songData.author);
     }
 
     if (buttonData.type === this._prefix + 'volume-up') {
       this.sendCommand('player-volume-up');
       setTimeout(() => {
         fetch(this._apiUrl + '/query/player').then(res => res.json()).then(res => {
-          // FreedeckAPI.pushNotification('Volume: ' + res.volumePercent + '%');
+          FreedeckAPI.pushNotification('Volume: ' + res.volumePercent + '%');
         });
       }, 35);
     }
@@ -39,7 +40,7 @@ module.exports = class YTMD extends Plugin {
       this.sendCommand('player-volume-down');
       setTimeout(() => {
         fetch(this._apiUrl + '/query/player').then(res => res.json()).then(res => {
-          // FreedeckAPI.pushNotification('Volume: ' + res.volumePercent + '%');
+          FreedeckAPI.pushNotification('Volume: ' + res.volumePercent + '%');
         });
       }, 35);
     }
@@ -64,12 +65,12 @@ module.exports = class YTMD extends Plugin {
       this.sendCommandValue('player-set-volume', 2);
       setTimeout(() => {
         fetch(this._apiUrl + '/query/player').then(res => res.json()).then(res => {
-          // FreedeckAPI.pushNotification('Volume: ' + res.volumePercent + '%');
+          FreedeckAPI.pushNotification('Volume: ' + res.volumePercent + '%');
         });
       }, 35);
     }
 
-    return { type: 'none', data: [soundData, buttonData] };
+    return { type: 'none', data: [buttonData] };
   }
 
   registerAllButtons () {

@@ -1,5 +1,5 @@
 const path = require("path");
-const types = require(path.resolve('./src/pluginLoader.js'))
+const types = require(path.resolve('./src/loaders/pluginLoader.js'))
 
 module.exports = class Plugin {
     name;

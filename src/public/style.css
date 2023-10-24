@@ -41,6 +41,10 @@ body {
     animation: error-bg 5s linear infinite;
 }
 
+.unset {
+    background-color: white;
+}
+
 #keys {
     display: grid;
     grid-template-columns: var(--fd-template-columns);

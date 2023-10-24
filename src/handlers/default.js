@@ -1,5 +1,5 @@
 const eventNames = require('./eventNames');
-const cfg = require('../configs/config.fd');
+const cfg = require('../loaders/settingsCache').settings();
 const plugins = require('../loaders/pluginLoader').plugins;
 const debug = require("../utils/debug");
 const picocolors = require('../utils/picocolors');

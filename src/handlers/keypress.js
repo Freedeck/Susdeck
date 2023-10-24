@@ -6,6 +6,10 @@ module.exports = {
     id: 'fd.handlers.keypress',
     exec: ({socket, types, plugins, io}) => {
         socket.on(eventNames.keypress, (ev) => {
+            if (socket.auth !== true) {
+                socket.emit(eventNames.not_auth);
+                return;
+            }
             try {
                 ev = JSON.parse(ev);
                 if (ev.builtIn) {

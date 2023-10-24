@@ -10,6 +10,7 @@ const eventNames = {
     keypress: 'fd.keypress',
 
     not_trusted: 'fd.trust.fail',
+    not_auth: 'fd.auth.check.fail',
 
     log: 'fd.log',
 

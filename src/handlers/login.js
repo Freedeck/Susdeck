@@ -1,5 +1,5 @@
 const eventNames = require('./eventNames');
-const sec = require('../configs/secrets.fd');
+const sec = require('../loaders/secretManager');
 
 module.exports = {
     name: 'Login',
@@ -16,13 +16,13 @@ module.exports = {
             }
         })
         socket.on(eventNames.login, (data) => {
-            const hashed = sec.hash(data.passwd);
-            if (hashed === sec.password) {
+
+            if (sec.match('password', data.passwd)) {
                 socket.emit(eventNames.login, true);
                 socket.auth = true;
             } else {
                 socket.emit(eventNames.login, false);
-                socket.auth = true;
+                socket.auth = false;
             }
         })
     }

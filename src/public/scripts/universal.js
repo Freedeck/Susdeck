@@ -62,13 +62,9 @@ const universal = {
                 universal._serverRequiresAuth = universal.config.useAuthentication;
                 universal._init = true;
 
-                universal.on(universal.events.not_trusted, () => {
-                    universal.sendToast('Not trusted to do this action.')
-                })
+                universal.on(universal.events.not_trusted, () => universal.sendToast('Not trusted to do this action.'))
 
-                universal.on(universal.events.not_auth, () => {
-                    universal.sendToast('You are not authenticated!');
-                })
+                universal.on(universal.events.not_auth, () => universal.sendToast('You are not authenticated!'))
 
                 universal.on(universal.events.keypress, (interactionData) => {
                     const interaction = JSON.parse(interactionData).sound;

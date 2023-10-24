@@ -63,7 +63,11 @@ const universal = {
                 universal._init = true;
 
                 universal.on(universal.events.not_trusted, () => {
-                    console.log('Not trusted to do this action.')
+                    universal.sendToast('Not trusted to do this action.')
+                })
+
+                universal.on(universal.events.not_auth, () => {
+                    universal.sendToast('You are not authenticated!');
                 })
 
                 universal.on(universal.events.keypress, (interactionData) => {

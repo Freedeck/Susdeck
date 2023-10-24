@@ -12,9 +12,10 @@ module.exports = {
         socket.tempLoginID = Math.random() * 1024 + '.tlid.fd';
         socket.on('disconnect', () => debug.log(picocolors.red('Client disconnected'), 'Socket ' + socket.id));
         socket.on(eventNames.client_greet, (user) => {
+            socket.user = user;
             console.log('Client ' + user + ' has greeted server at ' + new Date());
             socket.emit(eventNames.information, JSON.stringify({ id: socket.id, tempLoginID: socket.tempLoginID, plugins: Array.from(plugins().keys()), events: eventNames, cfg }));
-            socket.emit(eventNames.log, JSON.stringify({sender: 'Server', data: 'Socket has connected'}))
+            socket.emit(eventNames.notif, 'Connected to server!')
         })
     }
 }

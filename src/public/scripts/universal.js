@@ -7,6 +7,7 @@ const universal = {
     page: 0,
     events: {},
     config: {},
+    _loginAllowed: false,
     keys: document.querySelector('#keys') ? document.querySelector('#keys') : document.createElement('div'),
     notibar: document.querySelector('#snackbar') ? document.querySelector('#snackbar') : document.createElement('div'),
     save: (k, v) => {
@@ -49,7 +50,14 @@ const universal = {
             universal.updatePlaying();
         }
     },
-    init: async function (/** @type {string} */ user) {
+    init: async function (user) {
+        try {
+            await universal._initFn(user);
+        } catch (e) {
+            console.error(e + ' | Universal: initialize failed.');
+        }
+    },
+    _initFn: async function (/** @type {string} */ user) {
         return new Promise((resolve, reject) => {
             universal.send('fd.greetings', user)
             universal.on('fd.info', (data) => {
@@ -62,9 +70,13 @@ const universal = {
                 universal._serverRequiresAuth = universal.config.useAuthentication;
                 universal._init = true;
 
+                universal.save('tempLoginID', parsed.tempLoginID);
+
                 universal.on(universal.events.not_trusted, () => universal.sendToast('Not trusted to do this action.'))
 
                 universal.on(universal.events.not_auth, () => universal.sendToast('You are not authenticated!'))
+
+                universal.on(universal.events.not_match, () => universal.sendToast('Login not allowed!'))
 
                 universal.on(universal.events.keypress, (interactionData) => {
                     const interaction = JSON.parse(interactionData).sound;
@@ -79,9 +91,13 @@ const universal = {
                     console.log(data.sender + ': ' + data.data);
                 })
 
+                universal.on(universal.events.notif, (data) => universal.sendToast(data))
+
                 universal.on(universal.events.plugin_info, (data) => {
                     universal._pluginData[JSON.parse(data).requested] = JSON.parse(data).response;
                 })
+
+                universal.on(universal.events.login_data_ack, (data) => universal._loginAllowed = data);
 
                 universal.on(universal.events.login, (auth) => universal.authStatus = auth);
 

@@ -1,4 +1,5 @@
 const path = require("path");
+const NotificationManager = require(path.resolve('./src/loaders/NotificationManager.js'));
 const types = require(path.resolve('./src/loaders/pluginLoader.js'))
 
 module.exports = class Plugin {
@@ -6,6 +7,7 @@ module.exports = class Plugin {
     author;
     id;
     disabled;
+    hasInit = false;
 
     constructor(name, author, id, disabled = false) {
         this.name = name;
@@ -16,6 +18,10 @@ module.exports = class Plugin {
         if (!this.hasInit) {
             console.log('Plugin didn\'t initialize?');
         }
+    }
+
+    pushNotification(value) {
+        NotificationManager.add(this.name, v);
     }
 
     registerNewType (name, type) {

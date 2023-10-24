@@ -1,13 +1,14 @@
 const path = require("path");
 const Plugin = require(path.resolve('./src/classes/Plugin'));
+const FreedeckAPI = require(path.resolve('./src/classes/FreedeckAPI'));
 
 module.exports = class MyPlugin extends Plugin {
     constructor() {
-        super('My First Plugin', 'Freedeck', 'fd.plugins.example');
+        super('Freedeck 6: Example Plugin', 'Freedeck', 'fd.plugins.example');
     }
 
     onInitialize () {
-        console.log('Example plugin loaded.')
+        console.log('Initialized example plugin.')
         return true;
     }
 

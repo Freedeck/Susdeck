@@ -14,7 +14,7 @@ const pl = {
         fs.readdirSync(path.resolve('./plugins')).forEach((file) => {
             const plugin = require(path.resolve(`./plugins/${file}`));
             const instantiated = new plugin();
-            debug.log(picocolors.yellow('New plugin ' + instantiated.name + ' - ID ' + instantiated.id), 'Plugin Manager');
+            debug.log(picocolors.yellow('Plugin initialized ' + instantiated.name + ' - ID ' + instantiated.id), 'Plugin Manager');
             pl._plc.set(instantiated.id, {instance: instantiated, plugin});
         })
     },

@@ -96,7 +96,10 @@ const universal = {
                     console.log(data.sender + ': ' + data.data);
                 })
 
-                universal.on(universal.events.notif, (data) => universal.sendToast(data))
+                universal.on(universal.events.notif, (data) => {
+                    data = JSON.parse(data);
+                    universal.sendToast(data.sender + ': ' +  data.data)
+                })
 
                 universal.on(universal.events.plugin_info, (data) => {
                     universal._pluginData[JSON.parse(data).requested] = JSON.parse(data).response;

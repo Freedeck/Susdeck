@@ -3,7 +3,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
-const picocolors = require('./picocolors');
+const picocolors = require('./utils/picocolors');
 
 const debug = require('./utils/debug');
 

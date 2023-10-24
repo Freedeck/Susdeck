@@ -2,7 +2,7 @@ const eventNames = require('./eventNames');
 const cfg = require('../config.fd');
 const plugins = require('../pluginLoader').plugins;
 const debug = require("../utils/debug");
-const picocolors = require('../picocolors');
+const picocolors = require('../utils/picocolors');
 
 module.exports = {
     name: 'Main',

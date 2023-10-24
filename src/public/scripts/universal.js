@@ -8,6 +8,7 @@ const universal = {
     events: {},
     config: {},
     keys: document.querySelector('#keys') ? document.querySelector('#keys') : document.createElement('div'),
+    notibar: document.querySelector('#snackbar') ? document.querySelector('#snackbar') : document.createElement('div'),
     save: (k, v) => {
         return localStorage.setItem(btoa('fd.' +k), btoa(v));
     },
@@ -87,9 +88,26 @@ const universal = {
                 universal.keys.id = 'keys';
                 if (!document.querySelector('#keys')) document.body.appendChild(universal.keys);
 
+                universal.notibar.id = 'snackbar';
+                if (!document.querySelector('#snackbar')) document.body.appendChild(universal.notibar);
+
                 resolve(true);
             })
         })
+    },
+    sendToast: (message) => {
+        const s = document.createElement('div');
+        s.id = 'toast';
+        s.innerText = message;
+        s.className = 'show';
+        s.onclick = () => { s.className = s.className.replace('show', ''); s.remove(); };
+        document.querySelector('#snackbar').appendChild(s);
+
+        setTimeout(() => { // After 3 seconds, remove the show class from DIV
+            s.className = s.className.replace('show', '');
+            s.remove();
+        }, 1250);
+        universal.save('notification_log', universal.load('notification_log') + `,${btoa(JSON.stringify({ timestamp: new Date(), time: new Date().toTimeString(), page: window.location.pathname, message }))}`);
     },
     send: (event, value) => {
         universal._socket.emit(event, value);

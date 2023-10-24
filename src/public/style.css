@@ -45,6 +45,56 @@ body {
     background-color: white;
 }
 
+@keyframes fade-in {
+    from{
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 100%;
+    }
+}
+
+@keyframes fade-out {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+#snackbar {
+    display: flex;
+    flex-direction: column;
+    min-width: 250px;
+    margin-left: -125px;
+    left: 50%;
+    bottom: 30px;
+    position: fixed;
+}
+
+#toast {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: relative;
+    z-index: 1;
+}
+
+#toast.show {
+    visibility: visible;
+    animation: fade-in 0.5s, fade-out 0.5s 1s;
+}
+
 #keys {
     display: grid;
     grid-template-columns: var(--fd-template-columns);

@@ -88,9 +88,12 @@ module.exports = class YTMD extends Plugin {
   onInitialize (data) {
     this._prefix = 'roi.ytmd-controller.';
     this._apiUrl = 'http://192.168.5.69:9863';
+
     try {
-      this.requestFromAPI('player').then(playerDat => {
+      this.requestFromAPI('player').then(() => {
         console.log('YouTube Music Desktop is running!');
+      }).catch(() => {
+        console.log('YouTube Music Desktop is not currently running!');
       });
     } catch (err) {
       console.log(err);

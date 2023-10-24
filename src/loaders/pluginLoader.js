@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const debug = require(path.resolve('./src/utils/debug.js'));
+const picocolors = require(path.resolve('./src/utils/picocolors.js'));
 
 const pl = {
     _plc: new Map(),
@@ -12,8 +14,8 @@ const pl = {
         fs.readdirSync(path.resolve('./plugins')).forEach((file) => {
             const plugin = require(path.resolve(`./plugins/${file}`));
             const instantiated = new plugin();
+            debug.log(picocolors.yellow('New plugin ' + instantiated.name + ' - ID ' + instantiated.id), 'Plugin Manager');
             pl._plc.set(instantiated.id, {instance: instantiated, plugin});
-            console.log('New plugin ' + instantiated.name + ' - ID ' + instantiated.id);
         })
     },
     types: () => {

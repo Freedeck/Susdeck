@@ -22,6 +22,10 @@ module.exports = {
                 socket.emit(eventNames.notif, JSON.stringify(data));
             },150);
             socket.emit(eventNames.notif, JSON.stringify({sender:'Server', data:'Connected to server!'}));
+            socket.on(eventNames.plugin_info, (data) => {
+                const plug = plugins().get(data);
+                socket.emit(eventNames.plugin_info, JSON.stringify({requested: data, response: plug}))
+            })
         })
     }
 }

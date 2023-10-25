@@ -101,9 +101,7 @@ const universal = {
                     universal.sendToast(data.sender + ': ' +  data.data)
                 })
 
-                universal.on(universal.events.plugin_info, (data) => {
-                    universal._pluginData[JSON.parse(data).requested] = JSON.parse(data).response;
-                })
+                universal.on(universal.events.plugin_info, (data) => universal._pluginData[JSON.parse(data).requested] = JSON.parse(data).response)
 
                 universal.on(universal.events.login_data_ack, (data) => universal._loginAllowed = data);
 

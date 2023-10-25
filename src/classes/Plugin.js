@@ -14,6 +14,7 @@ module.exports = class Plugin {
         this.author = author;
         this.id = id;
         this.disabled = disabled;
+        this.types = [];
         if (this.disabled) return;
         this.hasInit = this.onInitialize();
         if (!this.hasInit) {
@@ -26,6 +27,7 @@ module.exports = class Plugin {
     }
 
     registerNewType (name, type) {
+        this.types.push({name, type});
         types.types().set(type, {instance: this, display: name});
     }
 

@@ -14,6 +14,7 @@ module.exports = class Plugin {
         this.author = author;
         this.id = id;
         this.disabled = disabled;
+        if (this.disabled) return;
         this.hasInit = this.onInitialize();
         if (!this.hasInit) {
             console.log('Plugin didn\'t initialize?');
@@ -21,7 +22,7 @@ module.exports = class Plugin {
     }
 
     pushNotification(value) {
-        NotificationManager.add(this.name, v);
+        NotificationManager.add(this.name, value);
     }
 
     registerNewType (name, type) {

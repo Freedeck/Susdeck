@@ -12,6 +12,7 @@ module.exports = {
     exec: ({socket}) => {
         socket.id = Math.random() * 2048 + '.fd';
         socket.tempLoginID = Math.random() * 1024 + '.tlid.fd';
+        socket._clientInfo = {};
         socket.on('disconnect', () => {
             if (socket.user === 'Companion') tsm.set('companion', false);
             debug.log(picocolors.red('Client ' + socket.user + ' disconnected'), 'Socket ' + socket.id)
@@ -37,6 +38,10 @@ module.exports = {
                 const plug = plugins().get(data);
                 socket.emit(eventNames.plugin_info, JSON.stringify({requested: data, response: plug}))
             })
+            socket.on(eventNames.information, (data) => {
+                socket._clientInfo = data;
+                debug.log('Companion using APIv' + data.apiVersion);
+            });
         })
     }
 }

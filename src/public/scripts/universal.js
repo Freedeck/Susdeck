@@ -113,6 +113,8 @@ const universal = {
                 universal.notibar.id = 'snackbar';
                 if (!document.querySelector('#snackbar')) document.body.appendChild(universal.notibar);
 
+                universal.send(universal.events.information, {apiVersion: '2'});
+
                 resolve(true);
             })
         })

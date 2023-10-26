@@ -3,6 +3,7 @@ const cfg = require('../loaders/settingsCache').settings();
 const plugins = require('../loaders/pluginLoader').plugins;
 const debug = require("../utils/debug");
 const NotificationManager = require('../loaders/NotificationManager');
+const tsm = require('../loaders/TemporarySettingsManager');
 const picocolors = require('../utils/picocolors');
 
 module.exports = {
@@ -11,9 +12,19 @@ module.exports = {
     exec: ({socket}) => {
         socket.id = Math.random() * 2048 + '.fd';
         socket.tempLoginID = Math.random() * 1024 + '.tlid.fd';
-        socket.on('disconnect', () => debug.log(picocolors.red('Client disconnected'), 'Socket ' + socket.id));
+        socket.on('disconnect', () => {
+            if (socket.user === 'Companion') tsm.set('companion', false);
+            debug.log(picocolors.red('Client ' + socket.user + ' disconnected'), 'Socket ' + socket.id)
+        });
         socket.on(eventNames.client_greet, (user) => {
             socket.user = user;
+            if (user === 'Companion') {
+                if (tsm.get('companion') === true) {
+                    socket.emit(eventNames.companion_conn_fail);
+                    return;
+                }
+                tsm.set('companion', true);
+            }
             console.log('Client ' + user + ' has greeted server at ' + new Date());
             socket.emit(eventNames.information, JSON.stringify({ id: socket.id, NotificationManager, tempLoginID: socket.tempLoginID, plugins: Array.from(plugins().keys()), events: eventNames, cfg }));
             setInterval(() => {

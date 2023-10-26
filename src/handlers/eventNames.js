@@ -17,7 +17,9 @@ const eventNames = {
 
     log: 'fd.log',
 
-    plugin_info: 'fd.plugin_data'
+    plugin_info: 'fd.plugin_data',
+
+    companion_conn_fail: 'fd.companion.connection.fail'
 }
 
 if ('exports' in module) module.exports = eventNames;

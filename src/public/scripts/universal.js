@@ -50,6 +50,10 @@ const universal = {
             universal.updatePlaying();
         }
     },
+    login: (passwd) => {
+        universal.send(universal.events.login_data, { tlid: universal._information.tempLoginID });
+        universal.send(universal.events.login, { passwd });
+    },
     init: async function (user) {
         try {
             await universal._initFn(user);
@@ -83,6 +87,17 @@ const universal = {
 
                 universal.on(universal.events.not_match, () => universal.sendToast('Login not allowed!'))
 
+                universal.on(universal.events.no_init_info, (data) => {
+                    console.log(data)
+                    const parsedToo = JSON.parse(data);
+                    universal._information = JSON.parse(data);
+                    universal._pluginData = {};
+                    universal.events = parsedToo.events;
+                    universal.config = parsedToo.cfg;
+                    universal.plugins = parsedToo.plugins;
+                    universal._serverRequiresAuth = universal.config.useAuthentication;
+                })
+
                 universal.on(universal.events.keypress, (interactionData) => {
                     const interaction = JSON.parse(interactionData).sound;
                     if (user !== 'Companion') return;
@@ -105,7 +120,11 @@ const universal = {
 
                 universal.on(universal.events.login_data_ack, (data) => universal._loginAllowed = data);
 
-                universal.on(universal.events.login, (auth) => { universal.authStatus = auth; if (auth === true) universal.sendToast('Authenticated!'); });
+                universal.on(universal.events.login, (auth) => {
+                    universal.authStatus = auth;
+                    if (auth === true) universal.sendToast('Authenticated!');
+                    if (auth === false) universal.sendToast('Incorrect password!');
+                });
 
                 universal.keys.id = 'keys';
                 if (!document.querySelector('#keys')) document.body.appendChild(universal.keys);

@@ -6,6 +6,7 @@ const eventNames = {
     login_data_ack: 'fd.login_data.ack',
 
     information: 'fd.info',
+    no_init_info: 'fd.info.noinit',
 
     keypress: 'fd.keypress',
 
@@ -19,7 +20,13 @@ const eventNames = {
 
     plugin_info: 'fd.plugin_data',
 
-    companion_conn_fail: 'fd.companion.connection.fail'
+    companion: {
+        conn_fail: 'fd.companion.conn.fail',
+        new_key: 'fd.companion.keys.new',
+        del_key: 'fd.companion.keys.del',
+        edit_key: 'fd.companion.keys.edit',
+        move_key: 'fd.companion.keys.move'
+    }
 }
 
 if ('exports' in module) module.exports = eventNames;

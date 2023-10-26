@@ -105,7 +105,7 @@ const universal = {
 
                 universal.on(universal.events.login_data_ack, (data) => universal._loginAllowed = data);
 
-                universal.on(universal.events.login, (auth) => universal.authStatus = auth);
+                universal.on(universal.events.login, (auth) => { universal.authStatus = auth; if (auth === true) universal.sendToast('Authenticated!'); });
 
                 universal.keys.id = 'keys';
                 if (!document.querySelector('#keys')) document.body.appendChild(universal.keys);

@@ -5,9 +5,16 @@ const path = require('path');
 const fs = require('fs');
 const picocolors = require('./utils/picocolors');
 
+const config = require('./loaders/settingsCache');
+const settings = config.settings();
+
+const PORT = settings.port || 5754;
+
+const networkAddresses = require('./loaders/networkAddresses');
+
 const debug = require('./utils/debug');
 
-if (process.argv[2] === 'server') { debug.log(picocolors.blue('Server only mode.')); } else { require('./companionInit'); }
+if (process.argv[2] === 'server') { console.log(picocolors.blue('Server only mode.')); } else { require('./companionInit'); }
 if (process.argv[2] === 'companion') return;
 
 const app = express();
@@ -43,6 +50,9 @@ io.on('connection', (socket) => {
 });
 
 app.use(express.static(path.join(__dirname, './public')));
-server.listen(5754, () => {
-
+server.listen(PORT, () => {
+    Object.keys(networkAddresses()).forEach(netInterface => {
+        const ipPort = networkAddresses()[netInterface][0] + ':' + PORT;
+        console.log(picocolors.bgBlue('Go to ' + ipPort + ' on your mobile device [Interface ' + netInterface + ']'));
+    })
 });

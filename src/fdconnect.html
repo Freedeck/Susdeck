@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>FD Connect</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+  <div id="msg">
+    <h1>Welcome to Freedeck Connect.</h1>
+    <p>This page is local, and hosts your connection to Freedeck's server, as to help with broken connections/pipes.</p>
+    <p>If you're seeing this, your server most likely hasnt loaded yet, or youre running in Companion Only mode.</p>
+    <p>Heres some connection stuff in case you're looking to connect to another server.</p>
+    <h1>Freedeck Connect is currently trying to connect to: <span id="currcon">http://localhost:5754</span>. Once found it will connect!</h1>
+    <h2 id="datstat"></h2>
+      <input type="url" placeholder="Freedeck Server URL" value="http://localhost:5754" id="url">
+    <input type="submit" value="Connect" id="sub">
+  </div>
+    <script>
+    const concon = document.querySelector("#currcon")
+    const datsta = document.querySelector('#datstat')
+    const msg = document.querySelector("#msg")
+    const url = document.querySelector("#url")
+    const subm = document.querySelector('#sub')
+
+    subm.onclick = (ev) => {
+      concon.innerText = url.value;
+      datsta.innerText = "Connecting to " + url.value + "/fdc for server status."
+      fetch(url.value + '/fdc').then(res => res.text()).then(res =>{
+         datsta.innerText = "Status code " + res + ", fetching companion interface.";
+        fetch(url.value + '/companion').then(res => res.text()).then(res => {
+          datsta.innerText = "Companion UI fetched. Starting connection."
+          window.location.replace(url.value + '/companion?fdc=true');
+        })
+      }).catch(failure => {
+          datsta.innerText = "Connection failed: " + failure.toString() + " | The server may be offline";
+        })
+    }
+    subm.click();
+    setInterval(() => {
+      subm.click();
+    },20)
+    </script>
+  </body>
+</html>

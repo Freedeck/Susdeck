@@ -61,6 +61,10 @@ const universal = {
             console.error(e + ' | Universal: initialize failed.');
         }
     },
+    /*  */
+    _cb: {},
+    listenFor: (ev, cb) => universal._cb[ev] = cb,
+    sendEvent: (ev, ...data) => universal._cb[ev] ? universal._cb[ev](data) : 0,
     _initFn: async function (/** @type {string} */ user) {
         return new Promise((resolve, reject) => {
             universal.send('fd.greetings', user)
@@ -88,7 +92,6 @@ const universal = {
                 universal.on(universal.events.not_match, () => universal.sendToast('Login not allowed!'))
 
                 universal.on(universal.events.no_init_info, (data) => {
-                    console.log(data)
                     const parsedToo = JSON.parse(data);
                     universal._information = JSON.parse(data);
                     universal._pluginData = {};
@@ -96,6 +99,7 @@ const universal = {
                     universal.config = parsedToo.cfg;
                     universal.plugins = parsedToo.plugins;
                     universal._serverRequiresAuth = universal.config.useAuthentication;
+                    universal.sendEvent('new-info');
                 })
 
                 universal.on(universal.events.keypress, (interactionData) => {

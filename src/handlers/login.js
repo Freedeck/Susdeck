@@ -1,5 +1,5 @@
 const eventNames = require('./eventNames');
-const sec = require('../loaders/secretManager');
+const sec = require('../managers/secrets');
 const debug = require('../utils/debug');
 
 module.exports = {

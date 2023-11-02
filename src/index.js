@@ -5,12 +5,12 @@ const path = require('path');
 const fs = require('fs');
 const picocolors = require('./utils/picocolors');
 
-const config = require('./loaders/settingsCache');
+const config = require('./managers/settings');
 const settings = config.settings();
 
 const PORT = settings.port || 5754;
 
-const networkAddresses = require('./loaders/networkAddresses');
+const networkAddresses = require('./managers/networkAddresses');
 
 const debug = require('./utils/debug');
 
@@ -22,7 +22,7 @@ const server = http.createServer(app);
 const io = new socketIO.Server(server);
 
 const handlers = new Map();
-const pl = require(path.resolve('./src/loaders/pluginLoader'));
+const pl = require(path.resolve('./src/managers/pluginLoader'));
 const plugins = pl.plugins;
 
 fs.readdirSync(path.resolve('./src/handlers')).forEach((file) => {
@@ -50,6 +50,9 @@ io.on('connection', (socket) => {
 });
 
 app.use(express.static(path.join(__dirname, './public')));
+
+app.get('/fdc', (req,res) => res.sendStatus(200));
+
 server.listen(PORT, () => {
     Object.keys(networkAddresses()).forEach(netInterface => {
         const ipPort = networkAddresses()[netInterface][0] + ':' + PORT;

@@ -1,6 +1,6 @@
 const eventNames = require('./eventNames');
 const debug = require('../utils/debug');
-const cfg = require('../loaders/settingsCache').settings();
+const cfg = require('../managers/settings').settings();
 
 module.exports = {
     name: 'Keypress Handler',

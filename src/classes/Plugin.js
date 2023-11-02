@@ -1,6 +1,6 @@
 const path = require("path");
-const NotificationManager = require(path.resolve('./src/loaders/NotificationManager.js'));
-const types = require(path.resolve('./src/loaders/pluginLoader.js'))
+const NotificationManager = require(path.resolve('./src/managers/notifications.js'));
+const types = require(path.resolve('./src/managers/plugins.js'))
 
 module.exports = class Plugin {
     name;

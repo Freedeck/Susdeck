@@ -1,9 +1,9 @@
 const eventNames = require('./eventNames');
-const cfg = require('../loaders/settingsCache');
-const plugins = require('../loaders/pluginLoader').plugins;
+const cfg = require('../managers/settings');
+const plugins = require('../managers/plugins').plugins;
 const debug = require("../utils/debug");
-const NotificationManager = require('../loaders/NotificationManager');
-const tsm = require('../loaders/TemporarySettingsManager');
+const NotificationManager = require('../managers/notifications');
+const tsm = require('../managers/temporarySettings');
 const picocolors = require('../utils/picocolors');
 
 module.exports = {

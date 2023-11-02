@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron');
+const path = require('path');
 app.on('ready', () => {
     const mainWindow = new BrowserWindow({
         width: 800,
@@ -7,6 +8,5 @@ app.on('ready', () => {
             nodeIntegration: false,
         },
     });
-
-    mainWindow.loadURL(`http://localhost:5754/companion/index.html`).then(r => console.log(r));
+    mainWindow.loadFile(path.resolve('./src/fdconnect.html'));
 });

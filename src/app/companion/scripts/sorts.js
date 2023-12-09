@@ -6,8 +6,10 @@ const onUpdate = (evt) => {
   if (universal.load('page') === 0) {
 
   } else {
-    oidx = (universal.load('page') * universal.iconCount) + evt.oldDraggableIndex;
-    nidx = (universal.load('page') * universal.iconCount) + evt.newIndex;
+    let pagefinder = universal.load('page');
+    if (item.page) pagefinder = item.page;
+    oidx = pagefinder * universal.iconCount + evt.oldDraggableIndex;
+    nidx = pagefinder * universal.iconCount + evt.newIndex;
   }
   const name = item.innerText;
   const uuid = item.getAttribute('data-uuid');

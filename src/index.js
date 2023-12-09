@@ -57,6 +57,10 @@ function FixNullIssue () {
     if (sound === null) return;
     a.push(sound);
   });
+  debug.log('v5.2.0 Fix: Positional accuracy of sounds has been improved.');
+  for (let i = 0; i < sounds.Sounds.length; i ++) {
+    sounds.Sounds[i].pos = i;
+  }
   sounds.Sounds = a;
 }
 

@@ -19,6 +19,7 @@ const autosort = (countOnEP) => {
     if (sound.page) {
       if (!Pages[sound.page]) Pages[sound.page] = [];
       Pages[sound.page].push(sound);
+      console.log(index)
       return;
     }
     Pages[pageCounter].push(sound); // Add it to a page

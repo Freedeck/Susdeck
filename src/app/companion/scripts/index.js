@@ -347,6 +347,7 @@ const autoSort = (countOnEP) => {
     }
     Pages[pageCounter].push(sound); // Add it to a page
     sound.page = pageCounter; // Set the page
+    sound.idx = index;
     if (index === countOnEP) { // However, if we reach the max icon count for the screen,
       pageCounter++; // Increment the page
       index = 0; // And reset the sound amount counter

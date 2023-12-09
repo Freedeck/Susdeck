@@ -5,6 +5,7 @@ const Susaudio = {
     pitch: 1.0,
     preservesPitch: false,
     volume: 1.0,
+    NotVBVolume: 1.0,
     autotuned: false,
     paused: false,
     sinkId: universal.load('susaudio_sinkid') ? universal.load('susaudio_sinkid') : null,
@@ -69,6 +70,9 @@ const Susaudio = {
     if (audio.isNotVB === false) {
       await audio.setSinkId(Susaudio._player.sinkId);
       universal.save('susaudio_playlist', universal.load('_susaudio_playlist') + ',' + audio.saName);
+    }
+    if (audio.isNotVB === true) {
+      audio.volume = Susaudio._player.NotVBVolume;
     }
     audio.onended = () => Susaudio._player.audioEndedCallback(audio);
     audio.play();

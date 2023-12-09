@@ -8,12 +8,18 @@ const gsl = () => {
   // IMPL SOON
 };
 
-const volChanged = () => {
-  const volumeSlider = document.querySelector('#out-vol');
-  Susaudio._player.volume = volumeSlider.value;
+const volChanged = (isUs) => {
+  let volumeSlider = document.querySelector('#out-vol');
+  if (isUs) volumeSlider = document.querySelector('#out-volt');
+  if (!isUs) Susaudio._player.volume = volumeSlider.value;
+  if (isUs) Susaudio._player.NotVBVolume = volumeSlider.value;
   Susaudio._player.queue.forEach(audio => {
-    Susaudio._player.volume = volumeSlider.value;
-    audio.volume = Susaudio._player.volume;
+    if (!isUs) Susaudio._player.volume = volumeSlider.value;
+    if (isUs) Susaudio._player.NotVBVolume = volumeSlider.value;
+    if (!isUs) audio.volume = Susaudio._player.volume;
+    if (isUs) {
+      if (audio.isNotVB) audio.volume = Susaudio._player.NotVBVolume;
+    }
   });
 };
 

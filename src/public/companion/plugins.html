@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="companion.css">
+    <title>Freedeck v6</title>
+	<style>
+		#keys {
+			display: none;
+		}
+		.btns {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+		}
+		button{ border:0}
+	</style>
+</head>
+<body>
+    <dialog id="login-dialog">
+        <div id="login-div">
+            <h1>Freedeck 6 - Companion</h1>
+            <p>Enter the password to connect to the server</p>
+            <input type="password" id="password">
+            <button onclick="universal.login(document.getElementById('password').value)">Login</button>
+        </div>
+    </dialog>
+    
+<h1>Plugins</h1>
+<p>Here you can view every plugin connected to Freedeck and it's related button and key type!</p>
+<ul class="btnlist"></ul>
+<div class="btns">
+
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="scripts/pluginPage.js" type="module"></script>
+<script src="scripts/global.js" type="module"></script>
+<script src="scripts/authfulPage.js" type="module"></script>
+</body>
+</html>

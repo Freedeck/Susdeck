@@ -25,8 +25,12 @@ const eventNames = {
         new_key: 'fd.companion.keys.new',
         del_key: 'fd.companion.keys.del',
         edit_key: 'fd.companion.keys.edit',
-        move_key: 'fd.companion.keys.move'
-    }
+        move_key: 'fd.companion.keys.move',
+        set_profile: 'fd.companion.profile.set',
+        add_profile: 'fd.companion.profile.add'
+    },
+
+    reload: 'fd.reload'
 }
 
 if ('exports' in module) module.exports = eventNames;

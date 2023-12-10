@@ -2,49 +2,77 @@ import { universal } from './universal.js';
 
 await universal.init('Main');
 
-for (let i = 0; i < universal.config.iconCountPerPage - 3; i++){
-    let tempDiv = document.createElement("div");
-    tempDiv.className = 'button k-' + i + ' unset';
-    universal.keys.appendChild(tempDiv);
+
+function reloadSounds() {
+  universal.config.sounds = universal.config.profiles[universal.config.profile]
+  document.querySelectorAll('#keys > .button').forEach(key => {
+      key.remove();
+  })
+  universal.keySet();
+  universal.config.sounds.forEach(sound => {
+      const k = Object.keys(sound)[0];
+      const snd = sound[k];
+      let keyObject = document.querySelector('.k-' + snd.pos);
+
+      if (snd.pos < ((universal.config.iconCountPerPage) * universal.page)) return;
+      if (!keyObject) {
+          if (universal.page == 0) return;
+          const newPos = Math.abs(snd.pos - (universal.config.iconCountPerPage * universal.page)) - 1;
+          snd.pos = newPos;
+          keyObject = document.querySelector('.k-' + snd.pos);
+      };      
+      try {
+          keyObject.setAttribute('data-interaction', JSON.stringify(snd));
+          keyObject.innerText = k;
+          keyObject.className = keyObject.className.replace('unset','');
+          keyObject.onclick = (ev) => {
+              universal.send(universal.events.keypress, JSON.stringify({event: ev, btn: snd}))
+          };
+      } catch(e) {
+      }
+  })
 }
+reloadSounds();
 
-universal.config.sounds.forEach(sound => {
-    const k = Object.keys(sound)[0];
-    const snd = sound[k];
-    const keyObject = document.querySelector('.k-' + snd.pos);
-    keyObject.setAttribute('data-interaction', JSON.stringify(snd));
-    keyObject.innerText = k;
-    keyObject.className = keyObject.className.replace('unset','');
-    keyObject.onclick = (ev) => {
-        universal.send(universal.events.keypress, JSON.stringify({event: ev, btn: snd}))
-    };
-})
+let Pages = {};
+for (let i = 0; i < (universal.config.sounds.length / universal.config.iconCountPerPage); i++) {
+    Pages[i] = true;
+}
+let touchstartX = 0;
+let touchendX = 2500;
 
-const builtInKeys = [
-    {
-        name: 'Stop All',
-        onclick: (ev) => {
-            universal.send(universal.events.keypress, JSON.stringify({builtIn: true, data:'stop-all'}))
-        }
-    },
-    {
-        name: 'Reload',
-        onclick: (ev) => {
-            window.location.replace(window.location.href)
-        }
-    },
-    {
-        name: 'Settings',
-        onclick: (ev) => {
-            console.log('To be implemented...')
-        }
+const checkDirection = () => {
+    let currentPage = universal.page;
+  const range = touchendX - touchstartX;
+  if (range < -50) {
+    // go page up
+    if (Pages[currentPage + 1]) {
+      universal.page ++;
+      reloadSounds();
+    } else {
+      /* empty */
     }
-];
+  }
+  if (range > 50) {
+    // go page down
+    if (Pages[currentPage - 1]) {
+        universal.page --;
+        reloadSounds();
+    } else {
+      /* empty */
+    }
+  }
+};
 
-builtInKeys.forEach(key => {
-    let tempDiv = document.createElement("div");
-    tempDiv.className = 'button';
-    tempDiv.innerText = key.name;
-    tempDiv.onclick = key.onclick;
-    universal.keys.appendChild(tempDiv);
+document.addEventListener('touchmove', (event) => {
+  event.preventDefault();
+});
+
+document.addEventListener('touchstart', e => {
+  touchstartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener('touchend', e => {
+  touchendX = e.changedTouches[0].screenX;
+  checkDirection();
 });

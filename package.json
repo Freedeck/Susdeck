@@ -1,7 +1,7 @@
 {
   "name": "freedeck-v6-rewrite",
   "version": "1.0.0",
-  "description": "",
+  "description": "mysteriouus..",
   "main": "src/index.js",
   "scripts": {
     "start": "electron .",
@@ -14,8 +14,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "asar-bundle-runner": "^1.6.0",
     "electron": "^27.0.0",
     "express": "^4.18.2",
+    "formidable": "^3.5.1",
     "socket.io": "^4.7.2"
   }
 }

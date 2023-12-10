@@ -3,6 +3,7 @@ const universal = {
     _information: {},
     _init: false,
     _authStatus: false,
+    _tyc: new Map(),
     _serverRequiresAuth: true,
     page: 0,
     events: {},
@@ -23,7 +24,7 @@ const universal = {
         if (document.querySelector('.now-playing')) {
             let fixed = [];
             universal.audioClient._nowPlaying.forEach(itm => {
-                console.log(itm)
+                fixed.push(itm.getAttribute('data-name'))
             })
             document.querySelector('.now-playing').innerText = fixed;
         }
@@ -36,12 +37,39 @@ const universal = {
         },
         _player: {
             sink: 0,
+            monitorPotential: [],
+            monitorSink: 'default',
+            normalVol: 1,
+            monitorVol: 1
         },
-        stopAll: () => universal.audioClient._nowPlaying.forEach(audio => audio.stop()),
-        play: async (file, name) => {
+        stopAll: () => universal.audioClient._nowPlaying.forEach(async audio => {
+            try {
+                await audio.pause()
+            audio.currentTime = audio.duration;
+            await audio.play(); 
+            } catch (err) {
+                // "waah waah waah noo you cant just abuse audio api" -companion
+                // > i dont care :trole:
+            }
+        }),
+        play: async (file, name, isMonitor=false) => {
             const audioInstance = new Audio(file);
-            if (universal.audioClient._player.sink !== 0)  audioInstance.setSinkId(universal.audioClient._player.sink);
+            if (universal.audioClient._player.sink !== 0) await audioInstance.setSinkId(universal.audioClient._player.sink);
             audioInstance.setAttribute('data-name', name);
+            audioInstance.setAttribute('data-isMonitor', false);
+
+            if (isMonitor) {
+                await audioInstance.setSinkId(universal.audioClient._player.monitorSink)
+                if (universal.load('monitor.sink')) {
+                    await audioInstance.setSinkId(universal.load('monitor.sink'));
+                }
+                audioInstance.volume = universal.audioClient._player.monitorVol;
+            } else {
+                audioInstance.volume = universal.audioClient._player.normalVol;
+            }
+            audioInstance.fda = {};
+            audioInstance.fda.name = name;
+            audioInstance.fda.monitoring = isMonitor;
             await audioInstance.play();
 
             audioInstance.onended = (ev) => {universal.audioClient._end(ev)};
@@ -57,12 +85,65 @@ const universal = {
     init: async function (user) {
         try {
             await universal._initFn(user);
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            devices.forEach(device => {
+            if (device.kind == 'audiooutput') universal.audioClient._player.monitorPotential.push(device);
+                if (device.label === 'CABLE Input (VB-Audio Virtual Cable)') {
+                const audio = new Audio();
+                audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
+                universal.audioClient._player.sink = device.deviceId;
+            }
+            });
+
+            universal.load('monitor.sink') ? universal.audioClient._player.monitorSink = universal.load('monitor.sink') : 'default';
         } catch (e) {
             console.error(e + ' | Universal: initialize failed.');
         }
     },
     /*  */
     _cb: {},
+    keySet: () => {
+        for (let i = 0; i < universal.config.iconCountPerPage; i++){
+            let tempDiv = document.createElement("div");
+            tempDiv.className = 'button k-' + i + ' unset';
+            universal.keys.appendChild(tempDiv);
+        }
+        const builtInKeys = [
+            {
+                name: 'Stop All',
+                onclick: (ev) => {
+                    universal.send(universal.events.keypress, JSON.stringify({builtIn: true, data:'stop-all'}))
+                }
+            },
+            {
+                name: 'Reload',
+                onclick: (ev) => {
+                    window.location.reload();
+                }
+            },
+            {
+                name: 'Settings',
+                onclick: (ev) => {
+                    console.log('To be implemented...')
+                }
+            }
+        ];
+        
+        builtInKeys.forEach(key => {
+            let tempDiv = document.createElement("div");
+            tempDiv.className = 'button unset builtin';
+            tempDiv.innerText = key.name;
+            tempDiv.onclick = key.onclick;
+            universal.keys.appendChild(tempDiv);
+        });
+    },
+    Pages: {},
+    reloadProfile: ()=> {
+        universal.config.sounds = universal.config.profiles[universal.config.profile]
+        for (let i = 0; i < (universal.config.sounds.length / universal.config.iconCountPerPage); i++) {
+            universal.Pages[i] = true;
+        }
+    },
     listenFor: (ev, cb) => universal._cb[ev] = cb,
     sendEvent: (ev, ...data) => universal._cb[ev] ? universal._cb[ev](data) : 0,
     _initFn: async function (/** @type {string} */ user) {
@@ -74,6 +155,7 @@ const universal = {
                 universal._pluginData = {};
                 universal.events = parsed.events;
                 universal.config = parsed.cfg;
+                universal.config.sounds = parsed.cfg.profiles[parsed.cfg.profile];
                 universal.plugins = parsed.plugins;
                 universal._serverRequiresAuth = universal.config.useAuthentication;
                 universal._init = true;
@@ -89,7 +171,7 @@ const universal = {
 
                 universal.on(universal.events.not_auth, () => universal.sendToast('You are not authenticated!'))
 
-                universal.on(universal.events.not_match, () => universal.sendToast('Login not allowed!'))
+                universal.on(universal.events.not_match, () => universal.sendToast('Login not allowed! Session could not be verified against server.'))
 
                 universal.on(universal.events.no_init_info, (data) => {
                     const parsedToo = JSON.parse(data);
@@ -103,11 +185,18 @@ const universal = {
                 })
 
                 universal.on(universal.events.keypress, (interactionData) => {
-                    const interaction = JSON.parse(interactionData).sound;
-                    if (user !== 'Companion') return;
+                    const interaction = JSON.parse(interactionData);
+                    if (!user.includes('Companion')) return;
+                    if ('sound' in interaction && interaction.sound.name === 'Stop All') { universal.audioClient.stopAll(); return; }
                     if (interaction.type !== 'fd.sound') return;
-                    if (interaction.name === 'Stop All') { universal.audioClient.stopAll(); return; }
-                    universal.audioClient.play(interaction.data.path + '/' + interaction.data.file, interactionData.name);
+                    universal.reloadProfile();
+                    //get name from universal.config.sounds with uuid
+                    const a = universal.config.sounds.filter(snd => {
+                        const k = Object.keys(snd)[0];
+                        return snd[k].uuid === interaction.uuid;
+                    })[0];
+                    universal.audioClient.play(interaction.data.path + '/' + interaction.data.file, Object.keys(a)[0]);
+                    universal.audioClient.play(interaction.data.path + '/' + interaction.data.file, Object.keys(a)[0], true);
                 })
 
                 universal.on(universal.events.log, (data) => {
@@ -117,17 +206,25 @@ const universal = {
 
                 universal.on(universal.events.notif, (data) => {
                     data = JSON.parse(data);
-                    universal.sendToast(data.sender + ': ' +  data.data)
+                    if(!data.isCon) universal.sendToast('[' + data.sender + '] ' +  data.data)
+                    if(data.isCon) universal.sendEvent('notif', data);
                 })
 
-                universal.on(universal.events.plugin_info, (data) => universal._pluginData[JSON.parse(data).requested] = JSON.parse(data).response)
+                universal.on(universal.events.plugin_info, (data) => {
+                    universal._pluginData[JSON.parse(data).requested] = JSON.parse(data).response
+                    JSON.parse(data).response.instance.types.forEach(type => {
+                        universal._tyc.set(type, data);
+                    })
+                    universal.sendEvent(universal.events.plugin_info, data);
+                })
 
                 universal.on(universal.events.login_data_ack, (data) => universal._loginAllowed = data);
+                universal.on(universal.events.reload, () => window.location.reload());
 
                 universal.on(universal.events.login, (auth) => {
                     universal.authStatus = auth;
-                    if (auth === true) universal.sendToast('Authenticated!');
                     if (auth === false) universal.sendToast('Incorrect password!');
+                    universal.sendEvent('auth', auth);
                 });
 
                 universal.keys.id = 'keys';
@@ -138,14 +235,29 @@ const universal = {
 
                 universal.send(universal.events.information, {apiVersion: '2'});
 
+                universal.plugins.forEach(plugin => {
+                    universal.send(universal.events.plugin_info, plugin)
+                })
+
+                universal.keySet();
+                
+
+                window['universal'] = universal;
+                universal.sendEvent('init');
+
                 resolve(true);
             })
         })
     },
     sendToast: (message) => {
+        if (!HTMLElement.prototype.setHTML) {
+            HTMLElement.prototype.setHTML = function(html) {
+                this.innerHTML = html;
+            }
+        }
         const s = document.createElement('div');
         s.id = 'toast';
-        s.innerText = message;
+        s.setHTML(message)
         s.className = 'show';
         s.onclick = () => { s.className = s.className.replace('show', ''); s.remove(); };
         document.querySelector('#snackbar').appendChild(s);

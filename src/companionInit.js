@@ -10,3 +10,8 @@ app.on('ready', () => {
     });
     mainWindow.loadFile(path.resolve('./src/fdconnect.html'));
 });
+
+app.on('window-all-closed', (e) => {
+    console.log('Exiting Freedeck!');
+    process.exit(0)
+})

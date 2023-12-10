@@ -9,7 +9,7 @@ const picocolors = require('../utils/picocolors');
 module.exports = {
     name: 'Main',
     id: 'fd.handlers.main',
-    exec: ({socket}) => {
+    exec: ({socket, io}) => {
         socket._id = Math.random() * 2048 + '.fd';
         socket.tempLoginID = Math.random() * 1024 + '.tlid.fd';
         socket._clientInfo = {};
@@ -34,23 +34,24 @@ module.exports = {
                 tempLoginID: socket.tempLoginID,
                 plugins: Array.from(plugins().keys()),
                 events: eventNames,
-                cfg: cfg.settings()
+                cfg: cfg.settings(),
+                profiles: cfg.settings['profiles'],
             }
             socket.emit(eventNames.information, JSON.stringify(serverInfo));
             setInterval(() => {
                 cfg.update();
                 serverInfo['cfg'] = cfg.settings();
                 socket.emit(eventNames.no_init_info, JSON.stringify(serverInfo));
-
                 let data = NotificationManager.get();
                 if (data === '' || typeof data === 'undefined' || !('data' in data)) return;
-                socket.emit(eventNames.notif, JSON.stringify(data));
+                io.emit(eventNames.notif, JSON.stringify(data));
             },150);
-            socket.emit(eventNames.notif, JSON.stringify({sender:'Server', data:'Connected to server!'}));
+            socket.emit(eventNames.notif, JSON.stringify({sender:'Server', data:'Connected to server!', isCon:true}));
             socket.on(eventNames.plugin_info, (data) => {
                 const plug = plugins().get(data);
                 socket.emit(eventNames.plugin_info, JSON.stringify({requested: data, response: plug}))
             })
+            
             socket.on(eventNames.information, (data) => {
                 socket._clientInfo = data;
                 debug.log('Companion using APIv' + data.apiVersion);

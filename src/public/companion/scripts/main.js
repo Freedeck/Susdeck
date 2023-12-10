@@ -1,92 +1,478 @@
-import { universal } from '../../scripts/universal.js';
+import {universal} from '../../scripts/universal.js';
 import './Sortable.min.js';
+let Pages = {};
 
 await universal.init('Companion');
 
-universal.plugins.forEach(plugin => {
-    universal.send(universal.events.plugin_info, plugin)
-})
-
-universal.on(universal.events.plugin_info, (data) => {
-    let req = JSON.parse(data)
-    let types = req.response.instance.types;
-    types.forEach((dataObj) => {
-        let tmpBtn = document.createElement("button");
-        tmpBtn.innerText = dataObj.name+": " + dataObj.type
-        tmpBtn.onclick = (ev) => {
-            universal.send(universal.events.keypress, JSON.stringify({event: ev, btn: {uuid: 0, name: dataObj.name, type: dataObj.type}}))
-        };
-        document.body.appendChild(tmpBtn)
-    })
-})
-
 new Sortable(document.querySelector('#keys'), {
     onUpdate: (d) => {
-        universal.send(universal.events.companion.move_key, JSON.stringify({name: d.item.innerText, item: d.item.getAttribute('data-interaction'), newIndex: d.newDraggableIndex, oldIndex: d.oldDraggableIndex}))
+        if (universal.page == 0) {
+            universal.page = 1
+        } else {
+            d.newDraggableIndex = d.newDraggableIndex + (universal.page * universal.config.iconCountPerPage);
+            d.oldDraggableIndex = d.oldDraggableIndex + (universal.page * universal.config.iconCountPerPage);
+        }
+
+        universal.send(universal.events.companion.move_key, JSON.stringify({name: d.item.innerText, item: d.item.getAttribute('data-interaction'), newIndex: d.newDraggableIndex, oldIndex: d.oldDraggableIndex*universal.page}))
+        universal.page = 0;
     },
     filter: '.unset',
     preventOnFilter: true
 });
 
-for (let i = 0; i < universal.config.iconCountPerPage - 3; i++){
-    let tempDiv = document.createElement("div");
-    tempDiv.className = 'button k-' + i + ' unset';
-    universal.keys.appendChild(tempDiv);
+function reloadSounds() {
+    reloadProfile();
+    document.querySelectorAll('#keys > .button').forEach(key => {
+        key.remove();
+    })
+    universal.keySet();
+    universal.config.sounds.forEach(sound => {
+        const k = Object.keys(sound)[0];
+        const snd = sound[k];
+        let keyObject = document.querySelector('.k-' + snd.pos);
+
+        if (snd.pos < ((universal.config.iconCountPerPage) * universal.page)) return;
+        if (!keyObject) {
+            if (universal.page == 0) return;
+            const newPos = Math.abs(snd.pos - (universal.config.iconCountPerPage * universal.page)) - 1;
+            snd.pos = newPos;
+            keyObject = document.querySelector('.k-' + snd.pos);
+        };        
+        try {
+            keyObject.setAttribute('data-interaction', JSON.stringify(snd));
+            keyObject.innerText = k;
+            keyObject.className = keyObject.className.replace('unset','');
+            keyObject.onclick = (ev) => {
+                universal.send(universal.events.keypress, JSON.stringify({event: ev, btn: snd}))
+            };
+        } catch(e) {
+        }
+    })
+}
+reloadSounds();
+
+window.oncontextmenu = function (e)
+{
+    // console.log(e.srcElement)
+    if(document.querySelector('.contextMenu')) document.querySelector('.contextMenu').remove();
+    if (!e.srcElement.className.includes('button')) return false;
+    if (e.srcElement.className.includes('builtin')) return false;
+    let custMenu = document.createElement('div')
+    custMenu.className = 'contextMenu'
+    custMenu.style.top = e.clientY + 'px'
+    custMenu.style.left = e.clientX + 'px'
+    custMenu.style.position = 'absolute'
+
+    let custMenuTitle = document.createElement('div')
+    custMenuTitle.innerText = 'Editing ' + (e.srcElement.innerText != '' ? e.srcElement.innerText : 'nothing!')
+    custMenuTitle.style.fontWeight = 'bold'
+    custMenuTitle.style.marginBottom = '5px'
+    custMenu.appendChild(custMenuTitle)
+
+    let custMenuItems = [
+        'New Key'
+    ]
+    if(e.srcElement.innerText != '') {
+        custMenuItems = ['Open Studio'].concat(custMenuItems)
+        custMenuItems.push('Remove Key')
+    } else {
+        custMenuItems = ['Copy Key Here'].concat(custMenuItems)
+    }
+
+    custMenuItems.forEach(item => {
+        let menuItem = document.createElement('div');
+        menuItem.innerText = item;
+        menuItem.className = 'menuItem';
+        menuItem.onclick = () => {
+            // Handle menu item click
+            switch (item) {
+                case 'Open Studio':
+                    // show a modal with the editor
+                    document.querySelector('.contextMenu').style.display = 'none';
+                    document.querySelector('#editor').style.display = 'block';
+                    document.querySelector('#editor-btn').innerText = e.srcElement.innerText;
+                    document.querySelector('#name').value = e.srcElement.innerText;
+                    document.querySelector('#editor-btn').setAttribute('data-pre-edit', e.srcElement.innerText);
+                    document.querySelector('#editor-btn').setAttribute('data-interaction', e.srcElement.getAttribute('data-interaction'));
+                    document.querySelector('#type').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).type;
+                    document.querySelector('#plugin').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).plugin || 'Freedeck';
+                    if (JSON.parse(e.srcElement.getAttribute('data-interaction')).type == 'fd.sound') {
+                        document.querySelector('#sound-file').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).data.file || 'Unset.mp3';
+                        document.querySelector('#sound-file').style.display = 'block';
+                        document.querySelector('#upload-sound').style.display = 'flex';
+                    }
+                    // make it fade in
+                    document.querySelector('#editor').style.opacity = '0';
+                    setTimeout(() => {
+                        document.querySelector('#editor').style.opacity = '1';
+                    }, 100);
+                    break;
+                case 'New Key':
+                    showPick('New Key', [{name:'Sound', type:'sound'}, {name:'Macro', type:'macro'}, {name:'Plugin', type:'plugin'}], (modal, value, feedback, title, button, content) => {
+                        if (value.type == 'sound') createSound();
+                        if (value.type == 'plugin') createPlugin();
+                    })
+                    break;
+                case 'Remove Key':
+                    reloadProfile();
+                    universal.send(universal.events.companion.del_key, JSON.stringify({name: e.srcElement.innerText, item: e.srcElement.getAttribute('data-interaction')}))
+                    break;
+                case 'Copy Key Here':
+                    showReplaceGUI(e.srcElement);
+                    break;
+                default:
+                    break;
+            }
+        };
+        custMenu.appendChild(menuItem);
+    });
+    document.body.appendChild(custMenu);
+    return false;     // cancel default menu
 }
 
-universal.config.sounds.forEach(sound => {
-    const k = Object.keys(sound)[0];
-    const snd = sound[k];
-    const keyObject = document.querySelector('.k-' + snd.pos);
-    if (!keyObject) {
-    // TODO: Range check, try maybe using ([universal.iconCountPerPage * universal.page] ref as pagecount)
-    // if a page is 8 long, we should have the range 0 - 8, and subtract pagecount from icidx
-    // maybe use pagecount - pagecount + 1 > iconIndex > pagecount
-    // Example pagecount = 8
-    //           1 >= 16 >= 8 - false, not in range
-    //           1 >= 8 >= 8 - true, in rnage? signs probably wrong
-    if (universal.page === 0) return; // I mean it wouldn't be on this page lol 
-      const pagecount = universal.config.iconCountPerPage * (universal.page + 1); // lets say 12
-      const newIconIdx = Math.abs(pagecount - snd.pos) // 12 - 13 is -1, abs is 1
-    if (pagecount - pagecount + 1 <= newIconIdx && newIconIdx >= pagecount) {
-      console.log('asdf')
-    }
-      console.log('Sound ' + k + ', pos ' + snd.pos + ' is not on this page')
-      return;
-    }
-    keyObject.setAttribute('data-interaction', JSON.stringify(snd));
-    keyObject.innerText = k;
-    keyObject.className = keyObject.className.replace('unset','');
-    keyObject.onclick = (ev) => {
-        universal.send(universal.events.keypress, JSON.stringify({event: ev, btn: snd}))
+function showReplaceGUI(srcElement) {
+    reloadProfile();
+    showPick('Copy from:', universal.config.sounds.map(sound => {
+        let k = Object.keys(sound)[0];
+        return {name: k, type: sound[k].type}
+    }), (modal, value, feedback, title, button, content) => {
+        reloadProfile();
+        let valueToo = universal.config.sounds.filter(sound => {
+            let k = Object.keys(sound)[0];
+            return k == value.name;
+        })[0][value.name];
+        // we need to clone value, and change the pos, and uuid, then make a new key.
+        universal.send(universal.events.companion.new_key, JSON.stringify({
+            [value.name]: {
+                type: valueToo.type,
+                plugin: valueToo.plugin || 'Freedeck',
+                pos: parseInt(srcElement.className.split(' ')[1].split('-')[1]),
+                uuid: 'fdc.'+Math.random() * 10000000,
+                data: valueToo.data,
+            }
+        }))
+        return true;
+    })
+}
+
+function createSound() {
+    showEditModal('New Sound Key', 'Enter a name for the new key', (modal, value, feedback, title, button, input, content) => {
+        if (value.length < 1) {
+            feedback.innerText = 'Please enter a name for the key';
+            return false;
+        }
+        reloadProfile();
+        let pos = universal.config.sounds.length;
+        universal.send(universal.events.companion.new_key, JSON.stringify({
+            [value]: {
+                type: 'fd.sound',
+                pos,
+                uuid: 'fdc.'+Math.random() * 10000000,
+                data: { file: "Unset.mp3", path: "/sounds/" },
+            }
+        }))
+        return true;
+    })
+}
+
+function createPlugin() {
+    showPick('New Plugin Key', universal._tyc.keys(), (modala, valuea, feedbacka, titlea, buttona, contenta) => {
+        showEditModal("New Plugin Key", "Enter a name for the new key", (modal, value, feedback, title, button, input, content) => {
+            if (value.length < 1) {
+                feedback.innerText = 'Please enter a name for the key';
+                return false;
+            }
+            reloadProfile();
+            let pos = universal.config.sounds.length;
+            universal.send(universal.events.companion.new_key, JSON.stringify({
+                [value]: {
+                    type: valuea.type,
+                    pos,
+                    uuid: 'fdc.'+Math.random() * 10000000,
+                    plugin: valuea.name,
+                    data: { },
+                }
+            }))
+        })
+        return true;
+    })
+}
+
+document.querySelector('#upload-sound').onclick = () => {
+    upload('audio/*', (data) => {
+        reloadProfile();
+        let previousInteractionData = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+        previousInteractionData.data.file = data.newName;
+        document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(previousInteractionData));
+        document.querySelector('#sound-file').value = data.newName;
+    })
+}
+
+const upload = (accept, callback) => {
+    // <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
+    const dummyFrame = document.createElement('iframe');
+    dummyFrame.style.display = 'none';
+    dummyFrame.id = 'dummyFrame';
+    dummyFrame.name = 'dummyFrame';
+    const form = document.createElement('form');
+    form.method = 'post';
+    form.enctype = 'multipart/form-data';
+    form.action = '/fd/api/upload/';
+    form.target = 'dummyFrame';
+    form.style.display = 'none';
+    const fileUpload = document.createElement('input');
+    fileUpload.type = 'file';
+    fileUpload.name = 'file';
+    fileUpload.accept = accept;
+    fileUpload.style.display = 'none';
+    form.appendChild(fileUpload);
+    fileUpload.click();
+    fileUpload.onchange = () => {
+      form.submit();
+      setTimeout(() => { // Form parse wait
+        let content = dummyFrame.contentDocument;
+        const data = JSON.parse(content.querySelector('pre').innerText);
+        callback(data);
+            form.remove();
+            fileUpload.remove();
+            setTimeout(() => { // Let data process
+              dummyFrame.remove();
+            }, 500);
+      }, 250);
     };
+    document.body.append(form);
+    document.body.appendChild(dummyFrame);
+  };
+
+document.querySelector('#editor-close').onclick = () => {
+    document.querySelector('#editor').style.opacity = '0';
+    setTimeout(() => {
+        document.querySelector('#sound-file').style.display = 'none';
+        document.querySelector('#editor').style.display = 'none';
+        document.querySelector('#upload-sound').style.display = 'none';
+    }, 500);
+}
+
+document.querySelector('#editor-save').onclick = () => {
+    let name = document.querySelector('#name').value;
+    let interaction = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+    
+    universal.send(universal.events.companion.edit_key, JSON.stringify({name: name, oldName: document.querySelector('#editor-btn[data-interaction]').getAttribute('data-pre-edit'), interaction: interaction}))
+    
+    document.querySelector('#editor').style.opacity = '0';
+    setTimeout(() => {
+        document.querySelector('#editor').style.display = 'none';
+    }, 500);
+}
+
+function showEditModal(title, content, callback) {
+    let modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100vw';
+    modal.style.height = '100vh';
+    modal.style.background = 'rgba(0,0,0,.75)';
+    modal.style.zIndex = '9999';
+    modal.style.display = 'flex';
+    modal.style.alignItems = 'center';
+    modal.style.justifyContent = 'center';
+
+    let modalContent = document.createElement('div');
+    modalContent.className = 'modalContent';
+    modalContent.style.background = '#fff';
+    modalContent.style.padding = '20px';
+    modalContent.style.borderRadius = '5px';
+    modalContent.style.width = '50vw';
+    modalContent.style.height = '50vh';
+    modalContent.style.display = 'flex';
+    modalContent.style.flexDirection = 'column';
+    modalContent.style.alignItems = 'center';
+
+    let modalClose = document.createElement('button');
+    modalClose.innerText = 'Close';
+    modalClose.onclick = () => {
+        modal.remove();
+    }
+    modalClose.style.position = 'absolute';
+    modalClose.style.top = '0';
+    modalClose.style.right = '0';
+    modalClose.style.margin = '20px';
+    modalContent.appendChild(modalClose);
+
+    let modalTitle = document.createElement('h2');
+    modalTitle.innerText = title;
+    modalTitle.style.marginBottom = '20px';
+    modalContent.appendChild(modalTitle);
+
+    let modalFeedback = document.createElement('div');
+    modalFeedback.className = 'modalFeedback';
+    modalFeedback.style.color = 'red'
+    modalFeedback.style.marginBottom = '20px';
+    modalContent.appendChild(modalFeedback);
+
+    let modalInput = document.createElement('input');
+    modalInput.type = 'text';
+    modalInput.placeholder = content;
+    modalInput.style.marginBottom = '20px';
+    modalContent.appendChild(modalInput);
+
+    let modalButton = document.createElement('button');
+    modalButton.innerText = 'Save';
+    modalButton.onclick = () => {
+        let returned = callback(modal, modalInput.value, modalFeedback, modalTitle, modalButton, modalInput, modalContent);
+        if (returned === false) return;
+        modal.remove();
+    };
+    modalContent.appendChild(modalButton);
+
+    modal.appendChild(modalContent);
+
+    document.body.appendChild(modal);
+}
+
+function showPick(title, listContent, callback) {
+    let modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100vw';
+    modal.style.height = '100vh';
+    modal.style.background = 'rgba(0,0,0,.75)';
+    modal.style.zIndex = '9999';
+    modal.style.display = 'flex';
+    modal.style.alignItems = 'center';
+    modal.style.justifyContent = 'center';
+
+    let modalContent = document.createElement('div');
+    modalContent.className = 'modalContent';
+    modalContent.style.background = '#fff';
+    modalContent.style.padding = '20px';
+    modalContent.style.borderRadius = '5px';
+    modalContent.style.width = '50vw';
+    modalContent.style.height = '50vh';
+    modalContent.style.display = 'flex';
+    modalContent.style.flexDirection = 'column';
+    modalContent.style.alignItems = 'center';
+
+    let modalClose = document.createElement('button');
+    modalClose.innerText = 'Close';
+    modalClose.onclick = () => {
+        modal.remove();
+    }
+    modalClose.style.position = 'absolute';
+    modalClose.style.top = '0';
+    modalClose.style.right = '0';
+    modalClose.style.margin = '20px';
+    modalContent.appendChild(modalClose);
+
+    let modalTitle = document.createElement('h2');
+    modalTitle.innerText = title;
+    modalTitle.style.marginBottom = '20px';
+    modalContent.appendChild(modalTitle);
+
+    let modalFeedback = document.createElement('div');
+    modalFeedback.className = 'modalFeedback';
+    modalFeedback.style.color = 'red'
+    modalFeedback.style.marginBottom = '20px';
+    modalContent.appendChild(modalFeedback);
+
+    let modalList = document.createElement('select');
+    modalList.className = 'modalList';
+    modalList.style.marginBottom = '20px';
+    modalContent.appendChild(modalList);
+
+    listContent.forEach(item => {
+        let modalItem = document.createElement('option');
+        modalItem.className = 'modalItem';
+        modalItem.setAttribute('value', JSON.stringify(item));
+        modalItem.innerText = item.name;
+        modalList.appendChild(modalItem);
+    });
+
+
+    let modalButton = document.createElement('button');
+    modalButton.innerText = 'Save';
+    modalButton.onclick = () => {
+        let selectedItem = modalList.options[modalList.selectedIndex];
+        let returned = callback(modal, JSON.parse(selectedItem.getAttribute('value')), modalFeedback, modalTitle, modalButton, modalContent);
+        if (returned === false) return;
+        modal.remove();
+    };
+    modalContent.appendChild(modalButton);
+
+    modal.appendChild(modalContent);
+
+    document.body.appendChild(modal);
+}
+
+window.onclick = function (e) {
+    if (e.srcElement.className != 'contextMenu') {
+        if(document.querySelector('.contextMenu')) document.querySelector('.contextMenu').remove();
+    }
+}
+
+function reloadProfile() {
+    universal.config.sounds = universal.config.profiles[universal.config.profile]
+    for (let i = 0; i < (universal.config.sounds.length / universal.config.iconCountPerPage); i++) {
+        Pages[i] = true;
+    }
+}
+reloadProfile();
+
+document.addEventListener('keydown', (ev) => {
+    if (ev.key == 'ArrowLeft') {
+        if (Pages[universal.page - 1]) {
+            universal.page --;
+            reloadSounds();
+        }
+    }
+    if (ev.key == 'ArrowRight') {
+        if (Pages[universal.page + 1]) {
+            universal.page ++;
+            reloadSounds();
+        }
+    }
 })
 
-const builtInKeys = [
-    {
-        name: 'Stop All',
-        onclick: (ev) => {
-            universal.send(universal.events.keypress, JSON.stringify({builtIn: true, data:'stop-all'}))
-        }
-    },
-    {
-        name: 'Reload',
-        onclick: (ev) => {
-            window.location.replace(window.location.href)
-        }
-    },
-    {
-        name: 'Settings',
-        onclick: (ev) => {
-            console.log('To be implemented...')
-        }
-    }
-];
+const profileTxt = document.createElement('h2');
+profileTxt.innerHTML = 'Profile:&nbsp<i>'+universal.config.profile+'</i>';
+document.body.appendChild(profileTxt);
 
-builtInKeys.forEach(key => {
-    let tempDiv = document.createElement("div");
-    tempDiv.className = 'button unset';
-    tempDiv.innerText = key.name;
-    tempDiv.onclick = key.onclick;
-    universal.keys.appendChild(tempDiv);
-});
+const profileSelect = document.createElement('select');
+const profileAdd = document.createElement('button');
+profileAdd.innerText = 'New Profile';
+
+Object.keys(universal.config.profiles).forEach(profile => {
+    let option = document.createElement('option');
+    option.innerText = profile;
+    option.setAttribute('value', profile);
+    profileSelect.appendChild(option);
+})
+
+profileAdd.onclick = () => {
+    showEditModal('New Profile', 'Enter a name for the new profile', (modal, value, feedback, title, button, input, content) => {
+        if (value.length < 1) {
+            feedback.innerText = 'Please enter a name for the profile';
+            return false;
+        }
+        universal.send(universal.events.companion.add_profile, value)
+        return true;
+    })
+}
+
+profileSelect.value = universal.config.profile;
+
+profileSelect.onchange = () => {
+    universal.send(universal.events.companion.set_profile, profileSelect.value)
+}
+
+const flexWrapped = document.createElement('div');
+flexWrapped.className = 'flex-wrap-r';
+flexWrapped.style.marginBottom = '20px';
+flexWrapped.appendChild(profileSelect);
+flexWrapped.appendChild(profileAdd);
+document.body.appendChild(profileTxt);
+document.body.appendChild(flexWrapped);

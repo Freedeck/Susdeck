@@ -6,12 +6,58 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="companion.css">
     <title>Freedeck v6</title>
 </head>
 <body>
-<h1>Freedeck 6 - Companion</h1>
-<button onclick="universal.login('Freedeck!123')">TestLgin</button>
+    <dialog id="login-dialog">
+        <div id="login-div">
+            <h1>Freedeck v6</h1>
+            <p>Enter the password to connect to the server</p>
+            <input type="password" id="password">
+            <button onclick="universal.login(document.getElementById('password').value)">Login</button>
+        </div>
+    </dialog>
+
+    <dialog id="editor">
+        <div id="editor-div">
+            <div class="x" id="editor-close">Close</div>
+            <h1>Freedeck Studio</h1>
+            <p class="notice">Click the button to change it's icon!</p>
+            <div class="flex-wrap-r">
+                <div class="button" id="editor-btn">Butn</div>
+                <div class="flex-wrap">
+                    <input type="text" id="name" onkeyup="document.querySelector('#editor-btn').innerText = this.value;" value="Butn">
+                    <input type="text" id="type" value="fd.sound" disabled>
+                    <input type="text" id="plugin" value="Freedeck" disabled>
+                    <input type="text" id="sound-file" style="display:none;" value="Unset.mp3" disabled>
+                </div>
+            </div>
+            <p>Other Options</p>
+            <div class="flex-wrap-r">
+                <div class="button" style="display: none;" id="upload-sound">Upload Sound</div>
+                <div class="button disabled">Placeholder #1</div>
+                <div class="button disabled">Placeholder #2</div>
+            </div>
+            <p>Plugins</p>
+            <div class="flex-wrap-r">
+                <div class="button">Example Plugin: Run Shortcut1</div>
+                <div class="button disabled">Placeholder #1</div>
+                <div class="button disabled">Placeholder #2</div>
+            </div>
+            <br />
+            <h2>Ready to save?</h2>
+            <div class="button" id="editor-save">
+                Save
+            </div>
+        </div>
+    </dialog>
+    
+<h1>Home</h1>
+<p>Welcome back! Here you can change your button configuration. Click any of them to preview, right click to edit!</p>
 <script src="/socket.io/socket.io.js"></script>
 <script src="scripts/main.js" type="module"></script>
+<script src="scripts/global.js" type="module"></script>
+<script src="scripts/authfulPage.js" type="module"></script>
 </body>
 </html>

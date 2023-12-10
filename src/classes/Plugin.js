@@ -1,12 +1,13 @@
 const path = require("path");
 const NotificationManager = require(path.resolve('./src/managers/notifications.js'));
 const types = require(path.resolve('./src/managers/plugins.js'))
+const fs = require('fs');
 
 module.exports = class Plugin {
     name;
     author;
     id;
-    disabled;
+    disabled = false;
     hasInit = false;
 
     constructor(name, author, id, disabled = false) {
@@ -20,10 +21,43 @@ module.exports = class Plugin {
         if (!this.hasInit) {
             console.log('Plugin didn\'t initialize?');
         }
+        return this;
     }
 
-    pushNotification(value) {
-        NotificationManager.add(this.name, value);
+    createSaveData() {
+        if (!fs.existsSync(path.resolve('./plugins'))) {
+            fs.mkdirSync(path.resolve('./plugins'));
+            console.log('Failsafe created plugins folder!')
+          }
+          if (!fs.existsSync(path.resolve('./plugins/'+this.id))) {
+            fs.mkdirSync(path.resolve('./plugins/'+this.id));
+            console.log('Created '+this.id+' data folder!')
+          }
+          if (!fs.existsSync(path.resolve('./plugins/'+this.id+'/settings.json'))) {
+            fs.writeFileSync(path.resolve('./plugins/'+this.id+'/settings.json'), JSON.stringify({}));
+          }
+    }
+
+    getFromSaveData(k) {
+        this.createSaveData()
+        let data = JSON.parse(fs.readFileSync(path.resolve('./plugins/'+this.id+'/settings.json')));
+        return data[k];
+    }
+
+    setToSaveData(k, v) {
+        this.createSaveData();
+        let data = JSON.parse(fs.readFileSync(path.resolve('./plugins/'+this.id+'/settings.json')));
+        data[k] = v;
+        fs.writeFileSync(path.resolve('./plugins/'+this.id+'/settings.json'), JSON.stringify(data));
+    }
+
+    pushNotification(value, options=null) {
+        if (!options) NotificationManager.add(this.name, "<br>" + value);
+        if (options != {}) {
+            if (options.image) {
+                NotificationManager.add(this.name, "<br><img src='"+options.image+"' width='50' height='50'><br>" + value);
+            }
+        }
     }
 
     registerNewType (name, type) {

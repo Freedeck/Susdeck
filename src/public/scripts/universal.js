@@ -41,6 +41,7 @@ const universal = {
       monitorSink: 'default',
       normalVol: 1,
       monitorVol: 1,
+      pitch: 1
     },
     stopAll: () => universal.audioClient._nowPlaying.forEach(async (audio) => {
       try {
@@ -52,6 +53,21 @@ const universal = {
         // > i dont care :trole:
       }
     }),
+    setPitch: (pitch) => {
+      universal.audioClient._player.pitch = pitch;
+      universal.audioClient._nowPlaying.forEach((audio) => {
+        audio.playbackRate = pitch;
+      });
+      universal.save('pitch', pitch);
+      document.querySelector('#pitch').value = pitch;
+    },
+    setVolume: (vol) => {
+      universal.audioClient._player.normalVol = vol;
+      universal.audioClient._nowPlaying.forEach((audio) => {
+        audio.volume = vol;
+      });
+      document.querySelector('#v').value = vol;
+    },
     play: async (file, name, isMonitor=false, stopPrevious=false) => {
       const audioInstance = new Audio(file);
       if (universal.audioClient._player.sink !== 0) await audioInstance.setSinkId(universal.audioClient._player.sink);
@@ -67,6 +83,10 @@ const universal = {
       } else {
         audioInstance.volume = universal.audioClient._player.normalVol;
       }
+      if (universal.load('pitch')) {
+        audioInstance.playbackRate = universal.load('pitch');
+      }
+      audioInstance.preservesPitch = false;
       audioInstance.fda = {};
       audioInstance.fda.name = name;
       audioInstance.fda.monitoring = isMonitor;

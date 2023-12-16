@@ -17,10 +17,15 @@ const NotificationManager = require('./managers/notifications');
 const debug = require('./utils/debug');
 const eventNames = require('./handlers/eventNames');
 
+
 if (process.argv[2] === 'server') {
   console.log(picocolors.blue('Server only mode.')); 
 } else {
   require('./companionInit');
+  if (process.argv[2] === 'companion') {
+    console.log(picocolors.blue('Companion only mode.'));
+    return;
+  };
 }
 
 const app = express();
@@ -29,6 +34,7 @@ const io = new socketIO.Server(server);
 
 const handlers = new Map();
 const pl = require(path.resolve('./src/managers/plugins'));
+console.log(pl)
 const plugins = pl.plugins();
 
 fs.readdirSync(path.resolve('./src/handlers')).forEach((file) => {
@@ -41,6 +47,11 @@ const types = pl.types;
 pl.update();
 
 io.on('connection', (socket) => {
+  socket._originalOn = socket.on;
+  socket.on = (event, callback) => {
+    socket._originalOn(event, callback);
+    debug.log(picocolors.green('Added new event ' + event), 'SAPIConn');
+  }
   try {
     handlers.forEach((handler) => {
       try {

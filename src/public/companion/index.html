@@ -55,6 +55,18 @@
     
 <h1>Home</h1>
 <p>Welcome back! Here you can change your button configuration. Click any of them to preview, right click to edit!</p>
+<div class="flex-wrap-r">
+    <div class="flex-wrap-r">
+        <input type="range" min="0.1" max="2" value="1" step="0.1" id="pitch" onchange="universal.audioClient.setPitch(this.value)" style="width: 7rem;">
+        <label for="pitch"><h2>Pitch</h2></label>
+        <button onclick="universal.audioClient.setPitch(1)">Reset</button>
+    </div>
+    <div class="flex-wrap-r">
+        <input type="range" min="0" max="1" value="1" step="0.1" id="v" onchange="universal.audioClient.setVolume(this.value)" style="width: 7rem;">
+        <label for="v"><h2>Volume</h2></label>
+        <button onclick="universal.audioClient.setVolume(1)">Reset</button>
+    </div>
+</div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="scripts/main.js" type="module"></script>
 <script src="scripts/global.js" type="module"></script>

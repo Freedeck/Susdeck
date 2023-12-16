@@ -484,3 +484,5 @@ flexWrapped.appendChild(profileSelect);
 flexWrapped.appendChild(profileAdd);
 document.body.appendChild(profileTxt);
 document.body.appendChild(flexWrapped);
+
+if (universal.load('pitch')) document.querySelector('#pitch').value = universal.load('pitch');

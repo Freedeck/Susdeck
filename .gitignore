@@ -4,3 +4,6 @@ plugins/*
 tmp/
 
 *.fd*
+
+src/configs/*
+src/public/sounds/*

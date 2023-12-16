@@ -8,6 +8,7 @@
     "companion": "electron . companion",
     "server": "node src/index.js server",
     "debug-server": "node src/index.js server debug",
+    "lint": "eslint ** --fix  --ignore-pattern *.css  --ignore-pattern *.mp*  --ignore-pattern *.wav --ignore-pattern *.html --ignore-pattern *.min* --ignore-pattern *.Freedeck --ignore-pattern *.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,5 +20,9 @@
     "express": "^4.18.2",
     "formidable": "^3.5.1",
     "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.55.0",
+    "eslint-config-google": "^0.14.0"
   }
 }

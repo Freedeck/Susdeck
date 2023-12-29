@@ -2,7 +2,7 @@
   "name": "freedeck-v6-rewrite",
   "version": "1.0.0",
   "description": "mysteriouus..",
-  "main": "src/index.js",
+  "main": "src/entryChecker.js",
   "scripts": {
     "start": "electron .",
     "companion": "electron . companion",
@@ -19,6 +19,7 @@
     "electron": "^27.0.0",
     "express": "^4.18.2",
     "formidable": "^3.5.1",
+    "readline": "^1.3.0",
     "socket.io": "^4.7.2"
   },
   "devDependencies": {

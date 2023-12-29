@@ -5,7 +5,6 @@ universal.listenFor('notif', (dat) => {
   login.setHTML('<a href="#">Connected!</a>');
   document.querySelector('#sidebar > ul').appendChild(login);
 });
-
 const sidebar = [
   {'Home': 'index.html'},
   {'Plugins': 'plugins.html'},
@@ -26,5 +25,6 @@ sidebar.forEach((itm) => {
   sidebarUl.appendChild(ele);
 });
 
-
 document.body.appendChild(sidebarEle);
+
+import './HookLoader.js';

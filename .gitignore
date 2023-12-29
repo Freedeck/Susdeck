@@ -7,3 +7,5 @@ tmp/
 
 src/configs/*
 src/public/sounds/*
+
+src/public/hooks/*

@@ -30,11 +30,17 @@ module.exports = {
         tsm.set('IC', socket._id);
       }
       console.log('Client ' + user + ' has greeted server at ' + new Date());
+      let pl = {};
+      let plu = plugins();
+      
+      plu.forEach((plugin) => {
+        pl[plugin.instance.id] = plugin.instance;
+      });
       const serverInfo = {
         id: socket._id,
         NotificationManager,
         tempLoginID: socket.tempLoginID,
-        plugins: Array.from(plugins().keys()),
+        plugins: pl,
         events: eventNames,
         cfg: cfg.settings(),
         profiles: cfg.settings['profiles'],

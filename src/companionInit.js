@@ -12,6 +12,7 @@ app.on('ready', () => {
 });
 
 
+
 app.on('window-all-closed', (e) => {
   console.log('Exiting Freedeck!');
   process.exit(0);

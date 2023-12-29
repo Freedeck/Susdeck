@@ -6,6 +6,8 @@ const fs = require('fs');
 module.exports = class Plugin {
   name;
   author;
+  jsHook;
+  jshPath;
   id;
   disabled = false;
   hasInit = false;
@@ -22,6 +24,17 @@ module.exports = class Plugin {
       console.log('Plugin didn\'t initialize?');
     }
     return this;
+  }
+
+  setJSHook(hook) {
+    this.jsHook = hook;
+    this.jshPath = path.resolve("tmp/_e_._plugins_" + this.id+".Freedeck", this.jsHook);
+    if (!fs.existsSync(path.resolve('src/public/hooks/'))) fs.mkdirSync(path.resolve('src/public/hooks/'));
+    fs.cpSync(this.jshPath, path.resolve('src/public/hooks/'+this.jsHook));
+  }
+
+  getJSHook() {
+    return this.jsHook;
   }
 
   createSaveData() {

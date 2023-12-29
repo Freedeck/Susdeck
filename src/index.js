@@ -79,6 +79,7 @@ app.post('/fd/api/upload/', (request, response) => {
     if (err) {
       return response.status(400).json({error: err.message});
     }
+    console.log(files.file[0])
 
     const nfp = files.file[0].filepath;
     const ext = files.file[0].mimetype.split('/')[1];

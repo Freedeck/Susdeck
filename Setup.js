@@ -1,6 +1,9 @@
 const path = require('path');
 const fs = require('fs');
-const scrts = require('./src/configs/secrets.fd');
+const crypto = require('crypto');
+const scrts = {
+  hash: (p) => 'fd.'+crypto.createHash('sha512').update(p).digest('hex')
+}
 const picocolors = require('./src/utils/picocolors');
 
 const pkg = require(path.resolve('./package.json'));
@@ -17,8 +20,7 @@ const question = (q) => {
   });
 };
 
-module.exports = {
-  run: () => {
+module.exports = () => {
     let port; let password; let screenSaverActivationTime; let soundOnPress; let useAuthentication; let iconCountPerPage;
     console.log(picocolors.bgBlue('Welcome to the Freedeck Setup Wizard!'));
     console.log(picocolors.bgBlue('This will guide you through the setup process.'));
@@ -46,17 +48,33 @@ module.exports = {
                   profile: 'defaultProfile',
 				  profiles:{'defaultProfile':[{'Welcome!': {'uuid': 'FDA-WELCOME-DEFAULT', 'type': 'fd.none', 'data': {'msg': 'I see you\'re looking in the JSON file! I\'d recommend you add some sounds first before peeking and seeing how Freedeck stores button data, just so you don\'t crash your Freedeck unexpectedly. But, if you\'re here, you probably know what you\'re doing. Have at it.'}, 'pos': 0}}]}
                 };
+                if (!fs.existsSync(path.resolve('./src/configs'))) fs.mkdirSync(path.resolve('./src/configs'));
+                if (!fs.existsSync(path.resolve('./plugins'))) fs.mkdirSync(path.resolve('./plugins'));
                 fs.writeFileSync(path.resolve('./src/configs/config.fd.js'), `const cfg = ${JSON.stringify(config)}; if (typeof window !== 'undefined') window['cfg'] = cfg; if ('exports' in module) module.exports = cfg;`);
                 console.log(picocolors.bgBlue('Generating secrets file...'));
                 fs.writeFileSync(path.resolve('./src/configs/secrets.fd.js'), `const crypto = require('crypto');
 module.exports = {s:{password: '${scrts.hash(password)}'},hash: (data) => 'fd.' + crypto.createHash('sha512').update(data).digest().toString('hex')};`);
 				console.log(picocolors.bgGreen('All done!'));
-				return true;
+				process.exit(0);
               });
             });
           });
         });
       });
     });
-  },
-};
+  };
+
+if (process.argv[2] === 'FULL_RESET_I_KNOW_WHAT_IM_DOING') {
+  const dif = (a) => { if(fs.existsSync(path.resolve(a))) return fs.unlinkSync(path.resolve(a));}
+  console.log('Full reset requested.. you know what you\'re doing!');
+  console.log('Deleting config files...');
+  dif('./src/configs/config.fd.js')
+  dif('./src/configs/secrets.fd.js')
+  console.log('Deleting config dir...');
+  if(fs.existsSync(path.resolve('./src/configs/'))) fs.rmdirSync(path.resolve('./src/configs'));
+  console.log('Making Freedeck good as new...');
+  if(fs.existsSync(path.resolve('./plugins/')))fs.rmdirSync(path.resolve('./plugins'));
+  console.log('Done!!!')
+} else {
+  module.exports();
+}

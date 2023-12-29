@@ -276,10 +276,6 @@ const universal = {
 
         universal.send(universal.events.information, {apiVersion: '2'});
 
-        universal.plugins.forEach((plugin) => {
-          universal.send(universal.events.plugin_info, plugin);
-        });
-
         universal.keySet();
 
 

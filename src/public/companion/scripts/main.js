@@ -206,8 +206,9 @@ function createPlugin() {
   });
 }
 
+
 document.querySelector('#upload-sound').onclick = () => {
-  upload('audio/*,*.mp4', (data) => {
+  upload('audio/*,video/*', (data) => {
     reloadProfile();
     const previousInteractionData = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
     previousInteractionData.data.file = data.newName;

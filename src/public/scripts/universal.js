@@ -251,14 +251,6 @@ const universal = {
           if (data.isCon) universal.sendEvent('notif', data);
         });
 
-        universal.on(universal.events.plugin_info, (data) => {
-          universal._pluginData[JSON.parse(data).requested] = JSON.parse(data).response;
-          JSON.parse(data).response.instance.types.forEach((type) => {
-            universal._tyc.set(type, data);
-          });
-          universal.sendEvent(universal.events.plugin_info, data);
-        });
-
         universal.on(universal.events.login_data_ack, (data) => universal._loginAllowed = data);
         universal.on(universal.events.reload, () => window.location.reload());
 
@@ -278,6 +270,12 @@ const universal = {
 
         universal.keySet();
 
+        Object.keys(universal.plugins).forEach((plugin) => {
+          const plug = universal.plugins[plugin];
+          plug.types.forEach((type) => {
+            universal._tyc.set(type, plug);
+          });
+        })
 
         window['universal'] = universal;
         universal.sendEvent('init');

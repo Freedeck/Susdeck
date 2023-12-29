@@ -33,6 +33,7 @@ module.exports = class Plugin {
     fs.cpSync(this.jshPath, path.resolve('src/public/hooks/'+this.jsHook));
   }
 
+
   getJSHook() {
     return this.jsHook;
   }

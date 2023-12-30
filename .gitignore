@@ -6,6 +6,6 @@ tmp/
 *.fd*
 
 src/configs/*
-# src/public/sounds/*
+src/public/sounds/*
 
 src/public/hooks/*

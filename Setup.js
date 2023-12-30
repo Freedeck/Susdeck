@@ -60,7 +60,6 @@ module.exports = () => {
               console.log(picocolors.bgBlue('Generating config file...'));
               const config = {
                 port: port,
-                password: password,
                 screenSaverActivationTime: screenSaverActivationTime,
                 soundOnPress: soundOnPress,
                 useAuthentication: useAuthentication,

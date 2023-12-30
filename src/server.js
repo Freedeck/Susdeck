@@ -45,7 +45,7 @@ io.on('connection', (socket) => {
       } catch (e) {
         debug.log(picocolors.red(e));
       }
-      debug.log(picocolors.cyan('Added new handler ' + handler.name), 'SAPI');
+      debug.log(picocolors.cyan('Added new handler ' + handler.name) + '- for ' + socket._id + '\n', 'SAPI');
     });
   } catch (e) {
     debug.log(picocolors.red(e));

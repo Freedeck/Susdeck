@@ -30,10 +30,10 @@ module.exports = () => {
     ).then((password) => {
       if (password === '') password = 'Freedeck!123';
       question(
-          'How many icons would you like to have per page? (default: 8)',
+          'How many icons would you like to have per page? (default: 10, recommended: 12)',
       ).then((iconCountPerPage) => {
         if (!Number(iconCountPerPage) || iconCountPerPage === '') {
-          iconCountPerPage = 8;
+          iconCountPerPage = 10;
         }
         question(
             'How long would you like the screen saver to wait before activating? (default: 5)',

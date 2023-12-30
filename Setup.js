@@ -18,10 +18,6 @@ const question = (q) => {
   });
 };
 
-const Message = `I see you\'re looking in the JSON file!
-I\'d recommend you add some sounds first before peeking and seeing how Freedeck stores button data, just so you don\'t crash your Freedeck unexpectedly.
-But, if you\'re here, you probably know what you\'re doing. Have at it.`;
-
 module.exports = () => {
   console.log(picocolors.bgBlue('Welcome to the Freedeck Setup Wizard!'));
   console.log(
@@ -69,17 +65,194 @@ module.exports = () => {
                 soundOnPress: soundOnPress,
                 useAuthentication: useAuthentication,
                 iconCountPerPage: iconCountPerPage,
-                profile: 'defaultProfile',
+                profile: 'Default',
                 profiles: {
-                  defaultProfile: [
+                  Default: [
                     {
-                      'Welcome!': {
-                        uuid: 'FDA-WELCOME-DEFAULT',
-                        type: 'fd.none',
-                        data: {
-                          msg: Message.replace(/\n/g, ' '),
+                      'Biggest Bird': {
+                        'type': 'fd.sound',
+                        'pos': 0,
+                        'uuid': 'BuiltIn.0.1',
+                        'data': {
+                          'file': 'biggest-bird.wav',
+                          'path': '/sounds/',
                         },
-                        pos: 0,
+                      },
+                    },
+                    {
+                      'Bugatti': {
+                        'type': 'fd.sound',
+                        'pos': 1,
+                        'uuid': 'BuiltIn.0.2',
+                        'data': {
+                          'file': 'bugatti.mp3',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'COD Footsteps': {
+                        'type': 'fd.sound',
+                        'pos': 2,
+                        'uuid': 'BuiltIn.0.3',
+                        'data': {
+                          'file': 'cod-footsteps.mp3',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'COD Shooting': {
+                        'type': 'fd.sound',
+                        'pos': 3,
+                        'uuid': 'BuiltIn.0.3',
+                        'data': {
+                          'file': 'cod-shooting.mp3',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'Disconnect': {
+                        'type': 'fd.sound',
+                        'pos': 4,
+                        'uuid': 'BuiltIn.0.4',
+                        'data': {
+                          'file': 'disconnect.mp3',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'Let Me Do It For You': {
+                        'type': 'fd.sound',
+                        'pos': 5,
+                        'uuid': 'BuiltIn.0.5',
+                        'data': {
+                          'file': 'do-it-for-you.mp3',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'Haha': {
+                        'type': 'fd.sound',
+                        'pos': 6,
+                        'uuid': 'BuiltIn.0.6',
+                        'data': {
+                          'file': 'haha.mp3',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'Huh': {
+                        'type': 'fd.sound',
+                        'pos': 7,
+                        'uuid': 'BuiltIn.0.7',
+                        'data': {
+                          'file': 'huh.mp3',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'iPhone Ringtone Remix': {
+                        'type': 'fd.sound',
+                        'pos': 8,
+                        'uuid': 'BuiltIn.0.8',
+                        'data': {
+                          'file': 'iphone-remix.wav',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'Metal Pipe': {
+                        'type': 'fd.sound',
+                        'pos': 9,
+                        'uuid': 'BuiltIn.0.9',
+                        'data': {
+                          'file': 'metal-pipe.mp3',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'Mr Beast!': {
+                        'type': 'fd.sound',
+                        'pos': 10,
+                        'uuid': 'BuiltIn.1.0',
+                        'data': {
+                          'file': 'mr-beeast.mp3',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'Ohio': {
+                        'type': 'fd.sound',
+                        'pos': 11,
+                        'uuid': 'BuiltIn.1.1',
+                        'data': {
+                          'file': 'ohio.mp3',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'Rah': {
+                        'type': 'fd.sound',
+                        'pos': 12,
+                        'uuid': 'BuiltIn.1.2',
+                        'data': {
+                          'file': 'rah.mp3',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'COD Semtex': {
+                        'type': 'fd.sound',
+                        'pos': 13,
+                        'uuid': 'BuiltIn.1.3',
+                        'data': {
+                          'file': 'semtex.mp3',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'Vine Boom': {
+                        'type': 'fd.sound',
+                        'pos': 14,
+                        'uuid': 'BuiltIn.1.4',
+                        'data': {
+                          'file': 'vine-boom.mp3',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'Whopper Remix': {
+                        'type': 'fd.sound',
+                        'pos': 15,
+                        'uuid': 'BuiltIn.1.5',
+                        'data': {
+                          'file': 'whopper-remix.wav',
+                          'path': '/sounds/',
+                        },
+                      },
+                    },
+                    {
+                      'Whopper': {
+                        'type': 'fd.sound',
+                        'pos': 16,
+                        'uuid': 'BuiltIn.1.6',
+                        'data': {
+                          'file': 'whopper.mp3',
+                          'path': '/sounds/',
+                        },
                       },
                     },
                   ],

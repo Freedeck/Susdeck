@@ -12,6 +12,14 @@ module.exports = class Plugin {
   disabled = false;
   hasInit = false;
 
+  /**
+   *
+   * @param {String} name The name of the plugin
+   * @param {String} author The author of the plugin
+   * @param {String} id The ID of the plugin
+   * @param {String} disabled Is the plugin disabled?
+   * @return {Plugin} The plugin instance
+   */
   constructor(name, author, id, disabled = false) {
     this.name = name;
     this.author = author;
@@ -26,18 +34,26 @@ module.exports = class Plugin {
     return this;
   }
 
+  /**
+   * @param {String} hook The JS file that will be loaded into the browser
+   */
   setJSHook(hook) {
     this.jsHook = hook;
-    this.jshPath = path.resolve("tmp/_e_._plugins_" + this.id+".Freedeck", this.jsHook);
+    this.jshPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', this.jsHook);
     if (!fs.existsSync(path.resolve('src/public/hooks/'))) fs.mkdirSync(path.resolve('src/public/hooks/'));
     fs.cpSync(this.jshPath, path.resolve('src/public/hooks/'+this.jsHook));
   }
 
-
+  /**
+   * @return {String} The JS file that will be loaded into the browser
+   */
   getJSHook() {
     return this.jsHook;
   }
 
+  /**
+   * Create save data folders/file structure for the plugin.
+   */
   createSaveData() {
     if (!fs.existsSync(path.resolve('./plugins'))) {
       fs.mkdirSync(path.resolve('./plugins'));
@@ -52,12 +68,22 @@ module.exports = class Plugin {
     }
   }
 
+  /**
+   * Get from the save data.
+   * @param {String} k The key to get from the save data
+   * @return {*} The value from the save data
+   */
   getFromSaveData(k) {
     this.createSaveData();
     const data = JSON.parse(fs.readFileSync(path.resolve('./plugins/'+this.id+'/settings.json')));
     return data[k];
   }
 
+  /**
+   * Add to the save data.
+   * @param {String} k The key to set in the save data
+   * @param {*} v The data to set in the save data
+   */
   setToSaveData(k, v) {
     this.createSaveData();
     const data = JSON.parse(fs.readFileSync(path.resolve('./plugins/'+this.id+'/settings.json')));
@@ -65,6 +91,11 @@ module.exports = class Plugin {
     fs.writeFileSync(path.resolve('./plugins/'+this.id+'/settings.json'), JSON.stringify(data));
   }
 
+  /**
+   * Add a notification to the queue.
+   * @param {String} value The notification's content
+   * @param {Object} options Extra options for the notification
+   */
   pushNotification(value, options=null) {
     if (!options) NotificationManager.add(this.name, '<br>' + value);
     if (options != {}) {
@@ -74,15 +105,29 @@ module.exports = class Plugin {
     }
   }
 
+  /**
+   * Register a new type for Companion
+   * @param {String} name The name of the button type
+   * @param {String} type The identifier for the button type
+   */
   registerNewType(name, type) {
     this.types.push({name, type});
     types.types().set(type, {instance: this, display: name});
   }
 
+  /**
+   * Code to run when the plugin is initialized.
+   * @return {Boolean} If the plugin initialized successfully
+   */
   onInitialize() {
     return true;
   }
 
+  /**
+   * Code to run when a button that is registered to this plugin is pressed.
+   * @param {Object} interaction The button's interaction data
+   * @return {Boolean} If the button press/interaction handling was successful
+   */
   onButton(interaction) {
     return true;
   }

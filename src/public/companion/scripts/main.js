@@ -13,7 +13,12 @@ new Sortable(document.querySelector('#keys'), {
       d.oldDraggableIndex = d.oldDraggableIndex + (universal.page * universal.config.iconCountPerPage);
     }
 
-    universal.send(universal.events.companion.move_key, JSON.stringify({name: d.item.innerText, item: d.item.getAttribute('data-interaction'), newIndex: d.newDraggableIndex, oldIndex: d.oldDraggableIndex*universal.page}));
+    universal.send(universal.events.companion.move_key,
+        JSON.stringify({
+          name: d.item.innerText,
+          item: d.item.getAttribute('data-interaction'),
+          newIndex: d.newDraggableIndex,
+          oldIndex: d.oldDraggableIndex*universal.page}));
     universal.page = 0;
   },
   filter: '.unset',
@@ -111,7 +116,11 @@ window.oncontextmenu = function(e) {
           }, 100);
           break;
         case 'New Key':
-          showPick('New Key', [{name: 'Sound', type: 'sound'}, {name: 'Macro', type: 'macro'}, {name: 'Plugin', type: 'plugin'}], (modal, value, feedback, title, button, content) => {
+          showPick('New Key', [
+            {name: 'Sound', type: 'sound'},
+            {name: 'Macro', type: 'macro'},
+            {name: 'Plugin', type: 'plugin'},
+          ], (modal, value, feedback, title, button, content) => {
             if (value.type == 'sound') createSound();
             if (value.type == 'plugin') createPlugin();
           });
@@ -163,6 +172,10 @@ function showReplaceGUI(srcElement) {
   });
 }
 
+/**
+ * @name createSound
+ * @description Create a new sound key.
+ */
 function createSound() {
   showEditModal('New Sound Key', 'Enter a name for the new key', (modal, value, feedback, title, button, input, content) => {
     if (value.length < 1) {
@@ -183,6 +196,10 @@ function createSound() {
   });
 }
 
+/**
+ * @name createPlugin
+ * @description Create a new plugin key.
+ */
 function createPlugin() {
   showPick('New Plugin Key', universal._tyc.keys(), (modala, valuea, feedbacka, titlea, buttona, contenta) => {
     showEditModal('New Plugin Key', 'Enter a name for the new key', (modal, value, feedback, title, button, input, content) => {
@@ -266,7 +283,11 @@ document.querySelector('#editor-save').onclick = () => {
   const name = document.querySelector('#name').value;
   const interaction = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
 
-  universal.send(universal.events.companion.edit_key, JSON.stringify({name: name, oldName: document.querySelector('#editor-btn[data-interaction]').getAttribute('data-pre-edit'), interaction: interaction}));
+  universal.send(universal.events.companion.edit_key, JSON.stringify({
+    name: name,
+    oldName: document.querySelector('#editor-btn[data-interaction]').getAttribute('data-pre-edit'),
+    interaction: interaction,
+  }));
 
   document.querySelector('#editor').style.opacity = '0';
   setTimeout(() => {
@@ -274,6 +295,12 @@ document.querySelector('#editor-save').onclick = () => {
   }, 500);
 };
 
+/**
+ * Create a text input modal.
+ * @param {String} title The title of the modal
+ * @param {String} content The placeholder text for the input
+ * @param {void} callback What to do when submitted
+ */
 function showEditModal(title, content, callback) {
   const modal = document.createElement('div');
   modal.className = 'modal';
@@ -341,6 +368,12 @@ function showEditModal(title, content, callback) {
   document.body.appendChild(modal);
 }
 
+/**
+ * Create a list picker modal.
+ * @param {String} title The title of the modal
+ * @param {Array} listContent The content of the list
+ * @param {void} callback What to do when submitted
+ */
 function showPick(title, listContent, callback) {
   const modal = document.createElement('div');
   modal.className = 'modal';
@@ -423,6 +456,10 @@ window.onclick = function(e) {
   }
 };
 
+/**
+ * @name reloadProfile
+ * @description Reload the current profile
+ */
 function reloadProfile() {
   universal.config.sounds = universal.config.profiles[universal.config.profile];
   for (let i = 0; i < (universal.config.sounds.length / universal.config.iconCountPerPage); i++) {

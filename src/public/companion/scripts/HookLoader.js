@@ -5,6 +5,6 @@ setTimeout(() => {
     const data = universal.plugins[plugin];
     const scr = document.createElement('script');
     scr.src = '/hooks/' + data.jsHook;
-	document.body.appendChild(scr);
+    document.body.appendChild(scr);
   });
 }, 350);

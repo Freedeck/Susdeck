@@ -1,4 +1,6 @@
-import {universal} from '../../scripts/universal.js';
+import {
+  universal,
+} from '../../scripts/universal.js';
 
 await universal.init('Companion:Settings');
 universal.audioClient._player.monitorPotential.forEach((data) => {
@@ -7,6 +9,22 @@ universal.audioClient._player.monitorPotential.forEach((data) => {
   tmpBtn.value = data.deviceId;
   tmpBtn.id = data.deviceId;
   document.querySelector('#audioclient-monitor-devices').appendChild(tmpBtn);
+});
+
+const devices = await navigator.mediaDevices.enumerateDevices();
+devices.forEach((device) => {
+  if (device.kind == 'audioinput') {
+    const tmpBtn = document.createElement('option');
+    tmpBtn.innerText = device.label;
+    tmpBtn.value = device.deviceId;
+    tmpBtn.id = device.deviceId;
+    document.querySelector('#audioclient-flute-devices').appendChild(tmpBtn);
+    const tmpBtna = document.createElement('option');
+    tmpBtna.innerText = device.label;
+    tmpBtna.value = device.deviceId;
+    tmpBtna.id = device.deviceId;
+    document.querySelector('#audioclient-vb-devices').appendChild(tmpBtna);
+  }
 });
 
 Object.keys(universal.config.profiles).forEach((data) => {
@@ -19,7 +37,8 @@ Object.keys(universal.config.profiles).forEach((data) => {
 
 document.querySelector('#audioclient-monitor-devices').value = universal.audioClient._player.monitorSink;
 document.querySelector('#default-profile').value = universal.config.profile;
-
+document.querySelector('#audioclient-flute-devices').value = universal.audioClient._player.recsink;
+document.querySelector('#audioclient-vb-devices').value = universal.audioClient._player.sink;
 document.querySelector('#settings-save').onclick = save;
 
 /**

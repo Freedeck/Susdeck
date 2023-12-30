@@ -20,10 +20,7 @@ module.exports = {
         if (!ev.event.isTrusted) {
           socket.emit(eventNames.not_trusted); return;
         }
-        if (ev.btn.type === 'fd.sound') {
-          // Handle sound stuff
-          io.emit(eventNames.keypress, JSON.stringify(ev.btn));
-        }
+        io.emit(eventNames.keypress, JSON.stringify(ev.btn));
         if (types().get(ev.btn.type) || plugins().get(ev.btn.type)) {
           if (types().get(ev.btn.type)) {
             types().get(ev.btn.type).instance.onButton(ev.btn); return;

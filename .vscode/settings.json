@@ -3,5 +3,6 @@
 		"notif",
 		"picocolors",
 		"tlid"
-	]
+	],
+	"files.eol": "\n"
 }

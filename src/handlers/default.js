@@ -30,9 +30,9 @@ module.exports = {
         tsm.set('IC', socket._id);
       }
       console.log('Client ' + user + ' has greeted server at ' + new Date());
-      let pl = {};
-      let plu = plugins();
-      
+      const pl = {};
+      const plu = plugins();
+
       plu.forEach((plugin) => {
         pl[plugin.instance.id] = plugin.instance;
       });

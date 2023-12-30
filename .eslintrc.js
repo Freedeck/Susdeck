@@ -22,6 +22,9 @@ module.exports = {
   'parserOptions': {
     'ecmaVersion': 'latest',
     'sourceType': 'module',
+    'ecmaFeatures': {
+      'globalReturn': true,
+    },
   },
   'rules': {
     'semi': ['error', 'always'],

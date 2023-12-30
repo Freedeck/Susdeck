@@ -39,9 +39,10 @@ const universal = {
       sink: 0,
       monitorPotential: [],
       monitorSink: 'default',
+      recsink: 0,
       normalVol: 1,
       monitorVol: 1,
-      pitch: 1
+      pitch: 1,
     },
     stopAll: () => universal.audioClient._nowPlaying.forEach(async (audio) => {
       try {
@@ -123,12 +124,27 @@ const universal = {
       await universal._initFn(user);
       const devices = await navigator.mediaDevices.enumerateDevices();
       devices.forEach((device) => {
+        // if (device.kind === 'audioinput') {
+        //   if (device.label == 'CABLE Output (VB-Audio Virtual Cable)') {
+        //     universal.audioClient._player.recsink = device.deviceId;
+        //   }
+        // }
         if (device.kind == 'audiooutput') universal.audioClient._player.monitorPotential.push(device);
         if (device.label === 'CABLE Input (VB-Audio Virtual Cable)') {
           const audio = new Audio();
           audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
           universal.audioClient._player.sink = device.deviceId;
         }
+        if (device.label === 'CABLE-A Input (VB-Audio Cable A)') {
+          const audio = new Audio();
+          audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
+          universal.audioClient._player.recsink = device.deviceId;
+        }
+        // if (device.label == 'Speakers (SteelSeries Arctis 1 Wireless)') {
+        //   const audio = new Audio();
+        //   audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
+        //   universal.audioClient._player.sink = device.deviceId;
+        // }
       });
 
             universal.load('monitor.sink') ? universal.audioClient._player.monitorSink = universal.load('monitor.sink') : 'default';
@@ -226,6 +242,7 @@ const universal = {
           if ('sound' in interaction && interaction.sound.name === 'Stop All') {
             universal.audioClient.stopAll(); return;
           }
+          universal.sendEvent('button', interaction);
           if (interaction.type !== 'fd.sound') return;
           universal.reloadProfile();
           // get name from universal.config.sounds with uuid
@@ -236,8 +253,8 @@ const universal = {
           if (!universal.load('stopPrevious')) {
             universal.save('stopPrevious', false);
           }
-          universal.audioClient.play(interaction.data.path + '/' + interaction.data.file, Object.keys(a)[0], false, new Boolean(universal.load('stopPrevious')));
-          universal.audioClient.play(interaction.data.path + '/' + interaction.data.file, Object.keys(a)[0], true, new Boolean(universal.load('stopPrevious')));
+          universal.audioClient.play(interaction.data.path + '/' + interaction.data.file, Object.keys(a)[0], false, Boolean(universal.load('stopPrevious')));
+          universal.audioClient.play(interaction.data.path + '/' + interaction.data.file, Object.keys(a)[0], true, Boolean(universal.load('stopPrevious')));
         });
 
         universal.on(universal.events.log, (data) => {
@@ -275,7 +292,7 @@ const universal = {
           plug.types.forEach((type) => {
             universal._tyc.set(type, plug);
           });
-        })
+        });
 
         window['universal'] = universal;
         universal.sendEvent('init');
@@ -303,7 +320,11 @@ const universal = {
       s.className = s.className.replace('show', '');
       s.remove();
     }, 1250);
-    universal.save('notification_log', universal.load('notification_log') + `,${btoa(JSON.stringify({timestamp: new Date(), time: new Date().toTimeString(), page: window.location.pathname, message}))}`);
+    universal.save('notification_log', universal.load('notification_log') + `,${btoa(JSON.stringify({
+      timestamp: new Date(),
+      time: new Date().toTimeString(),
+      page: window.location.pathname, message,
+    }))}`);
   },
   send: (event, value) => {
     universal._socket.emit(event, value);

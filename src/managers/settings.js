@@ -16,6 +16,8 @@ const sc = {
   save: () => {
     // console.log(sc.settings())
     const set = sc.settings();
+    // Sorry ESLint overlords, but this has to be done.
+    // eslint-disable-next-line max-len
     return fs.writeFileSync(path.resolve('./src/configs/config.fd.js'), `const cfg = {profiles:${JSON.stringify(sc._cache.profiles)},profile:"${sc._cache.profile}",screenSaverActivationTime:${set.screenSaverActivationTime},soundOnPress:${set.soundOnPress},useAuthentication:${set.useAuthentication},iconCountPerPage:${set.iconCountPerPage},port:${set.port}}; if(typeof window !== 'undefined') window['cfg'] = cfg; if('exports' in module) module.exports = cfg;`);
   },
 };

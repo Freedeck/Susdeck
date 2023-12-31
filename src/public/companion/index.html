@@ -10,7 +10,7 @@
     <title>Freedeck v6 - Home</title>
 </head>
 <body>
-    <dialog id="login-dialog">
+    <dialog class=".dialog" id="login-dialog">
         <div id="login-div">
             <h1>Freedeck v6</h1>
             <p>Enter the password to connect to the server</p>
@@ -19,7 +19,7 @@
         </div>
     </dialog>
 
-    <dialog id="editor">
+    <dialog class=".dialog" id="editor">
         <div id="editor-div">
             <div class="x" id="editor-close">Close</div>
             <h1>Freedeck Studio</h1>
@@ -55,17 +55,19 @@
     
 <h1>Home</h1>
 <p>Welcome back! Here you can change your button configuration. Click any of them to preview, right click to edit!</p>
-
 <!-- Warning about FD6 -->
-<div style="background-color: rgba(0,0,0,0.25); color: #ffffff; padding: 1rem; border-radius: 1rem; margin-bottom: 1rem;">
+<dialog open id="warning">
     <h1>Disclaimer</h1>
 <p>(This will be removed with the actual release of Freedeck v6.)</p>
 <p>Hey there! You're currently using <strong>Freedeck <i>v6</i>.</strong> This version is not ready for general use <i>yet!</i></p>
 <p>If you have, in fact, downloaded this version by pure luck, you will notice a lot of differences between this and V5.</p>
 <p>The main ones being theming & robotjs macros. That is being worked on!</p>
-<p>If you have a feature idea or request or issue, <strong>please make an issue on the <a href="//github.com/Freedeck/6">GitHub repository</a>!</strong></p>
+<p>If you have a feature idea or request or issue, <strong><a href="//github.com/Freedeck/6">please make an issue on the GitHub repository</a>!</strong></p>
 <p>Anyways, I'm yapping. Enjoy FD6!</p>
-</div>
+<form method="dialog">
+    <button>OK</button>
+  </form>
+</dialog>
 <br/>
 <!-- Ok done -->
 

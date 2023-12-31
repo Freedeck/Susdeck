@@ -6,8 +6,13 @@ const fs = require('fs');
 module.exports = class Plugin {
   name;
   author;
-  jsHook;
-  jshPath;
+  jsSHook;
+  jsShPath;
+  jsCHook;
+  jsChPath;
+  jsSockHook;
+  jsSockHookPath;
+  imports = [];
   id;
   disabled = false;
   hasInit = false;
@@ -35,20 +40,55 @@ module.exports = class Plugin {
   }
 
   /**
+   * @param {String} hook The JS file that will be loaded into the socket handler
+   */
+  setJSSocketHook(hook) {
+    this.jsSockHook = hook;
+    this.jsSockHookPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', this.jsSockHook);
+  }
+
+  /**
    * @param {String} hook The JS file that will be loaded into the browser
    */
-  setJSHook(hook) {
-    this.jsHook = hook;
-    this.jshPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', this.jsHook);
+  setJSServerHook(hook) {
+    this.jsSHook = hook;
+    this.jsShPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', this.jsSHook);
     if (!fs.existsSync(path.resolve('src/public/hooks/'))) fs.mkdirSync(path.resolve('src/public/hooks/'));
-    fs.cpSync(this.jshPath, path.resolve('src/public/hooks/'+this.jsHook));
+    fs.cpSync(this.jsShPath, path.resolve('src/public/hooks/'+this.jsSHook));
+  }
+
+  /**
+   * @param {String} hook The JS file that will be loaded into the browser
+   */
+  setJSClientHook(hook) {
+    this.jsCHook = hook;
+    this.jsChPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', this.jsCHook);
+    if (!fs.existsSync(path.resolve('src/public/hooks/'))) fs.mkdirSync(path.resolve('src/public/hooks/'));
+    fs.cpSync(this.jsChPath, path.resolve('src/public/hooks/'+this.jsCHook));
+  }
+
+  /**
+   * @param {String} file The file you want to import
+   */
+  addImport(file) {
+    this.imports.push(file);
+    this.tempImportPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', file);
+    if (!fs.existsSync(path.resolve('src/public/hooks/'))) fs.mkdirSync(path.resolve('src/public/hooks/'));
+    fs.cpSync(this.tempImportPath, path.resolve('src/public/hooks/'+file));
   }
 
   /**
    * @return {String} The JS file that will be loaded into the browser
    */
-  getJSHook() {
-    return this.jsHook;
+  getJSServerHook() {
+    return this.jsSHook;
+  }
+
+  /**
+   * @return {String} The JS file that will be loaded into the browser
+   */
+  getJSClientHook() {
+    return this.jsCHook;
   }
 
   /**

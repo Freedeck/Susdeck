@@ -13,11 +13,17 @@ module.exports = {
     socket._id = Math.random() * 2048 + '.fd';
     socket.tempLoginID = Math.random() * 1024 + '.tlid.fd';
     socket._clientInfo = {};
+
     socket.on('disconnect', () => {
       if (socket.user === 'Companion') tsm.delete('IC');
       debug.log(
           pc.red('Client ' + socket.user + ' disconnected'),
           'Socket ' + socket._id);
+    });
+    plugins().forEach((plugin) => {
+      if (plugin.instance.jsSockHook) {
+        require(plugin.instance.jsSockHookPath)(socket, io);
+      }
     });
     socket.on(eventNames.client_greet, (user) => {
       socket.user = user;
@@ -32,7 +38,6 @@ module.exports = {
       console.log('Client ' + user + ' has greeted server at ' + new Date());
       const pl = {};
       const plu = plugins();
-
       plu.forEach((plugin) => {
         pl[plugin.instance.id] = plugin.instance;
       });
@@ -45,6 +50,7 @@ module.exports = {
         cfg: cfg.settings(),
         profiles: cfg.settings['profiles'],
       };
+
       socket.emit(eventNames.information, JSON.stringify(serverInfo));
       setInterval(() => {
         cfg.update();

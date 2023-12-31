@@ -20,7 +20,7 @@
 </head>
 <body>
     <div id="sidebar"><ul></ul></div>
-    <dialog id="login-dialog">
+    <dialog class=".dialog" id="login-dialog">
         <div id="login-div">
             <h1 id="login-msg">Hang on, trying to log you in.</h1>
             <p>Enter the password to connect to the server</p>
@@ -30,6 +30,7 @@
     </dialog>
     <script src="/socket.io/socket.io.js"></script>
     <script src="scripts/main.js" type="module"></script>
+    <script src="scripts/HookLoader.js" type="module"></script>
     <script src="companion/scripts/authfulPage.js" type="module"></script>
 </body>
 </html>

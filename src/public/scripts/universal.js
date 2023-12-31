@@ -9,12 +9,16 @@ const universal = {
   events: {},
   config: {},
   _loginAllowed: false,
-  keys: document.querySelector('#keys') ? document.querySelector('#keys') : document.createElement('div'),
-  notibar: document.querySelector('#snackbar') ? document.querySelector('#snackbar') : document.createElement('div'),
+  keys: document.querySelector('#keys') ?
+    document.querySelector('#keys') :
+    document.createElement('div'),
+  notibar: document.querySelector('#snackbar') ?
+    document.querySelector('#snackbar') :
+    document.createElement('div'),
   save: (k, v) => {
-    return localStorage.setItem(btoa('fd.' +k), btoa(v));
+    return localStorage.setItem(btoa('fd.' + k), btoa(v));
   },
-  load: (k)=> {
+  load: (k) => {
     return atob(localStorage.getItem(btoa('fd.' + k)));
   },
   loadObj: (k) => {
@@ -32,7 +36,10 @@ const universal = {
   audioClient: {
     _nowPlaying: [],
     _end: (event) => {
-      universal.audioClient._nowPlaying.splice(universal.audioClient._nowPlaying.indexOf(event.target), 1);
+      universal.audioClient._nowPlaying.splice(
+          universal.audioClient._nowPlaying.indexOf(event.target),
+          1,
+      );
       universal.updatePlaying();
     },
     _player: {
@@ -44,16 +51,17 @@ const universal = {
       monitorVol: 1,
       pitch: 1,
     },
-    stopAll: () => universal.audioClient._nowPlaying.forEach(async (audio) => {
-      try {
-        await audio.pause();
-        audio.currentTime = audio.duration;
-        await audio.play();
-      } catch (err) {
-        // "waah waah waah noo you cant just abuse audio api" -companion
-        // > i dont care :trole:
-      }
-    }),
+    stopAll: () =>
+      universal.audioClient._nowPlaying.forEach(async (audio) => {
+        try {
+          await audio.pause();
+          audio.currentTime = audio.duration;
+          await audio.play();
+        } catch (err) {
+          // "waah waah waah noo you cant just abuse audio api" -companion
+          // > i dont care :trole:
+        }
+      }),
     setPitch: (pitch) => {
       universal.audioClient._player.pitch = pitch;
       universal.audioClient._nowPlaying.forEach((audio) => {
@@ -69,14 +77,18 @@ const universal = {
       });
       document.querySelector('#v').value = vol;
     },
-    play: async (file, name, isMonitor=false, stopPrevious=false) => {
+    play: async (file, name, isMonitor = false, stopPrevious = false) => {
       const audioInstance = new Audio(file);
-      if (universal.audioClient._player.sink !== 0) await audioInstance.setSinkId(universal.audioClient._player.sink);
+      if (universal.audioClient._player.sink !== 0) {
+        await audioInstance.setSinkId(universal.audioClient._player.sink);
+      }
       audioInstance.setAttribute('data-name', name);
       audioInstance.setAttribute('data-isMonitor', false);
 
       if (isMonitor) {
-        await audioInstance.setSinkId(universal.audioClient._player.monitorSink);
+        await audioInstance.setSinkId(
+            universal.audioClient._player.monitorSink,
+        );
         if (universal.load('monitor.sink')) {
           await audioInstance.setSinkId(universal.load('monitor.sink'));
         }
@@ -116,7 +128,9 @@ const universal = {
     },
   },
   login: (passwd) => {
-    universal.send(universal.events.login_data, {tlid: universal._information.tempLoginID});
+    universal.send(universal.events.login_data, {
+      tlid: universal._information.tempLoginID,
+    });
     universal.send(universal.events.login, {passwd});
   },
   init: async function(user) {
@@ -124,12 +138,9 @@ const universal = {
       await universal._initFn(user);
       const devices = await navigator.mediaDevices.enumerateDevices();
       devices.forEach((device) => {
-        // if (device.kind === 'audioinput') {
-        //   if (device.label == 'CABLE Output (VB-Audio Virtual Cable)') {
-        //     universal.audioClient._player.recsink = device.deviceId;
-        //   }
-        // }
-        if (device.kind == 'audiooutput') universal.audioClient._player.monitorPotential.push(device);
+        if (device.kind == 'audiooutput') {
+          universal.audioClient._player.monitorPotential.push(device);
+        }
         if (device.label === 'CABLE Input (VB-Audio Virtual Cable)') {
           const audio = new Audio();
           audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
@@ -140,14 +151,14 @@ const universal = {
           audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
           universal.audioClient._player.recsink = device.deviceId;
         }
-        // if (device.label == 'Speakers (SteelSeries Arctis 1 Wireless)') {
-        //   const audio = new Audio();
-        //   audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
-        //   universal.audioClient._player.sink = device.deviceId;
-        // }
       });
-
-            universal.load('monitor.sink') ? universal.audioClient._player.monitorSink = universal.load('monitor.sink') : 'default';
+      universal.load('vb.sink') ?
+        (universal.audioClient._player.sink = universal.load('vb.sink')) :
+        false;
+      universal.load('monitor.sink') ?
+        (universal.audioClient._player.monitorSink =
+            universal.load('monitor.sink')) :
+        'default';
     } catch (e) {
       console.error(e + ' | Universal: initialize failed.');
     }
@@ -164,7 +175,10 @@ const universal = {
       {
         name: 'Stop All',
         onclick: (ev) => {
-          universal.send(universal.events.keypress, JSON.stringify({builtIn: true, data: 'stop-all'}));
+          universal.send(
+              universal.events.keypress,
+              JSON.stringify({builtIn: true, data: 'stop-all'}),
+          );
         },
       },
       {
@@ -190,14 +204,19 @@ const universal = {
     });
   },
   Pages: {},
-  reloadProfile: ()=> {
-    universal.config.sounds = universal.config.profiles[universal.config.profile];
-    for (let i = 0; i < (universal.config.sounds.length / universal.config.iconCountPerPage); i++) {
+  reloadProfile: () => {
+    universal.config.sounds =
+      universal.config.profiles[universal.config.profile];
+    for (
+      let i = 0;
+      i < universal.config.sounds.length / universal.config.iconCountPerPage;
+      i++
+    ) {
       universal.Pages[i] = true;
     }
   },
-  listenFor: (ev, cb) => universal._cb[ev] = cb,
-  sendEvent: (ev, ...data) => universal._cb[ev] ? universal._cb[ev](data) : 0,
+  listenFor: (ev, cb) => (universal._cb[ev] = cb),
+  sendEvent: (ev, ...data) => (universal._cb[ev] ? universal._cb[ev](data) : 0),
   _initFn: async function(/** @type {string} */ user) {
     return new Promise((resolve, reject) => {
       universal.send('fd.greetings', user);
@@ -219,11 +238,19 @@ const universal = {
 
         universal.save('tempLoginID', parsed.tempLoginID);
 
-        universal.on(universal.events.not_trusted, () => universal.sendToast('Not trusted to do this action.'));
+        universal.on(universal.events.not_trusted, () =>
+          universal.sendToast('Not trusted to do this action.'),
+        );
 
-        universal.on(universal.events.not_auth, () => universal.sendToast('You are not authenticated!'));
+        universal.on(universal.events.not_auth, () =>
+          universal.sendToast('You are not authenticated!'),
+        );
 
-        universal.on(universal.events.not_match, () => universal.sendToast('Login not allowed! Session could not be verified against server.'));
+        universal.on(universal.events.not_match, () =>
+          universal.sendToast(
+              'Login not allowed! Session could not be verified against server.',
+          ),
+        );
 
         universal.on(universal.events.no_init_info, (data) => {
           const parsedToo = JSON.parse(data);
@@ -240,7 +267,8 @@ const universal = {
           const interaction = JSON.parse(interactionData);
           if (!user.includes('Companion')) return;
           if ('sound' in interaction && interaction.sound.name === 'Stop All') {
-            universal.audioClient.stopAll(); return;
+            universal.audioClient.stopAll();
+            return;
           }
           universal.sendEvent('button', interaction);
           if (interaction.type !== 'fd.sound') return;
@@ -253,8 +281,18 @@ const universal = {
           if (!universal.load('stopPrevious')) {
             universal.save('stopPrevious', false);
           }
-          universal.audioClient.play(interaction.data.path + '/' + interaction.data.file, Object.keys(a)[0], false, Boolean(universal.load('stopPrevious')));
-          universal.audioClient.play(interaction.data.path + '/' + interaction.data.file, Object.keys(a)[0], true, Boolean(universal.load('stopPrevious')));
+          universal.audioClient.play(
+              interaction.data.path + '/' + interaction.data.file,
+              Object.keys(a)[0],
+              false,
+              Boolean(universal.load('stopPrevious')),
+          );
+          universal.audioClient.play(
+              interaction.data.path + '/' + interaction.data.file,
+              Object.keys(a)[0],
+              true,
+              Boolean(universal.load('stopPrevious')),
+          );
         });
 
         universal.on(universal.events.log, (data) => {
@@ -264,11 +302,16 @@ const universal = {
 
         universal.on(universal.events.notif, (data) => {
           data = JSON.parse(data);
-          if (!data.isCon) universal.sendToast('[' + data.sender + '] ' + data.data);
+          if (!data.isCon) {
+            universal.sendToast('[' + data.sender + '] ' + data.data);
+          }
           if (data.isCon) universal.sendEvent('notif', data);
         });
 
-        universal.on(universal.events.login_data_ack, (data) => universal._loginAllowed = data);
+        universal.on(
+            universal.events.login_data_ack,
+            (data) => (universal._loginAllowed = data),
+        );
         universal.on(universal.events.reload, () => window.location.reload());
 
         universal.on(universal.events.login, (auth) => {
@@ -278,10 +321,14 @@ const universal = {
         });
 
         universal.keys.id = 'keys';
-        if (!document.querySelector('#keys')) document.body.appendChild(universal.keys);
+        if (!document.querySelector('#keys')) {
+          document.body.appendChild(universal.keys);
+        }
 
         universal.notibar.id = 'snackbar';
-        if (!document.querySelector('#snackbar')) document.body.appendChild(universal.notibar);
+        if (!document.querySelector('#snackbar')) {
+          document.body.appendChild(universal.notibar);
+        }
 
         universal.send(universal.events.information, {apiVersion: '2'});
 
@@ -312,19 +359,28 @@ const universal = {
     s.setHTML(message);
     s.className = 'show';
     s.onclick = () => {
-      s.className = s.className.replace('show', ''); s.remove();
+      s.className = s.className.replace('show', '');
+      s.remove();
     };
     document.querySelector('#snackbar').appendChild(s);
 
-    setTimeout(() => { // After 3 seconds, remove the show class from DIV
+    setTimeout(() => {
+      // After 3 seconds, remove the show class from DIV
       s.className = s.className.replace('show', '');
       s.remove();
     }, 1250);
-    universal.save('notification_log', universal.load('notification_log') + `,${btoa(JSON.stringify({
-      timestamp: new Date(),
-      time: new Date().toTimeString(),
-      page: window.location.pathname, message,
-    }))}`);
+    universal.save(
+        'notification_log',
+        universal.load('notification_log') +
+        `,${btoa(
+            JSON.stringify({
+              timestamp: new Date(),
+              time: new Date().toTimeString(),
+              page: window.location.pathname,
+              message,
+            }),
+        )}`,
+    );
   },
   send: (event, value) => {
     universal._socket.emit(event, value);

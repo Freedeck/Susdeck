@@ -60,6 +60,12 @@ function reloadSounds() {
 }
 reloadSounds();
 
+window['button-types'] = [
+  {name: 'Sound', type: 'sound'},
+  {name: 'Macro', type: 'macro'},
+  {name: 'Plugin', type: 'plugin'},
+];
+
 window.oncontextmenu = function(e) {
   // console.log(e.srcElement)
   if (document.querySelector('.contextMenu')) document.querySelector('.contextMenu').remove();
@@ -116,11 +122,7 @@ window.oncontextmenu = function(e) {
           }, 100);
           break;
         case 'New Key':
-          showPick('New Key', [
-            {name: 'Sound', type: 'sound'},
-            {name: 'Macro', type: 'macro'},
-            {name: 'Plugin', type: 'plugin'},
-          ], (modal, value, feedback, title, button, content) => {
+          showPick('New Key', window['button-types'], (modal, value, feedback, title, button, content) => {
             let pos = parseInt(e.srcElement.className.split(' ')[1].split('-')[1]);
             if (universal.page > 0) {
               pos += universal.config.iconCountPerPage;

@@ -80,33 +80,3 @@ server.listen(PORT, () => {
     console.log(picocolors.bgBlue('Go to ' + ipPort + ' on your mobile device [Interface ' + netInterface + ']'));
   });
 });
-
-['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
-  'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM', 'exit',
-].forEach((sig) => {
-  process.on(sig, () => {
-    terminator(sig);
-    debug.log('Signal received: ' + sig);
-  });
-});
-
-const terminator = (sig) => {
-  if (typeof sig === 'string') {
-    console.log(sig);
-    // call your async task here and then call process.exit() after async task is done
-    plugins.forEach((plugin) => {
-      try {
-        fs.rmSync(path.resolve('src/public/hooks/'+plugin.instance.jsHook));
-        fs.rmSync(path.resolve('tmp/_e_._plugins_' + plugin.instance.id+'.Freedeck'), {recursive: true});
-        debug.log(picocolors.yellow('Unloaded plugin ' + plugin.instance.name), 'PluginManager');
-      } catch (e) {
-        // shhh
-      }
-    });
-    console.log('Plugins unloaded. Bye!');
-
-    setTimeout(() => {
-      process.exit(1);
-    });
-  }
-};

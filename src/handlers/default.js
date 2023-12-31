@@ -22,7 +22,7 @@ module.exports = {
     });
     plugins().forEach((plugin) => {
       if (plugin.instance.jsSockHook) {
-        require(plugin.instance.jsSockHookPath)(socket, io);
+        require(plugin.instance.jsSockHookPath)(socket, io, plugin.instance);
       }
     });
     socket.on(eventNames.client_greet, (user) => {

@@ -13,17 +13,12 @@ universal.audioClient._player.monitorPotential.forEach((data) => {
 
 const devices = await navigator.mediaDevices.enumerateDevices();
 devices.forEach((device) => {
-  if (device.kind == 'audioinput') {
+  if (device.kind == 'audiooutput') {
     const tmpBtn = document.createElement('option');
     tmpBtn.innerText = device.label;
     tmpBtn.value = device.deviceId;
     tmpBtn.id = device.deviceId;
-    document.querySelector('#audioclient-flute-devices').appendChild(tmpBtn);
-    const tmpBtna = document.createElement('option');
-    tmpBtna.innerText = device.label;
-    tmpBtna.value = device.deviceId;
-    tmpBtna.id = device.deviceId;
-    document.querySelector('#audioclient-vb-devices').appendChild(tmpBtna);
+    document.querySelector('#audioclient-vb-devices').appendChild(tmpBtn);
   }
 });
 
@@ -35,9 +30,8 @@ Object.keys(universal.config.profiles).forEach((data) => {
   document.querySelector('#default-profile').appendChild(tmpBtn);
 });
 
-document.querySelector('#audioclient-monitor-devices').value = universal.audioClient._player.monitorSink;
 document.querySelector('#default-profile').value = universal.config.profile;
-document.querySelector('#audioclient-flute-devices').value = universal.audioClient._player.recsink;
+document.querySelector('#audioclient-monitor-devices').value = universal.audioClient._player.monitorSink;
 document.querySelector('#audioclient-vb-devices').value = universal.audioClient._player.sink;
 document.querySelector('#settings-save').onclick = save;
 

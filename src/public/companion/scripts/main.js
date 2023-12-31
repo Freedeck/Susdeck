@@ -121,8 +121,13 @@ window.oncontextmenu = function(e) {
             {name: 'Macro', type: 'macro'},
             {name: 'Plugin', type: 'plugin'},
           ], (modal, value, feedback, title, button, content) => {
-            if (value.type == 'sound') createSound();
-            if (value.type == 'plugin') createPlugin();
+            let pos = parseInt(e.srcElement.className.split(' ')[1].split('-')[1]);
+            if (universal.page > 0) {
+              pos += universal.config.iconCountPerPage;
+              if (universal.page > 0) pos *= universal.page;
+            }
+            if (value.type == 'sound') createSound(pos);
+            if (value.type == 'plugin') createPlugin(pos);
           });
           break;
         case 'Remove Key':
@@ -174,16 +179,16 @@ function showReplaceGUI(srcElement) {
 
 /**
  * @name createSound
+ * @param {Number} pos The position of the new sound key.
  * @description Create a new sound key.
  */
-function createSound() {
+function createSound(pos) {
   showEditModal('New Sound Key', 'Enter a name for the new key', (modal, value, feedback, title, button, input, content) => {
     if (value.length < 1) {
       feedback.innerText = 'Please enter a name for the key';
       return false;
     }
     reloadProfile();
-    const pos = universal.config.sounds.length;
     universal.send(universal.events.companion.new_key, JSON.stringify({
       [value]: {
         type: 'fd.sound',
@@ -198,9 +203,10 @@ function createSound() {
 
 /**
  * @name createPlugin
+ * @param {Number} pos The position of the new plugin key.
  * @description Create a new plugin key.
  */
-function createPlugin() {
+function createPlugin(pos) {
   showPick('New Plugin Key', universal._tyc.keys(), (modala, valuea, feedbacka, titlea, buttona, contenta) => {
     showEditModal('New Plugin Key', 'Enter a name for the new key', (modal, value, feedback, title, button, input, content) => {
       if (value.length < 1) {
@@ -208,7 +214,6 @@ function createPlugin() {
         return false;
       }
       reloadProfile();
-      const pos = universal.config.sounds.length;
       universal.send(universal.events.companion.new_key, JSON.stringify({
         [value]: {
           type: valuea.type,

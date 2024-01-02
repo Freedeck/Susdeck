@@ -168,7 +168,7 @@ input:disabled {
     transform: scale(1.15);
 }
 
-.dialog {
+dialog {
 	width: 100%;
 	height: 100%;
 	position: fixed;

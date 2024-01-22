@@ -31,6 +31,7 @@ function reloadSounds() {
   document.querySelectorAll('#keys > .button').forEach((key) => {
     key.remove();
   });
+  document.querySelector('.cpage').innerText = 'Page: ' + (universal.page + 1);
   universal.keySet();
   universal.config.sounds.forEach((sound) => {
     const k = Object.keys(sound)[0];
@@ -479,6 +480,10 @@ document.addEventListener('keydown', (ev) => {
   }
   if (ev.key == 'ArrowRight') {
     if (Pages[universal.page + 1]) {
+      universal.page ++;
+      reloadSounds();
+    } else {
+      Pages[universal.page + 1] = [];
       universal.page ++;
       reloadSounds();
     }

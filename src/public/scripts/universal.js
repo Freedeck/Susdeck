@@ -125,6 +125,7 @@ const universal = {
 
       universal.audioClient._nowPlaying.push(audioInstance);
       universal.updatePlaying();
+      return audioInstance;
     },
   },
   login: (passwd) => {

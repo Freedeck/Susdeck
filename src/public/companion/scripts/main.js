@@ -6,19 +6,16 @@ await universal.init('Companion');
 
 new Sortable(document.querySelector('#keys'), {
   onUpdate: (d) => {
-    if (universal.page == 0) {
-      universal.page = 1;
-    } else {
-      d.newDraggableIndex = d.newDraggableIndex + (universal.page * universal.config.iconCountPerPage);
-      d.oldDraggableIndex = d.oldDraggableIndex + (universal.page * universal.config.iconCountPerPage);
-    }
+    d.newDraggableIndex = d.newDraggableIndex + (universal.page * universal.config.iconCountPerPage);
+    d.oldDraggableIndex = d.oldDraggableIndex + (universal.page * universal.config.iconCountPerPage);
 
+    const ev = universal.page > 0 ? 1 : 0;
     universal.send(universal.events.companion.move_key,
         JSON.stringify({
           name: d.item.innerText,
           item: d.item.getAttribute('data-interaction'),
-          newIndex: d.newDraggableIndex,
-          oldIndex: d.oldDraggableIndex*universal.page}));
+          newIndex: d.newDraggableIndex+ev,
+          oldIndex: d.oldDraggableIndex+ev}));
     universal.page = 0;
   },
   filter: '.unset',
@@ -123,11 +120,8 @@ window.oncontextmenu = function(e) {
           break;
         case 'New Key':
           showPick('New Key', window['button-types'], (modal, value, feedback, title, button, content) => {
-            let pos = parseInt(e.srcElement.className.split(' ')[1].split('-')[1]);
-            if (universal.page > 0) {
-              pos += universal.config.iconCountPerPage;
-              if (universal.page > 0) pos *= universal.page;
-            }
+            let pos = parseInt(e.srcElement.className.split(' ')[1].split('-')[1]) + 1;
+            if (universal.page > 0) pos += (universal.config.iconCountPerPage * universal.page);
             if (value.type == 'sound') createSound(pos);
             if (value.type == 'plugin') createPlugin(pos);
           });
@@ -165,12 +159,13 @@ function showReplaceGUI(srcElement) {
       const k = Object.keys(sound)[0];
       return k == value.name;
     })[0][value.name];
+    const ev = universal.page > 0 ? 1 : 0;
     // we need to clone value, and change the pos, and uuid, then make a new key.
     universal.send(universal.events.companion.new_key, JSON.stringify({
       [value.name]: {
         type: valueToo.type,
         plugin: valueToo.plugin || 'Freedeck',
-        pos: parseInt(srcElement.className.split(' ')[1].split('-')[1]),
+        pos: parseInt(srcElement.className.split(' ')[1].split('-')[1]) + (universal.config.iconCountPerPage * universal.page) + ev,
         uuid: 'fdc.'+Math.random() * 10000000,
         data: valueToo.data,
       },

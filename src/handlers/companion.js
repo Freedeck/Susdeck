@@ -52,7 +52,9 @@ module.exports = {
       data = JSON.parse(data);
       data.item = JSON.parse(data.item);
       const settings = config.settings();
+      let flag = false;
       settings.profiles[settings.profile].forEach((snd) => {
+        if (flag) return;
         if (!(data.name in snd)) return;
         if (snd[data.name].uuid !== data.item.uuid) return;
         // if there's already something there
@@ -64,6 +66,7 @@ module.exports = {
           }
         });
         snd[data.name].pos = data.newIndex;
+        flag = true;
       });
       config.save();
       io.emit(eventNames.reload);

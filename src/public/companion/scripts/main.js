@@ -52,6 +52,16 @@ function reloadSounds() {
       keyObject.onclick = (ev) => {
         universal.send(universal.events.keypress, JSON.stringify({event: ev, btn: snd}));
       };
+
+      // check if two sounds share the same pos, if they do make this button color yellow
+      const sounds = universal.config.sounds.filter((sound) => {
+        const ev = universal.page > 0 ? 1 : 0;
+        const k = Object.keys(sound)[0];
+        return sound[k].pos == snd.pos + (universal.page * universal.config.iconCountPerPage) + ev;
+      });
+      if (sounds.length > 1) {
+        keyObject.style.background = 'yellow';
+      }
     } catch (e) {
     }
   });

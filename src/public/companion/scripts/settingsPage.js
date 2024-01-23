@@ -4,6 +4,10 @@ import {
 
 await universal.init('Companion:Settings');
 
+createSettingCategory('Audio Client $(NEW!)', 'audioclient');
+
+createSettingCategory('Freedeck Client', 'fdc');
+
 createSelectSetting('Default Profile', 'default-profile', async (select) => {
   return new Promise(async (resolve) => {
     Object.keys(universal.config.profiles).forEach((data) => {
@@ -93,8 +97,17 @@ function createSelectSetting(name, id, value, onLoad, goto, onChanged=()=>{}) {
 function createSettingCategory(name, goto) {
   const div = document.createElement('div');
   div.className = goto;
+  document.body.appendChild(div);
   const h2 = document.createElement('h2');
   h2.innerText = name;
+  if (name.split('$(').length > 1) {
+    const tag = document.createElement('span');
+    tag.className = 'tag';
+    tag.innerText = name.split('$(')[1].split(')')[0];
+    h2.appendChild(tag);
+    name = name.split('$(')[0];
+    h2.innerText = name;
+  }
   div.appendChild(h2);
   document.body.appendChild(div);
 };

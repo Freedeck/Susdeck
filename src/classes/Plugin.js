@@ -171,4 +171,12 @@ module.exports = class Plugin {
   onButton(interaction) {
     return true;
   }
+
+  /**
+   * Check if the plugin is running in the development environment.
+   * @return {Boolean} If the development environment is active
+   */
+  isDev() {
+    return false;
+  }
 };

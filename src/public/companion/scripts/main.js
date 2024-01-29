@@ -295,7 +295,9 @@ document.querySelector('#editor-close').onclick = () => {
 document.querySelector('#editor-save').onclick = () => {
   const name = document.querySelector('#name').value;
   const interaction = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
-
+  interaction.pos = interaction.pos +
+    (universal.page * universal.config.iconCountPerPage) +
+    (universal.page > 0 ? 1 : 0);
   universal.send(universal.events.companion.edit_key, JSON.stringify({
     name: name,
     oldName: document.querySelector('#editor-btn[data-interaction]').getAttribute('data-pre-edit'),
@@ -532,11 +534,26 @@ profileSelect.onchange = () => {
   universal.send(universal.events.companion.set_profile, profileSelect.value);
 };
 
+const profileDupe = document.createElement('button');
+profileDupe.innerText = 'Duplicate Profile';
+
+profileDupe.onclick = () => {
+  showEditModal('Duplicate Profile', 'Enter a name for the new profile', (modal, value, feedback, title, button, input, content) => {
+    if (value.length < 1) {
+      feedback.innerText = 'Please enter a name for the profile';
+      return false;
+    }
+    universal.send(universal.events.companion.dup_profile, value);
+    return true;
+  });
+};
+
 const flexWrapped = document.createElement('div');
 flexWrapped.className = 'flex-wrap-r';
 flexWrapped.style.marginBottom = '20px';
 flexWrapped.appendChild(profileSelect);
 flexWrapped.appendChild(profileAdd);
+flexWrapped.appendChild(profileDupe);
 document.body.appendChild(profileTxt);
 document.body.appendChild(flexWrapped);
 

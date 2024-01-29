@@ -28,6 +28,7 @@ const eventNames = {
     move_key: 'fd.companion.keys.move',
     set_profile: 'fd.companion.profile.set',
     add_profile: 'fd.companion.profile.add',
+    dup_profile: 'fd.companion.profile.duplicate',
   },
 
   reload: 'fd.reload',

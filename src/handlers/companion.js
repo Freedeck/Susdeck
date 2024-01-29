@@ -18,6 +18,13 @@ module.exports = {
       io.emit(eventNames.reload);
     });
 
+    socket.on(eventNames.companion.dup_profile, (data) => {
+      const settings = config.settings();
+      settings.profiles[data] = settings.profiles[settings.profile];
+      config.save();
+      io.emit(eventNames.reload);
+    });
+
     socket.on(eventNames.companion.set_profile, (data) => {
       config.settings().profile = data;
       config.save();
@@ -77,6 +84,7 @@ module.exports = {
       // new name is data.name
       // old name is data.oldName
       const settings = config.settings();
+      let flag = false;
 
       settings.profiles[settings.profile].forEach((snd) => {
         if (!(data.oldName in snd)) return;
@@ -84,7 +92,9 @@ module.exports = {
         snd[data.name] = snd[data.oldName];
         snd[data.name] = data.interaction;
         if (data.name === data.oldName) return;
+        if (flag) return;
         delete snd[data.oldName];
+        flag = true;
       });
 
       config.save();

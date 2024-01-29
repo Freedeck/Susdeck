@@ -22,23 +22,21 @@
     const msg = document.querySelector("#msg")
     const url = document.querySelector("#url")
     const subm = document.querySelector('#sub')
+    let s = false;
 
     subm.onclick = (ev) => {
       concon.innerText = url.value;
-      datsta.innerText = "Connecting to " + url.value + "/fdc for server status."
-      fetch(url.value + '/fdc').then(res => res.text()).then(res =>{
-         datsta.innerText = "Status code " + res + ", fetching companion interface.";
-        fetch(url.value + '/companion').then(res => res.text()).then(res => {
-          datsta.innerText = "Companion UI fetched. Starting connection."
+      fetch(url.value + '/companion').then(res => res.text()).then(res => {
+        s = true;
+          datsta.innerText = "Companion UI fetched. Loading."
           window.location.replace(url.value + '/companion?fdc=true');
-        })
-      }).catch(failure => {
+        }).catch(failure => {
           datsta.innerText = "Connection failed: " + failure.toString() + " | The server may be offline";
         })
     }
     subm.click();
     setInterval(() => {
-      subm.click();
+      if (!s) subm.click();
     },20)
     </script>
   </body>

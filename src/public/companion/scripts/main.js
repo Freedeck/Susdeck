@@ -558,3 +558,9 @@ document.body.appendChild(profileTxt);
 document.body.appendChild(flexWrapped);
 
 if (universal.load('pitch')) document.querySelector('#pitch').value = universal.load('pitch');
+
+if (!universal.load('pitch') || !universal.load('vol') || !universal.audioClient._player.normalVol ||
+  universal.audioClient._player.sink == '' ||
+  universal.audioClient._player.sink == '\x9Eée') {
+  window.location.href = '/companion/settings.html?err=ns0f';
+}

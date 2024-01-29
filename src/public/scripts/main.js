@@ -2,7 +2,6 @@ import {universal} from './universal.js';
 
 await universal.init('Main');
 
-
 /**
  * @also-in companion/scripts/main.js
  * @name reloadSounds

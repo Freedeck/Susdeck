@@ -75,6 +75,7 @@ const universal = {
       universal.audioClient._nowPlaying.forEach((audio) => {
         audio.volume = vol;
       });
+      universal.save('vol', vol);
       document.querySelector('#v').value = vol;
     },
     play: async (file, name, isMonitor = false, stopPrevious = false) => {
@@ -98,6 +99,9 @@ const universal = {
       }
       if (universal.load('pitch')) {
         audioInstance.playbackRate = universal.load('pitch');
+      }
+      if (universal.load('vol')) {
+        audioInstance.volume = universal.load('vol');
       }
       audioInstance.preservesPitch = false;
       audioInstance.fda = {};
@@ -139,19 +143,7 @@ const universal = {
       await universal._initFn(user);
       const devices = await navigator.mediaDevices.enumerateDevices();
       devices.forEach((device) => {
-        if (device.kind == 'audiooutput') {
-          universal.audioClient._player.monitorPotential.push(device);
-        }
-        if (device.label === 'CABLE Input (VB-Audio Virtual Cable)') {
-          const audio = new Audio();
-          audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
-          universal.audioClient._player.sink = device.deviceId;
-        }
-        if (device.label === 'CABLE-A Input (VB-Audio Cable A)') {
-          const audio = new Audio();
-          audio.setSinkId(device.deviceId); // Create a new audio to set permission to use sink
-          universal.audioClient._player.recsink = device.deviceId;
-        }
+        if (device.kind == 'audiooutput') universal.audioClient._player.monitorPotential.push(device);
       });
       universal.load('vb.sink') ?
         (universal.audioClient._player.sink = universal.load('vb.sink')) :
@@ -317,7 +309,10 @@ const universal = {
 
         universal.on(universal.events.login, (auth) => {
           universal.authStatus = auth;
-          if (auth === false) universal.sendToast('Incorrect password!');
+          if (auth === false) {
+            universal.sendToast('Incorrect password!');
+            if (document.querySelector('#login-dialog')) document.querySelector('#login-dialog').style.display = 'block';
+          }
           universal.sendEvent('auth', auth);
         });
 

@@ -208,6 +208,16 @@ const universal = {
       universal.Pages[i] = true;
     }
   },
+  channels: {
+    send: (plugin, channel, data) => {
+      universal.send(universal.events.channel_send, {plugin, channel, data});
+    },
+    listen: (plugin, channel, callback) => {
+      universal.on('channel_' + plugin + '_' + channel, (data) => {
+        callback(data);
+      });
+    },
+  },
   listenFor: (ev, cb) => (universal._cb[ev] = cb),
   sendEvent: (ev, ...data) => (universal._cb[ev] ? universal._cb[ev](data) : 0),
   _initFn: async function(/** @type {string} */ user) {

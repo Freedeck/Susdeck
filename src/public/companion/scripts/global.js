@@ -1,3 +1,7 @@
+HTMLElement.prototype.setHTML = function(html) {
+  this.innerHTML = html;
+};
+
 universal.listenFor('notif', (dat) => {
   const login = document.createElement('li');
   login.id = 'constat';

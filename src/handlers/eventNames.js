@@ -20,6 +20,9 @@ const eventNames = {
 
   plugin_info: 'fd.plugin_data',
 
+  channel_send: 'fd.channel.send',
+  channel_listening: 'fd.channel.listen',
+
   companion: {
     conn_fail: 'fd.companion.conn.fail',
     new_key: 'fd.companion.keys.new',

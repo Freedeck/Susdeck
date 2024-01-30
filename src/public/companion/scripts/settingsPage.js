@@ -211,35 +211,37 @@ function createInputSetting(name, id, value, onLoad, goto, onChanged=()=>{}) {
 const setupWizard = () => {
   const sinks = {};
   const sources = {};
-  navigator.mediaDevices.enumerateDevices().then((devices) => {
-    devices.forEach((device) => {
-      if (device.kind == 'audiooutput') {
-        if (!device.label.includes('Input')) sinks[device.deviceId] = device.label;
-        if (device.label.includes('Input')) sources[device.deviceId] = device.label;
-      }
-    });
-    showText('Setup Wizard', 'Welcome to the Freedeck setup wizard! This will help you set up Freedeck for the first time.', () => {
-      showPick('Select a monitor device (where you will hear the sounds)', Object.keys(sinks).map((data) => {
-        return {
-          sink: data,
-          name: sinks[data],
-        };
-      }), (modal, data, feedback, title, button, content) => {
-        console.log('User selected ' + data.name);
-        universal.save('monitor.sink', data.sink);
-        showPick('Select your VB-Cable device (where you will play the sounds through)', Object.keys(sources).map((data) => {
+  navigator.mediaDevices.getUserMedia({audio: true}).then(() => {
+    navigator.mediaDevices.enumerateDevices().then((devices) => {
+      devices.forEach((device) => {
+        if (device.kind == 'audiooutput') {
+          if (!device.label.includes('Input')) sinks[device.deviceId] = device.label;
+          if (device.label.includes('Input')) sources[device.deviceId] = device.label;
+        }
+      });
+      showText('Setup Wizard', 'Welcome to the Freedeck setup wizard! This will help you set up Freedeck for the first time.', () => {
+        showPick('Select a monitor device (where you will hear the sounds)', Object.keys(sinks).map((data) => {
           return {
             sink: data,
-            name: sources[data],
+            name: sinks[data],
           };
         }), (modal, data, feedback, title, button, content) => {
           console.log('User selected ' + data.name);
-          universal.save('vb.sink', data.sink);
-          universal.save('pitch', 1);
-          universal.save('vol', 1);
-          showText('All done!', 'You\'re all set up! You can now use Freedeck.', () => {
-            universal.sendToast('All done, reloading...');
-            window.location.href = '/companion/';
+          universal.save('monitor.sink', data.sink);
+          showPick('Select your VB-Cable device (where you will play the sounds through)', Object.keys(sources).map((data) => {
+            return {
+              sink: data,
+              name: sources[data],
+            };
+          }), (modal, data, feedback, title, button, content) => {
+            console.log('User selected ' + data.name);
+            universal.save('vb.sink', data.sink);
+            universal.save('pitch', 1);
+            universal.save('vol', 1);
+            showText('All done!', 'You\'re all set up! You can now use Freedeck.', () => {
+              universal.sendToast('All done, reloading...');
+              window.location.href = '/companion/';
+            });
           });
         });
       });

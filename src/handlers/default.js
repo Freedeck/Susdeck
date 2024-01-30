@@ -55,7 +55,7 @@ module.exports = {
       setInterval(() => {
         cfg.update();
         serverInfo['cfg'] = cfg.settings();
-        socket.emit(eventNames.no_init_info, JSON.stringify(serverInfo));
+        // socket.emit(eventNames.no_init_info, JSON.stringify(serverInfo)); // Test, make sure this is viable.
         const data = NotificationManager.get();
         if (data === '' ||
             typeof data === 'undefined' ||
@@ -75,6 +75,13 @@ module.exports = {
               requested: data,
               response: plug,
             }));
+      });
+
+      socket.on(eventNames.channel_send, (data) => {
+        const plug = plugins().get(data.plugin).instance;
+        if (plug.channelsCreated.includes(data.channel)) {
+          plug.channelsSendQueue.push({channel: data.channel, data: data.data});
+        }
       });
 
       socket.on(eventNames.information, (data) => {

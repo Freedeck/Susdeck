@@ -7,6 +7,7 @@ const AsarBundleRunner = require('asar-bundle-runner');
 const pl = {
   _plc: new Map(),
   _tyc: new Map(),
+  _ch: new Map(),
   plugins: () => {
     if (pl._plc.length >= 0) pl.update();
     return pl._plc;

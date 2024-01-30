@@ -21,12 +21,12 @@ module.exports = {
           socket.emit(eventNames.not_trusted); return;
         }
         io.emit(eventNames.keypress, JSON.stringify(ev.btn));
-        if (types().get(ev.btn.type) || plugins().get(ev.btn.type)) {
+        if (types().get(ev.btn.type) || plugins.get(ev.btn.type)) {
           if (types().get(ev.btn.type)) {
             types().get(ev.btn.type).instance.onButton(ev.btn); return;
           }
-          if (plugins().get(ev.btn.type)) {
-            plugins().get(ev.btn.type).instance.onButton(ev.btn);
+          if (plugins.get(ev.btn.type)) {
+            plugins.get(ev.btn.type).instance.onButton(ev.btn);
           }
         }
       } catch (e) {

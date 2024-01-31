@@ -21,9 +21,10 @@ function reloadSounds() {
     if (snd.pos < ((universal.config.iconCountPerPage) * universal.page)) return;
     if (!keyObject) {
       if (universal.page == 0) return;
-      const newPos = Math.abs(snd.pos - (universal.config.iconCountPerPage * universal.page)) - 1;
+      const newPos = snd.pos - (universal.config.iconCountPerPage * universal.page);
       snd.pos = newPos;
       keyObject = document.querySelector('.k-' + snd.pos);
+      snd.pos = newPos + (universal.config.iconCountPerPage * universal.page);
     };
     try {
       keyObject.setAttribute('data-interaction', JSON.stringify(snd));

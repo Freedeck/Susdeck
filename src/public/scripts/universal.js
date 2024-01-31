@@ -81,16 +81,19 @@ const universal = {
     play: async (file, name, isMonitor = false, stopPrevious = false) => {
       const audioInstance = new Audio(file);
       if (universal.audioClient._player.sink !== 0) {
+        navigator.mediaDevices.getUserMedia({audio: true, video: false});
         await audioInstance.setSinkId(universal.audioClient._player.sink);
       }
       audioInstance.setAttribute('data-name', name);
       audioInstance.setAttribute('data-isMonitor', false);
 
       if (isMonitor) {
+        navigator.mediaDevices.getUserMedia({audio: true, video: false});
         await audioInstance.setSinkId(
             universal.audioClient._player.monitorSink,
         );
         if (universal.load('monitor.sink')) {
+          navigator.mediaDevices.getUserMedia({audio: true, video: false});
           await audioInstance.setSinkId(universal.load('monitor.sink'));
         }
         audioInstance.volume = universal.audioClient._player.monitorVol;
@@ -133,6 +136,7 @@ const universal = {
     },
   },
   login: (passwd) => {
+    console.log('logging in');
     universal.send(universal.events.login_data, {
       tlid: universal._information.tempLoginID,
     });
@@ -157,11 +161,11 @@ const universal = {
     }
   },
   /*  */
-  _cb: {},
+  _cb: [],
   keySet: () => {
     for (let i = 0; i < universal.config.iconCountPerPage; i++) {
       const tempDiv = document.createElement('div');
-      tempDiv.className = 'button k-' + i + ' unset';
+      tempDiv.className = 'button k-' + i + ' unset k';
       universal.keys.appendChild(tempDiv);
     }
     const builtInKeys = [
@@ -190,7 +194,7 @@ const universal = {
 
     builtInKeys.forEach((key) => {
       const tempDiv = document.createElement('div');
-      tempDiv.className = 'button unset builtin';
+      tempDiv.className = 'button unset builtin k';
       tempDiv.innerText = key.name;
       tempDiv.onclick = key.onclick;
       universal.keys.appendChild(tempDiv);
@@ -218,140 +222,153 @@ const universal = {
       });
     },
   },
-  listenFor: (ev, cb) => (universal._cb[ev] = cb),
-  sendEvent: (ev, ...data) => (universal._cb[ev] ? universal._cb[ev](data) : 0),
+  listenFor: (ev, cb) => {
+    universal._cb.push([ev, cb]);
+  },
+  sendEvent: (ev, ...data) => {
+    universal._cb.forEach((cb) => {
+      if (cb[0] === ev) cb[1](...data);
+    });
+  },
   _initFn: async function(/** @type {string} */ user) {
     return new Promise((resolve, reject) => {
-      universal.send('fd.greetings', user);
-      universal.on('fd.info', (data) => {
-        const parsed = JSON.parse(data);
-        universal._information = JSON.parse(data);
-        universal._pluginData = {};
-        universal.events = parsed.events;
-        universal.config = parsed.cfg;
-        universal.config.sounds = parsed.cfg.profiles[parsed.cfg.profile];
-        universal.plugins = parsed.plugins;
-        universal._serverRequiresAuth = universal.config.useAuthentication;
-        universal._init = true;
-
-        if (!universal.load('welcomed')) {
-          universal.sendToast('Welcome to Freedeck.');
-          universal.save('welcomed', 'true');
-        }
-
-        universal.save('tempLoginID', parsed.tempLoginID);
-
-        universal.on(universal.events.not_trusted, () =>
-          universal.sendToast('Not trusted to do this action.'),
-        );
-
-        universal.on(universal.events.not_auth, () =>
-          universal.sendToast('You are not authenticated!'),
-        );
-
-        universal.on(universal.events.not_match, () =>
-          universal.sendToast(
-              'Login not allowed! Session could not be verified against server.',
-          ),
-        );
-
-        universal.on(universal.events.no_init_info, (data) => {
-          const parsedToo = JSON.parse(data);
+      try {
+        universal.send('fd.greetings', user);
+        universal.send('fd.greetings', user);
+        universal.send('fd.greetings', user);
+        universal.once('fd.info', (data) => {
+          const parsed = JSON.parse(data);
           universal._information = JSON.parse(data);
           universal._pluginData = {};
-          universal.events = parsedToo.events;
-          universal.config = parsedToo.cfg;
-          universal.plugins = parsedToo.plugins;
+          universal.events = parsed.events;
+          universal.config = parsed.cfg;
+          universal.config.sounds = parsed.cfg.profiles[parsed.cfg.profile];
+          universal.plugins = parsed.plugins;
           universal._serverRequiresAuth = universal.config.useAuthentication;
-          universal.sendEvent('new-info');
-        });
+          universal._init = true;
 
-        universal.on(universal.events.keypress, (interactionData) => {
-          const interaction = JSON.parse(interactionData);
-          if (!user.includes('Companion')) return;
-          if ('sound' in interaction && interaction.sound.name === 'Stop All') {
-            universal.audioClient.stopAll();
-            return;
+          if (!universal.load('welcomed')) {
+            universal.sendToast('Welcome to Freedeck.');
+            universal.save('welcomed', 'true');
           }
-          universal.sendEvent('button', interaction);
-          if (interaction.type !== 'fd.sound') return;
-          universal.reloadProfile();
-          // get name from universal.config.sounds with uuid
-          const a = universal.config.sounds.filter((snd) => {
-            const k = Object.keys(snd)[0];
-            return snd[k].uuid === interaction.uuid;
-          })[0];
-          if (!universal.load('stopPrevious')) {
-            universal.save('stopPrevious', false);
-          }
-          universal.audioClient.play(
-              interaction.data.path + '/' + interaction.data.file,
-              Object.keys(a)[0],
-              false,
-              Boolean(universal.load('stopPrevious')),
+
+          universal.save('tempLoginID', parsed.tempLoginID);
+
+          universal.on(universal.events.not_trusted, () =>
+            universal.sendToast('Not trusted to do this action.'),
           );
-          universal.audioClient.play(
-              interaction.data.path + '/' + interaction.data.file,
-              Object.keys(a)[0],
-              true,
-              Boolean(universal.load('stopPrevious')),
+
+          universal.on(universal.events.not_auth, () =>
+            universal.sendToast('You are not authenticated!'),
           );
-        });
 
-        universal.on(universal.events.log, (data) => {
-          data = JSON.parse(data);
-          console.log(data.sender + ': ' + data.data);
-        });
+          universal.on(universal.events.not_match, () =>
+            universal.sendToast(
+                'Login not allowed! Session could not be verified against server.',
+            ),
+          );
 
-        universal.on(universal.events.notif, (data) => {
-          data = JSON.parse(data);
-          if (!data.isCon) {
-            universal.sendToast('[' + data.sender + '] ' + data.data);
-          }
-          if (data.isCon) universal.sendEvent('notif', data);
-        });
-
-        universal.on(
-            universal.events.login_data_ack,
-            (data) => (universal._loginAllowed = data),
-        );
-        universal.on(universal.events.reload, () => window.location.reload());
-
-        universal.on(universal.events.login, (auth) => {
-          universal.authStatus = auth;
-          if (auth === false) {
-            universal.sendToast('Incorrect password!');
-            if (document.querySelector('#login-dialog')) document.querySelector('#login-dialog').style.display = 'block';
-          }
-          universal.sendEvent('auth', auth);
-        });
-
-        universal.keys.id = 'keys';
-        if (!document.querySelector('#keys')) {
-          document.body.appendChild(universal.keys);
-        }
-
-        universal.notibar.id = 'snackbar';
-        if (!document.querySelector('#snackbar')) {
-          document.body.appendChild(universal.notibar);
-        }
-
-        universal.send(universal.events.information, {apiVersion: '2'});
-
-        universal.keySet();
-
-        Object.keys(universal.plugins).forEach((plugin) => {
-          const plug = universal.plugins[plugin];
-          plug.types.forEach((type) => {
-            universal._tyc.set(type, plug);
+          universal.on(universal.events.no_init_info, (data) => {
+            const parsedToo = JSON.parse(data);
+            universal._information = JSON.parse(data);
+            universal._pluginData = {};
+            universal.events = parsedToo.events;
+            universal.config = parsedToo.cfg;
+            universal.plugins = parsedToo.plugins;
+            universal._serverRequiresAuth = universal.config.useAuthentication;
+            universal.sendEvent('new-info');
           });
+
+          universal.on(universal.events.keypress, (interactionData) => {
+            const interaction = JSON.parse(interactionData);
+            if (!user.includes('Companion')) return;
+            if ('sound' in interaction && interaction.sound.name === 'Stop All') {
+              universal.audioClient.stopAll();
+              return;
+            }
+            universal.sendEvent('button', interaction);
+            if (interaction.type !== 'fd.sound') return;
+            universal.reloadProfile();
+            // get name from universal.config.sounds with uuid
+            const a = universal.config.sounds.filter((snd) => {
+              const k = Object.keys(snd)[0];
+              return snd[k].uuid === interaction.uuid;
+            })[0];
+            if (!universal.load('stopPrevious')) {
+              universal.save('stopPrevious', false);
+            }
+            universal.audioClient.play(
+                interaction.data.path + '/' + interaction.data.file,
+                Object.keys(a)[0],
+                false,
+                Boolean(universal.load('stopPrevious')),
+            );
+            universal.audioClient.play(
+                interaction.data.path + '/' + interaction.data.file,
+                Object.keys(a)[0],
+                true,
+                Boolean(universal.load('stopPrevious')),
+            );
+          });
+
+          universal.on(universal.events.log, (data) => {
+            data = JSON.parse(data);
+            console.log(data.sender + ': ' + data.data);
+          });
+
+          universal.on(universal.events.notif, (data) => {
+            data = JSON.parse(data);
+            if (!data.isCon) {
+              universal.sendToast('[' + data.sender + '] ' + data.data);
+            }
+            if (data.isCon) universal.sendEvent('notif', data);
+          });
+
+          universal.on(
+              universal.events.login_data_ack,
+              (data) => (universal._loginAllowed = data),
+          );
+          universal.on(universal.events.reload, () => window.location.reload());
+
+          universal.on(universal.events.login, (auth) => {
+            universal.authStatus = auth;
+            if (auth === false) {
+              universal.sendToast('Incorrect password!');
+              if (document.querySelector('#login-dialog')) document.querySelector('#login-dialog').style.display = 'block';
+            }
+            universal.sendEvent('auth', auth);
+          });
+
+          universal.keys.id = 'keys';
+          if (!document.querySelector('#keys')) {
+            document.body.appendChild(universal.keys);
+          }
+
+          universal.notibar.id = 'snackbar';
+          if (!document.querySelector('#snackbar')) {
+            document.body.appendChild(universal.notibar);
+          }
+
+          universal.send(universal.events.information, {apiVersion: '2'});
+
+          universal.keySet();
+
+          Object.keys(universal.plugins).forEach((plugin) => {
+            const plug = universal.plugins[plugin];
+            plug.types.forEach((type) => {
+              universal._tyc.set(type, plug);
+            });
+          });
+
+          window['universal'] = universal;
+          universal.sendEvent('init');
+          universal.sendEvent('loadHooks');
+          resolve(true);
         });
-
-        window['universal'] = universal;
-        universal.sendEvent('init');
-
-        resolve(true);
-      });
+      } catch (e) {
+        console.error(e);
+        reject(e);
+      }
     });
   },
   sendToast: (message) => {
@@ -393,6 +410,13 @@ const universal = {
   },
   on: (event, callback) => {
     universal._socket.on(event, callback);
+  },
+  once: (event, callback) => {
+    universal._socket.once(event, callback);
+  },
+  log: (data, sender = 'Universal') => {
+    universal.send(universal.events.log, JSON.stringify({sender, data}));
+    console.log(`[${sender}] ${data}`);
   },
 };
 

@@ -77,6 +77,10 @@ module.exports = {
             }));
       });
 
+      socket.on(eventNames.log, (data) => {
+        console.log(`[${data.sender}] ${data.data}`);
+      });
+
       socket.on(eventNames.channel_send, (data) => {
         const plug = plugins().get(data.plugin).instance;
         if (plug.channelsCreated.includes(data.channel)) {

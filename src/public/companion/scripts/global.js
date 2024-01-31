@@ -2,7 +2,7 @@ HTMLElement.prototype.setHTML = function(html) {
   this.innerHTML = html;
 };
 
-universal.listenFor('notif', (dat) => {
+universal.once('fd.info', (dat) => {
   const login = document.createElement('li');
   login.id = 'constat';
   login.style.fontSize= '.75em';

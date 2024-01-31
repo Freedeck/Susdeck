@@ -1,18 +1,24 @@
-const {app, BrowserWindow} = require('electron');
 const path = require('path');
-app.on('ready', () => {
-  const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-    },
+module.exports = (_page='./src/fdconnect.html', _showTitlebar=true, width=800, height=600, isUrl=false) => {
+  const {app, BrowserWindow} = require('electron');
+  app.on('ready', () => {
+    const mainWindow = new BrowserWindow({
+      width,
+      height,
+      frame: _showTitlebar,
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true,
+      },
+    });
+    if (!isUrl) mainWindow.loadFile(path.resolve(_page));
+    else mainWindow.loadURL(_page);
   });
-  mainWindow.loadFile(path.resolve('./src/fdconnect.html'));
-});
 
-app.on('window-all-closed', (e) => {
-  console.log('Exiting Freedeck!');
-  process.exit(0);
-});
+  app.on('window-all-closed', (e) => {
+    console.log('Exiting Freedeck!');
+    process.exit(0);
+  });
+
+  return app;
+};

@@ -68,10 +68,10 @@ io.on('connection', (socket) => {
   socket._originalEmit = socket.emit;
   socket.on = (event, callback) => {
     socket._originalOn(event, callback);
-    debug.log(picocolors.green('Added new event ' + event), 'SAPIConn');
+    debug.log(picocolors.green('Listening for event ' + event), 'SAPIConn');
   };
   socket.emit = (event, data) => {
-    if (clients.length === 1) return;
+    // if (clients.length === 0) return;
     socket._originalEmit(event, data);
     debug.log(picocolors.green('Emitted new event ' + event + ', data: ' + JSON.stringify(data)), 'SAPIConn');
   };

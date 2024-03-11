@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Rethink+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
 :root {
     --fd-template-columns: repeat(5, 2fr);
-    --fd-font-family: 'Rubik';
+    --fd-font-family: 'Rethink Sans', sans-serif;
     --fd-background-size: 400% 400%;
-    --fd-background: 45deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%;
+    --fd-background: 105deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%;
     --fd-rotation-degrees: 2deg;
     --fd-btn-background: rgba(0, 0, 0, 0.5);
     --fd-modal-color: rgb(15, 140, 194);
@@ -27,11 +28,10 @@
 
 @keyframes error-bg {
     0% {
-        background-position: 100% 0%
+        background-position: 0% 50%;
     }
-
     100% {
-        background-position: 15% 100%
+        background-position: 100% 0%;
     }
 }
 
@@ -40,7 +40,7 @@ body {
     background: linear-gradient(var(--fd-background));
     background-size: var(--fd-background-size);
     animation: error-bg 5s linear infinite;
-    font-family: 'Rethink Sans', sans-serif;
+    font-family: var(--fd-font-family);
     height: 100%;
     /* width: 100vw; */
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
@@ -165,6 +165,21 @@ input:disabled {
     transition-duration: .15s;
 }
 
+.dialog {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--fd-modal-bg);
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+
+}
+
 .button:hover, button:hover {
     background-color: gray;
     color: black;
@@ -227,5 +242,3 @@ input[type="range"]::-ms-thumb {
 input[type="range"]::-ms-thumb:hover {
     background-color: #555;
 }
-
-

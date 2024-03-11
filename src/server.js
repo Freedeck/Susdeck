@@ -24,6 +24,7 @@ const pl = require(path.resolve('./src/managers/plugins'));
 const plugins = pl.plugins();
 
 fs.readdirSync(path.resolve('./src/handlers')).forEach((file) => {
+  if (fs.lstatSync(path.resolve('./src/handlers/' + file)).isDirectory()) return;
   const handler = require(`./handlers/${file}`);
   if (!handler.exec) return;
   handlers.set(handler.name, handler);

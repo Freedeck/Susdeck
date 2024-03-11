@@ -74,7 +74,7 @@ reloadSounds();
 
 window['button-types'] = [
   {name: 'Sound', type: 'sound'},
-  {name: 'Macro', type: 'macro'},
+  // {name: 'Macro', type: 'macro'}, // Not implemented
   {name: 'Plugin', type: 'plugin'},
 ];
 
@@ -105,6 +105,12 @@ window.oncontextmenu = function(e) {
     custMenuItems = ['Copy Key Here'].concat(custMenuItems);
   }
 
+  custMenuItems = custMenuItems.concat([
+    '---',
+    'New Page',
+    'Profile: ' + universal.config.profile,
+  ]);
+
   custMenuItems.forEach((item) => {
     const menuItem = document.createElement('div');
     menuItem.innerText = item;
@@ -112,6 +118,20 @@ window.oncontextmenu = function(e) {
     menuItem.onclick = () => {
       // Handle menu item click
       switch (item) {
+        case 'New Page':
+          Pages[(universal.config.sounds.length / universal.config.iconCountPerPage)] = [];
+          universal.page = (universal.config.sounds.length / universal.config.iconCountPerPage);
+          reloadSounds();
+          break;
+        case '---':
+          break;
+        case 'Profile: ' + universal.config.profile:
+          showPick('Profile', Object.keys(universal.config.profiles).map((profile => {
+            return {name: profile};
+          })), (modal, value, feedback, title, button, content) => {
+            universal.send(universal.events.companion.set_profile, value);
+          });
+          break;
         case 'Open Studio':
           // show a modal with the editor
           document.querySelector('.contextMenu').style.display = 'none';
@@ -512,10 +532,10 @@ document.addEventListener('keydown', (ev) => {
 
 const profileTxt = document.createElement('h2');
 profileTxt.innerHTML = 'Profile:&nbsp<i>'+universal.config.profile+'</i>';
-document.body.appendChild(profileTxt);
+// document.body.appendChild(profileTxt);
 
 const profileSelect = document.createElement('select');
-const profileAdd = document.createElement('button');
+const profileAdd = document.querySelector('#pf-add');
 profileAdd.innerText = 'New Profile';
 
 Object.keys(universal.config.profiles).forEach((profile) => {
@@ -542,7 +562,7 @@ profileSelect.onchange = () => {
   universal.send(universal.events.companion.set_profile, profileSelect.value);
 };
 
-const profileDupe = document.createElement('button');
+const profileDupe = document.querySelector('#pf-dupe');
 profileDupe.innerText = 'Duplicate Profile';
 
 profileDupe.onclick = () => {
@@ -556,14 +576,6 @@ profileDupe.onclick = () => {
   });
 };
 
-const flexWrapped = document.createElement('div');
-flexWrapped.className = 'flex-wrap-r';
-flexWrapped.style.marginBottom = '20px';
-flexWrapped.appendChild(profileSelect);
-flexWrapped.appendChild(profileAdd);
-flexWrapped.appendChild(profileDupe);
-document.body.appendChild(profileTxt);
-document.body.appendChild(flexWrapped);
 
 if (universal.load('pitch')) document.querySelector('#pitch').value = universal.load('pitch');
 

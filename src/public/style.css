@@ -165,6 +165,19 @@ input:disabled {
     transition-duration: .15s;
 }
 
+.button:hover, button:hover {
+    background-color: gray;
+    color: black;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.button:active, button:active {
+    background-color: #333;
+    transform: scale(0.875);
+    color: white;
+}
+
 
 input[type="range"] {
     -webkit-appearance: none;

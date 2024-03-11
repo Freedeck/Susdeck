@@ -9,7 +9,7 @@ new Sortable(document.querySelector('#keys'), {
     d.newDraggableIndex = d.newDraggableIndex + (universal.page * universal.config.iconCountPerPage);
     d.oldDraggableIndex = d.oldDraggableIndex + (universal.page * universal.config.iconCountPerPage);
 
-    const ev = universal.page > 0 ? 1 : 0;
+    const ev = universal.page < 0 ? 1 : 0;
     universal.send(universal.events.companion.move_key,
         JSON.stringify({
           name: d.item.innerText,
@@ -129,14 +129,18 @@ window.oncontextmenu = function(e) {
           }
           // make it fade in
           document.querySelector('#editor').style.opacity = '0';
+          document.querySelector('#editor').style.width = '100%';
+          document.querySelector('#editor').style.height = '100%';
           setTimeout(() => {
             document.querySelector('#editor').style.opacity = '1';
           }, 100);
           break;
         case 'New Key':
           showPick('New Key', window['button-types'], (modal, value, feedback, title, button, content) => {
-            let pos = parseInt(e.srcElement.className.split(' ')[1].split('-')[1]) + 1;
-            if (universal.page > 0) pos += (universal.config.iconCountPerPage * universal.page);
+            const pos = parseInt(
+                e.srcElement.className.split(' ')[1].split('-')[1]) +
+              (universal.page <= 0 ? 1 : 0) +
+            ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0 ));
             if (value.type == 'sound') createSound(pos);
             if (value.type == 'plugin') createPlugin(pos);
           });
@@ -174,13 +178,16 @@ function showReplaceGUI(srcElement) {
       const k = Object.keys(sound)[0];
       return k == value.name;
     })[0][value.name];
-    const ev = universal.page > 0 ? 1 : 0;
+    const pos = parseInt(
+        srcElement.className.split(' ')[1].split('-')[1]) +
+    (universal.page <= 0 ? 1 : 0) +
+  ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0 ));
     // we need to clone value, and change the pos, and uuid, then make a new key.
     universal.send(universal.events.companion.new_key, JSON.stringify({
       [value.name]: {
         type: valueToo.type,
         plugin: valueToo.plugin || 'Freedeck',
-        pos: parseInt(srcElement.className.split(' ')[1].split('-')[1]) + (universal.config.iconCountPerPage * universal.page) + ev,
+        pos,
         uuid: 'fdc.'+Math.random() * 10000000,
         data: valueToo.data,
       },
@@ -299,9 +306,6 @@ document.querySelector('#editor-close').onclick = () => {
 document.querySelector('#editor-save').onclick = () => {
   const name = document.querySelector('#name').value;
   const interaction = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
-  interaction.pos = interaction.pos +
-    (universal.page * universal.config.iconCountPerPage) +
-    (universal.page > 0 ? 1 : 0);
   universal.send(universal.events.companion.edit_key, JSON.stringify({
     name: name,
     oldName: document.querySelector('#editor-btn[data-interaction]').getAttribute('data-pre-edit'),

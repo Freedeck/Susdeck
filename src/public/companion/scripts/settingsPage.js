@@ -29,8 +29,8 @@ createSelectSetting('Default Profile', 'default-profile', async (select) => {
 createSelectSetting('Playback Mode', 'stopPrevious', async (select) => {
   return new Promise(async (resolve) => {
     const options = [
-      { label: 'Stop Previous', value: 'true' },
-      { label: 'Play Over', value: 'false' }
+      {label: 'Stop Previous', value: 'true'},
+      {label: 'Play Over', value: 'false'},
     ];
     options.forEach((option) => {
       const optionElement = document.createElement('option');

@@ -4,6 +4,10 @@ import '../companion/scripts/authfulPage.js';
 
 await universal.init('Main');
 
+window.onscroll = function() {
+  window.scrollTo(0, 0);
+};
+
 /**
  * @also-in companion/scripts/main.js
  * @name reloadSounds

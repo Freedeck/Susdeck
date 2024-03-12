@@ -1,3 +1,13 @@
+
+/**
+ * Open the settings menu (on clients only)
+ */
+function settingsMenu() {
+  if (universal.name == 'Main') {
+    document.querySelector('.settings-menu').style.display = 'flex';
+  }
+}
+
 const universal = {
   _socket: io(),
   _information: {},
@@ -187,7 +197,7 @@ const universal = {
       {
         name: 'Settings',
         onclick: (ev) => {
-          console.log('To be implemented...');
+          settingsMenu();
         },
       },
     ];
@@ -230,9 +240,11 @@ const universal = {
       if (cb[0] === ev) cb[1](...data);
     });
   },
+  name: "",
   _initFn: async function(/** @type {string} */ user) {
     return new Promise((resolve, reject) => {
       try {
+        universal.name = user;
         universal.send('fd.greetings', user);
         universal.send('fd.greetings', user);
         universal.send('fd.greetings', user);

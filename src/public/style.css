@@ -35,6 +35,31 @@
     }
 }
 
+.settings-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--fd-modal-bg);
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    max-height: 100%;
+    overflow-y: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    animation: fade-in 0.5s;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
 body {
     background: rgba(255, 0, 89, 1);
     background: linear-gradient(var(--fd-background));
@@ -45,7 +70,7 @@ body {
     /* width: 100vw; */
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     overscroll-behavior: none;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .unset {

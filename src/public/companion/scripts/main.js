@@ -126,9 +126,9 @@ window.oncontextmenu = function(e) {
         case '---':
           break;
         case 'Profile: ' + universal.config.profile:
-          showPick('Profile', Object.keys(universal.config.profiles).map((profile => {
+          showPick('Profile', Object.keys(universal.config.profiles).map((profile) => {
             return {name: profile};
-          })), (modal, value, feedback, title, button, content) => {
+          }), (modal, value, feedback, title, button, content) => {
             universal.send(universal.events.companion.set_profile, value);
           });
           break;

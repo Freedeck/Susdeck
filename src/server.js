@@ -1,4 +1,5 @@
 const express = require('express');
+const expressCache = require('cache-express');
 const socketIO = require('socket.io');
 const http = require('http');
 const formidable = require('formidable');
@@ -95,6 +96,14 @@ io.on('connection', (socket) => {
 });
 
 app.use(express.static(path.join(__dirname, './public')));
+
+app.use(expressCache({
+  timeOut: 60000, // Customize cache timeout (in milliseconds)
+  dependsOn: () => [], // Specify cache dependencies, should be a function
+  onTimeout: (key, value) => {
+    console.log(`Cache removed for key: ${key}`);
+  },
+}));
 
 app.get('/fdc', (req, res) => res.sendStatus(200));
 

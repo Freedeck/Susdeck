@@ -11,6 +11,7 @@ module.exports = (_page='./src/fdconnect.html', _showTitlebar=true, width=800, h
         contextIsolation: true,
       },
     });
+    console.log('Here we go!');
     if (!isUrl) mainWindow.loadFile(path.resolve(_page));
     else mainWindow.loadURL(_page);
   });

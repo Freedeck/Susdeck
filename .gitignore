@@ -9,3 +9,4 @@ src/configs/*
 src/public/sounds/*
 
 src/public/hooks/*
+src/public/companion/dist/*

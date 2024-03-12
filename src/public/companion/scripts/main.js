@@ -1,5 +1,7 @@
 import {universal} from '../../scripts/universal.js';
-import './Sortable.min.js';
+import Sortable from 'sortablejs';
+import './global.js';
+import './authfulPage.js'; // Only for authenticated pages
 const Pages = {};
 
 await universal.init('Companion');
@@ -129,7 +131,7 @@ window.oncontextmenu = function(e) {
           showPick('Profile', Object.keys(universal.config.profiles).map((profile) => {
             return {name: profile};
           }), (modal, value, feedback, title, button, content) => {
-            universal.send(universal.events.companion.set_profile, value);
+            universal.send(universal.events.companion.set_profile, value.name);
           });
           break;
         case 'Open Studio':

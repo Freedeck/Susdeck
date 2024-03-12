@@ -24,6 +24,7 @@
     "nocache": "^4.0.0",
     "readline": "^1.3.0",
     "socket.io": "^4.7.2",
+    "sortablejs": "^1.15.2",
     "webpack": "^5.90.3"
   },
   "devDependencies": {

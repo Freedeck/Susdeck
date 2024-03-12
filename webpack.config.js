@@ -1,11 +1,16 @@
 const path = require('path');
 
-module.exports = {
+const cfg = {
   mode: 'development',
-  entry: path.resolve(__dirname, './src/public/companion/scripts/main.js'),
+  entry: {
+    main: path.resolve(__dirname, './src/public/companion/scripts/main.js'),
+    pluginPage: path.resolve(__dirname, './src/public/companion/scripts/pluginPage.js'),
+    settingsPage: path.resolve(__dirname, './src/public/companion/scripts/settingsPage.js'),
+    clientMain: path.resolve(__dirname, './src/public/scripts/main.js'),
+  },
   output: {
     path: path.resolve(__dirname, 'src/public/companion/dist'),
-    filename: 'bundle.js',
+    filename: '[name].js',
   },
   module: {
     rules: [
@@ -19,7 +24,9 @@ module.exports = {
     ],
   },
   externals: {
-	Sortable: 'Sortable' // This will keep "Sortable" as a global variable
-  }
+    Sortable: 'Sortable',
+  },
 };
+
+module.exports = cfg;
 

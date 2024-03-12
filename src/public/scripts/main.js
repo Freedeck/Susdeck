@@ -1,4 +1,6 @@
 import {universal} from './universal.js';
+import './HookLoader.js';
+import '../companion/scripts/authfulPage.js';
 
 await universal.init('Main');
 

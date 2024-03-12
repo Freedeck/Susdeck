@@ -1,7 +1,7 @@
 const path = require('path');
 
 const cfg = {
-  mode: 'development',
+  mode: 'production',
   entry: {
     main: path.resolve(__dirname, './src/public/companion/scripts/main.js'),
     pluginPage: path.resolve(__dirname, './src/public/companion/scripts/pluginPage.js'),

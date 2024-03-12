@@ -26,6 +26,24 @@ createSelectSetting('Default Profile', 'default-profile', async (select) => {
   if (value != universal.config.profile) universal.send(universal.events.companion.set_profile, value);
 });
 
+createSelectSetting('Playback Mode', 'stopPrevious', async (select) => {
+  return new Promise(async (resolve) => {
+    const options = [
+      { label: 'Stop Previous', value: 'true' },
+      { label: 'Play Over', value: 'false' }
+    ];
+    options.forEach((option) => {
+      const optionElement = document.createElement('option');
+      optionElement.innerText = option.label;
+      optionElement.value = option.value;
+      select.appendChild(optionElement);
+    });
+    resolve();
+  });
+}, universal.load('stopPrevious'), '.fdc', (value) => {
+  universal.save('stopPrevious', value);
+});
+
 createSelectSetting('Monitor Device', 'monitor.sink', async (select) => {
   return new Promise(async (resolve) => {
     const devices = await navigator.mediaDevices.enumerateDevices();

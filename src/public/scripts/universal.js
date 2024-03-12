@@ -110,20 +110,20 @@ const universal = {
       audioInstance.fda = {};
       audioInstance.fda.name = name;
       audioInstance.fda.monitoring = isMonitor;
-      // if(stopPrevious == true) {
-      //     universal.audioClient._nowPlaying.forEach(async audio => {
-      //         try {
-      //             if (audio.fda.name === audioInstance.fda.name) {
-      //                 await audio.pause()
-      //                 audio.currentTime = audio.duration;
-      //                 await audio.play();
-      //             }
-      //         } catch (err) {
-      //             // "waah waah waah noo you cant just abuse audio api" -companion
-      //             // > i dont care :trole:
-      //         }
-      //     })
-      // }
+      if (stopPrevious == true) {
+        universal.audioClient._nowPlaying.forEach(async (audio) => {
+          try {
+            if (audio.fda.name === audioInstance.fda.name) {
+              await audio.pause();
+              audio.currentTime = audio.duration;
+              await audio.play();
+            }
+          } catch (err) {
+            // "waah waah waah noo you cant just abuse audio api" -companion
+            // > i dont care :trole:
+          }
+        });
+      }
       await audioInstance.play();
 
       audioInstance.onended = (ev) => {
@@ -301,13 +301,13 @@ const universal = {
                 interaction.data.path + '/' + interaction.data.file,
                 Object.keys(a)[0],
                 false,
-                Boolean(universal.load('stopPrevious')),
+                (universal.load('stopPrevious').toLowerCase() === 'true'),
             );
             universal.audioClient.play(
                 interaction.data.path + '/' + interaction.data.file,
                 Object.keys(a)[0],
                 true,
-                Boolean(universal.load('stopPrevious')),
+                (universal.load('stopPrevious').toLowerCase() === 'true'),
             );
           });
 

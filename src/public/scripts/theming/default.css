@@ -1,0 +1,29 @@
+:root {
+	--theme-name: "Default";
+	--theme-author: "Freedeck";
+	--theme-description: "The default theme for Freedeck.";
+
+    --fd-template-columns: repeat(5, 2fr);
+    --fd-font-family: 'Rethink Sans', sans-serif;
+    --fd-background-size: 400% 400%;
+    --fd-background: linear-gradient(105deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
+    --fd-rotation-degrees: 2deg;
+    --fd-btn-background: rgba(0, 0, 0, 0.5);
+    --fd-modal-color: rgb(15, 140, 194);
+    --fd-btn-w: 6rem;
+    --fd-btn-h: 6rem;
+
+    --fd-btn-rad: 1rem;
+
+    --fd-modal-bg: white;
+
+    --fd-col: white;
+    --fd-txt-col: black;
+
+    --fd-font-size: 15px;
+    --fd-icon-tip-fs: 1.5rem;
+
+    --fd-input-bg: #FFFFFF;
+
+    --fd-logo-size: 75px;
+}

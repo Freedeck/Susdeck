@@ -152,9 +152,26 @@ const universal = {
     });
     universal.send(universal.events.login, {passwd});
   },
+  themeData: {},
+  setTheme: function(name) {
+    fetch('/scripts/theming/' + name + '.css').then((res)=>res.text()).then((css) => {
+      let stylea = document.createElement('style');
+      stylea.innerText += css;
+      document.body.appendChild(stylea);
+      universal.save('theme', name);
+      const dStyle = getComputedStyle(document.body);
+      universal.themeData = {
+        name: dStyle.getPropertyValue('--theme-name'),
+        author: dStyle.getPropertyValue('--theme-author'),
+        description: dStyle.getPropertyValue('--theme-description'),
+      };
+      universal.save('theme', name);
+    });
+  },
   init: async function(user) {
     try {
       await universal._initFn(user);
+      universal.setTheme(universal.config.theme);
       const devices = await navigator.mediaDevices.enumerateDevices();
       devices.forEach((device) => {
         if (device.kind == 'audiooutput') universal.audioClient._player.monitorPotential.push(device);
@@ -240,7 +257,7 @@ const universal = {
       if (cb[0] === ev) cb[1](...data);
     });
   },
-  name: "",
+  name: '',
   _initFn: async function(/** @type {string} */ user) {
     return new Promise((resolve, reject) => {
       try {

@@ -13,6 +13,7 @@ const eventNames = {
   not_trusted: 'fd.trust.fail',
   not_auth: 'fd.auth.check.fail',
   not_match: 'fd.auth.match.fail',
+  set_theme: 'fd.theme.set',
 
   notif: 'fd.notification',
 

@@ -147,10 +147,10 @@ const universal = {
   },
   login: (passwd) => {
     console.log('logging in');
-    universal.send(universal.events.login_data, {
+    universal.send(universal.events.login.login_data, {
       tlid: universal._information.tempLoginID,
     });
-    universal.send(universal.events.login, {passwd});
+    universal.send(universal.events.login.login, {passwd});
   },
   themeData: {},
   setTheme: function(name) {
@@ -241,7 +241,7 @@ const universal = {
   },
   channels: {
     send: (plugin, channel, data) => {
-      universal.send(universal.events.channel_send, {plugin, channel, data});
+      universal.send(universal.events.default.channel_send, {plugin, channel, data});
     },
     listen: (plugin, channel, callback) => {
       universal.on('channel_' + plugin + '_' + channel, (data) => {
@@ -283,21 +283,21 @@ const universal = {
 
           universal.save('tempLoginID', parsed.tempLoginID);
 
-          universal.on(universal.events.not_trusted, () =>
+          universal.on(universal.events.default.not_trusted, () =>
             universal.sendToast('Not trusted to do this action.'),
           );
 
-          universal.on(universal.events.not_auth, () =>
+          universal.on(universal.events.default.not_auth, () =>
             universal.sendToast('You are not authenticated!'),
           );
 
-          universal.on(universal.events.not_match, () =>
+          universal.on(universal.events.default.not_match, () =>
             universal.sendToast(
                 'Login not allowed! Session could not be verified against server.',
             ),
           );
 
-          universal.on(universal.events.no_init_info, (data) => {
+          universal.on(universal.events.default.no_init_info, (data) => {
             const parsedToo = JSON.parse(data);
             universal._information = JSON.parse(data);
             universal._pluginData = {};
@@ -340,12 +340,12 @@ const universal = {
             );
           });
 
-          universal.on(universal.events.log, (data) => {
+          universal.on(universal.events.default.log, (data) => {
             data = JSON.parse(data);
             console.log(data.sender + ': ' + data.data);
           });
 
-          universal.on(universal.events.notif, (data) => {
+          universal.on(universal.events.default.notif, (data) => {
             data = JSON.parse(data);
             if (!data.isCon) {
               universal.sendToast('[' + data.sender + '] ' + data.data);
@@ -354,12 +354,12 @@ const universal = {
           });
 
           universal.on(
-              universal.events.login_data_ack,
+              universal.events.login.login_data_ack,
               (data) => (universal._loginAllowed = data),
           );
-          universal.on(universal.events.reload, () => window.location.reload());
+          universal.on(universal.events.default.reload, () => window.location.reload());
 
-          universal.on(universal.events.login, (auth) => {
+          universal.on(universal.events.default.login, (auth) => {
             universal.authStatus = auth;
             if (auth === false) {
               universal.sendToast('Incorrect password!');
@@ -444,7 +444,7 @@ const universal = {
     universal._socket.once(event, callback);
   },
   log: (data, sender = 'Universal') => {
-    universal.send(universal.events.log, JSON.stringify({sender, data}));
+    universal.send(universal.events.default.log, JSON.stringify({sender, data}));
     console.log(`[${sender}] ${data}`);
   },
 };

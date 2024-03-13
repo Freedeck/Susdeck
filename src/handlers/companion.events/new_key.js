@@ -11,5 +11,5 @@ module.exports = ({io, data}) => {
   const settings = config.settings();
   settings.profiles[settings.profile].push(JSON.parse(parsed));
   config.save();
-  io.emit(eventNames.reload);
+  io.emit(eventNames.default.reload);
 };

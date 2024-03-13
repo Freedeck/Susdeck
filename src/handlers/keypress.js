@@ -8,7 +8,7 @@ module.exports = {
   exec: ({socket, types, plugins, io}) => {
     socket.on(eventNames.keypress, (ev) => {
       if (socket.auth !== true && cfg.useAuthentication) {
-        socket.emit(eventNames.not_auth);
+        socket.emit(eventNames.default.not_auth);
         return;
       }
       try {
@@ -18,7 +18,7 @@ module.exports = {
           return;
         }
         if (!ev.event.isTrusted) {
-          socket.emit(eventNames.not_trusted); return;
+          socket.emit(eventNames.default.not_trusted); return;
         }
         io.emit(eventNames.keypress, JSON.stringify(ev.btn));
         if (types().get(ev.btn.type) || plugins.get(ev.btn.type)) {

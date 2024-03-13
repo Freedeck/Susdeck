@@ -22,5 +22,5 @@ module.exports = ({io, data}) => {
     flag = true;
   });
   config.save();
-  io.emit(eventNames.reload);
+  io.emit(eventNames.default.reload);
 };

@@ -1,28 +1,30 @@
 const eventNames = {
   client_greet: 'fd.greetings',
-
-  login_data: 'fd.login.data',
-  login: 'fd.login',
-  login_data_ack: 'fd.login_data.ack',
-
   information: 'fd.info',
-  no_init_info: 'fd.info.noinit',
-
   keypress: 'fd.keypress',
+  login: {
+    login_data: 'fd.login.data',
+    login: 'fd.login',
+    login_data_ack: 'fd.login_data.ack',
+  },
+  default: {
+    no_init_info: 'fd.info.noinit',
 
-  not_trusted: 'fd.trust.fail',
-  not_auth: 'fd.auth.check.fail',
-  not_match: 'fd.auth.match.fail',
-  set_theme: 'fd.theme.set',
+    not_trusted: 'fd.trust.fail',
+    not_auth: 'fd.auth.check.fail',
+    not_match: 'fd.auth.match.fail',
+    set_theme: 'fd.theme.set',
 
-  notif: 'fd.notification',
+    notif: 'fd.notification',
 
-  log: 'fd.log',
+    log: 'fd.log',
 
-  plugin_info: 'fd.plugin_data',
+    plugin_info: 'fd.plugin_data',
 
-  channel_send: 'fd.channel.send',
-  channel_listening: 'fd.channel.listen',
+    channel_send: 'fd.channel.send',
+    channel_listening: 'fd.channel.listen',
+    reload: 'fd.reload',
+  },
 
   companion: {
     conn_fail: 'fd.companion.conn.fail',
@@ -35,7 +37,6 @@ const eventNames = {
     dup_profile: 'fd.companion.profile.duplicate',
   },
 
-  reload: 'fd.reload',
 };
 
 if ('exports' in module) module.exports = eventNames;

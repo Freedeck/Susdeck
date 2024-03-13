@@ -27,7 +27,7 @@ universal.listenFor('init', () => {
     document.querySelector('#login-dialog').style.display = 'block';
   }
 
-  universal.on(universal.events.login, (dat) => {
+  universal.on(universal.events.login.login, (dat) => {
     if (dat === true) {
       universal.log('Successful', 'Login');
       document.querySelector('#login').remove();

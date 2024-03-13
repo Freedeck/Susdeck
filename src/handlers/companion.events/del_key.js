@@ -14,5 +14,5 @@ module.exports = ({io, data}) => {
         .filter((d) => Object.keys(d).length !== 0);
   });
   config.save();
-  io.emit(eventNames.reload);
+  io.emit(eventNames.default.reload);
 };

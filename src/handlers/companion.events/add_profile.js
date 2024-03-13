@@ -6,5 +6,5 @@ module.exports = ({io, data}) => {
   settings.profiles[data] = [];
   settings.profile = data;
   config.save();
-  io.emit(eventNames.reload);
+  io.emit(eventNames.default.reload);
 };

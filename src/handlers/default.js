@@ -9,7 +9,10 @@ const pc = require('../utils/picocolors');
 module.exports = {
   name: 'Main',
   id: 'fd.handlers.main',
-  exec: ({socket, io}) => {
+  exec: ({
+    socket,
+    io
+  }) => {
     socket._id = Math.random() * 2048 + '.fd';
     socket.tempLoginID = Math.random() * 1024 + '.tlid.fd';
     socket._clientInfo = {};
@@ -17,14 +20,21 @@ module.exports = {
     socket.on('disconnect', () => {
       if (socket.user === 'Companion') tsm.delete('IC');
       debug.log(
-          pc.red('Client ' + socket.user + ' disconnected'),
-          'Socket ' + socket._id);
+        pc.red('Client ' + socket.user + ' disconnected'),
+        'Socket ' + socket._id);
     });
     plugins().forEach((plugin) => {
       if (plugin.instance.jsSockHook) {
         require(plugin.instance.jsSockHookPath)(socket, io, plugin.instance);
       }
     });
+
+    Object.keys(eventNames.default).forEach((event) => {
+      socket.on(eventNames.default[event], (data) => {
+        require(`./default.events/${event}`)({io, socket, data});
+      });
+    });
+
     socket.on(eventNames.client_greet, (user) => {
       socket.user = user;
       if (user === 'Companion') {
@@ -52,42 +62,23 @@ module.exports = {
       };
 
       socket.emit(eventNames.information, JSON.stringify(serverInfo));
+
       setInterval(() => {
         cfg.update();
         serverInfo['cfg'] = cfg.settings();
-        // socket.emit(eventNames.no_init_info, JSON.stringify(serverInfo)); // Test, make sure this is viable.
+        // socket.emit(eventNames.default.no_init_info, JSON.stringify(serverInfo)); // Test, make sure this is viable.
         const data = NotificationManager.get();
         if (data === '' ||
-            typeof data === 'undefined' ||
-            !('data' in data)) return;
-        io.emit(eventNames.notif, JSON.stringify(data));
+          typeof data === 'undefined' ||
+          !('data' in data)) return;
+        io.emit(eventNames.default.notif, JSON.stringify(data));
       }, 150);
-      socket.emit(eventNames.notif, JSON.stringify(
-          {
-            sender: 'Server',
-            data: 'Connected to server!',
-            isCon: true,
-          }));
-      socket.on(eventNames.plugin_info, (data) => {
-        const plug = plugins().get(data);
-        socket.emit(eventNames.plugin_info, JSON.stringify(
-            {
-              requested: data,
-              response: plug,
-            }));
-      });
 
-      socket.on(eventNames.log, (data) => {
-        data = JSON.parse(data);
-        console.log(`[${data.sender}] ${data.data}`);
-      });
-
-      socket.on(eventNames.channel_send, (data) => {
-        const plug = plugins().get(data.plugin).instance;
-        if (plug.channelsCreated.includes(data.channel)) {
-          plug.channelsSendQueue.push({channel: data.channel, data: data.data});
-        }
-      });
+      socket.emit(eventNames.default.notif, JSON.stringify({
+        sender: 'Server',
+        data: 'Connected to server!',
+        isCon: true,
+      }));
 
       socket.on(eventNames.information, (data) => {
         socket._clientInfo = data;

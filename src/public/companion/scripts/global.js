@@ -2,7 +2,7 @@ HTMLElement.prototype.setHTML = function(html) {
   this.innerHTML = html;
 };
 
-universal.once('fd.info', (dat) => {
+universal.once('I', (dat) => {
   const login = document.createElement('li');
   login.id = 'constat';
   login.style.fontSize= '.75em';

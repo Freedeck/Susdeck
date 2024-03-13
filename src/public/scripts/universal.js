@@ -262,10 +262,10 @@ const universal = {
     return new Promise((resolve, reject) => {
       try {
         universal.name = user;
-        universal.send('fd.greetings', user);
-        universal.send('fd.greetings', user);
-        universal.send('fd.greetings', user);
-        universal.once('fd.info', (data) => {
+        universal.send('G', user);
+        universal.send('G', user);
+        universal.send('G', user);
+        universal.once('I', (data) => {
           const parsed = JSON.parse(data);
           universal._information = JSON.parse(data);
           universal._pluginData = {};

@@ -1,40 +1,40 @@
 const eventNames = {
-  client_greet: 'fd.greetings',
-  information: 'fd.info',
-  keypress: 'fd.keypress',
+  client_greet: 'G',
+  information: 'I',
+  keypress: 'K',
   login: {
-    login_data: 'fd.login.data',
-    login: 'fd.login',
-    login_data_ack: 'fd.login_data.ack',
+    login_data: 'lD',
+    login: 'lL',
+    login_data_ack: 'lDA',
   },
   default: {
-    no_init_info: 'fd.info.noinit',
+    no_init_info: 'dNI',
 
-    not_trusted: 'fd.trust.fail',
-    not_auth: 'fd.auth.check.fail',
-    not_match: 'fd.auth.match.fail',
-    set_theme: 'fd.theme.set',
+    not_trusted: 'dtF',
+    not_auth: 'daCF',
+    not_match: 'daMF',
+    set_theme: 'dT',
 
-    notif: 'fd.notification',
+    notif: 'dN',
 
-    log: 'fd.log',
+    log: 'dL',
 
-    plugin_info: 'fd.plugin_data',
+    plugin_info: 'dP',
 
-    channel_send: 'fd.channel.send',
-    channel_listening: 'fd.channel.listen',
-    reload: 'fd.reload',
+    channel_send: 'dcO',
+    channel_listening: 'dcI',
+    reload: 'dR',
   },
 
   companion: {
-    conn_fail: 'fd.companion.conn.fail',
-    new_key: 'fd.companion.keys.new',
-    del_key: 'fd.companion.keys.del',
-    edit_key: 'fd.companion.keys.edit',
-    move_key: 'fd.companion.keys.move',
-    set_profile: 'fd.companion.profile.set',
-    add_profile: 'fd.companion.profile.add',
-    dup_profile: 'fd.companion.profile.duplicate',
+    conn_fail: 'cF',
+    new_key: 'ckN',
+    del_key: 'ckD',
+    edit_key: 'ckE',
+    move_key: 'ckM',
+    set_profile: 'cpS',
+    add_profile: 'cpA',
+    dup_profile: 'cpD',
   },
 
 };

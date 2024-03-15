@@ -333,9 +333,7 @@ const upload = (accept, callback) => {
 document.querySelector('#editor-close').onclick = () => {
   document.querySelector('#editor').style.opacity = '0';
   setTimeout(() => {
-    document.querySelector('#sound-file').style.display = 'none';
     document.querySelector('#editor').style.display = 'none';
-    document.querySelector('#upload-sound').style.display = 'none';
   }, 500);
 };
 

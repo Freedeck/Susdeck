@@ -145,9 +145,22 @@ window.oncontextmenu = function(e) {
           document.querySelector('#type').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).type;
           document.querySelector('#plugin').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).plugin || 'Freedeck';
           if (JSON.parse(e.srcElement.getAttribute('data-interaction')).type == 'fd.sound') {
-            document.querySelector('#sound-file').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).data.file || 'Unset.mp3';
-            document.querySelector('#sound-file').style.display = 'block';
             document.querySelector('#upload-sound').style.display = 'flex';
+          }
+          if (JSON.parse(e.srcElement.getAttribute('data-interaction')).data) {
+            const itm = JSON.parse(e.srcElement.getAttribute('data-interaction')).data;
+            Object.keys(itm).forEach((key) => {
+              const elem = document.createElement('input');
+              elem.type = 'text';
+              elem.placeholder = key;
+              elem.value = itm[key];
+              elem.className = 'editor-data';
+              elem.id = key;
+              const label = document.createElement('label');
+              label.innerText = key;
+              label.appendChild(elem);
+              document.querySelector('#editor-data').appendChild(label);
+            });
           }
           // make it fade in
           document.querySelector('#editor').style.opacity = '0';
@@ -261,7 +274,7 @@ function createPlugin(pos) {
           pos,
           uuid: 'fdc.'+Math.random() * 10000000,
           plugin: valuea.name,
-          data: { },
+          data: valuea.templateData,
         },
       }));
     });
@@ -328,6 +341,9 @@ document.querySelector('#editor-close').onclick = () => {
 document.querySelector('#editor-save').onclick = () => {
   const name = document.querySelector('#name').value;
   const interaction = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+  document.querySelectorAll('.editor-data').forEach((input) => {
+    interaction.data[input.id] = input.value;
+  });
   universal.send(universal.events.companion.edit_key, JSON.stringify({
     name: name,
     oldName: document.querySelector('#editor-btn[data-interaction]').getAttribute('data-pre-edit'),

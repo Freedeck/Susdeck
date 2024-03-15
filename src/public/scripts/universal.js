@@ -424,7 +424,7 @@ const universal = {
       // After 3 seconds, remove the show class from DIV
       s.className = s.className.replace('show', '');
       s.remove();
-    }, 1250);
+    }, 3000);
     universal.save(
         'notification_log',
         universal.load('notification_log') +

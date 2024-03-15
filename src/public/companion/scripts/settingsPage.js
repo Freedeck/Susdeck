@@ -7,7 +7,7 @@ await universal.init('Companion:Settings');
 
 createSettingCategory('Audio Client $(NEW!)', 'audioclient');
 
-createSettingCategory('Freedeck Client', 'fdc');
+createSettingCategory('Freedeck Client', 'fdc', true);
 
 createSettingCategory('Danger Zone $(DANGEROUS)', 'dz');
 
@@ -175,11 +175,13 @@ function createSelectSetting(name, id, value, onLoad, goto, onChanged=()=>{}) {
  * Create a setting category.
  * @param {String} name The name of the category.
  * @param {String} goto The class (goto for other functions) to append to.
- */
-function createSettingCategory(name, goto) {
+ * @param {Boolean} appendToIAS Append setting to in app settings
+*/
+function createSettingCategory(name, goto, appendToIAS=false) {
+  const appendTo = window.title == 'Freedeck v6 - Settings' && !appendToIAS ? document.body : document.querySelector('.settings');
   const div = document.createElement('div');
   div.className = goto;
-  document.body.appendChild(div);
+  appendTo.appendChild(div);
   const h2 = document.createElement('h2');
   h2.innerText = name;
   if (name.split('$(').length > 1) {
@@ -191,7 +193,7 @@ function createSettingCategory(name, goto) {
     h2.innerText = name;
   }
   div.appendChild(h2);
-  document.body.appendChild(div);
+  appendTo.appendChild(div);
 };
 
 /**

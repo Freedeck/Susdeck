@@ -164,7 +164,7 @@ input:disabled {
 
 #toast.show {
     visibility: visible;
-    animation: fade-in 0.5s, fade-out 0.5s 1s;
+    animation: fade-in 0.5s, fade-out 0.5s 3s;
 }
 
 #keys {

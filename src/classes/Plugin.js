@@ -153,7 +153,7 @@ module.exports = class Plugin {
    */
   pushNotification(value, options=null) {
     if (!options) NotificationManager.add(this.name, '<br>' + value);
-    if (options != {}) {
+    if (options != {} && options != null) {
       if (options.image) {
         NotificationManager.add(this.name, '<br><img src=\''+options.image+'\' width=\'50\' height=\'50\'><br>' + value);
       }

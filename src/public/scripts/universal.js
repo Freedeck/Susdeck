@@ -154,8 +154,12 @@ const universal = {
   },
   themeData: {},
   setTheme: function(name) {
-    fetch('/scripts/theming/' + name + '.css').then((res)=>res.text()).then((css) => {
-      let stylea = document.createElement('style');
+    let fu = name;
+    fetch('/scripts/theming/'+name+'/manifest.json').then((res)=>res.json()).then((json) => {
+      fu = json.theme;
+    });
+    fetch('/scripts/theming/'+name+'/' + fu + '.css').then((res)=>res.text()).then((css) => {
+      const stylea = document.createElement('style');
       stylea.innerText += css;
       document.body.appendChild(stylea);
       universal.save('theme', name);

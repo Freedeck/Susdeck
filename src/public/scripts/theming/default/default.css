@@ -1,7 +1,4 @@
 :root {
-	--theme-name: "Default";
-	--theme-author: "Freedeck";
-	--theme-description: "The default theme for Freedeck.";
 
     --fd-template-columns: repeat(5, 2fr);
     --fd-font-family: 'Rethink Sans', sans-serif;

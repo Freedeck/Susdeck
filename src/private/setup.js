@@ -12,7 +12,7 @@ module.exports = () => {
     app.use(express.static(path.resolve('./src/private')));
 
     require(path.resolve('./src/companionInit.js'))('http://localhost:5756/?a=' + authToken, false, 850, 550, true);
-
+    console.log('Can\'t see the window? Open your browser and go to ' + 'http://localhost:5756/?a=' + authToken +' .');
     app.use(express.json());
     let a = false;
 

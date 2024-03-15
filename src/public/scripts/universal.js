@@ -340,6 +340,10 @@ const universal = {
             );
           });
 
+          universal.on(universal.events.default.recompile, () => {
+            window.location.href = '/fdconnect.html';
+          });
+
           universal.on(universal.events.default.log, (data) => {
             data = JSON.parse(data);
             console.log(data.sender + ': ' + data.data);

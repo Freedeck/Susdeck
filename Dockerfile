@@ -3,5 +3,5 @@ WORKDIR /app
 COPY . .
 RUN npm i
 ENV PORT=6161
-CMD ["node", "scripts/deploy.cjs"]
+CMD ["npm", "run", "server"]
 EXPOSE 6161

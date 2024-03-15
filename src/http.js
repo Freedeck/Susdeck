@@ -19,6 +19,7 @@ module.exports = {
   http,
   server,
   app,
+  compileWebpack
 };
 
 const {webpack} = require('webpack');
@@ -57,6 +58,7 @@ function runWebpack(wp) {
  * @return {Promise<void>}
  */
 async function compileWebpack() {
+  hasWebpackCompiled = 0;
   const wp = webpack(webpackConfig);
   await runWebpack(wp);
   hasWebpackCompiled += 1;

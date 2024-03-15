@@ -9,19 +9,13 @@
 
 ## Getting Started with Freedeck
 
-### Docker
+### Docker Install
 
-#### Compose
+[See `/assets/guides/docker.md` for instructions on how to install Freedeck with Docker.](/assets/guides/docker.md)
 
-See <a href="/docker-compose.yaml">`docker-compose.yaml`</a> for an example Compose file.
+### System Install
 
-#### Image
-
-See <a href="/Dockerfile">`Dockerfile`</a> for the Docker image.
-
-### No Docker
-
-This section is a little more complicated, but will be better for some people.  
+This section is the most supported way to run Freedeck.
 
 #### Instructions
 
@@ -33,4 +27,6 @@ This section is a little more complicated, but will be better for some people.
   - `npm run start`
 - Enjoy!
 
-The moment you start Freedeck, you'll be put into a setup wizard, in the terminal. You'll also get a setup wizard for Companion when it launches.
+The moment you start Freedeck, a setup wizard will launch. Follow those instructions. Next, when Companion launches, you'll see another setup wizard. Follow those instructions.
+
+From there, Freedeck is ready to use.

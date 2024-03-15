@@ -24,6 +24,7 @@ const eventNames = {
     channel_send: 'dcO',
     channel_listening: 'dcI',
     reload: 'dR',
+    recompile: 'dC',
   },
 
   companion: {

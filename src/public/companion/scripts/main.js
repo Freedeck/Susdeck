@@ -289,7 +289,8 @@ document.querySelector('#upload-sound').onclick = () => {
     const previousInteractionData = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
     previousInteractionData.data.file = data.newName;
     document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(previousInteractionData));
-    document.querySelector('#sound-file').value = data.newName;
+    document.querySelector('#file.editor-data').value = data.newName;
+    document.querySelector('#path.editor-data').value = '/sounds/';
   });
 };
 

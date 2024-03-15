@@ -14,7 +14,7 @@ const save = (port, screenSaverActivationTime, soundOnPress, useAuthentication, 
     useAuthentication: useAuthentication,
     iconCountPerPage: iconCountPerPage,
     profile: 'Default',
-    theme: 'Default',
+    theme: 'default',
     profiles: {
       Default: [
         {

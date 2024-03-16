@@ -170,3 +170,8 @@ body {
 	background-color: rgba(0,0,0,0.74);
 	color: white;
 }
+
+.button button {
+	width: 7rem;
+	height: 7rem;
+}

@@ -146,7 +146,6 @@ const universal = {
     },
   },
   login: (passwd) => {
-    console.log('logging in');
     universal.send(universal.events.login.login_data, {
       tlid: universal._information.tempLoginID,
     });

@@ -69,8 +69,7 @@ body {
     height: 100%;
     /* width: 100vw; */
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    overscroll-behavior: none;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .unset {

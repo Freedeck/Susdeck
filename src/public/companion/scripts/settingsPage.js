@@ -401,6 +401,15 @@ function showText(title, txt, cb) {
   document.body.appendChild(modal);
 }
 
+const settingsHelpers = {
+  createBooleanSetting,
+  createSelectSetting,
+  createSettingCategory,
+  createInputSetting,
+};
+
+export {settingsHelpers};
+window.settingsHelpers = settingsHelpers;
 window.createSelectSetting = createSelectSetting;
 window.createInputSetting = createInputSetting;
 window.createSettingCategory = createSettingCategory;

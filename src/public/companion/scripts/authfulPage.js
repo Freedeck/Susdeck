@@ -22,14 +22,12 @@ universal.listenFor('init', () => {
 
   if (universal.load('fd.passwd')) {
     universal.login(universal.load('fd.passwd'));
-    universal.log('Logging in with saved password', 'Login');
   } else {
     document.querySelector('#login-dialog').style.display = 'block';
   }
 
   universal.on(universal.events.login.login, (dat) => {
     if (dat === true) {
-      universal.log('Successful', 'Login');
       document.querySelector('#login').remove();
       if (universal.load('fd.logintime') > Date.now()) universal.sendToast('Logged in!');
       if (document.querySelector('#password') && document.querySelector('#password').value !== '')universal.save('fd.passwd', document.querySelector('#password').value);

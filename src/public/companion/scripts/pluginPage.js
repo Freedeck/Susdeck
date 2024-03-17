@@ -26,22 +26,38 @@ Object.keys(universal.plugins).forEach((plugin) => {
   });
 });
 
-// universal._tyc.forEach((data) => {
-//   const req = JSON.parse(data);
-//   const li = document.createElement('li');
-//   li.setAttribute('hovereffect', 'yes');
-//   li.style.cursor = 'default';
-//   if (seen[req.response.instance.name]) return;
-//   seen[req.response.instance.name] = true;
-//   li.innerText = req.response.instance.name + ' - ' + req.requested + ' by ' + req.response.instance.author;
-//   document.querySelector('.btnlist').appendChild(li);
-//   const types = req.response.instance.types;
-//   types.forEach((dataObj) => {
-//     const tmpBtn = document.createElement('button');
-//     tmpBtn.innerText = dataObj.name+': ' + dataObj.type;
-//     tmpBtn.onclick = (ev) => {
-//       universal.send(universal.events.keypress, JSON.stringify({event: ev, btn: {uuid: 0, name: dataObj.name, type: dataObj.type}}));
-//     };
-//     document.querySelector('.btns').appendChild(tmpBtn);
-//   });
-// });
+universal.repositoryManager.official.forEach((repo) => {
+  const li = document.createElement('li');
+  li.setAttribute('hovereffect', 'yes');
+  li.style.cursor = 'default';
+  li.innerText = repo;
+  document.querySelector('.repositories').appendChild(li);
+
+  universal.repositoryManager.getPluginsfromRepo(repo).then((plugins) => {
+    plugins.forEach((plugin) => {
+      const req = plugin;
+      const li = document.createElement('div');
+      li.setAttribute('hovereffect', 'yes');
+      li.style.cursor = 'default';
+      li.className = 'item';
+      const name = document.createElement('div');
+      name.innerText = req.name;
+      li.appendChild(name);
+      const author = document.createElement('div');
+      author.innerText = req.author;
+      li.appendChild(author);
+      const version = document.createElement('div');
+      version.innerText = 'v' + req.version;
+      li.appendChild(version);
+      const desc = document.createElement('div');
+      desc.innerText = req.description;
+      li.appendChild(desc);
+      const file = document.createElement('a');
+      file.href = req.file;
+      file.download = req.file;
+      file.innerText = 'Download';
+      li.appendChild(file);
+      document.querySelector('.marketplace').appendChild(li);
+    });
+  });
+});

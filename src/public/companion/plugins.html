@@ -30,12 +30,27 @@
         </div>
     </dialog>
     
-<h1>Plugins</h1>
+<h1>Your Plugins</h1>
 <p>Here you can view every plugin connected to Freedeck and it's related button and key type!</p>
 <ul class="btnlist"></ul>
-<div class="btns">
+<div class="btns"></div>
 
-</div>
+<h1>Marketplace</h1>
+<p>Here you can download new themes, plugins, and more for your Freedeck!</p>
+<ul class="repositories"></ul>
+<div class="marketplace"></div>
+
+<style>
+    .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border: 1px solid #000;
+        margin: 0.5rem 0;
+    }
+</style>
+
 <script src="/socket.io/socket.io.js"></script>
 <script src="dist/pluginPage.js" type="module"></script>
 </body>

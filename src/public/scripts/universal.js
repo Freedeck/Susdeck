@@ -152,7 +152,7 @@ const universal = {
     universal.send(universal.events.login.login, {passwd});
   },
   themeData: {},
-  setTheme: function(name) {
+  setTheme: function(name, global=false) {
     let fu = name;
     fetch('/scripts/theming/'+name+'/manifest.json').then((res)=>res.json()).then((json) => {
       fu = json.theme;
@@ -168,6 +168,7 @@ const universal = {
         author: dStyle.getPropertyValue('--theme-author'),
         description: dStyle.getPropertyValue('--theme-description'),
       };
+      if (global) universal.send(universal.events.companion.set_theme, name);
       universal.save('theme', name);
     });
   },
@@ -189,6 +190,31 @@ const universal = {
     } catch (e) {
       console.error(e + ' | Universal: initialize failed.');
     }
+  },
+  /* repos */
+  repositoryManager: {
+    official: [
+      'https://ifarded.lol',
+    ],
+    getPluginsfromRepo: async (url) => {
+      const _plugins = [];
+      const res = await fetch(url + '/_fd/FETCH.idx.php');
+      const data = await res.text();
+      data.split('\n').forEach((line) => {
+        const comma = line.split(',!');
+        const meta = {
+          file: url+'/_fd/' + comma[0],
+          githubRepo: 'https://github.com/' + comma[1],
+          name: comma[2],
+          author: comma[3],
+          version: comma[4],
+          description: comma[5],
+          id: comma[6],
+        };
+        _plugins.push(meta);
+      });
+      return _plugins;
+    },
   },
   /*  */
   _cb: [],

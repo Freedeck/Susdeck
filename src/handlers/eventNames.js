@@ -25,6 +25,10 @@ const eventNames = {
     channel_listening: 'dcI',
     reload: 'dR',
     recompile: 'dC',
+
+    download_plugin: 'dDP',
+    plugin_downloaded: 'dPD',
+    disable_plugin: 'dBP'
   },
 
   companion: {

@@ -29,9 +29,9 @@ universal.listenFor('init', () => {
   universal.on(universal.events.login.login, (dat) => {
     if (dat === true) {
       document.querySelector('#login').remove();
-      if (universal.load('fd.logintime') > Date.now()) universal.sendToast('Logged in!');
+      if (universal.load('logintime') > Date.now()) universal.sendToast('Logged in!');
       if (document.querySelector('#password') && document.querySelector('#password').value !== '')universal.save('fd.passwd', document.querySelector('#password').value);
-      universal.save('fd.logintime', Date.now());
+      universal.save('logintime', Date.now());
       document.querySelector('#login-div').style.opacity = '0';
       document.querySelector('#login-dialog').style.opacity = '0';
       setTimeout(() => document.querySelector('#login-dialog').remove(), 250);

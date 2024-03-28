@@ -34,6 +34,32 @@ const universal = {
   loadObj: (k) => {
     return JSON.parse(atob(localStorage.getItem(btoa('fd.' + k))));
   },
+  storage: {
+    keys: () => {
+      const _keys = [];
+      Object.keys(localStorage).forEach((key) => {
+        key = atob(key);
+        if (key.startsWith('fd.')) {
+          _keys.push(key);
+        }
+      });
+      return _keys;
+    },
+    reset: () => {
+      Object.keys(localStorage).forEach((key) => {
+        key = atob(key);
+        if (key.startsWith('fd.')) {
+          localStorage.removeItem(key);
+        }
+        location.reload();
+      });
+    },
+  },
+  showSpinner: (e=document.body) => {
+    const elem = document.createElement('div');
+    elem.className = 'spinner';
+    e.appendChild(elem);
+  },
   updatePlaying: () => {
     if (document.querySelector('.now-playing')) {
       const fixed = [];

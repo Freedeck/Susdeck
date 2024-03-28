@@ -13,8 +13,15 @@ Object.keys(universal.plugins).forEach((plugin) => {
   li.style.cursor = 'default';
   if (seen[req.name]) return;
   seen[req.name] = true;
-  li.innerText = req.name + ' - ' + req.id + ' by ' + req.author;
+  li.innerText = `${req.name}${req.version ? ' v' + req.version : ''}`+ ' - ' + req.id + ' by ' + req.author;
+  const a = document.createElement('button');
+  a.innerText = 'Disable ' + req.name;
+  a.onclick = () => {
+    universal.send(universal.events.default.disable_plugin, req.id);
+  };
   document.querySelector('.btnlist').appendChild(li);
+  
+  document.querySelector('.disabledable').appendChild(a);
   const types = req.types;
   types.forEach((dataObj) => {
     const tmpBtn = document.createElement('button');
@@ -52,12 +59,36 @@ universal.repositoryManager.official.forEach((repo) => {
       const desc = document.createElement('div');
       desc.innerText = req.description;
       li.appendChild(desc);
-      const file = document.createElement('a');
-      file.href = req.file;
-      file.download = req.file;
+      const file = document.createElement('button');
+      file.onclick = () => {
+        universal.send(universal.events.default.download_plugin, JSON.stringify({id: req.id, file: req.file, server: repo}));
+      };
       file.innerText = 'Download';
+      if (universal.plugins[req.id]) {
+        file.innerText = 'Installed';
+        file.style.color = 'gray';
+        if ( typeof universal.plugins[req.id].version !== 'undefined') {
+          if (universal.plugins[req.id].version != req.version) {
+            file.innerText = 'Update';
+            file.style.color = 'black';
+          } else
+            if (universal.plugins[req.id].version == req.version) {
+              file.innerText = 'Up to date';
+              file.style.color = 'black';
+              file.onclick = () => {};
+            } else {
+              file.onclick = () => {};
+            }
+        } else {
+          file.onclick = () => {};
+        }
+      };
       li.appendChild(file);
       document.querySelector('.marketplace').appendChild(li);
     });
   });
+});
+
+universal.on(universal.events.default.plugin_downloaded, () => {
+  
 });

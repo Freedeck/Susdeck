@@ -35,12 +35,18 @@
 <ul class="btnlist"></ul>
 <div class="btns"></div>
 
+<h2>System Options</h2>
+<div class="disabledable"></div>
+
+
 <h1>Marketplace</h1>
-<p>Here you can download new themes, plugins, and more for your Freedeck!</p>
 <ul class="repositories"></ul>
 <div class="marketplace"></div>
 
 <style>
+    .disabledable {
+        display: flex;
+    }
     .item {
         display: flex;
         justify-content: space-between;
@@ -48,6 +54,8 @@
         padding: 1rem;
         border: 1px solid #000;
         margin: 0.5rem 0;
+        gap: 1rem;
+        max-width: 30rem;
     }
 </style>
 

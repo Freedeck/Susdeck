@@ -40,6 +40,9 @@
 
 
 <h1>Marketplace</h1>
+<button onclick="addRepo();">
+    Add Unofficial Repo
+</button>
 <ul class="repositories"></ul>
 <div class="marketplace"></div>
 
@@ -61,5 +64,44 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="dist/pluginPage.js" type="module"></script>
+<script>
+    // console.log(universal.repositoryManager.unofficial)
+    function addRepo() {
+        const modal = document.createElement('dialog');
+        modal.className = '.dialog';
+        modal.innerHTML = `
+            <div id="login-div">
+                <h1>Freedeck 6 - Companion</h1>
+                <p>Enter the URL of the repository</p>
+                <label for="title">Repository Title</label><input type="text" id="title">
+                <label for="desc">Repository Description</label><input type="text" id="desc">
+                <label for="url">Repository Access URL</label><input type="text" id="url">
+                <button>Submit</button>
+            </div>
+        `;
+        console.log(modal)
+
+        document.body.appendChild(modal)
+        modal.style.display = 'block'
+        modal.style.position = 'absolute'
+        modal.style.top = '50%';
+        // modal.style.left = '50%';
+        modal.style.transform = 'translate(-50%, -50%)';
+            modal.querySelector('#login-div').style.display = 'block';
+            modal.querySelector('#login-div').style.height = 'max-content';
+            modal.querySelector('#login-div').querySelector('button').onclick = () => {
+                const title = modal.querySelector('#title').value;
+                const desc = modal.querySelector('#desc').value;
+                const url = modal.querySelector('#url').value;
+                console.log(title, desc, url)
+                let curr = [];
+                if(universal.load('repos.community') != 'ée') curr = JSON.parse(universal.load('repos.community'))
+                curr.push({title, who: desc, link: url})
+                universal.save('repos.community', JSON.stringify(curr))
+                console.log(universal.load('repos.community'))
+                modal.remove()
+            }
+}
+</script>
 </body>
 </html>

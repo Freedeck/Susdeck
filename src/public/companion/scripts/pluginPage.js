@@ -20,7 +20,7 @@ Object.keys(universal.plugins).forEach((plugin) => {
     universal.send(universal.events.default.disable_plugin, req.id);
   };
   document.querySelector('.btnlist').appendChild(li);
-  
+
   document.querySelector('.disabledable').appendChild(a);
   const types = req.types;
   types.forEach((dataObj) => {
@@ -33,14 +33,18 @@ Object.keys(universal.plugins).forEach((plugin) => {
   });
 });
 
-universal.repositoryManager.official.forEach((repo) => {
+const loadRepo = (repo, isUnofficial=false) => {
   const li = document.createElement('li');
   li.setAttribute('hovereffect', 'yes');
   li.style.cursor = 'default';
-  li.innerText = repo;
+  li.innerText = (isUnofficial ? '(!) ' : '') + repo.title +' - ' + repo.who;
   document.querySelector('.repositories').appendChild(li);
 
-  universal.repositoryManager.getPluginsfromRepo(repo).then((plugins) => {
+  universal.repositoryManager.getPluginsfromRepo(repo.link).then((plugins) => {
+    if (plugins[0].err) {
+      li.innerText += ' - Error: ' + plugins[0].msg;
+      return;
+    }
     plugins.forEach((plugin) => {
       const req = plugin;
       const li = document.createElement('div');
@@ -48,7 +52,7 @@ universal.repositoryManager.official.forEach((repo) => {
       li.style.cursor = 'default';
       li.className = 'item';
       const name = document.createElement('div');
-      name.innerText = req.name;
+      name.innerText = isUnofficial ? '(!) ' + req.name : req.name;
       li.appendChild(name);
       const author = document.createElement('div');
       author.innerText = req.author;
@@ -87,8 +91,24 @@ universal.repositoryManager.official.forEach((repo) => {
       document.querySelector('.marketplace').appendChild(li);
     });
   });
+  if (isUnofficial) li.innerHTML += '<a href="#">Remove</a>';
+  if (isUnofficial) {
+    li.querySelector('a').onclick = () => {
+      universal.repositoryManager.unofficial = universal.repositoryManager.unofficial.filter((r) => r.link != repo.link);
+      universal.save('repos.community', JSON.stringify(universal.repositoryManager.unofficial));
+      document.querySelector('.repositories').removeChild(li);
+    };
+  }
+};
+
+universal.repositoryManager.official.forEach((repo) => {
+  loadRepo(repo);
+});
+
+universal.repositoryManager.unofficial.forEach((repo) => {
+  loadRepo(repo, true);
 });
 
 universal.on(universal.events.default.plugin_downloaded, () => {
-  
+  universal.sendToast('Plugin downloaded. Restart the server to use it.');
 });

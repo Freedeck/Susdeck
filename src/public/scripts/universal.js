@@ -220,16 +220,23 @@ const universal = {
   /* repos */
   repositoryManager: {
     official: [
-      'https://ifarded.lol',
+      {
+        title: 'ifarded.lol',
+        who: 'Official Freedeck Repository',
+        link: 'https://ifarded.lol/_fd',
+      },
     ],
+    unofficial: [],
     getPluginsfromRepo: async (url) => {
       const _plugins = [];
-      const res = await fetch(url + '/_fd/FETCH.idx.php');
+      const res = await fetch(url + '/FETCH.idx.php');
       const data = await res.text();
+      if (res.status != 200) return [{err: true, msg: 'Repository not found. Server returned ' + res.status}];
+      if (!data.includes(',!')) return [{err: true, msg: 'No plugin metadata found.'}];
       data.split('\n').forEach((line) => {
         const comma = line.split(',!');
         const meta = {
-          file: url+'/_fd/' + comma[0],
+          file: url+'/' + comma[0],
           githubRepo: 'https://github.com/' + comma[1],
           name: comma[2],
           author: comma[3],
@@ -440,6 +447,8 @@ const universal = {
           universal.send(universal.events.information, {apiVersion: '2'});
 
           universal.keySet();
+
+          universal.repositoryManager.unofficial = universal.loadObj('repos.community') || [];
 
           Object.keys(universal.plugins).forEach((plugin) => {
             const plug = universal.plugins[plugin];

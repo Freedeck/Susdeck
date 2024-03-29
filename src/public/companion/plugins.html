@@ -98,8 +98,8 @@
                 if(universal.load('repos.community') != 'ée') curr = JSON.parse(universal.load('repos.community'))
                 curr.push({title, who: desc, link: url})
                 universal.save('repos.community', JSON.stringify(curr))
-                console.log(universal.load('repos.community'))
                 modal.remove()
+                window.location.reload();
             }
 }
 </script>

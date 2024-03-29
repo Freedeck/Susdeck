@@ -43,7 +43,16 @@ const loadRepo = (repo, isUnofficial=false) => {
   universal.repositoryManager.getPluginsfromRepo(repo.link).then((plugins) => {
     if (plugins[0].err) {
       li.innerText += ' - Error: ' + plugins[0].msg;
-      return;
+      if (!isUnofficial) return;
+    }
+    if (isUnofficial) {
+      li.innerHTML += '<a href="#">Remove</a>';
+      li.querySelector('a').onclick = () => {
+        universal.repositoryManager.unofficial = universal.repositoryManager.unofficial.filter((r) => r.link != repo.link);
+        universal.save('repos.community', JSON.stringify(universal.repositoryManager.unofficial));
+        document.querySelector('.repositories').removeChild(li);
+        window.location.reload();
+      };
     }
     plugins.forEach((plugin) => {
       const req = plugin;
@@ -91,14 +100,6 @@ const loadRepo = (repo, isUnofficial=false) => {
       document.querySelector('.marketplace').appendChild(li);
     });
   });
-  if (isUnofficial) li.innerHTML += '<a href="#">Remove</a>';
-  if (isUnofficial) {
-    li.querySelector('a').onclick = () => {
-      universal.repositoryManager.unofficial = universal.repositoryManager.unofficial.filter((r) => r.link != repo.link);
-      universal.save('repos.community', JSON.stringify(universal.repositoryManager.unofficial));
-      document.querySelector('.repositories').removeChild(li);
-    };
-  }
 };
 
 universal.repositoryManager.official.forEach((repo) => {

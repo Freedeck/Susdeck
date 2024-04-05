@@ -2,17 +2,19 @@ HTMLElement.prototype.setHTML = function(html) {
   this.innerHTML = html;
 };
 
-universal.once('I', (dat) => {
+universal.listenFor('init', () => {
   const login = document.createElement('li');
   login.id = 'constat';
   login.style.fontSize= '.75em';
-  login.setHTML('<a href="#">Connected!</a>');
+  login.style.display = 'none';
+  // login.setHTML('<a href="#" style="font-size:0.65em;">Freedeck v' + universal._information.version + '</a>');
   document.querySelector('#sidebar > ul').appendChild(login);
 });
 const sidebar = [
   {'Home': 'index.html'},
   {'Plugins': 'plugins.html'},
   {'Settings': 'settings.html'},
+  {'Connect': '/fdconnect.html'},
 ];
 
 const sidebarEle = document.createElement('div');

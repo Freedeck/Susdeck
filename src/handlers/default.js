@@ -5,6 +5,9 @@ const debug = require('../utils/debug');
 const NotificationManager = require('../managers/notifications');
 const tsm = require('../managers/temporarySettings');
 const pc = require('../utils/picocolors');
+const path = require('path');
+
+const serverVersion = 'Freedeck OS6';
 
 module.exports = {
   name: 'Main',
@@ -57,6 +60,8 @@ module.exports = {
         tempLoginID: socket.tempLoginID,
         plugins: pl,
         events: eventNames,
+        version: 'OA v' + require(path.resolve('package.json')).version,
+        server: serverVersion,
         cfg: cfg.settings(),
         profiles: cfg.settings['profiles'],
       };

@@ -5,6 +5,9 @@ import './authfulPage.js';
 
 await universal.init('Companion:Settings');
 
+document.querySelector('#vl').innerText = universal._information.version;
+document.querySelector('#svl').innerText = universal._information.server;
+
 createSettingCategory('Audio Client $(NEW!)', 'audioclient');
 
 createSettingCategory('Freedeck Client', 'fdc', true);

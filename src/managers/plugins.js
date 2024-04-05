@@ -18,7 +18,6 @@ const pl = {
       if (!file.endsWith('.Freedeck')) return;
       AsarBundleRunner.extract('./plugins/' + file).then((a) => {
         AsarBundleRunner.run(a).then((instantiated) => {
-          if (instantiated.disabled) return;
           debug.log(picocolors.yellow('Plugin initialized ' + instantiated.name + ' - ID ' + instantiated.id), 'Plugin Manager');
           pl._plc.set(instantiated.id, {instance: instantiated});
         });

@@ -7,12 +7,13 @@
   </head>
   <body>
   <div id="msg">
-    <h1>Welcome to Freedeck Connect.</h1>
-    <p>This page is local, and hosts your connection to Freedeck's server, as to help with broken connections/pipes.</p>
-    <p>If you're seeing this, your server most likely hasnt loaded yet, or youre running in Companion Only mode.</p>
-    <p>Heres some connection stuff in case you're looking to connect to another server.</p>
-    <h1>Freedeck Connect is currently trying to connect to: <span id="currcon">http://localhost:5754</span>. Once found it will connect!</h1>
-    <h2 id="datstat"></h2>
+    <div class="msg">
+      <h1>Welcome to Freedeck Connect.</h1>
+      <p>Freedeck Connect is currently trying to connect to: <span id="currcon">http://localhost:5754</span>. Once found it will connect!</p>
+    </div>
+    <div class="spinner"></div>
+    <h2 id="datstat">[Connection 1/2] Searching for server...</h2>
+    <p class="err"></p>
       <input type="url" placeholder="Freedeck Server URL" value="http://localhost:5754" id="url">
     <input type="submit" value="Connect" id="sub">
   </div>
@@ -22,32 +23,99 @@
     const msg = document.querySelector("#msg")
     const url = document.querySelector("#url")
     const subm = document.querySelector('#sub')
+    const er = document.querySelector('.err');
     let s = false;
 
     subm.onclick = (ev) => {
       concon.innerText = url.value;
+      // datsta.innerText = "Searching for server..."
       let dc = true;
       fetch(url.value + '/fdc/webpack').then(res=>res.json()).then(a => {
-        if (a.compiled == 1) {
-          datsta.innerText = 'Compilation status: 1/1 - Server is ready!'
-          dc = false;
-        }
-        else datsta.innerText = 'Compilation status: 0/1 - Server has not compiled any bundles.'
+        er.innerText = JSON.stringify(a);
+        let msg = a.compiled == 1 ? 'Server is ready!' : 'Server has not compiled any bundles.' 
+        datsta.innerText = '[Compilation: Step ' + a.compiled + '/1] - ' + msg
+        if (a.compiled == 1) dc = false;
         if(dc) return;
-        fetch(url.value + '/companion').then(res => res.text()).then(res => {
         s = true;
-          datsta.innerText = "Companion UI fetched. Loading."
+        fetch(url.value + '/companion').then(res => res.text()).then(res => {
+          datsta.innerText = "Companion is online! Starting Connection";
           window.location.replace(url.value + '/companion?fdc=true');
         }).catch(failure => {
-          datsta.innerText = "Connection failed: " + failure.toString() + " | The server may be offline";
+          er.style.display = 'block';
+          er.innerText = failure.toString();
+          datsta.innerText = "Connection failed!";
         })
+      }).catch(err => {
+        er.style.display = 'block';
+        er.innerText = err.toString();
       })
       
     }
     subm.click();
     setInterval(() => {
       if (!s) subm.click();
-    },20)
+    },50)
     </script>
+
+    <style>
+      .err {
+        display: none;
+      }
+      body {
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(105deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
+        background-size: 400% 400%;
+        animation: error-bg 5s linear infinite;
+      }
+     @keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+#currcon {
+  color: #f0f0f0;
+}
+
+.spinner {
+	border: 16px solid #f3f3f3; /* Light grey */
+	border-top: 16px solid #3498db; /* Blue */
+	border-radius: 50%;
+	width: 120px;
+	height: 120px;
+	animation: spin 2s linear infinite;
+}
+
+@keyframes error-bg {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 100% 0%;
+    }
+}
+
+#msg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 50%;
+  transform: translate(50%, 50%);
+  overflow: hidden;
+
+  background-color: rgba(255,255,255,0.125);
+  padding: 1.125rem;
+  border-radius: 7px;
+  text-align: center;
+}
+
+    </style>
   </body>
 </html>

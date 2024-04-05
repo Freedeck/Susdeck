@@ -34,6 +34,8 @@ if (!fs.existsSync(path.resolve('./src/public/dist'))) {
   fs.mkdirSync(path.resolve('./src/public/dist'));
 }
 
+let compileTime = 0;
+
 /**
  *  run webpack
  * @param {*} wp  a
@@ -46,7 +48,8 @@ function runWebpack(wp) {
         console.log(err);
         reject(err);
       } else {
-        console.log('Compiled webpack bundles in ' + (stats.endTime - stats.startTime) + 'ms');
+        compileTime = (stats.endTime - stats.startTime);
+        console.log('Compiled webpack bundles in ' + compileTime + 'ms');
         resolve();
       }
     });
@@ -71,6 +74,9 @@ app.use(express.static(path.join(__dirname, './public')));
 app.get('/fdc', (req, res) => res.sendStatus(200));
 app.get('/fdc/webpack', (req, res) => {
   res.send({compiled: hasWebpackCompiled});
+});
+app.get('/fdc/time', (req, res) => {
+  res.send({data: compileTime});
 });
 
 app.post('/fd/api/upload/', (request, response) => {

@@ -108,7 +108,7 @@ window.oncontextmenu = function(e) {
   }
 
   custMenuItems = custMenuItems.concat([
-    '---',
+    '',
     'New Page',
     'Profile: ' + universal.config.profile,
   ]);
@@ -596,8 +596,6 @@ profileDupe.onclick = () => {
 
 if (universal.load('pitch')) document.querySelector('#pitch').value = universal.load('pitch');
 
-if (!universal.load('pitch') || !universal.load('vol') || !universal.audioClient._player.normalVol ||
-  universal.audioClient._player.sink == '' ||
-  universal.audioClient._player.sink == '\x9Eée') {
+if (universal.load('has_setup') == 'false') {
   window.location.href = '/companion/settings.html?err=ns0f';
 }

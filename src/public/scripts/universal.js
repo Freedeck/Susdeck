@@ -31,8 +31,14 @@ const universal = {
   load: (k) => {
     return atob(localStorage.getItem(btoa('fd.' + k)));
   },
+  exists: (k) => {
+    return localStorage.getItem(btoa('fd.' + k)) ? true : false;
+  },
   loadObj: (k) => {
     return JSON.parse(atob(localStorage.getItem(btoa('fd.' + k))));
+  },
+  default: (k, v) => {
+    return universal.exists(k) ? universal.load(k) : universal.save(k, v);
   },
   storage: {
     keys: () => {
@@ -337,6 +343,18 @@ const universal = {
           universal.plugins = parsed.plugins;
           universal._serverRequiresAuth = universal.config.useAuthentication;
           universal._init = true;
+
+          // default setup
+          universal.default('notification_log', '');
+          universal.default('stopPrevious', false);
+          universal.default('vol', 1);
+          universal.default('pitch', 1);
+          universal.default('monitor.sink', 'default');
+          universal.default('vb.sink', 'default');
+          universal.default('has_setup', false);
+          universal.default('theme', 'default');
+          universal.default('profile', 'Default');
+          universal.default('repos.community', JSON.stringify([]));
 
           if (!universal.load('welcomed')) {
             universal.sendToast('Welcome to Freedeck.');

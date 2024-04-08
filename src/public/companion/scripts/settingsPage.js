@@ -264,6 +264,7 @@ const setupWizard = () => {
             universal.save('vol', 1);
             showText('All done!', 'You\'re all set up! You can now use Freedeck.', () => {
               universal.sendToast('All done, reloading...');
+              universal.save('has_setup', true);
               window.location.href = '/companion/';
             });
           });

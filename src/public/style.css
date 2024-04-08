@@ -196,10 +196,11 @@ input:disabled {
     align-items: center;
     background-color: var(--fd-modal-bg);
     padding: 1rem;
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
+    border: 0;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     width: 100%;
-    max-width: 500px;
+    /* max-width: 500px; */
     margin: 0 auto;
 
 }

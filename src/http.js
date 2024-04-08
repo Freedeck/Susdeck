@@ -78,6 +78,15 @@ app.get('/fdc/webpack', (req, res) => {
 app.get('/fdc/time', (req, res) => {
   res.send({data: compileTime});
 });
+app.get('/fdc/compile/:token', (req,res) => {
+  if (req.params.token === settings.token) {
+    compileWebpack().then(() => {
+      res.send({compiled: hasWebpackCompiled});
+    });
+  } else {
+    res.sendStatus(401);
+  };
+});
 
 app.post('/fd/api/upload/', (request, response) => {
   const form = new formidable.IncomingForm({

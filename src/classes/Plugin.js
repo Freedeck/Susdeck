@@ -108,10 +108,8 @@ module.exports = class Plugin {
    * @param {String} file The file you want to import
    */
   addImport(file) {
-    // this.imports.push(file);
-    // this.tempImportPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', file);
-    this.hooks.push(new HookRef(path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', file), HookRef.types.import, file));
-    if (!fs.existsSync(path.resolve('src/public/hooks/'))) fs.mkdirSync(path.resolve('src/public/hooks/'));
+    this.imports.push(file);
+    this.tempImportPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', file);
     fs.cpSync(this.tempImportPath, path.resolve('src/public/hooks/'+file));
   }
 

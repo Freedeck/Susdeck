@@ -2,6 +2,7 @@ const path = require('path');
 const NotificationManager = require(path.resolve('./src/managers/notifications.js'));
 const types = require(path.resolve('./src/managers/plugins.js'));
 const fs = require('fs');
+const HookRef = require('./HookRef');
 
 module.exports = class Plugin {
   name;
@@ -53,6 +54,7 @@ module.exports = class Plugin {
     }
     return this;
   }
+  hooks = [];
 
   /**
    * @param {String} hook The JS file that will be loaded into the socket handler
@@ -60,34 +62,55 @@ module.exports = class Plugin {
   setJSSocketHook(hook) {
     this.jsSockHook = hook;
     this.jsSockHookPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', this.jsSockHook);
+    // this.hooks.push(new HookRef(path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', hook), HookRef.types.socket, hook));
+    // this.internalAdd(HookRef.types.socket, hook, )
   }
 
   /**
    * @param {String} hook The JS file that will be loaded into the browser
-   */
+  */
   setJSServerHook(hook) {
-    this.jsSHook = hook;
-    this.jsShPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', this.jsSHook);
-    if (!fs.existsSync(path.resolve('src/public/hooks/'))) fs.mkdirSync(path.resolve('src/public/hooks/'));
-    fs.cpSync(this.jsShPath, path.resolve('src/public/hooks/'+this.jsSHook));
+  //  this.jsSHook = hook;
+  //  this.jsShPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', this.jsSHook);
+    // let hp = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', hook);
+    // this.hooks.push(new HookRef(hp, HookRef.types.server, hook));
+    // if (!fs.existsSync(path.resolve('src/public/hooks/'))) fs.mkdirSync(path.resolve('src/public/hooks/'));
+    // fs.cpSync(hp, path.resolve('src/public/hooks/'+hook));
+    this.internalAdd(HookRef.types.server, hook, 'src/public/hooks/');
+  }
+
+  /**
+   Internal method for adding hookrefs
+   @param {*} type the HookRef type
+   @param {*} hook File path to hook
+   @param {*} copyTo folder to copy hook to
+   */
+  internalAdd(type, hook, copyTo) {
+    const hp = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', hook);
+    this.hooks.push(new HookRef(hp, type, hook));
+    if (!fs.existsSync(path.resolve(copyTo))) fs.mkdirSync(path.resolve(copyTo));
+    fs.cpSync(hp, path.resolve(copyTo, hook));
   }
 
   /**
    * @param {String} hook The JS file that will be loaded into the browser
-   */
+  */
   setJSClientHook(hook) {
-    this.jsCHook = hook;
-    this.jsChPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', this.jsCHook);
-    if (!fs.existsSync(path.resolve('src/public/hooks/'))) fs.mkdirSync(path.resolve('src/public/hooks/'));
-    fs.cpSync(this.jsChPath, path.resolve('src/public/hooks/'+this.jsCHook));
+  //  this.jsCHook = hook
+  //  this.jsChPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', this.jsCHook);
+  // this.hooks.push(new HookRef(path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', hook), HookRef.types.client, hook));
+  // if (!fs.existsSync(path.resolve('src/public/hooks/'))) fs.mkdirSync(path.resolve('src/public/hooks/'));
+  // fs.cpSync(this.jsChPath, path.resolve('src/public/hooks/'+this.jsCHook));
+    this.internalAdd(HookRef.types.client, hook, 'src/public/hooks/');
   }
 
   /**
    * @param {String} file The file you want to import
    */
   addImport(file) {
-    this.imports.push(file);
-    this.tempImportPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', file);
+    // this.imports.push(file);
+    // this.tempImportPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', file);
+    this.hooks.push(new HookRef(path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', file), HookRef.types.import, file));
     if (!fs.existsSync(path.resolve('src/public/hooks/'))) fs.mkdirSync(path.resolve('src/public/hooks/'));
     fs.cpSync(this.tempImportPath, path.resolve('src/public/hooks/'+file));
   }
@@ -96,14 +119,15 @@ module.exports = class Plugin {
    * @return {String} The JS file that will be loaded into the browser
    */
   getJSServerHook() {
-    return this.jsSHook;
+    return this.hooks.filter((ref)=>ref.type==HookRef.types.server);
   }
 
   /**
    * @return {String} The JS file that will be loaded into the browser
-   */
+  */
   getJSClientHook() {
-    return this.jsCHook;
+    return this.hooks.filter((ref)=>ref.type==HookRef.types.client);
+    // return this.jsCHook;
   }
 
   /**

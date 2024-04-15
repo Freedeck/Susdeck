@@ -121,8 +121,8 @@ window.oncontextmenu = function(e) {
       // Handle menu item click
       switch (item) {
         case 'New Page':
-          Pages[(universal.config.sounds.length / universal.config.iconCountPerPage)] = [];
-          universal.page = (universal.config.sounds.length / universal.config.iconCountPerPage);
+          Pages[Object.keys(Pages).length] = [];
+          universal.page = Object.keys(Pages).length - 1;
           reloadSounds();
           break;
         case '---':

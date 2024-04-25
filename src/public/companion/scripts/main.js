@@ -36,7 +36,7 @@ function reloadSounds() {
   document.querySelectorAll('.k').forEach((k)=>{
     k.remove();
   });
-  document.querySelector('.cpage').innerText = 'Page: ' + (universal.page + 1);
+  document.querySelector('.cpage').innerText = 'Page: ' + (universal.page + 1) + '/' + (Object.keys(Pages).length);
   universal.keySet();
   universal.config.sounds.forEach((sound) => {
     const k = Object.keys(sound)[0];

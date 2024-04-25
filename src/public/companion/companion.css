@@ -80,9 +80,9 @@ a:hover {
 	transform: scale(1.15);
 }
 
-/* body {
-	margin-left: 10rem;
-} */
+body {
+	margin: 0 2rem 0 2rem;
+}
 
 .contextMenu {
 	position: absolute;

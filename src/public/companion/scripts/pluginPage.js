@@ -75,7 +75,6 @@ const loadRepo = (repo, isUnofficial=false) => {
       li.appendChild(desc);
       const file = document.createElement('button');
       file.onclick = () => {
-        console.log(repo)
         dialog.innerHTML = `
         <h1>Download ${req.name}</h1><p>Are you sure you want to download ${req.name} (from ${repo.title})?</p>
         <span>
@@ -131,8 +130,13 @@ universal.on(universal.events.default.plugin_downloaded, () => {
   dialog.innerHTML += `<p>Downloaded successfully. Give Freedeck a second to update it's plugin index.</p>`;
 });
 
+document.querySelector('#upd').onclick =() => {
+  universal.send(universal.events.default.update_plugins);
+};
+
 universal.on(universal.events.default.plugins_updated, () => {
-  dialog.innerHTML += `<p>Plugin enabled.</p><button id="close">Refresh</button>`;
+  if (!dialog.open) dialog.showModal();
+  dialog.innerHTML = `<p>Plugin indexes updated.</p><button id="close">Refresh</button>`;
   document.querySelector('#close').onclick = () => {
     window.location.reload();
   };

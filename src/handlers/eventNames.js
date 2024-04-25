@@ -30,6 +30,7 @@ const eventNames = {
     plugin_downloaded: 'dPD',
     disable_plugin: 'dBP',
     plugins_updated: 'dPU',
+    update_plugins: 'dUP',
   },
 
   companion: {

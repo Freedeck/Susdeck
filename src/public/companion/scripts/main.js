@@ -331,6 +331,9 @@ const upload = (accept, callback) => {
 };
 
 document.querySelector('#editor-close').onclick = () => {
+  for (const child of document.querySelector('#editor-data').children) {
+    child.remove();
+  }
   document.querySelector('#editor').style.opacity = '0';
   setTimeout(() => {
     document.querySelector('#editor').style.display = 'none';

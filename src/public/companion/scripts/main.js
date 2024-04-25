@@ -159,7 +159,7 @@ window.oncontextmenu = function(e) {
               elem.className = 'editor-data';
               elem.id = key;
               const label = document.createElement('label');
-              label.class = 'editordata-removable'
+              label.class = 'editordata-removable';
               label.innerText = key;
               label.appendChild(elem);
               document.querySelector('#editor-data').appendChild(label);

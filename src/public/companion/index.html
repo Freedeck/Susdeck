@@ -27,9 +27,18 @@
             <div class="flex-wrap-r">
                 <div class="button" id="editor-btn">Butn</div>
                 <div class="flex-wrap">
-                    <input type="text" id="name" onkeyup="document.querySelector('#editor-btn').innerText = this.value;" value="Butn">
-                    <input type="text" id="type" value="fd.sound" disabled>
-                    <input type="text" id="plugin" value="Freedeck" disabled>
+                    <div class="flex-wrap-r alc">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" onkeyup="document.querySelector('#editor-btn').innerText = this.value;" value="Butn">
+                    </div>
+                    <div class="flex-wrap-r alc">
+                        <label for="type">Type</label>
+                        <input type="text" id="type" value="fd.sound" disabled>
+                    </div>
+                    <div class="flex-wrap-r alc">
+                        <label for="plugin">Plugin</label>
+                        <input type="text" id="plugin" value="Freedeck" disabled>
+                    </div>
                 </div>
             </div>
             <h2>Data</h2>
@@ -89,6 +98,12 @@
         <button id="pf-dupe">Duplicate Profile</button>
     </div>
 </div>
+
+<style>
+    .alc {
+        align-items: center;
+    }
+</style>
 <script src="/socket.io/socket.io.js"></script>
 <script src="dist/main.js" type="module"></script>
 </body>

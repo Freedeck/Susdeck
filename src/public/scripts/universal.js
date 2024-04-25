@@ -392,7 +392,6 @@ const universal = {
 
           universal.on(universal.events.keypress, (interactionData) => {
             const interaction = JSON.parse(interactionData);
-            console.log(interaction)
             if (!user.includes('Companion')) return;
             if ('sound' in interaction && interaction.sound.name === 'Stop All') {
               universal.audioClient.stopAll();

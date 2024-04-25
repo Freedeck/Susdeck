@@ -87,8 +87,8 @@ window.oncontextmenu = function(e) {
   if (e.srcElement.className.includes('builtin')) return false;
   const custMenu = document.createElement('div');
   custMenu.className = 'contextMenu';
-  custMenu.style.top = e.clientY + 'px';
-  custMenu.style.left = e.clientX + 'px';
+  custMenu.style.top = e.clientY - window.scrollY + 'px';
+  custMenu.style.left = e.clientX - window.scrollX + 'px';
   custMenu.style.position = 'absolute';
 
   const custMenuTitle = document.createElement('div');

@@ -146,6 +146,8 @@ window.oncontextmenu = function(e) {
           document.querySelector('#plugin').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).plugin || 'Freedeck';
           if (JSON.parse(e.srcElement.getAttribute('data-interaction')).type == 'fd.sound') {
             document.querySelector('#upload-sound').style.display = 'flex';
+          } else {
+            document.querySelector('#upload-sound').style.display = 'none';
           }
           if (JSON.parse(e.srcElement.getAttribute('data-interaction')).data) {
             const itm = JSON.parse(e.srcElement.getAttribute('data-interaction')).data;

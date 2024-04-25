@@ -1,4 +1,4 @@
-const plugins = require('../managers/plugins').plugins;
+const plugins = require('../../managers/plugins').plugins;
 
 module.exports = ({io, data}) => {
   const plug = plugins().get(data.plugin).instance;

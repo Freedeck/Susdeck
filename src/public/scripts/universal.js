@@ -121,7 +121,9 @@ const universal = {
       document.querySelector('#v').value = vol;
     },
     play: async (file, name, isMonitor = false, stopPrevious = false) => {
-      const audioInstance = new Audio(file);
+      const audioInstance = new Audio();
+      audioInstance.src = file;
+      audioInstance.load();
       if (universal.audioClient._player.sink !== 0) {
         navigator.mediaDevices.getUserMedia({audio: true, video: false});
         await audioInstance.setSinkId(universal.audioClient._player.sink);
@@ -390,6 +392,7 @@ const universal = {
 
           universal.on(universal.events.keypress, (interactionData) => {
             const interaction = JSON.parse(interactionData);
+            console.log(interaction)
             if (!user.includes('Companion')) return;
             if ('sound' in interaction && interaction.sound.name === 'Stop All') {
               universal.audioClient.stopAll();

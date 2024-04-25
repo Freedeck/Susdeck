@@ -1,6 +1,6 @@
 {
   "name": "freedeck",
-  "version": "6.0.0d-0",
+  "version": "6.0.0d-042524-01",
   "description": "mysteriouus..",
   "main": "src/entryChecker.js",
   "scripts": {

@@ -157,6 +157,7 @@ window.oncontextmenu = function(e) {
               elem.className = 'editor-data';
               elem.id = key;
               const label = document.createElement('label');
+              label.class = 'editordata-removable'
               label.innerText = key;
               label.appendChild(elem);
               document.querySelector('#editor-data').appendChild(label);
@@ -331,9 +332,7 @@ const upload = (accept, callback) => {
 };
 
 document.querySelector('#editor-close').onclick = () => {
-  for (const child of document.querySelector('#editor-data').children) {
-    child.remove();
-  }
+  document.querySelector('#editor-data').innerHTML = '';
   document.querySelector('#editor').style.opacity = '0';
   setTimeout(() => {
     document.querySelector('#editor').style.display = 'none';

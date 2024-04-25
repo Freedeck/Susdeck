@@ -28,7 +28,8 @@ const eventNames = {
 
     download_plugin: 'dDP',
     plugin_downloaded: 'dPD',
-    disable_plugin: 'dBP'
+    disable_plugin: 'dBP',
+    plugins_updated: 'dPU',
   },
 
   companion: {

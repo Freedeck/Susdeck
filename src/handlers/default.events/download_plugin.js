@@ -3,6 +3,8 @@ const fs = require('fs');
 const eventNames = require('../eventNames');
 const path = require('path');
 
+const plugins = require('../../managers/plugins');
+
 module.exports = ({io, data}) => {
   data = JSON.parse(data);
   console.log(`Downloading plugin ${data.id} from ${data.server}`);
@@ -14,7 +16,9 @@ module.exports = ({io, data}) => {
     file.on('finish', () => {
       file.close();
       io.emit(eventNames.default.plugin_downloaded);
-	    console.log('Plugin ' + data.id + ' downloaded. You will have to restart the server to start using it.');
+      console.log('Plugin ' + data.id + ' downloaded. Enabling (Rebuilding plugin indexes)...');
+      plugins.update();
+      io.emit(eventNames.default.plugins_updated);
     });
     file.on('error', (err) => {
       console.log('Error while trying to download ' + data.id +': ', err);

@@ -33,6 +33,7 @@ Object.keys(universal.plugins).forEach((plugin) => {
   });
 });
 
+const dialog = document.createElement('dialog');
 const loadRepo = (repo, isUnofficial=false) => {
   const li = document.createElement('li');
   li.setAttribute('hovereffect', 'yes');
@@ -74,7 +75,21 @@ const loadRepo = (repo, isUnofficial=false) => {
       li.appendChild(desc);
       const file = document.createElement('button');
       file.onclick = () => {
-        universal.send(universal.events.default.download_plugin, JSON.stringify({id: req.id, file: req.file, server: repo}));
+        console.log(repo)
+        dialog.innerHTML = `
+        <h1>Download ${req.name}</h1><p>Are you sure you want to download ${req.name} (from ${repo.title})?</p>
+        <span>
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+        </span>`;
+        dialog.showModal();
+        document.querySelector('#yes').onclick = () => {
+          universal.send(universal.events.default.download_plugin, JSON.stringify({id: req.id, file: req.file, server: repo}));
+          dialog.innerHTML = `<h1>Downloading ${req.name}</h1><p>Downloading ${req.name}...</p>`;
+        };
+        document.querySelector('#no').onclick = () => {
+          dialog.close();
+        };
       };
       file.innerText = 'Download';
       if (universal.plugins[req.id]) {
@@ -102,6 +117,8 @@ const loadRepo = (repo, isUnofficial=false) => {
   });
 };
 
+document.body.appendChild(dialog);
+
 universal.repositoryManager.official.forEach((repo) => {
   loadRepo(repo);
 });
@@ -111,5 +128,12 @@ universal.repositoryManager.unofficial.forEach((repo) => {
 });
 
 universal.on(universal.events.default.plugin_downloaded, () => {
-  universal.sendToast('Plugin downloaded. Restart the server to use it.');
+  dialog.innerHTML += `<p>Downloaded successfully. Give Freedeck a second to update it's plugin index.</p>`;
+});
+
+universal.on(universal.events.default.plugins_updated, () => {
+  dialog.innerHTML += `<p>Plugin enabled.</p><button id="close">Refresh</button>`;
+  document.querySelector('#close').onclick = () => {
+    window.location.reload();
+  };
 });

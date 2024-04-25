@@ -52,7 +52,7 @@
 	text-align: center;
 }
 
-ul {
+#sidebar ul {
 	list-style-type: none;
 	padding: 0;
 	margin: 0.5rem;
@@ -115,6 +115,11 @@ a:hover {
 	z-index: 1000;
 	transition-duration: .25s;
 	display: none;
+}
+
+.btnlist {
+	display: flex;
+	flex-direction: column;
 }
 
 #editor-div {

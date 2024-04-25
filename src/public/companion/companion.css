@@ -30,12 +30,16 @@
 
 
 #sidebar {
-	width: 9.5rem;
+	width: 100%;
 	position: fixed;
 	left: 0;
-	top: 0;
-	height: 100%;
+	bottom: 0;
+	height: max-content;
 	background-color: rgba(0,0,0,0.5);
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 	font-size: 1.75em;
 	color: white;
 	z-index: 100;
@@ -52,9 +56,12 @@ ul {
 	list-style-type: none;
 	padding: 0;
 	margin: 0.5rem;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
-li {
+ a {
 	width: max-content;
 	margin: 0.5rem;
 	padding: 5px;
@@ -69,13 +76,13 @@ a {
 	text-decoration: none;
 }
 
-li[hovereffect="yes"]:hover {
+a:hover {
 	transform: scale(1.15);
 }
 
-body {
+/* body {
 	margin-left: 10rem;
-}
+} */
 
 .contextMenu {
 	position: absolute;
@@ -88,7 +95,7 @@ body {
 	cursor: default;
 }
 
-.menuItem {
+.menuItem{
 	padding: 0.5rem;
 	transition-duration: .25s;
 }
@@ -100,6 +107,10 @@ body {
 }
 
 #editor {
+	position: fixed;
+	top: 0;
+	left: 0;
+	border: 0;
 	background-color: rgba(0,0,0,0.5);
 	z-index: 1000;
 	transition-duration: .25s;
@@ -116,7 +127,7 @@ body {
 	background-color: #45475a;
 	color: white;
 	border-radius: 0.5rem;
-	padding: 0.5rem;
+	padding: 1.5rem;
 	z-index: 1000;
 	transition-duration: .25s;
 	overflow-y: scroll;

@@ -81,7 +81,21 @@ a:hover {
 }
 
 body {
-	margin: 0 2rem 0 2rem;
+	margin: 0 15% 0 5px;
+}
+
+.alc {
+	align-items: center;
+}
+
+.sidebar {
+	position: fixed;
+	top: 0;
+	right: 0;
+	min-width: 15%;
+	background-color: rgba(0,0,0,0.5);
+	color: white;
+	height: 100%;
 }
 
 .contextMenu {

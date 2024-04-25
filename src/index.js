@@ -29,7 +29,7 @@ if (!DOES_SETTINGS_EXIST_YET) {
 if (process.argv[2] === 'server') {
   console.log(picocolors.blue('Server only mode.'));
 } else {
-  if (DOES_SETTINGS_EXIST_YET) require('./companionInit')('./src/fdconnect.html', true, 850, 750, false);
+  if (DOES_SETTINGS_EXIST_YET) require('./companionInit')('./src/fdconnect.html', true, 1145, 750, false);
   if (process.argv[2] == 'companion') {
     console.log(picocolors.blue('Companion only mode.'));
     DOES_RUN_SERVER = false;

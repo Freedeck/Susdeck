@@ -5,7 +5,7 @@ console.log('Checking for updates... (start with --no-update to skip)');
 if (process.argv.includes('--no-update')) {
   console.log('Skipping update check.');
 } else {
-  fetch('https://raw.githubusercontent.com/Freedeck/Freedeck/master/autoupdate')
+  fetch('https://raw.githubusercontent.com/Freedeck/Freedeck/v6/autoupdate')
       .then((res)=>res.text())
       .then((ver) => {
         if (pkg.version !== ver) {

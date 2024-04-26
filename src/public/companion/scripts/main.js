@@ -533,6 +533,22 @@ function reloadProfile() {
 }
 reloadProfile();
 
+document.querySelector('#pg-left').addEventListener('click', () => {
+  if (Pages[universal.page - 1]) {
+    universal.page --;
+    universal.save('page', universal.page);
+    reloadSounds();
+  }
+});
+
+document.querySelector('#pg-right').addEventListener('click', () => {
+  if (Pages[universal.page + 1]) {
+    universal.page ++;
+    universal.save('page', universal.page);
+    reloadSounds();
+  }
+});
+
 document.addEventListener('keydown', (ev) => {
   if (ev.key == 'ArrowLeft') {
     if (Pages[universal.page - 1]) {
@@ -546,10 +562,6 @@ document.addEventListener('keydown', (ev) => {
       universal.page ++;
       universal.save('page', universal.page);
       reloadSounds();
-    } else {
-      // Pages[universal.page + 1] = [];
-      // universal.page ++;
-      // reloadSounds();
     }
   }
 });

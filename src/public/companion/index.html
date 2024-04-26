@@ -1,14 +1,16 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="companion.css">
     <title>Freedeck v6 - Home</title>
 </head>
+
 <body>
     <dialog class="dialog" id="login-dialog">
         <div id="login-div">
@@ -29,7 +31,8 @@
                 <div class="flex-wrap">
                     <div class="flex-wrap-r alc">
                         <label for="name">Name</label>
-                        <input type="text" id="name" onkeyup="document.querySelector('#editor-btn').innerText = this.value;" value="Butn">
+                        <input type="text" id="name"
+                            onkeyup="document.querySelector('#editor-btn').innerText = this.value;" value="Butn">
                     </div>
                     <div class="flex-wrap-r alc">
                         <label for="type">Type</label>
@@ -43,7 +46,7 @@
             </div>
             <h2>Data</h2>
             <div class="flex-wrap-r" id="editor-data"></div>
-            <br/>
+            <br />
             <div class="button" style="display: none;" id="upload-sound">Upload Sound</div>
             <!-- <p>Other Options</p>
             <div class="flex-wrap-r">
@@ -63,11 +66,12 @@
             </div>
         </div>
     </dialog>
-    
-<h1>Home</h1>
-<p>Welcome back! Here you can change your button configuration. Click any of them to preview, right click to edit!</p>
-<!-- Warning about FD6 -->
-<!-- <dialog open id="warning">
+
+    <h1>Home</h1>
+    <p>Welcome back! Here you can change your button configuration. Click any of them to preview, right click to edit!
+    </p>
+    <!-- Warning about FD6 -->
+    <!-- <dialog open id="warning">
     <h1>Disclaimer</h1>
 <p>(This will be removed with the actual release of Freedeck v6.)</p>
 <p>Hey there! You're currently using <strong>Freedeck <i>v6</i>.</strong> This version is not ready for general use <i>yet!</i></p>
@@ -79,33 +83,46 @@
     <button>OK</button>
   </form>
 </dialog> -->
-<!-- Ok done -->
+    <!-- Ok done -->
 
-<div class="sidebar">
-    <h1 class="cpage">Page: ???</h1>
-<div class="flex-wrap-c">
-    <div class="flex-wrap-r">
-        <div class="alc">
-            <label for="pitch"><h2>Pitch</h2></label>
-            <input type="range" min="0.1" max="2" value="1" step="0.1" id="pitch" onchange="universal.audioClient.setPitch(this.value)" style="width: 7rem;">
+    <div class="sidebar">
+        <h1 class="cpage">Page: ???</h1>
+        <div class="flex-wrap-c">
+            <div class="flex-wrap-r">
+                <button id="pg-left">Previous Page</button>
+                <button id="pg-right">Next Page</button>
+            </div>
+            <span><br/><h2>Audio</h2></span>
+            <div class="flex-wrap-r">
+                <div class="alc">
+                    <label for="pitch">
+                        <h2>Pitch</h2>
+                    </label>
+                    <input type="range" min="0.1" max="2" value="1" step="0.1" id="pitch"
+                        onchange="universal.audioClient.setPitch(this.value)" style="width: 7rem;">
+                </div>
+                <button onclick="universal.audioClient.setPitch(1)">Reset</button>
+            </div>
+            <div class="flex-wrap-r">
+                <div class="alc">
+                    <label for="v">
+                        <h2>Volume</h2>
+                    </label>
+                    <input type="range" min="0" max="1" value="1" step="0.1" id="v"
+                        onchange="universal.audioClient.setVolume(this.value)" style="width: 7rem;">
+                    </div>
+                <button onclick="universal.audioClient.setVolume(1)">Reset</button>
+            </div>
+            <span><br/><h2>Profiles</h2></span>
+            <div class="flex-wrap-r">
+                <button id="pf-add">New Profile</button>
+                <button id="pf-dupe">Duplicate Profile</button>
+            </div>
         </div>
-        <button onclick="universal.audioClient.setPitch(1)">Reset</button>
-    </div>
-    <div class="flex-wrap-r">
-        <div class="alc">
-            <label for="v"><h2>Volume</h2></label>
-        <input type="range" min="0" max="1" value="1" step="0.1" id="v" onchange="universal.audioClient.setVolume(this.value)" style="width: 7rem;">
-        </div>
-        <button onclick="universal.audioClient.setVolume(1)">Reset</button>
-    </div>
-    <div class="flex-wrap-r">
-        <button id="pf-add">New Profile</button>
-        <button id="pf-dupe">Duplicate Profile</button>
-    </div>
-</div>
 
-</div>
-<script src="/socket.io/socket.io.js"></script>
-<script src="dist/main.js" type="module"></script>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="dist/main.js" type="module"></script>
 </body>
+
 </html>

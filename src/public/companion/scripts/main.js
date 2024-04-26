@@ -29,6 +29,7 @@ new Sortable(document.querySelector('#keys'), {
  * @description Reload all of the sounds in the client's DOM.
  */
 function reloadSounds() {
+  universal.page = universal.load('page') != '\x9Eée' ? parseInt(universal.load('page')) : 0;
   reloadProfile();
   document.querySelectorAll('#keys > .button').forEach((key) => {
     key.remove();
@@ -536,12 +537,14 @@ document.addEventListener('keydown', (ev) => {
   if (ev.key == 'ArrowLeft') {
     if (Pages[universal.page - 1]) {
       universal.page --;
+      universal.save('page', universal.page);
       reloadSounds();
     }
   }
   if (ev.key == 'ArrowRight') {
     if (Pages[universal.page + 1]) {
       universal.page ++;
+      universal.save('page', universal.page);
       reloadSounds();
     } else {
       // Pages[universal.page + 1] = [];

@@ -206,7 +206,7 @@ const universal = {
     black: {
       'name': 'Black',
       'description': 'A black (AMOLED-like) theme for Freedeck',
-    }
+    },
   }, /* Theme list */
   setTheme: function(name, global=true) {
     let fu = name;

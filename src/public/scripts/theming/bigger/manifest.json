@@ -1,7 +1,7 @@
 {
-	"name": "Default",
+	"name": "Default: Bigger",
 	"author": "Freedeck",
 	"version": "1.0",
-	"description": "The default theme of Freedeck",
-	"theme": "default.css"
+	"description": "The default theme of Freedeck, but with bigger buttons.",
+	"theme": "bigger.css"
 }

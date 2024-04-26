@@ -1,0 +1,26 @@
+:root {
+
+    --fd-template-columns: repeat(5, 2fr);
+    --fd-font-family: 'Rethink Sans', sans-serif;
+    --fd-background-size: 400% 400%;
+    --fd-background: black;
+    --fd-rotation-degrees: 2deg;
+    --fd-btn-background: rgba(0, 0, 0, 0.5);
+    --fd-modal-color: rgb(15, 140, 194);
+    --fd-btn-w: 8rem;
+    --fd-btn-h: 8rem;
+
+    --fd-btn-rad: 1rem;
+
+    --fd-modal-bg: white;
+
+    --fd-col: white;
+    --fd-txt-col: white;
+
+    --fd-font-size: 15px;
+    --fd-icon-tip-fs: 1.5rem;
+
+    --fd-input-bg: #FFFFFF;
+
+    --fd-logo-size: 75px;
+}

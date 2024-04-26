@@ -259,11 +259,13 @@ const universal = {
     unofficial: [],
     getPluginsfromRepo: async (url) => {
       const _plugins = [];
-      const res = await fetch(url + '/FETCH.idx.php');
+      const res = await fetch(url + '/repository.php');
       const data = await res.text();
       if (res.status != 200) return [{err: true, msg: 'Repository not found. Server returned ' + res.status}];
       if (!data.includes(',!')) return [{err: true, msg: 'No plugin metadata found.'}];
-      data.split('\n').forEach((line) => {
+      const lines = data.split('\n');
+      lines.shift();
+      lines.forEach((line) => {
         const comma = line.split(',!');
         const meta = {
           file: url+'/' + comma[0],

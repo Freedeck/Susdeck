@@ -69,9 +69,8 @@
             <div id="login-div">
                 <h1>Freedeck 6 - Companion</h1>
                 <p>Enter the URL of the repository</p>
-                <label for="title">Repository Title</label><input type="text" id="title">
-                <label for="desc">Repository Description</label><input type="text" id="desc">
-                <label for="url">Repository Access URL</label><input type="text" id="url">
+                <label for="title">Repository Title</label><input type="text" id="title" placeholder="freedeck.app">
+                <label for="url">Repository Access URL</label><input type="text" id="url" placeholder="https://freedeck.app/_fd">
                 <button>Submit</button>
             </div>
         `;
@@ -80,22 +79,21 @@
         document.body.appendChild(modal)
         modal.style.display = 'block'
         modal.style.position = 'absolute'
-        modal.style.top = '50%';
-        // modal.style.left = '50%';
-        modal.style.transform = 'translate(-50%, -50%)';
             modal.querySelector('#login-div').style.display = 'block';
             modal.querySelector('#login-div').style.height = 'max-content';
             modal.querySelector('#login-div').querySelector('button').onclick = () => {
                 const title = modal.querySelector('#title').value;
-                const desc = modal.querySelector('#desc').value;
-                const url = modal.querySelector('#url').value;
-                console.log(title, desc, url)
-                let curr = [];
-                if(universal.load('repos.community') != 'ée') curr = JSON.parse(universal.load('repos.community'))
-                curr.push({title, who: desc, link: url})
-                universal.save('repos.community', JSON.stringify(curr))
-                modal.remove()
-                window.location.reload();
+                fetch(modal.querySelector('#url').value + "/repository.php", {method: 'GET'}).then(res => res.text()).then(data => {
+                    const desc = data.split('\n')[0]
+                    const url = modal.querySelector('#url').value;
+                    console.log(title, desc, url)
+                    let curr = [];
+                    if(universal.load('repos.community') != 'ée') curr = JSON.parse(universal.load('repos.community'))
+                    curr.push({title, who: desc, link: url})
+                    universal.save('repos.community', JSON.stringify(curr))
+                    modal.remove()
+                    window.location.reload();
+                })
             }
 }
 </script>

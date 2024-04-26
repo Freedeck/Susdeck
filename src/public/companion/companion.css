@@ -37,9 +37,10 @@ input {
 }
 
 .themelist {
-	display: flex;
-	flex-direction: column;
-	gap: 5px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1rem;
+
 }
 
 .theme {

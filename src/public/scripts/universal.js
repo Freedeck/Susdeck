@@ -251,9 +251,9 @@ const universal = {
   repositoryManager: {
     official: [
       {
-        title: 'ifarded.lol',
+        title: 'freedeck.app',
         who: 'Official Freedeck Repository',
-        link: 'https://ifarded.lol/_fd',
+        link: 'https://freedeck.app/_fd',
       },
     ],
     unofficial: [],

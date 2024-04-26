@@ -29,6 +29,7 @@ const eventNames = {
     download_plugin: 'dDP',
     plugin_downloaded: 'dPD',
     disable_plugin: 'dBP',
+    enable_plugin: 'dEP',
     plugins_updated: 'dPU',
     update_plugins: 'dUP',
   },

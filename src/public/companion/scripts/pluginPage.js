@@ -19,7 +19,7 @@ Object.keys(universal.plugins).forEach((plugin) => {
   a.onclick = () => {
     universal.send(universal.events.default.disable_plugin, req.id);
   };
-  document.querySelector('.btnlist').appendChild(li);
+  document.querySelector('#actl').appendChild(li);
 
   document.querySelector('.disabledable').appendChild(a);
   const types = req.types;
@@ -31,6 +31,24 @@ Object.keys(universal.plugins).forEach((plugin) => {
     };
     document.querySelector('.btns').appendChild(tmpBtn);
   });
+});
+
+universal._information.disabled.forEach((plugin) => {
+  const li = document.createElement('li');
+  li.setAttribute('hovereffect', 'yes');
+  li.style.cursor = 'default';
+  if (seen[plugin]) return;
+  seen[plugin] = true;
+  li.innerText = `${plugin.split('.disabled')[0]}`;
+  const a = document.createElement('button');
+  a.innerText = 'Enable';
+  a.onclick = () => {
+    universal.send(universal.events.default.enable_plugin, plugin);
+    if (!dialog.open) dialog.showModal();
+    dialog.innerHTML = `<p>Enabling ${plugin.split('.disabled')[0]}!</p>`;
+  };
+  li.appendChild(a);
+  document.querySelector('#disbl-list').appendChild(li);
 });
 
 const dialog = document.createElement('dialog');
@@ -49,7 +67,7 @@ document.querySelector('#upd').onclick =() => {
 
 universal.on(universal.events.default.plugins_updated, () => {
   if (!dialog.open) dialog.showModal();
-  dialog.innerHTML = `<p>Plugin indexes updated.</p><button id="close">Refresh</button>`;
+  dialog.innerHTML = `<p>Plugins have been reloaded.</p><button id="close">Refresh</button>`;
   document.querySelector('#close').onclick = () => {
     window.location.reload();
   };

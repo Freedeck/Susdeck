@@ -41,11 +41,22 @@ const pl = {
         return;
       }
       if (!file.endsWith('.Freedeck')) return;
-      AsarBundleRunner.extract('./plugins/' + file).then((a) => {
-        AsarBundleRunner.run(a).then((instantiated) => {
-          debug.log(picocolors.yellow('Plugin initialized ' + instantiated.name + ' - ID ' + instantiated.id), 'Plugin Manager');
-          pl._plc.set(instantiated.id, {instance: instantiated});
-        });
+      try {
+        pl.load(file);
+      } catch (err) {
+        console.log(picocolors.red('Error while trying to load plugin ' + file + ': ' + err), 'Plugin Manager');
+        if (err.includes('hooks')) {
+          console.log('This seems to be a hook error. Hold on, because we\'re gonna try again.');
+          pl.load(file);
+        }
+      }
+    });
+  },
+  load: (file) => {
+    AsarBundleRunner.extract('./plugins/' + file).then((a) => {
+      AsarBundleRunner.run(a).then((instantiated) => {
+        debug.log(picocolors.yellow('Plugin initialized ' + instantiated.name + ' - ID ' + instantiated.id), 'Plugin Manager');
+        pl._plc.set(instantiated.id, {instance: instantiated});
       });
     });
   },

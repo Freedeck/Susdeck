@@ -186,7 +186,7 @@ const universal = {
     universal.send(universal.events.login.login, {passwd});
   },
   themeData: {},
-  setTheme: function(name, global=false) {
+  setTheme: function(name, global=true) {
     let fu = name;
     fetch('/scripts/theming/'+name+'/manifest.json').then((res)=>res.json()).then((json) => {
       fu = json.theme;

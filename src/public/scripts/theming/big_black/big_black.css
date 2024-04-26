@@ -20,7 +20,12 @@
     --fd-font-size: 15px;
     --fd-icon-tip-fs: 1.5rem;
 
-    --fd-input-bg: #FFFFFF;
+    --fd-studio-color: #1a1a1a;
+    --fd-input-bg: #1a1a1a;
 
     --fd-logo-size: 75px;
+
+    --fdc-plugin-updatable: #1a1a1a;
+    --fdc-plugin-uptodate: #1a1a1a;
+    --fdc-plugin-installed: #1a1a1a;
 }

@@ -93,15 +93,15 @@ const loadRepo = (repo, isUnofficial=false) => {
       file.innerText = 'Download';
       if (universal.plugins[req.id]) {
         file.innerText = 'Installed';
-        file.style.color = 'gray';
+        file.style.backgroundColor = 'var(--fdc-plugin-installed)';
         if ( typeof universal.plugins[req.id].version !== 'undefined') {
           if (universal.plugins[req.id].version != req.version) {
             file.innerText = 'Update';
-            file.style.color = 'black';
+            file.style.backgroundColor = 'var(--fdc-plugin-updatable)';
           } else
             if (universal.plugins[req.id].version == req.version) {
               file.innerText = 'Up to date';
-              file.style.color = 'black';
+              file.style.backgroundColor = 'var(--fdc-plugin-uptodate)';
               file.onclick = () => {};
             } else {
               file.onclick = () => {};

@@ -23,4 +23,10 @@
     --fd-input-bg: #FFFFFF;
 
     --fd-logo-size: 75px;
+
+    --fd-studio-color: #45475a;
+
+    --fdc-plugin-updatable: #1a1a1a;
+    --fdc-plugin-uptodate: #1a1a1a;
+    --fdc-plugin-installed: #1a1a1a;
 }

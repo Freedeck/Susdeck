@@ -66,21 +66,18 @@ const loadRepo = (repo, isUnofficial=false) => {
       if (universal.plugins[req.id]) {
         file.innerText = 'Installed';
         file.style.backgroundColor = 'var(--fdc-plugin-installed)';
-        if ( typeof universal.plugins[req.id].version !== 'undefined') {
-          if (universal.plugins[req.id].version != req.version) {
-            file.innerText = 'Update';
-            file.style.backgroundColor = 'var(--fdc-plugin-updatable)';
-          } else
-            if (universal.plugins[req.id].version == req.version) {
-              file.innerText = 'Up to date';
-              file.style.backgroundColor = 'var(--fdc-plugin-uptodate)';
-              file.onclick = () => {};
-            } else {
-              file.onclick = () => {};
-            }
-        } else {
-          file.onclick = () => {};
-        }
+        if (!universal.plugins[req.id].version) universal.plugins[req.id].version = '1.0.0';
+        if (universal.plugins[req.id].version != req.version) {
+          file.innerText = 'Update';
+          file.style.backgroundColor = 'var(--fdc-plugin-updatable)';
+        } else
+          if (universal.plugins[req.id].version == req.version) {
+            file.innerText = 'Up to date';
+            file.style.backgroundColor = 'var(--fdc-plugin-uptodate)';
+            file.onclick = () => {};
+          } else {
+            file.onclick = () => {};
+          }
       };
       li.appendChild(file);
       document.querySelector('.marketplace').appendChild(li);

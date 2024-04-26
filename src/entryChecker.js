@@ -8,7 +8,7 @@ if (process.argv.includes('--no-update')) {
 	return;
   }
 const autoupd = async () => {
-	const autoDat = await fetch('https://raw.githubusercontent.com/Freedeck/Freedeck/v6/autoupdate')
+	const autoDat = await fetch('https://raw.githubusercontent.com/Freedeck/Freedeck/v6/autoupdate?t=' + Date.now())
 const ver = await autoDat.text()
 if (pkg.version !== ver) {
 	console.log('Update available! Running \'git pull\'. [1/2] (Updating from ' + pkg.version + ' to ' + ver + ')');

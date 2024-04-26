@@ -1,6 +1,5 @@
 body {
-	color: var(--fd-col);
-	background: var(--fd-background);
+	color: var(--fd-txt-col);
 }
 
 input {

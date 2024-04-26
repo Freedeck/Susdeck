@@ -1,6 +1,6 @@
 const eventNames = require('./eventNames');
 const cfg = require('../managers/settings');
-const plugins = require('../managers/plugins').plugins;
+const plugins = require('../managers/plugins');
 const debug = require('../utils/debug');
 const NotificationManager = require('../managers/notifications');
 const tsm = require('../managers/temporarySettings');
@@ -26,7 +26,7 @@ module.exports = {
           pc.red('Client ' + socket.user + ' disconnected'),
           'Socket ' + socket._id);
     });
-    plugins().forEach((plugin) => {
+    plugins.plugins().forEach((plugin) => {
       if (plugin.instance.jsSockHook) {
         require(plugin.instance.jsSockHookPath)(socket, io, plugin.instance);
       }
@@ -50,7 +50,7 @@ module.exports = {
       }
       console.log('Client ' + user + ' has greeted server at ' + new Date());
       const pl = {};
-      const plu = plugins();
+      const plu = plugins.plugins();
       plu.forEach((plugin) => {
         pl[plugin.instance.id] = plugin.instance;
       });
@@ -60,6 +60,7 @@ module.exports = {
         NotificationManager,
         tempLoginID: socket.tempLoginID,
         plugins: pl,
+        disabled: plugins._disabled,
         events: eventNames,
         version: 'OSH v' + require(path.resolve('package.json')).version,
         server: serverVersion,

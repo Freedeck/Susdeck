@@ -7,14 +7,14 @@ const tsm = require('../managers/temporarySettings');
 const pc = require('../utils/picocolors');
 const path = require('path');
 
-const serverVersion = 'Freedeck OS6';
+const serverVersion = 'Freedeck OS-' + require(path.resolve('package.json')).version + 's';
 
 module.exports = {
   name: 'Main',
   id: 'fd.handlers.main',
   exec: ({
     socket,
-    io
+    io,
   }) => {
     socket._id = Math.random() * 2048 + '.fd';
     socket.tempLoginID = Math.random() * 1024 + '.tlid.fd';
@@ -23,8 +23,8 @@ module.exports = {
     socket.on('disconnect', () => {
       if (socket.user === 'Companion') tsm.delete('IC');
       debug.log(
-        pc.red('Client ' + socket.user + ' disconnected'),
-        'Socket ' + socket._id);
+          pc.red('Client ' + socket.user + ' disconnected'),
+          'Socket ' + socket._id);
     });
     plugins().forEach((plugin) => {
       if (plugin.instance.jsSockHook) {

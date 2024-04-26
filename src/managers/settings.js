@@ -1,9 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 
+const debug = require(path.resolve('./src/utils/debug.js'));
+
 const sc = {
   _cache: {},
   settings: () => {
+    debug.log('Settings accessed.');
     if (Object.keys(sc._cache).length === 0) {
       sc.update();
     }

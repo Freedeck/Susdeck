@@ -9,6 +9,7 @@ const pl = {
   _tyc: new Map(),
   _ch: new Map(),
   plugins: () => {
+    debug.log('Plugins accessed.');
     if (pl._plc.length >= 0) pl.update();
     return pl._plc;
   },

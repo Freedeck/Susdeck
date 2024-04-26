@@ -25,10 +25,10 @@ fetch('https://raw.githubusercontent.com/Freedeck/Freedeck/v6/autoupdate')
 	  });
 	});
   }
+}).finally(() => {
+	require(path.resolve('./src/index.js'));
+})
 
-});
-
-require(path.resolve('./src/index.js'));
 
 
 

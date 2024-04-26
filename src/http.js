@@ -19,7 +19,7 @@ module.exports = {
   http,
   server,
   app,
-  compileWebpack
+  compileWebpack,
 };
 
 const {webpack} = require('webpack');
@@ -78,7 +78,7 @@ app.get('/fdc/webpack', (req, res) => {
 app.get('/fdc/time', (req, res) => {
   res.send({data: compileTime});
 });
-app.get('/fdc/compile/:token', (req,res) => {
+app.get('/fdc/compile/:token', (req, res) => {
   if (req.params.token === settings.token) {
     compileWebpack().then(() => {
       res.send({compiled: hasWebpackCompiled});

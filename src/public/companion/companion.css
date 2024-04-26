@@ -36,6 +36,18 @@ input {
 	display: none;
 }
 
+.themelist {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.theme {
+	padding: 5px;
+	background-color: rgba(0,0,0,0.5);
+	color: white;
+	height: 100%;
+}
 
 #sidebar {
 	width: 100%;

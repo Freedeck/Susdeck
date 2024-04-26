@@ -1,7 +1,7 @@
 import {universal} from '../../scripts/universal.js';
 import './global.js';
 import './authfulPage.js';
-
+import './settingsThemes.js';
 
 await universal.init('Companion:Settings');
 

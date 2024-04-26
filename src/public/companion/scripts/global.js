@@ -13,6 +13,7 @@ universal.listenFor('init', () => {
 const sidebar = [
   {'Home': 'index.html'},
   {'Plugins': 'plugins.html'},
+  {'Marketplace': 'marketplace.html'},
   {'Settings': 'settings.html'},
   {'Connect': '/fdconnect.html'},
 ];

@@ -12,11 +12,6 @@
 		#keys {
 			display: none;
 		}
-		.btns {
-			display: flex;
-			flex-wrap: wrap;
-			gap: 0.5rem;
-		}
 	</style>
 </head>
 <body>
@@ -28,23 +23,38 @@
             <button onclick="universal.login(document.getElementById('password').value)">Login</button>
         </div>
     </dialog>
-    
-<h1>Your Plugins</h1>
-<p>Here you can view every plugin connected to Freedeck and it's related button and key type!</p>
-<button id="upd">Update Plugin Indexes</button>
-<ul class="btnlist"></ul>
-<div class="btns"></div>
 
-<h2>System Options</h2>
-<div class="disabledable"></div>
+<h1>Marketplace</h1>
+<p>Since the marketplace is in beta, it only supports Windows for now. Support for other platforms will be added later.</p>
+<button onclick="addRepo();">
+    Add Unofficial Repo
+</button>
+<ul class="repositories"></ul>
+<div class="marketplace"></div>
+
 <style>
     .disabledable {
         display: flex;
     }
+    .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border: 1px solid #000;
+        border-radius: 5px;
+        margin: 0.5rem 0;
+        gap: 1rem;
+        max-width: 50%;
+
+        background: var(--fdm-background);
+        background-size: var(--fdm-background-size);
+        animation: var(--fdm-bg-anim);
+    }
 </style>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="dist/pluginPage.js" type="module"></script>
+<script src="dist/marketplacePage.js" type="module"></script>
 <script>
     // console.log(universal.repositoryManager.unofficial)
     function addRepo() {

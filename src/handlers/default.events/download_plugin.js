@@ -17,7 +17,7 @@ module.exports = ({io, data}) => {
       file.close();
       io.emit(eventNames.default.plugin_downloaded);
       console.log('Plugin ' + data.id + ' downloaded. Enabling (Rebuilding plugin indexes)...');
-      plugins.update();
+      plugins.reload();
       io.emit(eventNames.default.plugins_updated);
     });
     file.on('error', (err) => {

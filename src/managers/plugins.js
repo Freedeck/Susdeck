@@ -13,10 +13,26 @@ const pl = {
     if (pl._plc.length >= 0) pl.update();
     return pl._plc;
   },
+  reload: () => {
+    const plList = pl.plugins();
+    plList.forEach((plugin) => {
+      plugin.instance.stop();
+      plList.delete(plugin.id);
+    });
+    pl.types().forEach((type) => {
+      type.instance.stop();
+      pl._tyc.delete(type.id);
+    });
+    for (const key in require.cache) {
+      if (key.startsWith(path.resolve('./tmp'))) {
+        delete require.cache[key];
+      }
+    }
+    pl.update();
+  },
   update: () => {
-    console.log('Updating plugin library at ' + path.resolve('./plugins'));
     fs.readdirSync(path.resolve('./plugins')).forEach((file) => {
-      if (!file.endsWith('.Freedeck')) return;
+      if (!file.endsWith('.Freedeck') || file.endsWith('.disabled')) return;
       AsarBundleRunner.extract('./plugins/' + file).then((a) => {
         AsarBundleRunner.run(a).then((instantiated) => {
           debug.log(picocolors.yellow('Plugin initialized ' + instantiated.name + ' - ID ' + instantiated.id), 'Plugin Manager');

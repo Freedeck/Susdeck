@@ -43,6 +43,8 @@ universal.on(universal.events.default.plugin_downloaded, () => {
 
 document.querySelector('#upd').onclick =() => {
   universal.send(universal.events.default.update_plugins);
+  if (!dialog.open) dialog.showModal();
+  dialog.innerHTML = `<p>Reloading plugins!</p>`;
 };
 
 universal.on(universal.events.default.plugins_updated, () => {

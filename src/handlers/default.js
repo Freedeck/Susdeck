@@ -70,9 +70,6 @@ module.exports = {
       socket.emit(eventNames.information, JSON.stringify(serverInfo));
 
       setInterval(() => {
-        // cfg.update();
-        // serverInfo['cfg'] = cfg.settings();
-        // socket.emit(eventNames.default.no_init_info, JSON.stringify(serverInfo)); // Test, make sure this is viable.
         const data = NotificationManager.get();
         if (data === '' ||
           typeof data === 'undefined' ||

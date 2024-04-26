@@ -16,6 +16,7 @@ module.exports = class Plugin {
   imports = [];
   id;
   disabled = false;
+  stopped = false;
   hasInit = false;
   channelsListening = [];
   channelsSendQueue = [];
@@ -55,6 +56,20 @@ module.exports = class Plugin {
     return this;
   }
   hooks = [];
+
+  /**
+   * Code to run when the plugin is stopping.
+   */
+  onStopping() {}
+
+  /**
+   * End the plugin.
+   */
+  stop() {
+    this.onStopping();
+    this.disabled = true;
+    this.stopped = true;
+  }
 
   /**
    * @param {String} hook The JS file that will be loaded into the socket handler

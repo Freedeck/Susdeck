@@ -209,7 +209,7 @@ const universal = {
   init: async function(user) {
     try {
       await universal._initFn(user);
-      universal.setTheme(universal.config.theme ? universal.config.theme : 'default');
+      universal.setTheme(universal.config.theme ? universal.config.theme : 'default', false);
       const devices = await navigator.mediaDevices.enumerateDevices();
       devices.forEach((device) => {
         if (device.kind == 'audiooutput') universal.audioClient._player.monitorPotential.push(device);

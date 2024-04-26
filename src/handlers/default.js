@@ -54,6 +54,7 @@ module.exports = {
       plu.forEach((plugin) => {
         pl[plugin.instance.id] = plugin.instance;
       });
+      cfg.update()
       const serverInfo = {
         id: socket._id,
         NotificationManager,

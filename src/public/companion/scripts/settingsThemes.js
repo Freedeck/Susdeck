@@ -12,6 +12,7 @@ Object.keys(universal.themes).forEach((id) => {
   apply.innerText = 'Apply';
   apply.onclick = () => {
     universal.send(universal.events.companion.set_theme, id);
+    window.location.reload();
   };
   if (universal.load('theme') == id) {
     title.innerText += ' (Active)';

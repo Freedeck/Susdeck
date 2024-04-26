@@ -13,6 +13,12 @@ Object.keys(universal.themes).forEach((id) => {
   apply.onclick = () => {
     universal.send(universal.events.companion.set_theme, id);
   };
+  if (universal.load('theme') == id) {
+    title.innerText += ' (Active)';
+    apply.disabled = true;
+    apply.style.backgroundColor = 'rgba(0, 0, 0, 0.125)';
+    apply.innerText = 'In Use';
+  }
   element.appendChild(desc);
   element.appendChild(apply);
   document.querySelector('.themelist').appendChild(element);

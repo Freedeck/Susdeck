@@ -186,7 +186,28 @@ const universal = {
     universal.send(universal.events.login.login, {passwd});
   },
   themeData: {},
-  themes: ['default', 'bigger', 'big_black'], /* Theme list */
+  themes: {
+    default: {
+      'name': 'Default',
+      'description': 'The default theme for Freedeck',
+    },
+    red: {
+      'name': 'Red',
+      'description': 'A red theme for Freedeck',
+    },
+    bigger: {
+      'name': 'Bigger Buttons',
+      'description': 'The default theme with bigger buttons',
+    },
+    big_black: {
+      'name': 'Bigger Buttons (Black)',
+      'description': 'The default theme with bigger buttons and a black (AMOLED-like) background',
+    },
+    black: {
+      'name': 'Black',
+      'description': 'A black (AMOLED-like) theme for Freedeck',
+    }
+  }, /* Theme list */
   setTheme: function(name, global=true) {
     let fu = name;
     fetch('/scripts/theming/'+name+'/manifest.json').then((res)=>res.json()).then((json) => {

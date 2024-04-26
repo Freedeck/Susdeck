@@ -60,7 +60,7 @@ module.exports = {
         tempLoginID: socket.tempLoginID,
         plugins: pl,
         events: eventNames,
-        version: 'OA v' + require(path.resolve('package.json')).version,
+        version: 'OSH v' + require(path.resolve('package.json')).version,
         server: serverVersion,
         cfg: cfg.settings(),
         profiles: cfg.settings['profiles'],

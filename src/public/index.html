@@ -21,8 +21,12 @@
 <body>
     <div id="sidebar"><ul></ul></div>
     <div class="settings-menu">
-        <p>In App Settings</p>
-        <div class="settings"></div>
+        <div class="settings">
+            <div class="themelist"></div>
+            <p id="version">Freedeck v6.0.0-Loading</p>
+            <button onclick="universal.send(universal.events.default.recompile)">Ask server to recompile Webpack bundles</button>
+            <button onclick="window.location.href = '/companion'">To Companion View</button>
+        </div>
         <button onclick="document.querySelector('.settings-menu').style.display = 'none';">Close</button>
     </div>
     <dialog class="dialog" id="login-dialog">
@@ -35,5 +39,6 @@
     </dialog>
     <script src="/socket.io/socket.io.js"></script>
     <script src="companion/dist/clientMain.js" type="module"></script>
+    <script src="companion/dist/settingsThemes.js" type="module"></script>
 </body>
 </html>

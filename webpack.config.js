@@ -7,6 +7,7 @@ const cfg = {
     pluginPage: path.resolve(__dirname, './src/public/companion/scripts/pluginPage.js'),
     marketplacePage: path.resolve(__dirname, './src/public/companion/scripts/marketplacePage.js'),
     settingsPage: path.resolve(__dirname, './src/public/companion/scripts/settingsPage.js'),
+    settingsThemes: path.resolve(__dirname, './src/public/companion/scripts/settingsThemes.js'),
     clientMain: path.resolve(__dirname, './src/public/scripts/main.js'),
   },
   output: {

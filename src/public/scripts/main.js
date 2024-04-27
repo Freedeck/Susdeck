@@ -87,3 +87,7 @@ document.addEventListener('touchend', (e) => {
   touchendX = e.changedTouches[0].screenX;
   checkDirection();
 });
+
+if (document.querySelector('#version')) {
+  document.querySelector('#version').innerText = 'Freedeck Server: ' + universal._information.server + '\nFreedeck SocketHandler: ' + universal._information.version;
+}

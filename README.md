@@ -9,15 +9,17 @@
 
 ## Getting Started with Freedeck
 
-### Docker Install
+### Instructions (Super Duper Easy)
 
-[See `/assets/guides/docker.md` for instructions on how to install Freedeck with Docker.](/assets/guides/docker.md)
+- Clone the repo
+  - Run this in your terminal to clone the repo (to retain git info for autoupdater)
+  - ` git clone https://github.com/Freedeck/Freedeck.git `
+- Go to where you cloned the repo in File Explorer
+- Run `init.bat`
+- Profit
 
-### System Install
 
-This section is the most supported way to run Freedeck.
-
-#### Instructions
+### Instructions (Semi-Advanced)
 
 - Clone the repo
   - ` git clone https://github.com/Freedeck/Freedeck.git `

@@ -15,7 +15,10 @@ if (pkg.version !== ver) {
 	const {spawn} = require('child_process');
 
 	// Create a new child process for 'git pull'
-	const spawned = spawn('git', ['pull'], {detached: true, stdio: 'ignore'});
+	const spawned = spawn('git', ['pull'], {
+		cwd: path.resolve('./'),
+		detached: true, stdio: 'ignore'
+	});
 	spawned.on('exit', () => {
 	  console.log('Pulled latest changes. Running \'git fetch\'. [2/2]');
 	  const spawned2 = spawn('git', ['fetch'], {detached: true, stdio: 'ignore'});

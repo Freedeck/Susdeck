@@ -6,7 +6,8 @@ if (process.argv.includes('--no-update')) {
 	console.log('Skipping update check.');
 	require(path.resolve('./src/index.js'));
 	return;
-  }
+}
+
 const autoupd = async () => {
 	const autoDat = await fetch('https://raw.githubusercontent.com/Freedeck/Freedeck/v6/autoupdate?t=' + Date.now())
 const ver = await autoDat.text()

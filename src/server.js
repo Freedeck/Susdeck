@@ -16,6 +16,11 @@ fs.readdirSync(path.resolve('./src/handlers')).forEach((file) => {
   if (!handler.exec) return;
   handlers.set(handler.name, handler);
 });
+
+if (!fs.existsSync('plugins')) {
+  fs.mkdirSync('plugins');
+}
+
 const types = pl.types;
 
 pl.update();

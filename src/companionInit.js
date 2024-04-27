@@ -6,6 +6,7 @@ module.exports = (_page='./src/fdconnect.html', _showTitlebar=true, width=800, h
       width,
       height,
       frame: _showTitlebar,
+      icon: path.resolve('./assets/logo_big.ico'),
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,

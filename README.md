@@ -9,6 +9,14 @@
 
 ## Getting Started with Freedeck
 
+### Instructions (Easier Than Easy)
+
+- Go to [https://freedeck.app](https://freedeck.app)
+- Click "Download"
+- Run the installer
+- Click "Install" in the installer
+- You're done! Check the start menu for a shortcut!
+
 ### Instructions (Super Duper Easy)
 
 - Clone the repo

@@ -1,0 +1,8 @@
+:root {
+	--fd-icon-count:11;
+	--fd-template-columns:repeat(5,2fr);
+	--fd-background:linear-gradient(45deg, rgba(0, 183, 255, 1) 0%, rgba(33, 192, 255, 1) 33%, rgba(0, 183, 255, 1) 66%, rgba(33, 192, 255, 1) 100%);
+	--fd-background-size:400% 400%;
+	--fd-font-family:Roboto, sans-serif;
+	--fd-modal-color:rgba(33, 192, 255, 1);
+}

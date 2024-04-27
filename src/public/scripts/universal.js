@@ -195,6 +195,10 @@ const universal = {
       'name': 'Red',
       'description': 'A red theme for Freedeck',
     },
+    blue: {
+      'name': 'Blue',
+      'description': 'A blue theme for Freedeck',
+    },
     bigger: {
       'name': 'Bigger Buttons',
       'description': 'The default theme with bigger buttons',

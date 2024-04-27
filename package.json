@@ -8,7 +8,7 @@
     "companion": "electron . companion",
     "server": "node src/index.js server",
     "debug-server": "node src/index.js server debug",
-    "lint": "eslint ** --fix  --ignore-pattern *.css --ignore-pattern src/public/hooks/*  --ignore-pattern *.mp*  --ignore-pattern *.wav --ignore-pattern *.bat --ignore-pattern *.html --ignore-pattern *.min* --ignore-pattern *.fd.js --ignore-pattern *.Freedeck --ignore-pattern *.json --ignore-pattern *.md --ignore-pattern *.webm",
+    "lint": "eslint ** --fix  --ignore-pattern *.css --ignore-pattern *.afphoto --ignore-pattern LICENSE --ignore-pattern autoupdate --ignore-pattern *.png --ignore-pattern *.ico --ignore-pattern src/public/companion/dist/* --ignore-pattern src/public/hooks/*  --ignore-pattern *.mp*  --ignore-pattern *.wav --ignore-pattern *.bat --ignore-pattern *.html --ignore-pattern *.min* --ignore-pattern *.fd.js --ignore-pattern *.Freedeck --ignore-pattern *.json --ignore-pattern *.md --ignore-pattern *.webm",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

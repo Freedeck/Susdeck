@@ -38,7 +38,7 @@ input {
 
 .themelist {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(5, 1fr);
 	gap: 1rem;
 
 }
@@ -48,6 +48,7 @@ input {
 	background-color: rgba(0,0,0,0.5);
 	color: white;
 	height: 100%;
+	max-width: 14rem;
 	border-radius: 5px;
 	transition-duration: .25s;
 }

@@ -102,15 +102,26 @@ module.exports = class Plugin {
    */
   internalAdd(type, hook, copyTo) {
     const hp = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', hook);
-    this.hooks.push(new HookRef(hp, type, hook));
-    if (!fs.existsSync(path.resolve(copyTo))) {
-      fs.mkdirSync(path.resolve(copyTo));
+
+    if (!fs.existsSync(hp)) {
+      console.log('Source file does not exist: ' + hp);
+      return;
     }
-    fs.copyFile(hp, path.resolve(copyTo, hook), (err) => {
+
+    this.hooks.push(new HookRef(hp, type, hook));
+
+    const destination = path.resolve(copyTo, path.dirname(hook));
+
+    if (!fs.existsSync(destination)) {
+      fs.mkdirSync(destination, {recursive: true});
+    }
+
+    fs.copyFile(hp, path.resolve(destination, path.basename(hook)), (err) => {
       if (err) {
         console.log('Failed to copy hook: ' + err);
+      } else {
+        console.log('Hook copied to ' + path.resolve(destination, path.basename(hook)));
       }
-      console.log('Hook copied to ' + path.resolve(copyTo, hook));
     });
   }
 

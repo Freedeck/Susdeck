@@ -107,7 +107,7 @@ if (DO_COMPANION) {
       splash.hide();
       splash.close();
       require('./companionInit')('./src/fdconnect.html', true, 1145, 750, false);
-      require('./server');
+      if (DOES_RUN_SERVER) require('./server');
     });
   });
 }

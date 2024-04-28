@@ -33,27 +33,33 @@ const pl = {
     }
     pl.update();
   },
-  update: () => {
+  update: async () => {
     pl._disabled = [];
     pl._plc.clear();
     pl._tyc.clear();
-    fs.readdirSync(path.resolve('./plugins')).forEach((file) => {
+    const files = fs.readdirSync(path.resolve('./plugins'));
+    for (const file of files) {
       if (file.endsWith('.disabled')) {
         pl._disabled.push(file);
-        return;
+        continue;
       }
-      if (!file.endsWith('.Freedeck')) return;
-      const worker = new Worker(path.resolve('./src/managers/workers/plugins/loader.js'));
-      worker.postMessage(file);
-    });
+      if (!file.endsWith('.Freedeck')) continue;
+      try {
+        await pl.load(file);
+      } catch (er) {
+        console.log(er);
+      }
+    }
   },
-  load: (file) => {
-    AsarBundleRunner.extract('./plugins/' + file).then((a) => {
-      AsarBundleRunner.run(a).then((instantiated) => {
-        debug.log(picocolors.yellow('Plugin initialized ' + instantiated.name + ' - ID ' + instantiated.id), 'Plugin Manager');
-        pl._plc.set(instantiated.id, {instance: instantiated});
-      });
-    });
+  load: async (file) => {
+    try {
+      const a = await AsarBundleRunner.extract('./plugins/' + file);
+      const instantiated = await AsarBundleRunner.run(a);
+      debug.log(picocolors.yellow('Plugin initialized ' + instantiated.name + ' - ID ' + instantiated.id), 'Plugin Manager');
+      pl._plc.set(instantiated.id, {instance: instantiated});
+    } catch (err) {
+      console.log(picocolors.red('Error while trying to load plugin ' + file + ': ' + err), 'Plugin Manager');
+    }
   },
   types: () => {
     return pl._tyc;

@@ -70,14 +70,6 @@ module.exports = {
 
       socket.emit(eventNames.information, JSON.stringify(serverInfo));
 
-      setInterval(() => {
-        const data = NotificationManager.get();
-        if (data === '' ||
-          typeof data === 'undefined' ||
-          !('data' in data)) return;
-        io.emit(eventNames.default.notif, JSON.stringify(data));
-      }, 150);
-
       socket.emit(eventNames.default.notif, JSON.stringify({
         sender: 'Server',
         data: 'Connected to server!',

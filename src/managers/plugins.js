@@ -4,8 +4,6 @@ const debug = require(path.resolve('./src/utils/debug.js'));
 const picocolors = require(path.resolve('./src/utils/picocolors.js'));
 const AsarBundleRunner = require('asar-bundle-runner');
 
-const {Worker} = require('node:worker_threads'); 
-
 const pl = {
   _plc: new Map(),
   _disabled: [],
@@ -38,17 +36,11 @@ const pl = {
     pl._plc.clear();
     pl._tyc.clear();
     const files = fs.readdirSync(path.resolve('./plugins'));
-    for (const file of files) {
-      if (file.endsWith('.disabled')) {
-        pl._disabled.push(file);
-        continue;
-      }
-      if (!file.endsWith('.Freedeck')) continue;
-      try {
-        await pl.load(file);
-      } catch (er) {
-        console.log(er);
-      }
+    const loadPromises = files.filter(file => file.endsWith('.Freedeck') && !file.endsWith('.disabled')).map(file => pl.load(file));
+    try {
+      await Promise.all(loadPromises);
+    } catch (er) {
+      console.log(er);
     }
   },
   load: async (file) => {

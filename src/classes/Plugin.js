@@ -53,7 +53,7 @@ module.exports = class Plugin {
     if (!this.hasInit) {
       console.log('Plugin didn\'t initialize?');
     }
-    return this;
+    // return this;
   }
   hooks = [];
 

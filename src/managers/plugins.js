@@ -14,7 +14,7 @@ const pl = {
     if (pl._plc.length >= 0) pl.update();
     return pl._plc;
   },
-  reload: () => {
+  reload: async () => {
     const plList = pl.plugins();
     plList.forEach((plugin) => {
       plugin.instance.stop();
@@ -29,9 +29,10 @@ const pl = {
         delete require.cache[key];
       }
     }
-    pl.update();
+    await pl.update();
   },
   update: async () => {
+    console.log('This may take a second- we\'re rebuilding the plugin cache.')
     pl._disabled = [];
     pl._plc.clear();
     pl._tyc.clear();

@@ -116,12 +116,13 @@ module.exports = class Plugin {
       fs.mkdirSync(destination, {recursive: true});
     }
 
-    fs.copyFile(hp, path.resolve(destination, path.basename(hook)), (err) => {
-      if (err) {
-        console.log('Failed to copy hook: ' + err);
-      } else {
-        console.log('Hook copied to ' + path.resolve(destination, path.basename(hook)));
-      }
+    setImmediate(() => {
+      fs.copyFile(hp, path.resolve(destination, path.basename(hook)), (err) => {
+        if (err) {
+          console.log('Failed to copy hook: ' + err);
+        } else {
+        }
+      });
     });
   }
 

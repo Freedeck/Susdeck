@@ -14,7 +14,7 @@ const pl = {
     if (pl._plc.length >= 0) pl.update();
     return pl._plc;
   },
-  reload: () => {
+  reload: async () => {
     const plList = pl.plugins();
     plList.forEach((plugin) => {
       plugin.instance.stop();
@@ -29,36 +29,30 @@ const pl = {
         delete require.cache[key];
       }
     }
-    pl.update();
+    await pl.update();
   },
-  update: () => {
+  update: async () => {
+    console.log('This may take a second- we\'re rebuilding the plugin cache.')
     pl._disabled = [];
     pl._plc.clear();
     pl._tyc.clear();
-    fs.readdirSync(path.resolve('./plugins')).forEach((file) => {
-      if (file.endsWith('.disabled')) {
-        pl._disabled.push(file);
-        return;
-      }
-      if (!file.endsWith('.Freedeck')) return;
-      try {
-        pl.load(file);
-      } catch (err) {
-        console.log(picocolors.red('Error while trying to load plugin ' + file + ': ' + err), 'Plugin Manager');
-        if (err.includes('hooks')) {
-          console.log('This seems to be a hook error. Hold on, because we\'re gonna try again.');
-          pl.load(file);
-        }
-      }
-    });
+    const files = fs.readdirSync(path.resolve('./plugins'));
+    const loadPromises = files.filter(file => file.endsWith('.Freedeck') && !file.endsWith('.disabled')).map(file => pl.load(file));
+    try {
+      await Promise.all(loadPromises);
+    } catch (er) {
+      console.log(er);
+    }
   },
-  load: (file) => {
-    AsarBundleRunner.extract('./plugins/' + file).then((a) => {
-      AsarBundleRunner.run(a).then((instantiated) => {
-        debug.log(picocolors.yellow('Plugin initialized ' + instantiated.name + ' - ID ' + instantiated.id), 'Plugin Manager');
-        pl._plc.set(instantiated.id, {instance: instantiated});
-      });
-    });
+  load: async (file) => {
+    try {
+      const a = await AsarBundleRunner.extract('./plugins/' + file);
+      const instantiated = await AsarBundleRunner.run(a);
+      debug.log(picocolors.yellow('Plugin initialized ' + instantiated.name + ' - ID ' + instantiated.id), 'Plugin Manager');
+      pl._plc.set(instantiated.id, {instance: instantiated});
+    } catch (err) {
+      console.log(picocolors.red('Error while trying to load plugin ' + file + ': ' + err), 'Plugin Manager');
+    }
   },
   types: () => {
     return pl._tyc;

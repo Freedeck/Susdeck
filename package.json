@@ -1,8 +1,8 @@
 {
   "name": "freedeck",
-  "version": "6.0.0ob-1",
+  "version": "6.0.0ob-2",
   "description": "The FOSS alternative to the Elgato Stream Deck, now supercharged with a new codebase. https://freedeck.org",
-  "main": "src/entryChecker.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "electron .",
     "companion": "electron . companion",

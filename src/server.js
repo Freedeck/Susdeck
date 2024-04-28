@@ -3,6 +3,8 @@ const path = require('path');
 const fs = require('fs');
 const picocolors = require('./utils/picocolors');
 const debug = require('./utils/debug');
+const NotificationManager = require(path.resolve('./src/managers/notifications'));
+const eventNames = require(path.resolve('./src/handlers/eventNames'));
 const {server} = require('./http');
 const io = new socketIO.Server(server);
 
@@ -28,37 +30,51 @@ pl.update();
 const channels = pl._ch;
 const clients = [];
 
+console.log('Initializing server...');
+
 io.on('connection', (socket) => {
   setInterval(() => {
-    plugins.forEach((plugin) => {
-      plugin = plugin.instance;
-      plugin.channelsCreated.forEach((channel) => {
+    for (const pluginObject of plugins) {
+      const plugin = pluginObject[1].instance;
+      for (const channel of plugin.channelsCreated) {
         if (!channels.has(channel)) {
-          channels.set(channel, []);
+          channels.set(channel, new Set());
         }
-      });
-      plugin.channelsSendQueue.forEach((channel) => {
+      }
+      for (const channel of plugin.channelsSendQueue) {
         if (channels.has(channel.channel)) {
-          channels.get(channel.channel).push(channel.data);
-          plugin.channelsSendQueue.splice(plugin.channelsSendQueue.indexOf(channel), 1);
+          channels.get(channel.channel).add(channel.data);
+          plugin.channelsSendQueue.delete(channel);
         }
-      });
-      plugin.channelsListening.forEach((channel) => {
+      }
+      for (const channel of plugin.channelsListening) {
         if (channels.has(channel.channel)) {
-          channels.get(channel.channel).forEach((callback) => {
+          const channelCallbacks = channels.get(channel.channel);
+          for (const callback of channelCallbacks) {
             channel.callback(callback);
-            clients.forEach((client) => {
-              client.emit('channel_' + plugin.id + '_' + channel.channel, callback);
-            });
-            channels.get(channel.channel).splice(channels.get(channel.channel).indexOf(callback), 1);
-          });
+            for (const client of clients) {
+              client.emit(`channel_${plugin.id}_${channel.channel}`, callback);
+            }
+            channelCallbacks.delete(callback);
+          }
         }
-      });
-    });
-  });
-  clients.push(socket);
+      }
+    }
+  }, 1000);
   socket._originalOn = socket.on;
   socket._originalEmit = socket.emit;
+
+  /**
+       * Send latest notification to Freedeck Client.
+       * @param {Object} notification Notification data for Freedeck Client to parse.
+       */
+  function sendNotification(notification) {
+    io.emit(eventNames.default.notif, JSON.stringify(notification));
+    NotificationManager.once('newNotification', sendNotification);
+  }
+
+  NotificationManager.once('newNotification', sendNotification);
+
   socket.on = (event, callback) => {
     socket._originalOn(event, callback);
     debug.log(picocolors.green('Listening for event ' + event), 'SAPIConn');
@@ -68,9 +84,18 @@ io.on('connection', (socket) => {
     debug.log(picocolors.green('Emitted new event ' + event + ', data: ' + JSON.stringify(data)), 'SAPIConn');
   };
 
+  if (!clients.includes(socket)) {
+    console.log('Client has connected');
+    clients.push(socket);
+  }
+
   socket.on('disconnect', () => {
-    clients.splice(clients.indexOf(socket), 1);
+    const index = clients.indexOf(socket);
+    if (index !== -1) {
+      clients.splice(index, 1);
+    }
   });
+
   try {
     handlers.forEach((handler) => {
       try {

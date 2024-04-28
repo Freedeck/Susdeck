@@ -53,7 +53,7 @@ module.exports = class Plugin {
     if (!this.hasInit) {
       console.log('Plugin didn\'t initialize?');
     }
-    return this;
+    // return this;
   }
   hooks = [];
 
@@ -102,9 +102,28 @@ module.exports = class Plugin {
    */
   internalAdd(type, hook, copyTo) {
     const hp = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', hook);
+
+    if (!fs.existsSync(hp)) {
+      console.log('Source file does not exist: ' + hp);
+      return;
+    }
+
     this.hooks.push(new HookRef(hp, type, hook));
-    if (!fs.existsSync(path.resolve(copyTo))) fs.mkdirSync(path.resolve(copyTo));
-    fs.cpSync(hp, path.resolve(copyTo, hook));
+
+    const destination = path.resolve(copyTo, path.dirname(hook));
+
+    if (!fs.existsSync(destination)) {
+      fs.mkdirSync(destination, {recursive: true});
+    }
+
+    setImmediate(() => {
+      fs.copyFile(hp, path.resolve(destination, path.basename(hook)), (err) => {
+        if (err) {
+          console.log('Failed to copy hook: ' + err);
+        } else {
+        }
+      });
+    });
   }
 
   /**

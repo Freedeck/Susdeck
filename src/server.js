@@ -28,6 +28,8 @@ pl.update();
 const channels = pl._ch;
 const clients = [];
 
+console.log('Initializing server...');
+
 io.on('connection', (socket) => {
   setInterval(() => {
     plugins.forEach((plugin) => {

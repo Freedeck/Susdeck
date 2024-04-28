@@ -4,6 +4,8 @@ const debug = require(path.resolve('./src/utils/debug.js'));
 const picocolors = require(path.resolve('./src/utils/picocolors.js'));
 const AsarBundleRunner = require('asar-bundle-runner');
 
+const {Worker} = require('node:worker_threads'); 
+
 const pl = {
   _plc: new Map(),
   _disabled: [],
@@ -41,15 +43,8 @@ const pl = {
         return;
       }
       if (!file.endsWith('.Freedeck')) return;
-      try {
-        pl.load(file);
-      } catch (err) {
-        console.log(picocolors.red('Error while trying to load plugin ' + file + ': ' + err), 'Plugin Manager');
-        if (err.includes('hooks')) {
-          console.log('This seems to be a hook error. Hold on, because we\'re gonna try again.');
-          pl.load(file);
-        }
-      }
+      const worker = new Worker(path.resolve('./src/managers/workers/plugins/loader.js'));
+      worker.postMessage(file);
     });
   },
   load: (file) => {

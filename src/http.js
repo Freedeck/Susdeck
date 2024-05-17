@@ -41,7 +41,7 @@ let compileTime = 0;
  *  run webpack
  * @param {*} wp  a
  * @return {true}
- */
+*/
 function runWebpack(wp) {
   return new Promise((resolve, reject) => {
     wp.run((err, stats) => {
@@ -60,7 +60,7 @@ function runWebpack(wp) {
 /**
  * compiled webpack
  * @return {Promise<void>}
- */
+*/
 async function compileWebpack() {
   hasWebpackCompiled = 0;
   const wp = webpack(webpackConfig);
@@ -71,6 +71,46 @@ async function compileWebpack() {
 compileWebpack().catch((err) => console.error(err));
 
 app.use(express.static(path.join(__dirname, './public')));
+
+const plugins = require('./managers/plugins');
+
+const handoffData = {
+  genTime: Date.now(),
+  token: Math.random().toString(36).substring(2, 15) + '@h' + Math.random().toString(36).substring(2, 15),
+  hasAccessed: false,
+};
+
+app.get('/handoff/get-token', (req, res) => {
+  if (handoffData.genTime + 60000 < Date.now()) {
+    handoffData.token = Math.random().toString(36).substring(2, 15) + '@h' + Math.random().toString(36).substring(2, 15);
+    handoffData.genTime = Date.now();
+    handoffData.hasAccessed = false;
+  }
+  if (!handoffData.hasAccessed) {
+    // handoffData.hasAccessed = true;
+    res.send(handoffData.token);
+  }
+  res.send('0'.repeat(handoffData.token.length));
+});
+
+app.get('/handoff/:token/download-plugin/:link', (req, res) => {
+  if (req.params.token !== handoffData.token) res.send({status: 'error', message: 'Invalid token'});
+  const stream = fs.createWriteStream(path.resolve('./plugins/' + req.params.link.split('/').pop()));
+  http.get(req.params.link, (response) => {
+    response.pipe(stream);
+    stream.on('finish', () => {
+      stream.close();
+      plugins.reload();
+      res.send({status: 'success', message: 'Downloaded plugin & reloaded plugins.'});
+    });
+  });
+});
+
+app.get('/handoff/:token/reload-plugins', (req, res) => {
+  if (req.params.token !== handoffData.token) res.send({status: 'error', message: 'Invalid token'});
+  plugins.reload();
+  res.send({status: 'success', message: 'Reloaded plugins.'});
+});
 
 app.get('/fdc', (req, res) => res.sendStatus(200));
 app.get('/fdc/webpack', (req, res) => {

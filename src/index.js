@@ -21,8 +21,15 @@ const autoupd = async () => {
   }
   return new Promise(async (resolve, reject) => {
     const autoDat = await fetch('https://freedeck.app/release?t=' + Date.now())
-        .catch((er) => console.log(picocolors.bgRed('Unable to fetch autoupdate information' + er)));
-    const verData = await (await autoDat.text()).split('\n');
+        .catch((er) => {
+          resolve(true);
+          err = 1; console.log(picocolors.bgRed('Unable to fetch autoupdate information' + er));
+        });
+    const autoDatTe = await (await autoDat.text().catch((er) => {
+      resolve(true);
+      console.log(picocolors.bgRed('Error while getting text: ' + er));
+    }));
+    const verData = autoDatTe.split('\n');
     const cfg = settings.settings();
     if (cfg.release != 'stable' && cfg.release != 'dev') {
       console.log(picocolors.bgRed('Unable to find autoupdate information. Defaulting to stable.'));

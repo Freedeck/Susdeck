@@ -285,7 +285,7 @@ const universal = {
       {
         title: 'freedeck.app',
         who: 'Official Freedeck Repository',
-        link: 'https://freedeck.app/_fd/repository.php',
+        link: 'https://freedeck.app/fd_repository',
       },
     ],
     unofficial: [],

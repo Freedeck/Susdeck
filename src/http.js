@@ -9,6 +9,7 @@ const server = http.createServer(app);
 const formidable = require('formidable');
 let hasWebpackCompiled = 0;
 const config = require('./managers/settings');
+const notifMan = require('./managers/notifications');
 
 const settings = config.settings();
 const PORT = settings.port || 5754;
@@ -112,21 +113,15 @@ app.get('/handoff/:token/reload-plugins', (req, res) => {
   res.send({status: 'success', message: 'Reloaded plugins.'});
 });
 
-app.get('/fdc', (req, res) => res.sendStatus(200));
-app.get('/fdc/webpack', (req, res) => {
+app.get('/handoff/:token/notify/:data', (req, res) => {
+  if (req.params.token !== handoffData.token) res.send({status: 'error', message: 'Invalid token'});
+  notifMan.add('Handoff', req.params.data);
+  res.send({status: 'success', message: 'Sent notification.'});
+});
+
+app.get('/connect/status', (req, res) => res.sendStatus(200));
+app.get('/connect/webpack', (req, res) => {
   res.send({compiled: hasWebpackCompiled});
-});
-app.get('/fdc/time', (req, res) => {
-  res.send({data: compileTime});
-});
-app.get('/fdc/compile/:token', (req, res) => {
-  if (req.params.token === settings.token) {
-    compileWebpack().then(() => {
-      res.send({compiled: hasWebpackCompiled});
-    });
-  } else {
-    res.sendStatus(401);
-  };
 });
 
 app.post('/fd/api/upload/', (request, response) => {

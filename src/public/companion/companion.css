@@ -114,10 +114,11 @@ body {
 }
 
 .sidebar {
-	position: fixed;
+	/* position: fixed;
 	top: 0;
-	left: 0;
+	left: 0; */
 	min-width: 15%;
+	min-height: 100%;
 	padding: 5px;
 	background-color: rgba(0, 0, 0, 0.5);
 	color: white;
@@ -194,6 +195,21 @@ body {
 	display: flex;
 	flex-direction: row;
 	gap: .25rem;
+}
+
+.flex-wrap-r-special {
+	display: flex;
+	flex-direction: row;
+	gap: .25rem;
+	justify-content: space-between;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+}
+
+#keys {
+	gap: 1rem;
 }
 
 .disabled {

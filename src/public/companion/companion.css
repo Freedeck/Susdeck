@@ -204,6 +204,41 @@ body {
 	height: 100%;
 }
 
+.toggle-sidebar button {
+	background-color: transparent;
+	border: 0;
+	cursor: pointer;
+	transition-duration: .25s;
+	transform: rotate(180deg);
+}
+
+@keyframes sidebar-slide-in {
+	0% {
+		left: -15%;
+	}
+	100% {
+		left: 0;
+	}
+}
+
+@keyframes sidebar-slide-out {
+	0% {
+		left: 0;
+	}
+	100% {
+		left: -15%;
+	}
+}
+
+.toggle-sidebar {
+	transition-duration: .25s;
+	position: fixed;
+	top: 50%;
+	left: 11.5%;
+	width: 2rem;
+	transform: translate(0, -50%);
+}
+
 #keys {
 	gap: 1rem;
 }

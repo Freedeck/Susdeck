@@ -74,6 +74,24 @@ function reloadSounds() {
   });
   // document.getElementById('keys').style.maxHeight = document.querySelectorAll('.k').length * (10*12)/window.innerWidth + '%';
 }
+
+document.querySelector('.toggle-sidebar button').onclick = (ev) => {
+  if (document.querySelector('.sidebar').style.display == 'block') {
+    document.querySelector('.sidebar').style.animation = 'sidebar-slide-out 0.5s';
+    document.querySelector('.sidebar').style.animationFillMode = 'forward';
+    document.querySelector('.toggle-sidebar button').style.transform = 'rotate(0deg)';
+    document.querySelector('.toggle-sidebar').style.left = '0';
+    setTimeout(() => {
+      document.querySelector('.sidebar').style.display = 'none';
+    }, 500);
+  } else {
+    document.querySelector('.sidebar').style.display = 'block';
+    document.querySelector('.sidebar').style.animation = 'sidebar-slide-in 0.5s';
+    document.querySelector('.toggle-sidebar button').style.transform = 'rotate(180deg)';
+    document.querySelector('.toggle-sidebar').style.left = 'calc(11.5%)';
+  }
+};
+
 reloadSounds();
 
 window['button-types'] = [

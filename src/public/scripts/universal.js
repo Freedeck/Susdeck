@@ -285,7 +285,7 @@ const universal = {
       {
         title: 'freedeck.app',
         who: 'Official Freedeck Repository',
-        link: 'https://freedeck.app/fd_repository',
+        link: 'https://freedeck.app/_fd/repository.php',
       },
     ],
     unofficial: [],
@@ -295,8 +295,9 @@ const universal = {
       const data = await res.text();
       if (res.status != 200) return [{err: true, msg: 'Repository not found. Server returned ' + res.status}];
       if (!data.includes(',!')) return [{err: true, msg: 'No plugin metadata found.'}];
-      const lines = data.split('\n');
+      let lines = data.split('\n');
       lines.shift();
+      lines = lines.filter((line) => line.length > 0);
       lines.forEach((line) => {
         const comma = line.split(',!');
         const meta = {

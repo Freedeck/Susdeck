@@ -18,21 +18,6 @@ module.exports = class Plugin {
   disabled = false;
   stopped = false;
   hasInit = false;
-  channelsListening = [];
-  channelsSendQueue = [];
-  channelsCreated = [];
-
-  channels = {
-    create: (channel) => {
-      this.channelsCreated.push(channel);
-    },
-    send: (channel, data) => {
-      this.channelsSendQueue.push({channel, data});
-    },
-    listen: (channel, callback) => {
-      this.channelsListening.push({channel, callback});
-    },
-  };
 
   /**
    *

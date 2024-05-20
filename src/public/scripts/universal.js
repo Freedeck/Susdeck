@@ -366,16 +366,6 @@ const universal = {
       universal.Pages[i] = true;
     }
   },
-  channels: {
-    send: (plugin, channel, data) => {
-      universal.send(universal.events.default.channel_send, {plugin, channel, data});
-    },
-    listen: (plugin, channel, callback) => {
-      universal.on('channel_' + plugin + '_' + channel, (data) => {
-        callback(data);
-      });
-    },
-  },
   listenFor: (ev, cb) => {
     universal._cb.push([ev, cb]);
   },

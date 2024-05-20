@@ -81,6 +81,11 @@ const handoffData = {
   hasAccessed: false,
 };
 
+app.use((req,res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 app.get('/handoff/get-token', (req, res) => {
   if (handoffData.genTime + 60000 < Date.now()) {
     handoffData.token = Math.random().toString(36).substring(2, 15) + '@h' + Math.random().toString(36).substring(2, 15);

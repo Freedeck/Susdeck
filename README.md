@@ -26,7 +26,6 @@
 - Run `init.bat`
 - Profit
 
-
 ### Instructions (Semi-Advanced)
 
 - Clone the repo
@@ -36,6 +35,16 @@
 - Run the program!
   - `npm run start`
 - Enjoy!
+
+### Instructions (Easily Advanced??)
+
+For those who want the simplicity of the Installer, but need the complexity of the codebase.
+
+- Follow the *Instructions (Easier Than Easy)*
+- Now, you can go to your user directory, documents, Freedeck, then Freedeck again!
+  - Let me break the command down for you.
+  - `cd C:\Users\You\Documents\Freedeck\freedeck` (You need the last "freedeck"! That's the actual repo!)
+- Kaboom! You can now open Freedeck in VSCode, NeoVim, or any other editor/IDE!
 
 The moment you start Freedeck, a setup wizard will launch. Follow those instructions. Next, when Companion launches, you'll see another setup wizard. Follow those instructions.
 

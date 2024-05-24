@@ -8,6 +8,8 @@ const scrts = {
 
 const save = (port, screenSaverActivationTime, soundOnPress, useAuthentication, iconCountPerPage, password) => {
   const config = {
+    writeLogs: true,
+    release: 'stable',
     port: port,
     screenSaverActivationTime: screenSaverActivationTime,
     soundOnPress: soundOnPress,

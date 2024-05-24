@@ -18,10 +18,11 @@ const sc = {
   },
   save: () => {
     // console.log(sc.settings())
+    debug.log('Configuration saved.');
     const set = sc.settings();
     // Sorry ESLint overlords, but this has to be done.
     // eslint-disable-next-line max-len
-    return fs.writeFileSync(path.resolve('./src/configs/config.fd.js'), `const cfg = {release:"${sc._cache.release ? sc._cache.release : 'stable'}",profiles:${JSON.stringify(sc._cache.profiles)},theme:"${sc._cache.theme ? sc._cache.theme : 'default'}",profile:"${sc._cache.profile}",screenSaverActivationTime:${set.screenSaverActivationTime},soundOnPress:${set.soundOnPress},useAuthentication:${set.useAuthentication},iconCountPerPage:${set.iconCountPerPage},port:${set.port}}; if(typeof window !== 'undefined') window['cfg'] = cfg; if('exports' in module) module.exports = cfg;`);
+    return fs.writeFileSync(path.resolve('./src/configs/config.fd.js'), `const cfg = {writeLogs:${sc._cache.writeLogs},release:"${sc._cache.release ? sc._cache.release : 'stable'}",profiles:${JSON.stringify(sc._cache.profiles)},theme:"${sc._cache.theme ? sc._cache.theme : 'default'}",profile:"${sc._cache.profile}",screenSaverActivationTime:${set.screenSaverActivationTime},soundOnPress:${set.soundOnPress},useAuthentication:${set.useAuthentication},iconCountPerPage:${set.iconCountPerPage},port:${set.port}}; if(typeof window !== 'undefined') window['cfg'] = cfg; if('exports' in module) module.exports = cfg;`);
   },
 };
 

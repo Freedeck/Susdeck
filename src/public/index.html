@@ -21,12 +21,10 @@
 <body>
     <div id="sidebar"><ul></ul></div>
     <div class="settings-menu">
-        <div class="settings">
-            <div class="themelist"></div>
+        <div class="themelist"></div>
             <p id="version">Freedeck v6.0.0-Loading</p>
             <button onclick="universal.send(universal.events.default.recompile)">Ask server to recompile Webpack bundles</button>
             <button onclick="window.location.href = '/companion'">To Companion View</button>
-        </div>
         <button onclick="document.querySelector('.settings-menu').style.display = 'none';">Close</button>
     </div>
     <dialog class="dialog" id="login-dialog">

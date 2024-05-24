@@ -9,6 +9,7 @@ const server = http.createServer(app);
 const formidable = require('formidable');
 let hasWebpackCompiled = 0;
 const config = require('./managers/settings');
+const notifMan = require('./managers/notifications');
 
 const settings = config.settings();
 const PORT = settings.port || 5754;
@@ -41,7 +42,7 @@ let compileTime = 0;
  *  run webpack
  * @param {*} wp  a
  * @return {true}
- */
+*/
 function runWebpack(wp) {
   return new Promise((resolve, reject) => {
     wp.run((err, stats) => {
@@ -60,7 +61,7 @@ function runWebpack(wp) {
 /**
  * compiled webpack
  * @return {Promise<void>}
- */
+*/
 async function compileWebpack() {
   hasWebpackCompiled = 0;
   const wp = webpack(webpackConfig);
@@ -72,21 +73,60 @@ compileWebpack().catch((err) => console.error(err));
 
 app.use(express.static(path.join(__dirname, './public')));
 
-app.get('/fdc', (req, res) => res.sendStatus(200));
-app.get('/fdc/webpack', (req, res) => {
-  res.send({compiled: hasWebpackCompiled});
+const plugins = require('./managers/plugins');
+
+const handoffData = {
+  genTime: Date.now(),
+  token: Math.random().toString(36).substring(2, 15) + '@h' + Math.random().toString(36).substring(2, 15),
+  hasAccessed: false,
+};
+
+app.use((req,res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
 });
-app.get('/fdc/time', (req, res) => {
-  res.send({data: compileTime});
+
+app.get('/handoff/get-token', (req, res) => {
+  if (handoffData.genTime + 60000 < Date.now()) {
+    handoffData.token = Math.random().toString(36).substring(2, 15) + '@h' + Math.random().toString(36).substring(2, 15);
+    handoffData.genTime = Date.now();
+    handoffData.hasAccessed = false;
+  }
+  if (!handoffData.hasAccessed) {
+    // handoffData.hasAccessed = true;
+    res.send(handoffData.token);
+  }
+  res.send('0'.repeat(handoffData.token.length));
 });
-app.get('/fdc/compile/:token', (req, res) => {
-  if (req.params.token === settings.token) {
-    compileWebpack().then(() => {
-      res.send({compiled: hasWebpackCompiled});
+
+app.get('/handoff/:token/download-plugin/:link', (req, res) => {
+  if (req.params.token !== handoffData.token) res.send({status: 'error', message: 'Invalid token'});
+  const stream = fs.createWriteStream(path.resolve('./plugins/' + req.params.link.split('/').pop()));
+  http.get(req.params.link, (response) => {
+    response.pipe(stream);
+    stream.on('finish', () => {
+      stream.close();
+      plugins.reload();
+      res.send({status: 'success', message: 'Downloaded plugin & reloaded plugins.'});
     });
-  } else {
-    res.sendStatus(401);
-  };
+  });
+});
+
+app.get('/handoff/:token/reload-plugins', (req, res) => {
+  if (req.params.token !== handoffData.token) res.send({status: 'error', message: 'Invalid token'});
+  plugins.reload();
+  res.send({status: 'success', message: 'Reloaded plugins.'});
+});
+
+app.get('/handoff/:token/notify/:data', (req, res) => {
+  if (req.params.token !== handoffData.token) res.send({status: 'error', message: 'Invalid token'});
+  notifMan.add('Handoff', req.params.data);
+  res.send({status: 'success', message: 'Sent notification.'});
+});
+
+app.get('/connect/status', (req, res) => res.sendStatus(200));
+app.get('/connect/webpack', (req, res) => {
+  res.send({compiled: hasWebpackCompiled});
 });
 
 app.post('/fd/api/upload/', (request, response) => {

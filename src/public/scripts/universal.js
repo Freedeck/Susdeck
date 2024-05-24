@@ -285,18 +285,19 @@ const universal = {
       {
         title: 'freedeck.app',
         who: 'Official Freedeck Repository',
-        link: 'https://freedeck.app/_fd',
+        link: 'https://freedeck.app/_fd/repository.php',
       },
     ],
     unofficial: [],
     getPluginsfromRepo: async (url) => {
       const _plugins = [];
-      const res = await fetch(url + '/repository.php');
+      const res = await fetch(url);
       const data = await res.text();
       if (res.status != 200) return [{err: true, msg: 'Repository not found. Server returned ' + res.status}];
       if (!data.includes(',!')) return [{err: true, msg: 'No plugin metadata found.'}];
-      const lines = data.split('\n');
+      let lines = data.split('\n');
       lines.shift();
+      lines = lines.filter((line) => line.length > 0);
       lines.forEach((line) => {
         const comma = line.split(',!');
         const meta = {
@@ -347,7 +348,7 @@ const universal = {
 
     builtInKeys.forEach((key) => {
       const tempDiv = document.createElement('div');
-      tempDiv.className = 'button unset builtin k';
+      tempDiv.className = 'button builtin k';
       tempDiv.innerText = key.name;
       tempDiv.onclick = key.onclick;
       universal.keys.appendChild(tempDiv);
@@ -364,16 +365,6 @@ const universal = {
     ) {
       universal.Pages[i] = true;
     }
-  },
-  channels: {
-    send: (plugin, channel, data) => {
-      universal.send(universal.events.default.channel_send, {plugin, channel, data});
-    },
-    listen: (plugin, channel, callback) => {
-      universal.on('channel_' + plugin + '_' + channel, (data) => {
-        callback(data);
-      });
-    },
   },
   listenFor: (ev, cb) => {
     universal._cb.push([ev, cb]);

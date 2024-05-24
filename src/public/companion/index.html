@@ -67,11 +67,13 @@
         </div>
     </dialog>
 
-    <h1>Home</h1>
-    <p>Welcome back! Here you can change your button configuration. Click any of them to preview, right click to edit!
-    </p>
-
-    <div class="sidebar">
+    <div class="toggle-sidebar"><button>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+    </button>
+      </div>
+    <div class="sidebar" style="display:block;">
         <h1 class="cpage">Page: ???</h1>
         <div class="flex-wrap-c">
             <div class="flex-wrap-r">
@@ -105,8 +107,10 @@
                 <button id="pf-dupe">Duplicate Profile</button>
             </div>
         </div>
-
     </div>
+        <div class="center">
+            <div id="keys"></div>
+        </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="dist/main.js" type="module"></script>
 </body>

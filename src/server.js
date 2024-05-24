@@ -27,40 +27,11 @@ const types = pl.types;
 
 pl.update();
 
-const channels = pl._ch;
 const clients = [];
 
 console.log('Initializing server...');
 
 io.on('connection', (socket) => {
-  setInterval(() => {
-    for (const pluginObject of plugins) {
-      const plugin = pluginObject[1].instance;
-      for (const channel of plugin.channelsCreated) {
-        if (!channels.has(channel)) {
-          channels.set(channel, new Set());
-        }
-      }
-      for (const channel of plugin.channelsSendQueue) {
-        if (channels.has(channel.channel)) {
-          channels.get(channel.channel).add(channel.data);
-          plugin.channelsSendQueue.delete(channel);
-        }
-      }
-      for (const channel of plugin.channelsListening) {
-        if (channels.has(channel.channel)) {
-          const channelCallbacks = channels.get(channel.channel);
-          for (const callback of channelCallbacks) {
-            channel.callback(callback);
-            for (const client of clients) {
-              client.emit(`channel_${plugin.id}_${channel.channel}`, callback);
-            }
-            channelCallbacks.delete(callback);
-          }
-        }
-      }
-    }
-  }, 1000);
   socket._originalOn = socket.on;
   socket._originalEmit = socket.emit;
 

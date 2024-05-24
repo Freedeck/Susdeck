@@ -70,7 +70,7 @@
                 <h1>Freedeck 6 - Companion</h1>
                 <p>Enter the URL of the repository</p>
                 <label for="title">Repository Title</label><input type="text" id="title" placeholder="freedeck.app">
-                <label for="url">Repository Access URL</label><input type="text" id="url" placeholder="https://freedeck.app/_fd">
+                <label for="url">Repository Access URL</label><input type="text" id="url" placeholder="https://freedeck.app/_fd/repository.php">
                 <button>Submit</button>
             </div>
         `;
@@ -83,7 +83,7 @@
             modal.querySelector('#login-div').style.height = 'max-content';
             modal.querySelector('#login-div').querySelector('button').onclick = () => {
                 const title = modal.querySelector('#title').value;
-                fetch(modal.querySelector('#url').value + "/repository.php", {method: 'GET'}).then(res => res.text()).then(data => {
+                fetch(modal.querySelector('#url').value, {method: 'GET'}).then(res => res.text()).then(data => {
                     const desc = data.split('\n')[0]
                     const url = modal.querySelector('#url').value;
                     console.log(title, desc, url)

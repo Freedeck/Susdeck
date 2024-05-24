@@ -32,12 +32,12 @@ const pl = {
     await pl.update();
   },
   update: async () => {
-    console.log('This may take a second- we\'re rebuilding the plugin cache.')
+    console.log('This may take a second- we\'re rebuilding the plugin cache.');
     pl._disabled = [];
     pl._plc.clear();
     pl._tyc.clear();
     const files = fs.readdirSync(path.resolve('./plugins'));
-    const loadPromises = files.filter(file => file.endsWith('.Freedeck') && !file.endsWith('.disabled')).map(file => pl.load(file));
+    const loadPromises = files.filter((file) => file.endsWith('.Freedeck') && !file.endsWith('.disabled')).map((file) => pl.load(file));
     try {
       await Promise.all(loadPromises);
     } catch (er) {
@@ -46,7 +46,7 @@ const pl = {
   },
   load: async (file) => {
     try {
-      const a = await AsarBundleRunner.extract('./plugins/' + file);
+      const a = await AsarBundleRunner.extract('./plugins/' + file, true);
       const instantiated = await AsarBundleRunner.run(a);
       debug.log(picocolors.yellow('Plugin initialized ' + instantiated.name + ' - ID ' + instantiated.id), 'Plugin Manager');
       pl._plc.set(instantiated.id, {instance: instantiated});

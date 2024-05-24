@@ -31,7 +31,7 @@
       concon.innerText = url.value;
       // datsta.innerText = "Searching for server..."
       let dc = true;
-      fetch(url.value + '/fdc/webpack').then(res=>res.json()).then(a => {
+      fetch(url.value + '/connect/webpack').then(res=>res.json()).then(a => {
         er.innerText = JSON.stringify(a);
         let msg = a.compiled == 1 ? 'Server is ready!' : 'Server has not compiled any bundles.' 
         datsta.innerText = '[Compilation: Step ' + a.compiled + '/1] - ' + msg

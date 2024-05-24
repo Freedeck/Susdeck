@@ -12,11 +12,12 @@ input {
 	position: fixed;
 	top: 0;
 	left: 0;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 	z-index: 500;
 	display: block;
 	transition-duration: .25s;
 }
+
 #login-div {
 	background-color: black;
 	color: white;
@@ -44,7 +45,7 @@ input {
 
 .theme {
 	padding: 5px;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 	color: white;
 	height: 100%;
 	max-width: 14rem;
@@ -52,17 +53,19 @@ input {
 	transition-duration: .25s;
 }
 
+
+
 #sidebar {
-	width: 100%;
 	position: fixed;
-	left: 0;
-	bottom: 0;
-	height: 5rem;
-	background-color: rgba(0,0,0,0.5);
+	top: 0;
+	right: 0;
+	width: 15%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
 	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: end;
 	font-size: 1.75em;
 	color: white;
 	z-index: 100;
@@ -72,23 +75,22 @@ input {
 /* find first item in ul*/
 #sidebar ul li:first-child {
 	margin-top: 2rem;
-	text-align: center;
+	text-align: crenter;
 }
 
 #sidebar ul {
 	list-style-type: none;
 	padding: 0;
-	margin: 0.5rem;
 	display: flex;
-	flex-direction: row;
-	align-items: center;
+	flex-direction: column;
+	gap: 1rem;
+	align-items: end;
 }
 
- a {
+a {
 	width: max-content;
-	margin: 0.5rem;
 	padding: 5px;
-	background-color: rgba(0,0,0,0.25);
+	background-color: rgba(0, 0, 0, 0.25);
 	border-radius: 0.75rem;
 	text-align: left;
 	transition-duration: .25s;
@@ -114,17 +116,18 @@ body {
 .sidebar {
 	position: fixed;
 	top: 0;
-	right: 0;
+	left: 0;
 	min-width: 15%;
+	min-height: 100%;
 	padding: 5px;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 	color: white;
 	height: 100%;
 }
 
 .contextMenu {
 	position: absolute;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 	color: white;
 	border-radius: 0.5rem;
 	padding: 0.5rem;
@@ -133,13 +136,13 @@ body {
 	cursor: default;
 }
 
-.menuItem{
+.menuItem {
 	padding: 0.5rem;
 	transition-duration: .25s;
 }
 
 .menuItem:hover {
-	background-color: rgba(0,0,0,0.75);
+	background-color: rgba(0, 0, 0, 0.75);
 	transform: scale(1.1);
 	cursor: pointer;
 }
@@ -149,7 +152,7 @@ body {
 	top: 0;
 	left: 0;
 	border: 0;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 	z-index: 1000;
 	transition-duration: .25s;
 	display: none;
@@ -177,7 +180,8 @@ body {
 	overflow-x: hidden;
 }
 
-#editor-div > h1, #editor-div > .notice {
+#editor-div>h1,
+#editor-div>.notice {
 	text-align: center;
 }
 
@@ -193,13 +197,70 @@ body {
 	gap: .25rem;
 }
 
+.flex-wrap-r-special {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	height: 100%;
+}
+
+.toggle-sidebar button {
+	background-color: transparent;
+	border: 0;
+	cursor: pointer;
+	transition-duration: .45s;
+	transform: rotate(180deg);
+}
+
+@keyframes sidebar-slide-in {
+	0% {
+		left: -15%;
+	}
+	100% {
+		left: 0;
+	}
+}
+
+@keyframes sidebar-slide-out {
+	0% {
+		left: 0;
+	}
+	100% {
+		left: -15%;
+	}
+}
+
+.toggle-sidebar {
+	transition-duration: .25s;
+	position: fixed;
+	top: 50%;
+	left: 11.5%;
+	width: 2rem;
+	z-index: 999;
+	transform: translate(0, -50%);
+}
+
+#keys {
+	gap: 1rem;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
 .disabled {
 	pointer-events: none;
-	background-color: rgba(0,0,0,0.25);
+	background-color: rgba(0, 0, 0, 0.25);
 }
 
 .tag {
-	background-color: rgba(0,0,0,0.25);
+	background-color: rgba(0, 0, 0, 0.25);
 	border-radius: 0.5rem;
 	padding: 0.25rem;
 }
@@ -210,22 +271,26 @@ body {
 	top: 0;
 	right: 0;
 	padding: 0.25rem;
-	background-color: rgba(0,0,0,0.25);
+	background-color: rgba(0, 0, 0, 0.25);
 	border-radius: 0.5rem;
 	cursor: pointer;
 	transition-duration: .25s;
 }
 
 #editor-close:hover {
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 }
 
 #warning {
-	background-color: rgba(0,0,0,0.74);
+	background-color: rgba(0, 0, 0, 0.74);
 	color: white;
 }
 
 .button button {
 	width: 7rem;
 	height: 7rem;
+}
+
+.unset {
+	opacity: 0.125;
 }

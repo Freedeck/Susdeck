@@ -204,6 +204,8 @@ input:disabled {
     display: flex;
     justify-content: center;
     align-items: center;
+    object-fit: cover;
+    background-size: 100% 100%;
 
     transition-duration: .15s;
 }

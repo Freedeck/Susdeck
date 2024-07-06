@@ -199,8 +199,9 @@
 		document.body.appendChild(askIconCountPerPage);
 		document.body.appendChild(askScreensaverActivationTime);
 		document.body.appendChild(coolAnimationWait);
-
+		
 		const sendFinalSave = (authToken) => {
+			alert('Setup complete. Please restart Freedeck to start using it!');
 			fetch('/save', {
 				method: 'POST',
 				body: JSON.stringify(_USRSETTINGS),

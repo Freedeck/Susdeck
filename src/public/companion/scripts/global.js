@@ -6,8 +6,7 @@ universal.listenFor('init', () => {
   const login = document.createElement('li');
   login.id = 'constat';
   login.style.fontSize= '.75em';
-  login.style.display = 'none';
-  // login.setHTML('<a href="#" style="font-size:0.65em;">Freedeck v' + universal._information.version + '</a>');
+  login.style.display = 'block';
   document.querySelector('#sidebar > ul').appendChild(login);
 });
 const sidebar = [

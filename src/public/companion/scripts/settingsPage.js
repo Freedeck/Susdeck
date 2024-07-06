@@ -265,7 +265,7 @@ const setupWizard = () => {
             showText('All done!', 'You\'re all set up! You can now use Freedeck.', () => {
               universal.sendToast('All done, reloading...');
               universal.save('has_setup', true);
-              window.location.href = '/companion/';
+              window.location.href = '/companion/index.html?err=last-step';
             });
           });
         });

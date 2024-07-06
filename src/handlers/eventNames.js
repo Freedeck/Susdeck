@@ -2,6 +2,7 @@ const eventNames = {
   client_greet: 'G',
   information: 'I',
   keypress: 'K',
+  user_mobile_conn: 'U',
   login: {
     login_data: 'lD',
     login: 'lL',

@@ -667,3 +667,15 @@ if (universal.load('pitch')) document.querySelector('#pitch').value = universal.
 if (universal.load('has_setup') == 'false') {
   window.location.href = '/companion/settings.html?err=ns0f';
 }
+
+// get url params
+const urlParams = new URLSearchParams(window.location.search);
+const err = urlParams.get('err');
+if (err) {
+  switch (err) {
+    case 'last-step':
+      universal.sendToast('Initiating connection help wizard');
+      universal.connHelpWizard();
+      break;
+  }
+}

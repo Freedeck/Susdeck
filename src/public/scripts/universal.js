@@ -61,7 +61,7 @@ const universal = {
       });
     },
   },
-  showSpinner: (e=document.body) => {
+  showSpinner: (e = document.body) => {
     const elem = document.createElement('div');
     elem.className = 'spinner';
     e.appendChild(elem);
@@ -79,8 +79,8 @@ const universal = {
     _nowPlaying: [],
     _end: (event) => {
       universal.audioClient._nowPlaying.splice(
-          universal.audioClient._nowPlaying.indexOf(event.target),
-          1,
+        universal.audioClient._nowPlaying.indexOf(event.target),
+        1,
       );
       universal.updatePlaying();
     },
@@ -125,19 +125,19 @@ const universal = {
       audioInstance.src = file;
       audioInstance.load();
       if (universal.audioClient._player.sink !== 0) {
-        navigator.mediaDevices.getUserMedia({audio: true, video: false});
+        navigator.mediaDevices.getUserMedia({ audio: true, video: false });
         await audioInstance.setSinkId(universal.audioClient._player.sink);
       }
       audioInstance.setAttribute('data-name', name);
       audioInstance.setAttribute('data-isMonitor', false);
 
       if (isMonitor) {
-        navigator.mediaDevices.getUserMedia({audio: true, video: false});
+        navigator.mediaDevices.getUserMedia({ audio: true, video: false });
         await audioInstance.setSinkId(
-            universal.audioClient._player.monitorSink,
+          universal.audioClient._player.monitorSink,
         );
         if (universal.load('monitor.sink')) {
-          navigator.mediaDevices.getUserMedia({audio: true, video: false});
+          navigator.mediaDevices.getUserMedia({ audio: true, video: false });
           await audioInstance.setSinkId(universal.load('monitor.sink'));
         }
         audioInstance.volume = universal.audioClient._player.monitorVol;
@@ -183,7 +183,7 @@ const universal = {
     universal.send(universal.events.login.login_data, {
       tlid: universal._information.tempLoginID,
     });
-    universal.send(universal.events.login.login, {passwd});
+    universal.send(universal.events.login.login, { passwd });
   },
   themeData: {},
   themes: {
@@ -240,12 +240,12 @@ const universal = {
       'description': 'A black (AMOLED-like) theme for Freedeck',
     },
   }, /* Theme list */
-  setTheme: function(name, global=true) {
+  setTheme: function (name, global = true) {
     let fu = name;
-    fetch('/scripts/theming/'+name+'/manifest.json').then((res)=>res.json()).then((json) => {
+    fetch('/scripts/theming/' + name + '/manifest.json').then((res) => res.json()).then((json) => {
       fu = json.theme;
     });
-    fetch('/scripts/theming/'+name+'/' + fu + '.css').then((res)=>res.text()).then((css) => {
+    fetch('/scripts/theming/' + name + '/' + fu + '.css').then((res) => res.text()).then((css) => {
       const stylea = document.createElement('style');
       stylea.innerText += css;
       document.body.appendChild(stylea);
@@ -260,7 +260,7 @@ const universal = {
       universal.save('theme', name);
     });
   },
-  init: async function(user) {
+  init: async function (user) {
     try {
       await universal._initFn(user);
       universal.setTheme(universal.config.theme ? universal.config.theme : 'default', false);
@@ -273,7 +273,7 @@ const universal = {
         false;
       universal.load('monitor.sink') ?
         (universal.audioClient._player.monitorSink =
-            universal.load('monitor.sink')) :
+          universal.load('monitor.sink')) :
         'default';
     } catch (e) {
       console.error(e + ' | Universal: initialize failed.');
@@ -293,15 +293,15 @@ const universal = {
       const _plugins = [];
       const res = await fetch(url);
       const data = await res.text();
-      if (res.status != 200) return [{err: true, msg: 'Repository not found. Server returned ' + res.status}];
-      if (!data.includes(',!')) return [{err: true, msg: 'No plugin metadata found.'}];
+      if (res.status != 200) return [{ err: true, msg: 'Repository not found. Server returned ' + res.status }];
+      if (!data.includes(',!')) return [{ err: true, msg: 'No plugin metadata found.' }];
       let lines = data.split('\n');
       lines.shift();
       lines = lines.filter((line) => line.length > 0);
       lines.forEach((line) => {
         const comma = line.split(',!');
         const meta = {
-          file: url+'/' + comma[0],
+          file: url + '/' + comma[0],
           githubRepo: 'https://github.com/' + comma[1],
           name: comma[2],
           author: comma[3],
@@ -327,8 +327,8 @@ const universal = {
         name: 'Stop All',
         onclick: (ev) => {
           universal.send(
-              universal.events.keypress,
-              JSON.stringify({builtIn: true, data: 'stop-all'}),
+            universal.events.keypress,
+            JSON.stringify({ builtIn: true, data: 'stop-all' }),
           );
         },
       },
@@ -354,6 +354,15 @@ const universal = {
       universal.keys.appendChild(tempDiv);
     });
   },
+  connHelpWizard() {
+    const promptEle = document.createElement('div');
+    promptEle.className = 'prompt';
+    const iframe = document.createElement('iframe');
+    iframe.src = '/prompt-user-connect.html';
+    iframe.frameBorder = '0';
+    promptEle.appendChild(iframe);
+    document.body.appendChild(promptEle);
+  },
   Pages: {},
   reloadProfile: () => {
     universal.config.sounds =
@@ -375,7 +384,7 @@ const universal = {
     });
   },
   name: '',
-  _initFn: async function(/** @type {string} */ user) {
+  _initFn: async function (/** @type {string} */ user) {
     return new Promise((resolve, reject) => {
       try {
         universal.name = user;
@@ -422,7 +431,7 @@ const universal = {
 
           universal.on(universal.events.default.not_match, () =>
             universal.sendToast(
-                'Login not allowed! Session could not be verified against server.',
+              'Login not allowed! Session could not be verified against server.',
             ),
           );
 
@@ -456,16 +465,16 @@ const universal = {
               universal.save('stopPrevious', false);
             }
             universal.audioClient.play(
-                interaction.data.path + '/' + interaction.data.file,
-                Object.keys(a)[0],
-                false,
-                (universal.load('stopPrevious').toLowerCase() === 'true'),
+              interaction.data.path + '/' + interaction.data.file,
+              Object.keys(a)[0],
+              false,
+              (universal.load('stopPrevious').toLowerCase() === 'true'),
             );
             universal.audioClient.play(
-                interaction.data.path + '/' + interaction.data.file,
-                Object.keys(a)[0],
-                true,
-                (universal.load('stopPrevious').toLowerCase() === 'true'),
+              interaction.data.path + '/' + interaction.data.file,
+              Object.keys(a)[0],
+              true,
+              (universal.load('stopPrevious').toLowerCase() === 'true'),
             );
           });
 
@@ -487,8 +496,8 @@ const universal = {
           });
 
           universal.on(
-              universal.events.login.login_data_ack,
-              (data) => (universal._loginAllowed = data),
+            universal.events.login.login_data_ack,
+            (data) => (universal._loginAllowed = data),
           );
           universal.on(universal.events.default.reload, () => window.location.reload());
 
@@ -511,7 +520,7 @@ const universal = {
             document.body.appendChild(universal.notibar);
           }
 
-          universal.send(universal.events.information, {apiVersion: '2'});
+          universal.send(universal.events.information, { apiVersion: '2' });
 
           universal.keySet();
 
@@ -537,7 +546,7 @@ const universal = {
   },
   sendToast: (message) => {
     if (!HTMLElement.prototype.setHTML) {
-      HTMLElement.prototype.setHTML = function(html) {
+      HTMLElement.prototype.setHTML = function (html) {
         this.innerHTML = html;
       };
     }
@@ -557,16 +566,16 @@ const universal = {
       s.remove();
     }, 3000);
     universal.save(
-        'notification_log',
-        universal.load('notification_log') +
-        `,${btoa(
-            JSON.stringify({
-              timestamp: new Date(),
-              time: new Date().toTimeString(),
-              page: window.location.pathname,
-              message,
-            }),
-        )}`,
+      'notification_log',
+      universal.load('notification_log') +
+      `,${btoa(
+        JSON.stringify({
+          timestamp: new Date(),
+          time: new Date().toTimeString(),
+          page: window.location.pathname,
+          message,
+        }),
+      )}`,
     );
   },
   send: (event, value) => {
@@ -579,11 +588,11 @@ const universal = {
     universal._socket.once(event, callback);
   },
   log: (data, sender = 'Universal') => {
-    universal.send(universal.events.default.log, JSON.stringify({sender, data}));
+    universal.send(universal.events.default.log, JSON.stringify({ sender, data }));
     console.log(`[${sender}] ${data}`);
   },
 };
 
 // eslint-ignore no-unused-vars
-export {universal};
+export { universal };
 window['universal'] = universal;

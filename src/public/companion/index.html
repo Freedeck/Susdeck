@@ -20,7 +20,6 @@
             <button onclick="universal.login(document.getElementById('password').value)">Login</button>
         </div>
     </dialog>
-
     <dialog id="editor">
         <div id="editor-div">
             <div class="x" id="editor-close">Close</div>
@@ -65,13 +64,19 @@
     </button>
       </div>
     <div class="sidebar" style="display:block;">
-        <h1 class="cpage">Page: ???</h1>
         <div class="flex-wrap-c">
+            <div class="mobd">
+                <span><br/><h1>Mobile Device</h1></span>
+                <div class="flex-wrap-r">
+                    <button id="mobd-conn" onclick="universal.connHelpWizard()">View Connection Instructions</button>
+                </div>
+            </div>
+            <h1 class="cpage">Page: ???</h1>
             <div class="flex-wrap-r">
                 <button id="pg-left">Previous Page</button>
                 <button id="pg-right">Next Page</button>
             </div>
-            <span><br/><h2>Audio</h2></span>
+            <span><br/><h1>Audio</h1></span>
             <div class="flex-wrap-r">
                 <div class="alc">
                     <label for="pitch">
@@ -92,7 +97,7 @@
                     </div>
                 <button onclick="universal.audioClient.setVolume(1)">Reset</button>
             </div>
-            <span><br/><h2>Profiles</h2></span>
+            <span><br/><h1>Profiles</h1></span>
             <div class="flex-wrap-r">
                 <button id="pf-add">New Profile</button>
                 <button id="pf-dupe">Duplicate Profile</button>

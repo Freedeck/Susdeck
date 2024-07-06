@@ -2,12 +2,12 @@ const picocolors = require('./utils/picocolors');
 const fs = require('fs');
 const path = require('path');
 const debug = require('./utils/debug');
-const {app} = require('electron');
 
 let DOES_RUN_SERVER = true;
 const DOES_SETTINGS_EXIST_YET = fs.existsSync(path.join(__dirname, 'configs/config.fd.js'));
 
 if (!DOES_SETTINGS_EXIST_YET) {
+  const {app} = require('electron');
   app.on('ready', () => {
     require(path.resolve('./src/private/setup.js'))().then(() => {
       console.log(picocolors.bgGreen('Setup complete!'));
@@ -37,6 +37,7 @@ if (process.argv.includes('--server-only')) {
 
 if (!DO_COMPANION && DOES_RUN_SERVER) require('./server');
 if (DO_COMPANION) {
+  const {app} = require('electron');
   app.whenReady().then(() => {
     require('./companionInit')('./src/fdconnect.html', true, 1145, 750, false);
     if (DOES_RUN_SERVER) require('./server');

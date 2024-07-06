@@ -129,9 +129,27 @@ app.get('/connect/webpack', (req, res) => {
   res.send({compiled: hasWebpackCompiled});
 });
 
-app.post('/fd/api/upload/', (request, response) => {
+app.post('/fd/api/upload/sound', (request, response) => {
   const form = new formidable.IncomingForm({
     uploadDir: path.resolve('./src/public/sounds'),
+  });
+  // Parse `req` and upload all associated files
+  form.parse(request, (err, fields, files) => {
+    if (err) {
+      return response.status(400).json({error: err.message});
+    }
+
+    const nfp = files.file[0].filepath;
+    const ext = files.file[0].mimetype.split('/')[1];
+
+    fs.renameSync(nfp, nfp + '.' + ext);
+    response.send({oldName: files.file[0].originalFilename, newName: files.file[0].newFilename + '.' + ext});
+  });
+});
+
+app.post('/fd/api/upload/icon', (request, response) => {
+  const form = new formidable.IncomingForm({
+    uploadDir: path.resolve('./src/public/us-icons'),
   });
   // Parse `req` and upload all associated files
   form.parse(request, (err, fields, files) => {

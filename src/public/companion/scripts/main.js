@@ -54,6 +54,7 @@ function reloadSounds() {
     };
     try {
       keyObject.setAttribute('data-interaction', JSON.stringify(snd));
+      keyObject.style.backgroundImage = 'url("'+snd.data.icon+ '")';
       keyObject.innerText = k;
       keyObject.className = keyObject.className.replace('unset', '');
       keyObject.onclick = (ev) => {
@@ -118,13 +119,13 @@ window.oncontextmenu = function(e) {
   custMenu.appendChild(custMenuTitle);
 
   let custMenuItems = [
-    'New Key',
+    'New Tile',
   ];
   if (e.srcElement.innerText != '') {
-    custMenuItems = ['Open Studio'].concat(custMenuItems);
-    custMenuItems.push('Remove Key');
+    custMenuItems = ['Edit Tile'].concat(custMenuItems);
+    custMenuItems.push('Remove Tile');
   } else {
-    custMenuItems = ['Copy Key Here'].concat(custMenuItems);
+    custMenuItems = ['Copy Tile Here'].concat(custMenuItems);
   }
 
   custMenuItems = custMenuItems.concat([
@@ -154,47 +155,12 @@ window.oncontextmenu = function(e) {
             universal.send(universal.events.companion.set_profile, value.name);
           });
           break;
-        case 'Open Studio':
+        case 'Edit Tile':
           // show a modal with the editor
-          document.querySelector('.contextMenu').style.display = 'none';
-          document.querySelector('#editor').style.display = 'block';
-          document.querySelector('#editor-btn').innerText = e.srcElement.innerText;
-          document.querySelector('#name').value = e.srcElement.innerText;
-          document.querySelector('#editor-btn').setAttribute('data-pre-edit', e.srcElement.innerText);
-          document.querySelector('#editor-btn').setAttribute('data-interaction', e.srcElement.getAttribute('data-interaction'));
-          document.querySelector('#type').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).type;
-          document.querySelector('#plugin').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).plugin || 'Freedeck';
-          if (JSON.parse(e.srcElement.getAttribute('data-interaction')).type == 'fd.sound') {
-            document.querySelector('#upload-sound').style.display = 'flex';
-          } else {
-            document.querySelector('#upload-sound').style.display = 'none';
-          }
-          if (JSON.parse(e.srcElement.getAttribute('data-interaction')).data) {
-            const itm = JSON.parse(e.srcElement.getAttribute('data-interaction')).data;
-            Object.keys(itm).forEach((key) => {
-              const elem = document.createElement('input');
-              elem.type = 'text';
-              elem.placeholder = key;
-              elem.value = itm[key];
-              elem.className = 'editor-data';
-              elem.id = key;
-              const label = document.createElement('label');
-              label.class = 'editordata-removable';
-              label.innerText = key;
-              label.appendChild(elem);
-              document.querySelector('#editor-data').appendChild(label);
-            });
-          }
-          // make it fade in
-          document.querySelector('#editor').style.opacity = '0';
-          document.querySelector('#editor').style.width = '100%';
-          document.querySelector('#editor').style.height = '100%';
-          setTimeout(() => {
-            document.querySelector('#editor').style.opacity = '1';
-          }, 100);
+          editTile(e);
           break;
-        case 'New Key':
-          showPick('New Key', window['button-types'], (modal, value, feedback, title, button, content) => {
+        case 'New Tile':
+          showPick('New Tile', window['button-types'], (modal, value, feedback, title, button, content) => {
             const pos = parseInt(
                 e.srcElement.className.split(' ')[1].split('-')[1]) +
               (universal.page <= 0 ? 1 : 0) +
@@ -203,11 +169,11 @@ window.oncontextmenu = function(e) {
             if (value.type == 'plugin') createPlugin(pos);
           });
           break;
-        case 'Remove Key':
+        case 'Remove Tile':
           reloadProfile();
           universal.send(universal.events.companion.del_key, JSON.stringify({name: e.srcElement.innerText, item: e.srcElement.getAttribute('data-interaction')}));
           break;
-        case 'Copy Key Here':
+        case 'Copy Tile Here':
           showReplaceGUI(e.srcElement);
           break;
         default:
@@ -255,14 +221,67 @@ function showReplaceGUI(srcElement) {
 }
 
 /**
+ * Load data into editor
+ * @param {*} itm List of data objects (like {a:2,b:2})
+ */
+function loadData(itm) {
+  document.querySelector('#editor-data').innerHTML = '';
+  Object.keys(itm).forEach((key) => {
+    const elem = document.createElement('input');
+    elem.type = 'text';
+    elem.placeholder = key;
+    elem.value = itm[key];
+    elem.className = 'editor-data';
+    elem.id = key;
+    const label = document.createElement('label');
+    label.class = 'editordata-removable';
+    label.innerText = key;
+    label.appendChild(elem);
+    document.querySelector('#editor-data').appendChild(label);
+  });
+}
+
+/**
+ * Edit a tile
+ * @param {*} e HTML Element corresponding to the button that we grabbed context from
+ */
+function editTile(e) {
+  document.querySelector('.contextMenu').style.display = 'none';
+  document.querySelector('#editor').style.display = 'block';
+  document.querySelector('#editor-btn').innerText = e.srcElement.innerText;
+  document.querySelector('#editor-btn').style.backgroundImage = 'url("'+JSON.parse(e.srcElement.getAttribute('data-interaction')).data.icon+ '")';
+  document.querySelector('#name').value = e.srcElement.innerText;
+  document.querySelector('#editor-btn').setAttribute('data-pre-edit', e.srcElement.innerText);
+  document.querySelector('#editor-btn').setAttribute('data-interaction', e.srcElement.getAttribute('data-interaction'));
+  document.querySelector('#type').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).type;
+  document.querySelector('#plugin').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).plugin || 'Freedeck';
+  if (JSON.parse(e.srcElement.getAttribute('data-interaction')).type == 'fd.sound') {
+    document.querySelector('#upload-sound').style.display = 'flex';
+  } else {
+    document.querySelector('#upload-sound').style.display = 'none';
+  }
+  if (JSON.parse(e.srcElement.getAttribute('data-interaction')).data) {
+    const itm = JSON.parse(e.srcElement.getAttribute('data-interaction')).data;
+    loadData(itm);
+  }
+  // make it fade in
+  document.querySelector('#editor').style.opacity = '0';
+  document.querySelector('#editor').style.width = '100%';
+  document.querySelector('#editor').style.height = '100%';
+  setTimeout(() => {
+    document.querySelector('#editor').style.opacity = '1';
+  }, 100);
+}
+
+/**
  * @name createSound
  * @param {Number} pos The position of the new sound key.
  * @description Create a new sound key.
  */
 function createSound(pos) {
-  showEditModal('New Sound Key', 'Enter a name for the new key', (modal, value, feedback, title, button, input, content) => {
+  showEditModal('New Sound Tile', 'Enter a name for the new tile', (modal, value, feedback, title, button, input, content) => {
     if (value.length < 1) {
-      feedback.innerText = 'Please enter a name for the key';
+      feedback.innerText = 'Please enter a name for the tile';
       return false;
     }
     reloadProfile();
@@ -284,10 +303,10 @@ function createSound(pos) {
  * @description Create a new plugin key.
  */
 function createPlugin(pos) {
-  showPick('New Plugin Key', universal._tyc.keys(), (modala, valuea, feedbacka, titlea, buttona, contenta) => {
-    showEditModal('New Plugin Key', 'Enter a name for the new key', (modal, value, feedback, title, button, input, content) => {
+  showPick('New Plugin Tile', universal._tyc.keys(), (modala, valuea, feedbacka, titlea, buttona, contenta) => {
+    showEditModal('New Plugin Tile', 'Enter a name for the new tile', (modal, value, feedback, title, button, input, content) => {
       if (value.length < 1) {
-        feedback.innerText = 'Please enter a name for the key';
+        feedback.innerText = 'Please enter a name for the tile';
         return false;
       }
       reloadProfile();
@@ -317,7 +336,17 @@ document.querySelector('#upload-sound').onclick = () => {
   });
 };
 
-const upload = (accept, callback) => {
+document.querySelector('#upload-icon').onclick = (e) => {
+  upload('image/*', (data) => {
+    reloadProfile();
+    const previousInteractionData = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+    previousInteractionData.data.icon = '/us-icons/' + data.newName;
+    document.querySelector('#editor-btn').style.backgroundImage = `url("${'/us-icons/'+data.newName}")`;
+    loadData(previousInteractionData.data);
+  }, 'icon');
+};
+
+const upload = (accept, callback, type='sound') => {
   // <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
   const dummyFrame = document.createElement('iframe');
   dummyFrame.style.display = 'none';
@@ -326,7 +355,7 @@ const upload = (accept, callback) => {
   const form = document.createElement('form');
   form.method = 'post';
   form.enctype = 'multipart/form-data';
-  form.action = '/fd/api/upload/';
+  form.action = '/fd/api/upload/' + type;
   form.target = 'dummyFrame';
   form.style.display = 'none';
   const fileUpload = document.createElement('input');
@@ -354,7 +383,6 @@ const upload = (accept, callback) => {
 };
 
 document.querySelector('#editor-close').onclick = () => {
-  document.querySelector('#editor-data').innerHTML = '';
   document.querySelector('#editor').style.opacity = '0';
   setTimeout(() => {
     document.querySelector('#editor').style.display = 'none';
@@ -606,6 +634,8 @@ profileAdd.onclick = () => {
       feedback.innerText = 'Please enter a name for the profile';
       return false;
     }
+    universal.page = 0;
+    universal.save('page', universal.page);
     universal.send(universal.events.companion.add_profile, value);
     return true;
   });

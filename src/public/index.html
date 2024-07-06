@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta content="Freedeck" property="og:title" />
@@ -15,28 +16,36 @@
     <meta name="msapplication-config" content="/assets/icons/browserconfig.xml">
     <meta name="theme-color" content="#43B581">
     <meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
     <title>Freedeck v6</title>
 </head>
+
 <body>
-    <div id="sidebar"><ul></ul></div>
+    <div id="sidebar">
+        <ul></ul>
+    </div>
     <div class="settings-menu">
         <div class="themelist"></div>
-            <p id="version">Freedeck v6.0.0-Loading</p>
-            <button onclick="universal.send(universal.events.default.recompile)">Ask server to recompile Webpack bundles</button>
-            <button onclick="window.location.href = '/companion'">To Companion View</button>
+        <p id="version">Freedeck v6.0.0-Loading</p>
+        <button onclick="universal.send(universal.events.default.recompile)">Ask server to recompile Webpack
+            bundles</button>
+        <button onclick="window.location.href = '/companion'">To Companion View</button>
         <button onclick="document.querySelector('.settings-menu').style.display = 'none';">Close</button>
     </div>
     <dialog class="dialog" id="login-dialog">
         <div id="login-div">
-            <h1 id="login-msg">Hang on, trying to log you in.</h1>
+            <h1 id="login-msg">Welcome to your Freedeck.</h1>
             <p>Enter the password to connect to the server</p>
             <input type="password" id="password">
             <button onclick="universal.login(document.getElementById('password').value)">Login</button>
         </div>
     </dialog>
+    <div id="client-key-container">
+        <div id="keys"></div>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="companion/dist/clientMain.js" type="module"></script>
     <script src="companion/dist/settingsThemes.js" type="module"></script>
 </body>
+
 </html>

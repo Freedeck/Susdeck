@@ -123,6 +123,7 @@ body {
 	background-color: rgba(0, 0, 0, 0.5);
 	color: white;
 	height: 100%;
+	overflow-y: scroll;
 }
 
 .contextMenu {
@@ -161,6 +162,12 @@ body {
 .btnlist {
 	display: flex;
 	flex-direction: column;
+}
+
+#editor-save {
+	position: fixed;
+	bottom: 0;
+	right: 0;
 }
 
 #editor-div {

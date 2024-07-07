@@ -323,27 +323,27 @@ const universal = {
       universal.keys.appendChild(tempDiv);
     }
     const builtInKeys = [
-      {
-        name: 'Stop All',
-        onclick: (ev) => {
-          universal.send(
-            universal.events.keypress,
-            JSON.stringify({ builtIn: true, data: 'stop-all' }),
-          );
-        },
-      },
-      {
-        name: 'Reload',
-        onclick: (ev) => {
-          window.location.reload();
-        },
-      },
-      {
-        name: 'Settings',
-        onclick: (ev) => {
-          settingsMenu();
-        },
-      },
+      // {
+      //   name: 'Stop All',
+      //   onclick: (ev) => {
+      //     universal.send(
+      //       universal.events.keypress,
+      //       JSON.stringify({ builtIn: true, data: 'stop-all' }),
+      //     );
+      //   },
+      // },
+      // {
+      //   name: 'Reload',
+      //   onclick: (ev) => {
+      //     window.location.reload();
+      //   },
+      // },
+      // {
+      //   name: 'Settings',
+      //   onclick: (ev) => {
+      //     settingsMenu();
+      //   },
+      // },
     ];
 
     builtInKeys.forEach((key) => {

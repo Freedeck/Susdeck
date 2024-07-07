@@ -95,13 +95,13 @@ app.get('/handoff/get-token', (req, res) => {
   }
   if (!handoffData.hasAccessed) {
     // handoffData.hasAccessed = true;
-    res.send(handoffData.token);
+    return res.send(handoffData.token);
   }
   res.send('0'.repeat(handoffData.token.length));
 });
 
 app.get('/handoff/:token/download-plugin/:link', (req, res) => {
-  if (req.params.token !== handoffData.token) res.send({status: 'error', message: 'Invalid token'});
+  if (req.params.token !== handoffData.token) return res.send({status: 'error', message: 'Invalid token'});
   const stream = fs.createWriteStream(path.resolve('./plugins/' + req.params.link.split('/').pop()));
   http.get(req.params.link, (response) => {
     response.pipe(stream);

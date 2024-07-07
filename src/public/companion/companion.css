@@ -144,7 +144,7 @@ body {
 	position: fixed;
 	top: 0;
 	left: 0;
-	min-width: 15%;
+	width: 20%;
 	min-height: 100%;
 	padding: 5px;
 	background-color: rgba(0, 0, 0, 0.5);
@@ -177,10 +177,12 @@ body {
 
 #editor {
 	position: fixed;
-	top: 0;
+	bottom: 0;
 	left: 0;
+	width: 100%;
+	height: 50%;
 	border: 0;
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0);
 	z-index: 1000;
 	transition-duration: .25s;
 	display: none;
@@ -200,8 +202,8 @@ body {
 #editor-div {
 	position: absolute;
 	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+	left: 1rem;
+	transform: translate(0, -50%);
 	width: 75%;
 	height: 75%;
 	background-color: var(--fd-studio-color);

@@ -19,6 +19,7 @@ module.exports = {
     socket._id = Math.random() * 2048 + '.fd';
     socket.tempLoginID = Math.random() * 1024 + '.tlid.fd';
     socket._clientInfo = {};
+    if (tsm.get('isMobileConnected') === true) io.emit(eventNames.user_mobile_conn);
 
     socket.on('disconnect', () => {
       if (socket.user === 'Main') tsm.set('isMobileConnected', false);
@@ -46,6 +47,7 @@ module.exports = {
         if (tsm.get('isMobileConnected') === true) {
           return;
         }
+        io.emit(eventNames.user_mobile_conn);
         tsm.set('isMobileConnected', true);
       }
       if (user === 'Companion') {

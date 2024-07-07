@@ -246,7 +246,10 @@ function loadData(itm) {
  * @param {*} e HTML Element corresponding to the button that we grabbed context from
  */
 function editTile(e) {
-  document.querySelector('.contextMenu').style.display = 'none';
+  if (document.querySelector('.toggle-sidebar').style.left != '0px') document.querySelector('.toggle-sidebar button').click();
+  document.querySelector('.center').style.top = '13rem';
+  document.querySelector('.center').style.left = '25%';
+  if (document.querySelector('.contextMenu')) document.querySelector('.contextMenu').style.display = 'none';
   document.querySelector('#editor').style.display = 'block';
   document.querySelector('#editor-btn').innerText = e.srcElement.innerText;
   document.querySelector('#editor-btn').style.backgroundImage = 'url("'+JSON.parse(e.srcElement.getAttribute('data-interaction')).data.icon+ '")';
@@ -267,7 +270,8 @@ function editTile(e) {
   // make it fade in
   document.querySelector('#editor').style.opacity = '0';
   document.querySelector('#editor').style.width = '100%';
-  document.querySelector('#editor').style.height = '100%';
+  document.querySelector('.toggle-sidebar button').style.display = 'none';
+  document.querySelector('#editor').style.height = '50%';
   setTimeout(() => {
     document.querySelector('#editor').style.opacity = '1';
   }, 100);
@@ -384,6 +388,10 @@ const upload = (accept, callback, type='sound') => {
 
 document.querySelector('#editor-close').onclick = () => {
   document.querySelector('#editor').style.opacity = '0';
+  document.querySelector('.toggle-sidebar button').style.display = 'block';
+  document.querySelector('.center').style.top = '50%';
+  document.querySelector('.center').style.left = '50%';
+  if (document.querySelector('.toggle-sidebar').style.left == '0px') document.querySelector('.toggle-sidebar button').click();
   setTimeout(() => {
     document.querySelector('#editor').style.display = 'none';
   }, 500);
@@ -679,3 +687,8 @@ if (err) {
       break;
   }
 }
+
+universal.on(universal.events.user_mobile_conn, () => {
+  universal.sendToast('Mobile device connected');
+  document.querySelector('.mobd').remove();
+});

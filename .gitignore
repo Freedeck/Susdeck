@@ -7,6 +7,7 @@ tmp/
 
 src/configs/*
 src/public/sounds/*
+src/public/us-icons/*
 
 src/public/hooks/*
 src/public/companion/dist/*

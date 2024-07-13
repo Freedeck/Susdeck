@@ -34,7 +34,8 @@ function reloadSounds() {
     };
     try {
       keyObject.setAttribute('data-interaction', JSON.stringify(snd));
-      keyObject.style.backgroundImage = 'url("'+snd.data.icon+ '")';
+      if (snd.data.icon) keyObject.style.backgroundImage = 'url("' + snd.data.icon + '")';
+      if (snd.data.color) keyObject.style.backgroundColor = snd.data.color;
       keyObject.innerText = k;
       keyObject.className = keyObject.className.replace('unset', '');
       keyObject.onclick = (ev) => {

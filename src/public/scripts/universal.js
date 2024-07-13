@@ -432,11 +432,21 @@ const universal = {
         universal.send('G', user);
         universal.send('G', user);
         universal.once('I', async (data) => {
+          /**
+           * Decompresses a Gzip blob
+           * @param {*} blob A Gzip-compressed blob
+           * @param {*} callback A callback function
+           */
           function decompressGzipBlob(blob, callback) {
             blob = new Uint8Array(blob);
             const data = pako.inflate(blob, {to: 'string'});
             callback(null, data);
           }
+          /**
+           * Async version of decompressGzipBlob
+           * @param {*} blob Gzip-compressed blob
+           * @return {Promise<string>} The decompressed data
+           */
           function asyncDecompressGzipBlob(blob) {
             return new Promise((resolve, reject) => {
               decompressGzipBlob(blob, (err, data) => {

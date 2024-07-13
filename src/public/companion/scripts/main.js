@@ -55,7 +55,8 @@ function reloadSounds() {
     };
     try {
       keyObject.setAttribute('data-interaction', JSON.stringify(snd));
-      keyObject.style.backgroundImage = 'url("' + snd.data.icon + '")';
+      if (snd.data.icon) keyObject.style.backgroundImage = 'url("' + snd.data.icon + '")';
+      if (snd.data.color) keyObject.style.backgroundColor = snd.data.color;
       keyObject.innerText = k;
       keyObject.className = keyObject.className.replace('unset', '');
       keyObject.onclick = (ev) => {
@@ -245,6 +246,11 @@ function loadData(itm) {
 document.querySelector('#color').onchange = (e) => {
   document.querySelector('#editor-btn').style.backgroundColor = e.srcElement.value;
   document.querySelector('#color').dataset.has_set = 'true';
+  // create data "color"
+  const interaction = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+  interaction.data.color = e.srcElement.value;
+  document.querySelector('#editor-btn').setAttribute('data-interaction', JSON.stringify(interaction));
+  loadData(interaction.data);
 };
 
 /**

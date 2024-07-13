@@ -22,7 +22,10 @@ module.exports = {
     socket._clientInfo = {};
 
     socket.on('disconnect', () => {
-      if (socket.user === 'Main') tsm.set('isMobileConnected', false);
+      if (socket.user === 'Main') {
+        tsm.set('isMobileConnected', false);
+        io.emit(eventNames.user_mobile_conn, false);
+      }
       if (socket.user === 'Companion') tsm.delete('IC');
       debug.log(
           pc.red('Client ' + socket.user + ' disconnected'),
@@ -44,10 +47,7 @@ module.exports = {
       socket.user = user;
       if (user === 'Main') {
         if (tsm.get('isMobileConnected') === undefined) tsm.set('isMobileConnected', false);
-        if (tsm.get('isMobileConnected') === true) {
-          return;
-        }
-        io.emit(eventNames.user_mobile_conn);
+        io.emit(eventNames.user_mobile_conn, true);
         tsm.set('isMobileConnected', true);
       }
       if (user === 'Companion') {

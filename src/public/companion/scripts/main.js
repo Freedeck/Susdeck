@@ -640,12 +640,12 @@ profileDupe.onclick = () => {
   });
 };
 
-universal.on(universal.events.user_mobile_conn, () => {
-  universal.sendToast('Mobile device connected');
-  if (document.querySelector('.mobd')) document.querySelector('.mobd').remove();
+universal.on(universal.events.user_mobile_conn, (isConn) => {
+  if (isConn) document.querySelector('.mobd').style.display = 'none';
+  else document.querySelector('.mobd').style.display = 'flex';
 });
 
-if (universal._information.mobileConnected) document.querySelector('.mobd').remove();
+if (universal._information.mobileConnected) document.querySelector('.mobd').style.display = 'none';
 
 if (universal.load('pitch')) document.querySelector('#pitch').value = universal.load('pitch');
 

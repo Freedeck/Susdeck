@@ -58,7 +58,6 @@ module.exports = {
         }
         tsm.set('IC', socket._id);
       }
-      if (tsm.get('isMobileConnected') == true) socket.emit(eventNames.user_mobile_conn);
       console.log('Client ' + user + ' has greeted server at ' + new Date());
       const pl = {};
       const plu = plugins.plugins();
@@ -66,9 +65,12 @@ module.exports = {
         pl[plugin.instance.id] = plugin.instance;
       });
       cfg.update();
+      const isMobileConnected = tsm.get('isMobileConnected');
+
       const serverInfo = {
         id: socket._id,
         NotificationManager,
+        mobileConnected: isMobileConnected || false,
         tempLoginID: socket.tempLoginID,
         plugins: pl,
         disabled: plugins._disabled,
@@ -83,13 +85,9 @@ module.exports = {
           console.error('Compression error:', err);
           return;
         }
-      
-        // console.log('Compressed data:', buffer);
-        // Size comparison
 
         socket.emit(eventNames.information, buffer);
       });
-      
 
       socket.emit(eventNames.default.notif, JSON.stringify({
         sender: 'Server',

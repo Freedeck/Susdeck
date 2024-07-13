@@ -26,7 +26,7 @@ sidebarUl.setHTML('<li style="font-size: .65em; background: none; margin: 0 auto
 sidebar.forEach((itm) => {
   const name = Object.keys(itm)[0];
   const val = itm[name];
-  if(val.startsWith('+')) {
+  if (val.startsWith('+')) {
     const ele = document.createElement('li');
     ele.setHTML(`<a onclick="${val.substring(1)}">${name}</a>`);
     sidebarUl.appendChild(ele);

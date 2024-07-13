@@ -640,6 +640,12 @@ profileDupe.onclick = () => {
   });
 };
 
+universal.on(universal.events.user_mobile_conn, () => {
+  universal.sendToast('Mobile device connected');
+  if (document.querySelector('.mobd')) document.querySelector('.mobd').remove();
+});
+
+if (universal._information.mobileConnected) document.querySelector('.mobd').remove();
 
 if (universal.load('pitch')) document.querySelector('#pitch').value = universal.load('pitch');
 
@@ -658,11 +664,6 @@ if (err) {
       break;
   }
 }
-
-universal.on(universal.events.user_mobile_conn, () => {
-  universal.sendToast('Mobile device connected');
-  document.querySelector('.mobd').remove();
-});
 
 /**
  * @name getAudioOutputDevices

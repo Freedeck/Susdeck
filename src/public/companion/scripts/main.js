@@ -16,8 +16,9 @@ new Sortable(document.querySelector('#keys'), {
         JSON.stringify({
           name: d.item.innerText,
           item: d.item.getAttribute('data-interaction'),
-          newIndex: d.newDraggableIndex+ev,
-          oldIndex: d.oldDraggableIndex+ev}));
+          newIndex: d.newDraggableIndex + ev,
+          oldIndex: d.oldDraggableIndex + ev,
+        }));
     universal.page = 0;
   },
   filter: '.unset',
@@ -34,7 +35,7 @@ function reloadSounds() {
   document.querySelectorAll('#keys > .button').forEach((key) => {
     key.remove();
   });
-  document.querySelectorAll('.k').forEach((k)=>{
+  document.querySelectorAll('.k').forEach((k) => {
     k.remove();
   });
   document.querySelector('.cpage').innerText = 'Page: ' + (universal.page + 1) + '/' + (Object.keys(Pages).length);
@@ -54,7 +55,7 @@ function reloadSounds() {
     };
     try {
       keyObject.setAttribute('data-interaction', JSON.stringify(snd));
-      keyObject.style.backgroundImage = 'url("'+snd.data.icon+ '")';
+      keyObject.style.backgroundImage = 'url("' + snd.data.icon + '")';
       keyObject.innerText = k;
       keyObject.className = keyObject.className.replace('unset', '');
       keyObject.onclick = (ev) => {
@@ -77,7 +78,7 @@ function reloadSounds() {
 }
 
 document.querySelector('.toggle-sidebar button').onclick = (ev) => {
-  if (document.querySelector('.sidebar').style.display == 'block') {
+  if (document.querySelector('.sidebar').style.display == 'flex') {
     document.querySelector('.sidebar').style.animation = 'sidebar-slide-out 0.5s';
     document.querySelector('.sidebar').style.animationFillMode = 'forward';
     document.querySelector('.toggle-sidebar button').style.transform = 'rotate(0deg)';
@@ -86,7 +87,7 @@ document.querySelector('.toggle-sidebar button').onclick = (ev) => {
       document.querySelector('.sidebar').style.display = 'none';
     }, 500);
   } else {
-    document.querySelector('.sidebar').style.display = 'block';
+    document.querySelector('.sidebar').style.display = 'flex';
     document.querySelector('.sidebar').style.animation = 'sidebar-slide-in 0.5s';
     document.querySelector('.toggle-sidebar button').style.transform = 'rotate(180deg)';
     document.querySelector('.toggle-sidebar').style.left = 'calc(11.5%)';
@@ -164,7 +165,7 @@ window.oncontextmenu = function(e) {
             const pos = parseInt(
                 e.srcElement.className.split(' ')[1].split('-')[1]) +
               (universal.page <= 0 ? 1 : 0) +
-            ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0 ));
+              ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0));
             if (value.type == 'sound') createSound(pos);
             if (value.type == 'plugin') createPlugin(pos);
           });
@@ -204,15 +205,15 @@ function showReplaceGUI(srcElement) {
     })[0][value.name];
     const pos = parseInt(
         srcElement.className.split(' ')[1].split('-')[1]) +
-    (universal.page <= 0 ? 1 : 0) +
-  ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0 ));
+      (universal.page <= 0 ? 1 : 0) +
+      ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0));
     // we need to clone value, and change the pos, and uuid, then make a new key.
     universal.send(universal.events.companion.new_key, JSON.stringify({
       [value.name]: {
         type: valueToo.type,
         plugin: valueToo.plugin || 'Freedeck',
         pos,
-        uuid: 'fdc.'+Math.random() * 10000000,
+        uuid: 'fdc.' + Math.random() * 10000000,
         data: valueToo.data,
       },
     }));
@@ -241,18 +242,22 @@ function loadData(itm) {
   });
 }
 
+document.querySelector('#color').onchange = (e) => {
+  document.querySelector('#editor-btn').style.backgroundColor = e.srcElement.value;
+  document.querySelector('#color').dataset.has_set = 'true';
+};
+
 /**
  * Edit a tile
  * @param {*} e HTML Element corresponding to the button that we grabbed context from
  */
 function editTile(e) {
   if (document.querySelector('.toggle-sidebar').style.left != '0px') document.querySelector('.toggle-sidebar button').click();
-  document.querySelector('.center').style.top = '13rem';
-  document.querySelector('.center').style.left = '25%';
   if (document.querySelector('.contextMenu')) document.querySelector('.contextMenu').style.display = 'none';
+  document.querySelector('#sidebar').style.right = '-20%';
   document.querySelector('#editor').style.display = 'block';
   document.querySelector('#editor-btn').innerText = e.srcElement.innerText;
-  document.querySelector('#editor-btn').style.backgroundImage = 'url("'+JSON.parse(e.srcElement.getAttribute('data-interaction')).data.icon+ '")';
+  document.querySelector('#editor-btn').style.backgroundImage = 'url("' + JSON.parse(e.srcElement.getAttribute('data-interaction')).data.icon + '")';
   document.querySelector('#name').value = e.srcElement.innerText;
   document.querySelector('#editor-btn').setAttribute('data-pre-edit', e.srcElement.innerText);
   document.querySelector('#editor-btn').setAttribute('data-interaction', e.srcElement.getAttribute('data-interaction'));
@@ -269,9 +274,7 @@ function editTile(e) {
   }
   // make it fade in
   document.querySelector('#editor').style.opacity = '0';
-  document.querySelector('#editor').style.width = '100%';
   document.querySelector('.toggle-sidebar button').style.display = 'none';
-  document.querySelector('#editor').style.height = '50%';
   setTimeout(() => {
     document.querySelector('#editor').style.opacity = '1';
   }, 100);
@@ -293,7 +296,7 @@ function createSound(pos) {
       [value]: {
         type: 'fd.sound',
         pos,
-        uuid: 'fdc.'+Math.random() * 10000000,
+        uuid: 'fdc.' + Math.random() * 10000000,
         data: {file: 'Unset.mp3', path: '/sounds/'},
       },
     }));
@@ -318,7 +321,7 @@ function createPlugin(pos) {
         [value]: {
           type: valuea.type,
           pos,
-          uuid: 'fdc.'+Math.random() * 10000000,
+          uuid: 'fdc.' + Math.random() * 10000000,
           plugin: valuea.name,
           data: valuea.templateData,
         },
@@ -345,12 +348,12 @@ document.querySelector('#upload-icon').onclick = (e) => {
     reloadProfile();
     const previousInteractionData = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
     previousInteractionData.data.icon = '/us-icons/' + data.newName;
-    document.querySelector('#editor-btn').style.backgroundImage = `url("${'/us-icons/'+data.newName}")`;
+    document.querySelector('#editor-btn').style.backgroundImage = `url("${'/us-icons/' + data.newName}")`;
     loadData(previousInteractionData.data);
   }, 'icon');
 };
 
-const upload = (accept, callback, type='sound') => {
+const upload = (accept, callback, type = 'sound') => {
   // <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
   const dummyFrame = document.createElement('iframe');
   dummyFrame.style.display = 'none';
@@ -388,12 +391,14 @@ const upload = (accept, callback, type='sound') => {
 
 document.querySelector('#editor-close').onclick = () => {
   document.querySelector('#editor').style.opacity = '0';
+  document.querySelector('#sidebar').style.right = '5px';
   document.querySelector('.toggle-sidebar button').style.display = 'block';
-  document.querySelector('.center').style.top = '50%';
-  document.querySelector('.center').style.left = '50%';
   if (document.querySelector('.toggle-sidebar').style.left == '0px') document.querySelector('.toggle-sidebar button').click();
   setTimeout(() => {
     document.querySelector('#editor').style.display = 'none';
+    document.querySelector('#color').value = '#000000';
+    document.querySelector('#color').dataset.has_set = 'false';
+    document.querySelector('#editor-btn').style.backgroundColor = '';
   }, 500);
 };
 
@@ -424,27 +429,9 @@ document.querySelector('#editor-save').onclick = () => {
 function showEditModal(title, content, callback) {
   const modal = document.createElement('div');
   modal.className = 'modal';
-  modal.style.position = 'fixed';
-  modal.style.top = '0';
-  modal.style.left = '0';
-  modal.style.width = '100vw';
-  modal.style.height = '100vh';
-  modal.style.background = 'rgba(0,0,0,.75)';
-  modal.style.zIndex = '9999';
-  modal.style.display = 'flex';
-  modal.style.alignItems = 'center';
-  modal.style.justifyContent = 'center';
 
   const modalContent = document.createElement('div');
   modalContent.className = 'modalContent';
-  modalContent.style.background = '#fff';
-  modalContent.style.padding = '20px';
-  modalContent.style.borderRadius = '5px';
-  modalContent.style.width = '50vw';
-  modalContent.style.height = '50vh';
-  modalContent.style.display = 'flex';
-  modalContent.style.flexDirection = 'column';
-  modalContent.style.alignItems = 'center';
 
   const modalClose = document.createElement('button');
   modalClose.innerText = 'Close';
@@ -497,27 +484,9 @@ function showEditModal(title, content, callback) {
 function showPick(title, listContent, callback) {
   const modal = document.createElement('div');
   modal.className = 'modal';
-  modal.style.position = 'fixed';
-  modal.style.top = '0';
-  modal.style.left = '0';
-  modal.style.width = '100vw';
-  modal.style.height = '100vh';
-  modal.style.background = 'rgba(0,0,0,.75)';
-  modal.style.zIndex = '9999';
-  modal.style.display = 'flex';
-  modal.style.alignItems = 'center';
-  modal.style.justifyContent = 'center';
 
   const modalContent = document.createElement('div');
   modalContent.className = 'modalContent';
-  modalContent.style.background = '#fff';
-  modalContent.style.padding = '20px';
-  modalContent.style.borderRadius = '5px';
-  modalContent.style.width = '50vw';
-  modalContent.style.height = '50vh';
-  modalContent.style.display = 'flex';
-  modalContent.style.flexDirection = 'column';
-  modalContent.style.alignItems = 'center';
 
   const modalClose = document.createElement('button');
   modalClose.innerText = 'Close';
@@ -590,7 +559,7 @@ reloadProfile();
 
 document.querySelector('#pg-left').addEventListener('click', () => {
   if (Pages[universal.page - 1]) {
-    universal.page --;
+    universal.page--;
     universal.save('page', universal.page);
     reloadSounds();
   }
@@ -598,7 +567,7 @@ document.querySelector('#pg-left').addEventListener('click', () => {
 
 document.querySelector('#pg-right').addEventListener('click', () => {
   if (Pages[universal.page + 1]) {
-    universal.page ++;
+    universal.page++;
     universal.save('page', universal.page);
     reloadSounds();
   }
@@ -607,14 +576,14 @@ document.querySelector('#pg-right').addEventListener('click', () => {
 document.addEventListener('keydown', (ev) => {
   if (ev.key == 'ArrowLeft') {
     if (Pages[universal.page - 1]) {
-      universal.page --;
+      universal.page--;
       universal.save('page', universal.page);
       reloadSounds();
     }
   }
   if (ev.key == 'ArrowRight') {
     if (Pages[universal.page + 1]) {
-      universal.page ++;
+      universal.page++;
       universal.save('page', universal.page);
       reloadSounds();
     }
@@ -622,7 +591,7 @@ document.addEventListener('keydown', (ev) => {
 });
 
 const profileTxt = document.createElement('h2');
-profileTxt.innerHTML = 'Profile:&nbsp<i>'+universal.config.profile+'</i>';
+profileTxt.innerHTML = 'Profile:&nbsp<i>' + universal.config.profile + '</i>';
 // document.body.appendChild(profileTxt);
 
 const profileSelect = document.createElement('select');
@@ -654,6 +623,8 @@ profileSelect.value = universal.config.profile;
 profileSelect.onchange = () => {
   universal.send(universal.events.companion.set_profile, profileSelect.value);
 };
+
+document.querySelector('#es-profiles').appendChild(profileSelect);
 
 const profileDupe = document.querySelector('#pf-dupe');
 profileDupe.innerText = 'Duplicate Profile';
@@ -692,3 +663,70 @@ universal.on(universal.events.user_mobile_conn, () => {
   universal.sendToast('Mobile device connected');
   document.querySelector('.mobd').remove();
 });
+
+/**
+ * @name getAudioOutputDevices
+ * @description Get the audio output devices.
+ * @param {Boolean} isCable If we're looking for VB-Cable instances or Monitor
+ * @return {Object[]}
+ */
+async function getAudioOutputDevices(isCable=false) {
+  const devices = await navigator.mediaDevices.enumerateDevices();
+  const audioOutputs = devices
+      .filter((device) => device.kind === 'audiooutput' && (isCable ? device.label.includes('VB-Audio') : !device.label.includes('VB-Audio')))
+      .map((device) => ({name: device.label || 'Unknown Audio Output', value: device.deviceId}));
+  return audioOutputs;
+}
+
+
+const embeddedSettingsAudio = document.querySelector('#es-audio');
+const embeddedSettingsClient = document.querySelector('#es-client');
+
+getAudioOutputDevices().then(async (audioOutputs) => {
+  const select = await universal.embedded_settings.createSelect(
+      'Monitor',
+      'es-monitor',
+      audioOutputs.map((device) => (device.value)),
+      audioOutputs.map((device) => (device.name)),
+      universal.load('monitor.sink'),
+      (ev) => {
+        universal.save('monitor.sink', ev.target.value);
+        console.log('Pitch set to ' + ev.target.value);
+      },
+  );
+  embeddedSettingsAudio.appendChild(select);
+});
+
+getAudioOutputDevices(true).then(async (audioOutputs) => {
+  const select = await universal.embedded_settings.createSelect(
+      'VB-Cable',
+      'es-cable',
+      audioOutputs.map((device) => (device.value)),
+      audioOutputs.map((device) => (device.name)),
+      universal.load('vb.sink'),
+      (ev) => {
+        universal.save('vb.sink', ev.target.value);
+        console.log('Cable set to ' + ev.target.value);
+      },
+  );
+  embeddedSettingsAudio.appendChild(select);
+});
+
+const playbackModes = [
+  {label: 'Stop Previous', value: 'stop_prev'},
+  {label: 'Play Over', value: 'play_over'},
+];
+
+const playbackModeSetting = await universal.embedded_settings.createSelect(
+    'Playback Mode',
+    'es-playback',
+    playbackModes.map((mode) => mode.value),
+    playbackModes.map((mode) => mode.label),
+    universal.load('playback-mode'),
+    (ev) => {
+      universal.save('playback-mode', ev.target.value);
+      console.log('Playback mode set to ' + ev.target.value);
+    },
+);
+
+embeddedSettingsClient.appendChild(playbackModeSetting);

@@ -354,27 +354,9 @@ function showPick(title, listContent, callback) {
 function showText(title, txt, cb) {
   const modal = document.createElement('div');
   modal.className = 'modal';
-  modal.style.position = 'fixed';
-  modal.style.top = '0';
-  modal.style.left = '0';
-  modal.style.width = '100vw';
-  modal.style.height = '100vh';
-  modal.style.background = 'rgba(0,0,0,.75)';
-  modal.style.zIndex = '9999';
-  modal.style.display = 'flex';
-  modal.style.alignItems = 'center';
-  modal.style.justifyContent = 'center';
 
   const modalContent = document.createElement('div');
   modalContent.className = 'modalContent';
-  modalContent.style.background = '#fff';
-  modalContent.style.padding = '20px';
-  modalContent.style.borderRadius = '5px';
-  modalContent.style.width = '50vw';
-  modalContent.style.height = '50vh';
-  modalContent.style.display = 'flex';
-  modalContent.style.flexDirection = 'column';
-  modalContent.style.alignItems = 'center';
 
   const modalTitle = document.createElement('h2');
   modalTitle.innerText = title;

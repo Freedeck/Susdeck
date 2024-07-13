@@ -84,10 +84,12 @@ input {
 
 #sidebar {
 	position: fixed;
-	top: 0;
-	right: 0;
-	width: 15%;
-	height: 100%;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 5px;
+	border-radius: 1.5rem;
+	/* width: 15%; */
+	height: 90%;
 	background-color: rgba(0, 0, 0, 0.5);
 	display: flex;
 	flex-direction: column;
@@ -96,8 +98,9 @@ input {
 	font-size: 1.75em;
 	color: white;
 	z-index: 100;
-	transition-duration: .15s;
+	transition-duration: .25s;
 }
+
 
 /* find first item in ul*/
 #sidebar ul li:first-child {
@@ -141,16 +144,26 @@ body {
 }
 
 .sidebar {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 1rem;
 	position: fixed;
-	top: 0;
-	left: 0;
+	top: 50%;
+	left: 5px;
 	width: 20%;
-	min-height: 100%;
+	max-height: 90%;
+	border-radius: 1.5rem;
+	transform: translateY(-50%);
 	padding: 5px;
 	background-color: rgba(0, 0, 0, 0.5);
 	color: white;
 	height: 100%;
 	overflow-y: scroll;
+}
+
+.sidebar::-webkit-scrollbar {
+	width: 0;
 }
 
 .contextMenu {
@@ -175,17 +188,32 @@ body {
 	cursor: pointer;
 }
 
+#editor-data {
+	gap: 1rem;
+}
+
+.editor-section {
+	background: rgba(0, 0, 0, 0.25);
+	padding: 1rem;
+	padding-right: 1.5rem;
+	width: max-content;
+	border-radius: 10px;
+	display: flex;
+	align-items: start;
+	flex-direction: column;
+}
+
 #editor {
 	position: fixed;
-	bottom: 0;
-	left: 0;
-	width: 100%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 50%;
 	height: 50%;
 	border: 0;
 	background-color: rgba(0, 0, 0, 0);
 	z-index: 1000;
 	transition-duration: .25s;
-	display: none;
 }
 
 .btnlist {
@@ -200,20 +228,23 @@ body {
 }
 
 #editor-div {
+	resize: both;
 	position: absolute;
 	top: 50%;
-	left: 1rem;
-	transform: translate(0, -50%);
-	width: 75%;
-	height: 75%;
+	left: 50%;
+	width: 100%;
+	height: 100%;
+	transform: translate(-50%, -50%);
 	background-color: var(--fd-studio-color);
 	color: white;
 	border-radius: 0.5rem;
 	padding: 1.5rem;
 	z-index: 1000;
-	transition-duration: .25s;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
 
 #editor-div>h1,
@@ -250,19 +281,19 @@ body {
 
 @keyframes sidebar-slide-in {
 	0% {
-		left: -15%;
+		left: -20%;
 	}
 	100% {
-		left: 0;
+		left: 5px;
 	}
 }
 
 @keyframes sidebar-slide-out {
 	0% {
-		left: 0;
+		left: 5px;
 	}
 	100% {
-		left: -15%;
+		left: -21%;
 	}
 }
 
@@ -329,4 +360,49 @@ body {
 
 .unset {
 	opacity: 0.125;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0,0,0,0.75);
+	z-index: 9999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.modalContent input {
+	background: rgba(0, 0, 0, 0.5);
+	color: white;
+	padding: 5px;
+	border-radius: 5px;
+	width: 80%;
+}
+
+.sidebar-item {
+	background-color: rgba(0, 0, 0, 0.5);
+	color: white;
+	border-radius: 0.5rem;
+	padding: 0 0.25rem 1rem 0.25rem;
+	transition-duration: .25s;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+
+.modalContent {
+	background: var(--fd-studio-color);
+	color: white;
+	padding: 20px;
+	border-radius: 5px;
+	width: 50vw;
+	height: 50vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }

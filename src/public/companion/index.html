@@ -25,30 +25,38 @@
             <div class="x" id="editor-close">Close</div>
             <h1>Tile Editor</h1>
             <h2>Info</h2>
-            <div class="flex-wrap-r">
-                <div class="button" id="editor-btn">Butn</div>
-                <div class="flex-wrap">
-                    <div class="flex-wrap-r alc">
-                        <label for="name">Name</label>
-                        <input type="text" id="name"
-                            onkeyup="document.querySelector('#editor-btn').innerText = this.value;" value="Butn">
-                    </div>
-                    <div class="flex-wrap-r alc">
-                        <label for="type">Type</label>
-                        <input type="text" id="type" value="fd.sound" disabled>
-                    </div>
-                    <div class="flex-wrap-r alc">
-                        <label for="plugin">Plugin</label>
-                        <input type="text" id="plugin" value="Freedeck" disabled>
+            <div class="editor-section">
+                <div class="flex-wrap-r">
+                    <div class="button" id="editor-btn">Not Loaded</div>
+                    <div class="flex-wrap">
+                        <div class="flex-wrap-r alc">
+                            <label for="name">Name</label>
+                            <input type="text" id="name"
+                                onkeyup="document.querySelector('#editor-btn').innerText = this.value;" value="Not Loaded">
+                        </div>
+                        <div class="flex-wrap-r alc">
+                            <label for="color">Color</label>
+                            <input type="color" id="color" data-has_set="false" value="#000">
+                        </div>
+                        <div class="flex-wrap-r alc">
+                            <label for="type">Type</label>
+                            <input type="text" id="type" value="fd.sound" disabled>
+                        </div>
+                        <div class="flex-wrap-r alc">
+                            <label for="plugin">Plugin</label>
+                            <input type="text" id="plugin" value="Freedeck" disabled>
+                        </div>
                     </div>
                 </div>
             </div>
             <h2>Data</h2>
-            <div class="flex-wrap-r" id="editor-data"></div>
-            <br />
-            <div class="flex-wrap-r">
-                <div class="button" style="display: none;" id="upload-sound">Upload Sound</div>
-                <div class="button" id="upload-icon">Set Icon</div>
+            <div class="editor-section">
+                <div class="flex-wrap-r" id="editor-data"></div>
+                <br />
+                <div class="flex-wrap-r">
+                    <div class="button" style="display: none;" id="upload-sound">Upload Sound</div>
+                    <div class="button" id="upload-icon">Set Icon</div>
+                </div>
             </div>
             <!-- <h2>Ready to save?</h2> -->
             <div class="button" id="editor-save">
@@ -56,27 +64,33 @@
             </div>
         </div>
     </dialog>
-
     <div class="toggle-sidebar"><button>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-          </svg>
-    </button>
-      </div>
-    <div class="sidebar" style="display:block;">
-        <div class="flex-wrap-c">
-            <div class="mobd">
-                <span><br/><h1>Mobile Device</h1></span>
-                <div class="flex-wrap-r">
-                    <button id="mobd-conn" onclick="universal.connHelpWizard()">View Connection Instructions</button>
-                </div>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+        </button>
+    </div>
+    <div class="sidebar" style="display:flex;">
+        <div class="mobd rem-mobd sidebar-item">
+            <span><br />
+                <h1>Mobile Device</h1>
+            </span>
+            <div class="flex-wrap-r">
+                <button id="mobd-conn" onclick="universal.connHelpWizard()">View Connection Instructions</button>
             </div>
+        </div>
+        <div class="sidebar-item">
             <h1 class="cpage">Page: ???</h1>
             <div class="flex-wrap-r">
                 <button id="pg-left">Previous Page</button>
                 <button id="pg-right">Next Page</button>
             </div>
-            <span><br/><h1>Audio</h1></span>
+        </div>
+        <div class="sidebar-item" id="es-audio">
+            <span><br />
+                <h1>Audio</h1>
+            </span>
             <div class="flex-wrap-r">
                 <div class="alc">
                     <label for="pitch">
@@ -94,21 +108,34 @@
                     </label>
                     <input type="range" min="0" max="1" value="1" step="0.1" id="v"
                         onchange="universal.audioClient.setVolume(this.value)" style="width: 7rem;">
-                    </div>
+                </div>
                 <button onclick="universal.audioClient.setVolume(1)">Reset</button>
             </div>
-            <span><br/><h1>Profiles</h1></span>
+            <button onclick="universal.audioClient.stopAll()">Stop All</button>
+        </div>
+        <div class="sidebar-item" id="es-client">
+            <span><br />
+                <h1>Client</h1>
+            </span>
+        </div>
+        <div class="sidebar-item" id="es-profiles">
+            <span><br />
+                <h1>Profiles</h1>
+            </span>
             <div class="flex-wrap-r">
                 <button id="pf-add">New Profile</button>
                 <button id="pf-dupe">Duplicate Profile</button>
             </div>
-            <br/>
-            <select id="profiles"></select>
+            <br />
+        </div>
+        <div class="sidebar-item">
+            <h2 style="text-align: center;">Freedeck v6</h2>
+            <p style="text-align: center; font-size: 0.75em;">This is the bottom!</p>
         </div>
     </div>
-        <div class="center">
-            <div id="keys"></div>
-        </div>
+    <div class="center">
+        <div id="keys"></div>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="dist/main.js" type="module"></script>
 </body>

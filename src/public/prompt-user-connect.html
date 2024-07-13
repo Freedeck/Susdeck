@@ -3,12 +3,17 @@
 	<div class="modal-content">
 		<h1 id="prompt-title">Freedeck on your other device:</h1>
 		<p>Choose your device's OS:</p>
-		<select id="user-select">
-			<option value="0">iOS (iPhone, iPad, etc..)</option>
-			<option value="1">Android (Samsung, Pixel, etc..)</option>
-		</select>
-		<button id="connect-button">View Connection Instructions</button>
-		<button id="later-button">Connect Later</button>
+		<div class="flc">
+			<select id="user-select">
+				<option value="0">iOS (iPhone, iPad, etc..)</option>
+				<option value="1">Android (Samsung, Pixel, etc..)</option>
+			</select>
+			<br/>
+			<div class="fla">
+				<button id="connect-button">View Connection Instructions</button>
+				<button id="later-button">Connect Later</button>
+			</div>
+		</div>
 	</div>
 	<div id="c0">
 		<h1>Connect to Freedeck on iOS</h1>
@@ -18,6 +23,7 @@
 			<li>Press <i>Add To Home Screen</i></li>
 		</ul>
 		<p>This will automatically close when your device is connected.</p>
+		<button onclick="document.querySelector('#later-button').click()">Connect Later</button>
 	</div>
 	<div id="c1">
 		<h1>Connect to Freedeck on Android</h1>
@@ -27,6 +33,7 @@
 			<li>Press <i>Add to Home Screen</i>
 		</ul>
 		<p>This will automatically close when your device is connected.</p>
+		<button onclick="document.querySelector('#later-button').click()">Connect Later</button>
 	</div>
 </modal>
 
@@ -52,6 +59,7 @@
 	}
 
 	laterButton.onclick = () => {
+		window.parent.document.querySelector('.rem-mobd').remove();
 		window.parent.document.querySelector('.prompt').remove();
 		modal.style.display = 'none';
 	}
@@ -83,12 +91,25 @@
 </script>
 
 <style>
+	.flc {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
 	* {
 		text-align: center;
 	}
 	#c0,
 	#c1 {
 		display: none;
+	}
+
+	select {
+		width: 100%;
+		padding: 1rem;
+		border-radius: 5px;
+		border: 0;
 	}
 
 	modal {
@@ -106,7 +127,19 @@
 		background-color: rgba(0, 0, 0, 0.4);
 		border-radius: 10px;
 	}
+	button {
+		width: 6rem;
+		height: 6rem;
+		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+	}
+	.fla {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: 20px;
 
+	}
 	.modal-content,
 	#c0,
 	#c1 {

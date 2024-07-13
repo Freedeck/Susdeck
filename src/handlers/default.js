@@ -6,6 +6,7 @@ const NotificationManager = require('../managers/notifications');
 const tsm = require('../managers/temporarySettings');
 const pc = require('../utils/picocolors');
 const path = require('path');
+const zlib = require('zlib');
 
 const serverVersion = 'Freedeck OS-' + require(path.resolve('package.json')).version + 's';
 
@@ -19,7 +20,6 @@ module.exports = {
     socket._id = Math.random() * 2048 + '.fd';
     socket.tempLoginID = Math.random() * 1024 + '.tlid.fd';
     socket._clientInfo = {};
-    if (tsm.get('isMobileConnected') === true) io.emit(eventNames.user_mobile_conn);
 
     socket.on('disconnect', () => {
       if (socket.user === 'Main') tsm.set('isMobileConnected', false);
@@ -58,6 +58,7 @@ module.exports = {
         }
         tsm.set('IC', socket._id);
       }
+      if (tsm.get('isMobileConnected') == true) socket.emit(eventNames.user_mobile_conn);
       console.log('Client ' + user + ' has greeted server at ' + new Date());
       const pl = {};
       const plu = plugins.plugins();
@@ -77,8 +78,18 @@ module.exports = {
         cfg: cfg.settings(),
         profiles: cfg.settings['profiles'],
       };
+      zlib.gzip(JSON.stringify(serverInfo), (err, buffer) => {
+        if (err) {
+          console.error('Compression error:', err);
+          return;
+        }
+      
+        // console.log('Compressed data:', buffer);
+        // Size comparison
 
-      socket.emit(eventNames.information, JSON.stringify(serverInfo));
+        socket.emit(eventNames.information, buffer);
+      });
+      
 
       socket.emit(eventNames.default.notif, JSON.stringify({
         sender: 'Server',

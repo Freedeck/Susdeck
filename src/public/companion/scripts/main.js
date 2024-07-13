@@ -264,6 +264,7 @@ function editTile(e) {
   document.querySelector('#editor').style.display = 'block';
   document.querySelector('#editor-btn').innerText = e.srcElement.innerText;
   document.querySelector('#editor-btn').style.backgroundImage = 'url("' + JSON.parse(e.srcElement.getAttribute('data-interaction')).data.icon + '")';
+  document.querySelector('#editor-btn').style.backgroundColor = JSON.parse(e.srcElement.getAttribute('data-interaction')).data.color;
   document.querySelector('#name').value = e.srcElement.innerText;
   document.querySelector('#editor-btn').setAttribute('data-pre-edit', e.srcElement.innerText);
   document.querySelector('#editor-btn').setAttribute('data-interaction', e.srcElement.getAttribute('data-interaction'));

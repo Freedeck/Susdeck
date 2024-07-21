@@ -411,3 +411,21 @@ if (err) {
       break;
   }
 }
+
+document.querySelector('.soundpack').style.display = universal.uiSounds.enabled ? 'block' : 'none';
+document.querySelector('#soundpack-id').innerText = universal.uiSounds.info.id;
+document.querySelector('#soundpack-title').innerText = universal.uiSounds.info.name;
+document.querySelector('#soundpack-version').innerText = universal.uiSounds.info.version;
+document.querySelector('#soundpack-author').innerText = universal.uiSounds.info.author;
+
+
+const uis = document.querySelector('.uisounds');
+const uisounds = universal.uiSounds.sounds;
+Object.keys(uisounds).forEach((sound) => {
+  const li = document.createElement('li');
+  li.innerText = sound;
+  li.onclick = () => {
+    universal.uiSounds.playSound(sound);
+  };
+  uis.appendChild(li);
+});

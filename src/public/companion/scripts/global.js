@@ -8,7 +8,12 @@ universal.listenFor('init', () => {
   login.style.fontSize= '.75em';
   login.style.display = 'block';
   document.querySelector('#sidebar > ul').appendChild(login);
+
+  universal.uiSounds.playSound('page_enter');
 });
+
+document.onkeydown = (ev) => universal.uiSounds.playSound('int_type');
+
 const sidebar = [
   {'Home': 'index.html'},
   {'Plugins': 'plugins.html'},

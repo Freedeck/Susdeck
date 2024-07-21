@@ -80,6 +80,7 @@ function reloadSounds() {
 
 document.querySelector('.toggle-sidebar button').onclick = (ev) => {
   if (document.querySelector('.sidebar').style.display == 'flex') {
+    universal.uiSounds.playSound('slide_close');
     document.querySelector('.sidebar').style.animation = 'sidebar-slide-out 0.5s';
     document.querySelector('.sidebar').style.animationFillMode = 'forward';
     document.querySelector('.toggle-sidebar button').style.transform = 'rotate(0deg)';
@@ -88,6 +89,7 @@ document.querySelector('.toggle-sidebar button').onclick = (ev) => {
       document.querySelector('.sidebar').style.display = 'none';
     }, 500);
   } else {
+    universal.uiSounds.playSound('slide_open');
     document.querySelector('.sidebar').style.display = 'flex';
     document.querySelector('.sidebar').style.animation = 'sidebar-slide-in 0.5s';
     document.querySelector('.toggle-sidebar button').style.transform = 'rotate(180deg)';
@@ -165,7 +167,7 @@ window.oncontextmenu = function(e) {
           showPick('New Tile', window['button-types'], (modal, value, feedback, title, button, content) => {
             const pos = parseInt(
                 e.srcElement.className.split(' ')[1].split('-')[1]) +
-              (universal.page <= 0 ? 1 : 0) +
+              (universal.page < 0 ? 1 : 0) +
               ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0));
             if (value.type == 'sound') createSound(pos);
             if (value.type == 'plugin') createPlugin(pos);
@@ -258,6 +260,7 @@ document.querySelector('#color').onchange = (e) => {
  * @param {*} e HTML Element corresponding to the button that we grabbed context from
  */
 function editTile(e) {
+  universal.uiSounds.playSound('editor_open');
   if (document.querySelector('.toggle-sidebar').style.left != '0px') document.querySelector('.toggle-sidebar button').click();
   if (document.querySelector('.contextMenu')) document.querySelector('.contextMenu').style.display = 'none';
   document.querySelector('#sidebar').style.right = '-20%';
@@ -398,6 +401,7 @@ const upload = (accept, callback, type = 'sound') => {
 };
 
 document.querySelector('#editor-close').onclick = () => {
+  universal.uiSounds.playSound('int_no');
   document.querySelector('#editor').style.opacity = '0';
   document.querySelector('#sidebar').style.right = '5px';
   document.querySelector('.toggle-sidebar button').style.display = 'block';
@@ -569,6 +573,7 @@ document.querySelector('#pg-left').addEventListener('click', () => {
   if (Pages[universal.page - 1]) {
     universal.page--;
     universal.save('page', universal.page);
+    universal.uiSounds.playSound('page_down');
     reloadSounds();
   }
 });
@@ -577,6 +582,7 @@ document.querySelector('#pg-right').addEventListener('click', () => {
   if (Pages[universal.page + 1]) {
     universal.page++;
     universal.save('page', universal.page);
+    universal.uiSounds.playSound('page_up');
     reloadSounds();
   }
 });
@@ -586,6 +592,7 @@ document.addEventListener('keydown', (ev) => {
     if (Pages[universal.page - 1]) {
       universal.page--;
       universal.save('page', universal.page);
+      universal.uiSounds.playSound('page_down');
       reloadSounds();
     }
   }
@@ -593,6 +600,7 @@ document.addEventListener('keydown', (ev) => {
     if (Pages[universal.page + 1]) {
       universal.page++;
       universal.save('page', universal.page);
+      universal.uiSounds.playSound('page_up');
       reloadSounds();
     }
   }

@@ -149,7 +149,7 @@ const universal = {
       universal.save('vol', vol);
       document.querySelector('#v').value = vol;
     },
-    play: async (file, name, isMonitor = false, stopPrevious = false) => {
+    play: async (file, name, isMonitor = false, stopPrevious = false, volume=universal.load('vol') || 1) => {
       const audioInstance = new Audio();
       audioInstance.src = file;
       audioInstance.load();
@@ -176,9 +176,7 @@ const universal = {
       if (universal.load('pitch')) {
         audioInstance.playbackRate = universal.load('pitch');
       }
-      if (universal.load('vol')) {
-        audioInstance.volume = universal.load('vol');
-      }
+      audioInstance.volume = volume;
       audioInstance.preservesPitch = false;
       audioInstance.fda = {};
       audioInstance.fda.name = name;
@@ -354,6 +352,27 @@ const universal = {
       return _plugins;
     },
   },
+  uiSounds: {
+    enabled: false,
+    soundPack: 'fdsp-beta.soundpack',
+    info: {},
+    sounds: {},
+    playing: [],
+    load: async () => {
+      const res = await fetch('/companion/sounds/' + universal.uiSounds.soundPack + '/manifest.fdsp.json');
+      const data = await res.json();
+      universal.uiSounds.sounds = data.sounds;
+      universal.uiSounds.info = data.info;
+    },
+    playSound: (name) => {
+      if (!universal.uiSounds.enabled) return;
+      universal.audioClient.play(
+          '/companion/sounds/' + universal.uiSounds.info.id + '/' + universal.uiSounds.sounds[name],
+          name,
+          true, false, 0.5,
+      );
+    },
+  },
   /*  */
   _cb: [],
   keySet: () => {
@@ -431,6 +450,7 @@ const universal = {
         universal.send('G', user);
         universal.send('G', user);
         universal.send('G', user);
+        universal.uiSounds.load();
         universal.once('I', async (data) => {
           /**
            * Decompresses a Gzip blob

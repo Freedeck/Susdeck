@@ -3,7 +3,7 @@ plugins/*
 
 tmp/
 
-*.fd*
+*.fd.js
 
 src/configs/*
 src/public/sounds/*

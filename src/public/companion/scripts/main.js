@@ -1,8 +1,8 @@
 import {universal} from '../../scripts/universal.js';
 import Sortable from 'sortablejs';
+import {UI} from '../../scripts/ui.js';
 import './global.js';
 import './authfulPage.js'; // Only for authenticated pages
-const Pages = {};
 
 await universal.init('Companion');
 
@@ -25,58 +25,6 @@ new Sortable(document.querySelector('#keys'), {
   preventOnFilter: true,
 });
 
-/**
- * @name reloadSounds
- * @description Reload all of the sounds in the client's DOM.
- */
-function reloadSounds() {
-  universal.page = universal.load('page') != '\x9Eée' ? parseInt(universal.load('page')) : 0;
-  reloadProfile();
-  document.querySelectorAll('#keys > .button').forEach((key) => {
-    key.remove();
-  });
-  document.querySelectorAll('.k').forEach((k) => {
-    k.remove();
-  });
-  document.querySelector('.cpage').innerText = 'Page: ' + (universal.page + 1) + '/' + (Object.keys(Pages).length);
-  universal.keySet();
-  universal.config.sounds.forEach((sound) => {
-    const k = Object.keys(sound)[0];
-    const snd = sound[k];
-    let keyObject = document.querySelector('.k-' + snd.pos);
-
-    if (snd.pos < ((universal.config.iconCountPerPage) * universal.page)) return;
-    if (!keyObject) {
-      if (universal.page == 0) return;
-      const newPos = snd.pos - (universal.config.iconCountPerPage * universal.page);
-      snd.pos = newPos;
-      keyObject = document.querySelector('.k-' + snd.pos);
-      snd.pos = newPos + (universal.config.iconCountPerPage * universal.page);
-    };
-    try {
-      keyObject.setAttribute('data-interaction', JSON.stringify(snd));
-      if (snd.data.icon) keyObject.style.backgroundImage = 'url("' + snd.data.icon + '")';
-      if (snd.data.color) keyObject.style.backgroundColor = snd.data.color;
-      keyObject.innerText = k;
-      keyObject.className = keyObject.className.replace('unset', '');
-      keyObject.onclick = (ev) => {
-        universal.send(universal.events.keypress, JSON.stringify({event: ev, btn: snd}));
-      };
-
-      // check if two sounds share the same pos, if they do make this button color yellow
-      const sounds = universal.config.sounds.filter((sound) => {
-        const ev = universal.page > 0 ? 1 : 0;
-        const k = Object.keys(sound)[0];
-        return sound[k].pos == snd.pos + (universal.page * universal.config.iconCountPerPage) + ev;
-      });
-      if (sounds.length > 1) {
-        keyObject.style.background = 'yellow';
-      }
-    } catch (e) {
-    }
-  });
-  // document.getElementById('keys').style.maxHeight = document.querySelectorAll('.k').length * (10*12)/window.innerWidth + '%';
-}
 
 document.querySelector('.toggle-sidebar button').onclick = (ev) => {
   if (document.querySelector('.sidebar').style.display == 'flex') {
@@ -97,7 +45,7 @@ document.querySelector('.toggle-sidebar button').onclick = (ev) => {
   }
 };
 
-reloadSounds();
+UI.reloadSounds();
 
 window['button-types'] = [
   {name: 'Sound', type: 'sound'},
@@ -146,9 +94,9 @@ window.oncontextmenu = function(e) {
       // Handle menu item click
       switch (item) {
         case 'New Page':
-          Pages[Object.keys(Pages).length] = [];
-          universal.page = Object.keys(Pages).length - 1;
-          reloadSounds();
+          UI.Pages[Object.keys(UI.Pages).length] = [];
+          universal.page = Object.keys(UI.Pages).length - 1;
+          UI.reloadSounds();
           break;
         case '---':
           break;
@@ -174,7 +122,7 @@ window.oncontextmenu = function(e) {
           });
           break;
         case 'Remove Tile':
-          reloadProfile();
+          UI.reloadProfile();
           universal.send(universal.events.companion.del_key, JSON.stringify({name: e.srcElement.innerText, item: e.srcElement.getAttribute('data-interaction')}));
           break;
         case 'Copy Tile Here':
@@ -196,12 +144,12 @@ window.oncontextmenu = function(e) {
  * @description Show the GUI for replacing a button with another from the universal.config.sounds context.
  */
 function showReplaceGUI(srcElement) {
-  reloadProfile();
+  UI.reloadProfile();
   showPick('Copy from:', universal.config.sounds.map((sound) => {
     const k = Object.keys(sound)[0];
     return {name: k, type: sound[k].type};
   }), (modal, value, feedback, title, button, content) => {
-    reloadProfile();
+    UI.reloadProfile();
     const valueToo = universal.config.sounds.filter((sound) => {
       const k = Object.keys(sound)[0];
       return k == value.name;
@@ -302,7 +250,7 @@ function createSound(pos) {
       feedback.innerText = 'Please enter a name for the tile';
       return false;
     }
-    reloadProfile();
+    UI.reloadProfile();
     universal.send(universal.events.companion.new_key, JSON.stringify({
       [value]: {
         type: 'fd.sound',
@@ -327,7 +275,7 @@ function createPlugin(pos) {
         feedback.innerText = 'Please enter a name for the tile';
         return false;
       }
-      reloadProfile();
+      UI.reloadProfile();
       universal.send(universal.events.companion.new_key, JSON.stringify({
         [value]: {
           type: valuea.type,
@@ -345,7 +293,7 @@ function createPlugin(pos) {
 
 document.querySelector('#upload-sound').onclick = () => {
   upload('audio/*,video/*', (data) => {
-    reloadProfile();
+    UI.reloadProfile();
     const previousInteractionData = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
     previousInteractionData.data.file = data.newName;
     document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(previousInteractionData));
@@ -356,7 +304,7 @@ document.querySelector('#upload-sound').onclick = () => {
 
 document.querySelector('#upload-icon').onclick = (e) => {
   upload('image/*', (data) => {
-    reloadProfile();
+    UI.reloadProfile();
     const previousInteractionData = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
     previousInteractionData.data.icon = '/us-icons/' + data.newName;
     document.querySelector('#editor-btn').style.backgroundImage = `url("${'/us-icons/' + data.newName}")`;
@@ -557,51 +505,41 @@ window.onclick = function(e) {
   }
 };
 
-/**
- * @name reloadProfile
- * @description Reload the current profile
- */
-function reloadProfile() {
-  universal.config.sounds = universal.config.profiles[universal.config.profile];
-  for (let i = 0; i < (universal.config.sounds.length / universal.config.iconCountPerPage); i++) {
-    Pages[i] = true;
-  }
-}
-reloadProfile();
+UI.reloadProfile();
 
 document.querySelector('#pg-left').addEventListener('click', () => {
-  if (Pages[universal.page - 1]) {
+  if (UI.Pages[universal.page - 1]) {
     universal.page--;
     universal.save('page', universal.page);
     universal.uiSounds.playSound('page_down');
-    reloadSounds();
+    UI.reloadSounds();
   }
 });
 
 document.querySelector('#pg-right').addEventListener('click', () => {
-  if (Pages[universal.page + 1]) {
+  if (UI.Pages[universal.page + 1]) {
     universal.page++;
     universal.save('page', universal.page);
     universal.uiSounds.playSound('page_up');
-    reloadSounds();
+    UI.reloadSounds();
   }
 });
 
 document.addEventListener('keydown', (ev) => {
   if (ev.key == 'ArrowLeft') {
-    if (Pages[universal.page - 1]) {
+    if (UI.Pages[universal.page - 1]) {
       universal.page--;
       universal.save('page', universal.page);
       universal.uiSounds.playSound('page_down');
-      reloadSounds();
+      UI.reloadSounds();
     }
   }
   if (ev.key == 'ArrowRight') {
-    if (Pages[universal.page + 1]) {
+    if (UI.Pages[universal.page + 1]) {
       universal.page++;
       universal.save('page', universal.page);
       universal.uiSounds.playSound('page_up');
-      reloadSounds();
+      UI.reloadSounds();
     }
   }
 });

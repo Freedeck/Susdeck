@@ -1,5 +1,6 @@
 import {universal} from './universal.js';
 import './HookLoader.js';
+import {UI} from './ui.js';
 import '../companion/scripts/authfulPage.js';
 
 await universal.init('Main');
@@ -8,44 +9,7 @@ window.onscroll = function() {
   window.scrollTo(0, 0);
 };
 
-/**
- * @also-in companion/scripts/main.js
- * @name reloadSounds
- * @description Reload the sounds in the client's DOM.
- */
-function reloadSounds() {
-  universal.config.sounds = universal.config.profiles[universal.config.profile];
-  document.querySelectorAll('#keys > .button').forEach((key) => {
-    key.remove();
-  });
-  universal.keySet();
-  universal.config.sounds.forEach((sound) => {
-    const k = Object.keys(sound)[0];
-    const snd = sound[k];
-    let keyObject = document.querySelector('.k-' + snd.pos);
-
-    if (snd.pos < ((universal.config.iconCountPerPage) * universal.page)) return;
-    if (!keyObject) {
-      if (universal.page == 0) return;
-      const newPos = snd.pos - (universal.config.iconCountPerPage * universal.page);
-      snd.pos = newPos;
-      keyObject = document.querySelector('.k-' + snd.pos);
-      snd.pos = newPos + (universal.config.iconCountPerPage * universal.page);
-    };
-    try {
-      keyObject.setAttribute('data-interaction', JSON.stringify(snd));
-      if (snd.data.icon) keyObject.style.backgroundImage = 'url("' + snd.data.icon + '")';
-      if (snd.data.color) keyObject.style.backgroundColor = snd.data.color;
-      keyObject.innerText = k;
-      keyObject.className = keyObject.className.replace('unset', '');
-      keyObject.onclick = (ev) => {
-        universal.send(universal.events.keypress, JSON.stringify({event: ev, btn: snd}));
-      };
-    } catch (e) {
-    }
-  });
-}
-reloadSounds();
+UI.reloadSounds();
 
 const Pages = {};
 for (let i = 0; i < (universal.config.sounds.length / universal.config.iconCountPerPage); i++) {
@@ -61,7 +25,7 @@ const checkDirection = () => {
     // go page up
     if (Pages[currentPage + 1]) {
       universal.page ++;
-      reloadSounds();
+      UI.reloadSounds();
     } else {
       /* empty */
     }
@@ -70,7 +34,7 @@ const checkDirection = () => {
     // go page down
     if (Pages[currentPage - 1]) {
       universal.page --;
-      reloadSounds();
+      UI.reloadSounds();
     } else {
       /* empty */
     }

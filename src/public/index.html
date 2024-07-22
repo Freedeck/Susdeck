@@ -28,7 +28,7 @@
     <div class="settings-menu">
         <div class="themelist"></div>
         <p id="version">Freedeck v6.0.0-Loading</p>
-        <button onclick="universal.send(universal.events.default.recompile)">Ask server to recompile Webpack
+        <button onclick="universal.save('BfLoc', window.location.href); universal.send(universal.events.default.recompile)">Ask server to recompile Webpack
             bundles</button>
         <button onclick="window.location.href = '/companion'">To Companion View</button>
         <button onclick="document.querySelector('.settings-menu').style.display = 'none';">Close</button>
@@ -49,7 +49,6 @@
     <script src="companion/dist/settingsThemes.js" type="module"></script>
     <script>
         window.addEventListener('message', (event) => {
-            console.log(event)
             if (event.data === 'close') {
                 console.log(true)
                 document.querySelector('.prompt').style.display = 'none';

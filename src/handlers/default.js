@@ -6,6 +6,7 @@ const NotificationManager = require('../managers/notifications');
 const tsm = require('../managers/temporarySettings');
 const pc = require('../utils/picocolors');
 const path = require('path');
+const zlib = require('zlib');
 
 const serverVersion = 'Freedeck OS-' + require(path.resolve('package.json')).version + 's';
 
@@ -21,6 +22,10 @@ module.exports = {
     socket._clientInfo = {};
 
     socket.on('disconnect', () => {
+      if (socket.user === 'Main') {
+        tsm.set('isMobileConnected', false);
+        io.emit(eventNames.user_mobile_conn, false);
+      }
       if (socket.user === 'Companion') tsm.delete('IC');
       debug.log(
           pc.red('Client ' + socket.user + ' disconnected'),
@@ -40,6 +45,11 @@ module.exports = {
 
     socket.on(eventNames.client_greet, (user) => {
       socket.user = user;
+      if (user === 'Main') {
+        if (tsm.get('isMobileConnected') === undefined) tsm.set('isMobileConnected', false);
+        io.emit(eventNames.user_mobile_conn, true);
+        tsm.set('isMobileConnected', true);
+      }
       if (user === 'Companion') {
         if (tsm.get('IC') === undefined) tsm.set('IC', socket._id);
         if (tsm.get('IC') !== socket._id) {
@@ -55,9 +65,12 @@ module.exports = {
         pl[plugin.instance.id] = plugin.instance;
       });
       cfg.update();
+      const isMobileConnected = tsm.get('isMobileConnected');
+
       const serverInfo = {
         id: socket._id,
         NotificationManager,
+        mobileConnected: isMobileConnected || false,
         tempLoginID: socket.tempLoginID,
         plugins: pl,
         disabled: plugins._disabled,
@@ -67,8 +80,14 @@ module.exports = {
         cfg: cfg.settings(),
         profiles: cfg.settings['profiles'],
       };
+      zlib.gzip(JSON.stringify(serverInfo), (err, buffer) => {
+        if (err) {
+          console.error('Compression error:', err);
+          return;
+        }
 
-      socket.emit(eventNames.information, JSON.stringify(serverInfo));
+        socket.emit(eventNames.information, buffer);
+      });
 
       socket.emit(eventNames.default.notif, JSON.stringify({
         sender: 'Server',

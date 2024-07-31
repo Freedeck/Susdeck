@@ -47,6 +47,7 @@ const loadRepo = (repo, isUnofficial=false) => {
       li.appendChild(desc);
       const file = document.createElement('button');
       file.onclick = () => {
+        universal.uiSounds.playSound('int_confirm');
         dialog.innerHTML = `
         <h1>Download ${req.name}</h1><p>Are you sure you want to download ${req.name} (from ${repo.title})?</p>
         <span>
@@ -55,10 +56,13 @@ const loadRepo = (repo, isUnofficial=false) => {
         </span>`;
         dialog.showModal();
         document.querySelector('#yes').onclick = () => {
-          universal.send(universal.events.default.download_plugin, JSON.stringify({id: req.id, file: req.file, server: repo}));
+          universal.uiSounds.playSound('int_yes');
+          const handoffURL = 'freedeck://download/' + req.id +'/' + encodeURIComponent(req.file);
+          window.location.href = handoffURL;
           dialog.innerHTML = `<h1>Downloading ${req.name}</h1><p>Downloading ${req.name}...</p>`;
         };
         document.querySelector('#no').onclick = () => {
+          universal.uiSounds.playSound('int_no');
           dialog.close();
         };
       };
@@ -103,6 +107,7 @@ universal.on(universal.events.default.plugins_updated, () => {
   if (!dialog.open) dialog.showModal();
   dialog.innerHTML = `<p>Plugin indexes updated.</p><button id="close">Refresh</button>`;
   document.querySelector('#close').onclick = () => {
+    universal.uiSounds.playSound('click');
     window.location.reload();
   };
 });

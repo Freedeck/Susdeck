@@ -40,6 +40,14 @@ io.on('connection', (socket) => {
        * @param {Object} notification Notification data for Freedeck Client to parse.
        */
   function sendNotification(notification) {
+    if(notification.sender == 'handoff-api') {
+      switch(notification.data) {
+        case 'reload-plugins':
+          io.emit(eventNames.default.plugins_updated);
+          break;
+      }
+      return;
+    }
     io.emit(eventNames.default.notif, JSON.stringify(notification));
     NotificationManager.once('newNotification', sendNotification);
   }

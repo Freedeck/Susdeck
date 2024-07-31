@@ -21,6 +21,9 @@
     <input type="submit" value="Connect" id="sub">
   </div>
   <script>
+    const audio = new Audio('/companion/sounds/webpack_awaiting.wav');
+    audio.loop = true;
+    audio.play();
     const concon = document.querySelector("#currcon")
     const datsta = document.querySelector('#datstat')
     const msg = document.querySelector("#msg")
@@ -42,6 +45,10 @@
         s = true;
         fetch(url.value + '/companion').then(res => res.text()).then(res => {
           datsta.innerText = "Companion is online! Starting connection";
+          if(localStorage.getItem(btoa('fd.BfCon'))) {
+            localStorage.removeItem(btoa('fd.BfCon'));
+            window.location.href = atob(localStorage.getItem(btoa('fd.BfCon')));
+          }
           window.location.replace(url.value + '/companion?fdc=true');
         }).catch(failure => {
           er.style.display = 'block';

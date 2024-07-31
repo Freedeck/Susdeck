@@ -63,15 +63,19 @@
 <script>
     // console.log(universal.repositoryManager.unofficial)
     function addRepo() {
+        universal.uiSounds.playSound('int_prompt');
+        if(document.querySelector('#repo-dialog')) document.querySelector('#repo-dialog').remove();
         const modal = document.createElement('dialog');
         modal.className = 'dialog';
+        modal.id = 'repo-dialog';
         modal.innerHTML = `
             <div id="login-div">
                 <h1>Freedeck 6 - Companion</h1>
                 <p>Enter the URL of the repository</p>
                 <label for="title">Repository Title</label><input type="text" id="title" placeholder="freedeck.app">
                 <label for="url">Repository Access URL</label><input type="text" id="url" placeholder="https://freedeck.app/_fd/repository.php">
-                <button>Submit</button>
+                <button id="submit">Submit</button>
+                <button onclick="universal.uiSounds.playSound('int_no'); document.querySelector('.dialog').style.display='none';">Cancel</button>
             </div>
         `;
         console.log(modal)
@@ -81,7 +85,7 @@
         modal.style.position = 'absolute'
             modal.querySelector('#login-div').style.display = 'block';
             modal.querySelector('#login-div').style.height = 'max-content';
-            modal.querySelector('#login-div').querySelector('button').onclick = () => {
+            modal.querySelector('#login-div').querySelector('#submit').onclick = () => {
                 const title = modal.querySelector('#title').value;
                 fetch(modal.querySelector('#url').value, {method: 'GET'}).then(res => res.text()).then(data => {
                     const desc = data.split('\n')[0]

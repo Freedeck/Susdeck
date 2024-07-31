@@ -61,7 +61,7 @@ const universal = {
       });
     },
   },
-  showSpinner: (e=document.body) => {
+  showSpinner: (e = document.body) => {
     const elem = document.createElement('div');
     elem.className = 'spinner';
     e.appendChild(elem);
@@ -74,6 +74,35 @@ const universal = {
       });
       document.querySelector('.now-playing').innerText = fixed;
     }
+  },
+  embedded_settings: {
+    createSelect: async (label, name, optionsPromise, labelsPromise, selected, eventHandler=()=>{}) => {
+      const container = document.createElement('div');
+      container.className = 'es-setting';
+
+      const select = document.createElement('select');
+      select.id = name;
+
+      const lbl = document.createElement('label');
+      lbl.innerText = label;
+      lbl.htmlFor = name;
+      container.appendChild(lbl);
+      container.appendChild(select);
+      // Assuming optionsPromise is a Promise that resolves to an array of options
+      const options = await optionsPromise;
+      const labels = await labelsPromise;
+      options.forEach((option) => {
+        const opt = document.createElement('option');
+        opt.value = option;
+        opt.innerText = labels[options.indexOf(option)];
+        if (option == selected) opt.selected = true;
+        select.appendChild(opt);
+      });
+      // select the first option if none are selected
+      if (select.selectedIndex == -1) select.selectedIndex = 0;
+      select.onchange = eventHandler;
+      return container;
+    },
   },
   audioClient: {
     _nowPlaying: [],
@@ -120,7 +149,7 @@ const universal = {
       universal.save('vol', vol);
       document.querySelector('#v').value = vol;
     },
-    play: async (file, name, isMonitor = false, stopPrevious = false) => {
+    play: async (file, name, isMonitor = false, stopPrevious = false, volume=universal.load('vol') || 1) => {
       const audioInstance = new Audio();
       audioInstance.src = file;
       audioInstance.load();
@@ -147,14 +176,12 @@ const universal = {
       if (universal.load('pitch')) {
         audioInstance.playbackRate = universal.load('pitch');
       }
-      if (universal.load('vol')) {
-        audioInstance.volume = universal.load('vol');
-      }
+      audioInstance.volume = volume;
       audioInstance.preservesPitch = false;
       audioInstance.fda = {};
       audioInstance.fda.name = name;
       audioInstance.fda.monitoring = isMonitor;
-      if (stopPrevious == true) {
+      if (stopPrevious == 'stop_prev') {
         universal.audioClient._nowPlaying.forEach(async (audio) => {
           try {
             if (audio.fda.name === audioInstance.fda.name) {
@@ -240,12 +267,12 @@ const universal = {
       'description': 'A black (AMOLED-like) theme for Freedeck',
     },
   }, /* Theme list */
-  setTheme: function(name, global=true) {
+  setTheme: function(name, global = true) {
     let fu = name;
-    fetch('/scripts/theming/'+name+'/manifest.json').then((res)=>res.json()).then((json) => {
+    fetch('/scripts/theming/' + name + '/manifest.json').then((res) => res.json()).then((json) => {
       fu = json.theme;
     });
-    fetch('/scripts/theming/'+name+'/' + fu + '.css').then((res)=>res.text()).then((css) => {
+    fetch('/scripts/theming/' + name + '/' + fu + '.css').then((res) => res.text()).then((css) => {
       const stylea = document.createElement('style');
       stylea.innerText += css;
       document.body.appendChild(stylea);
@@ -260,8 +287,19 @@ const universal = {
       universal.save('theme', name);
     });
   },
+  imported_scripts: [],
+  import: (script) => {
+    universal.imported_scripts.push(script);
+    const scriptElement = document.createElement('script');
+    scriptElement.src = script;
+    scriptElement.id = script.split('/').pop().split('.').shift();
+    document.body.appendChild(scriptElement);
+  },
   init: async function(user) {
     try {
+      if (!universal.imported_scripts.includes('https://cdn.jsdelivr.net/npm/pako@1.0.11/dist/pako.min.js')) {
+        universal.import('https://cdn.jsdelivr.net/npm/pako@1.0.11/dist/pako.min.js');
+      }
       await universal._initFn(user);
       universal.setTheme(universal.config.theme ? universal.config.theme : 'default', false);
       const devices = await navigator.mediaDevices.enumerateDevices();
@@ -273,7 +311,7 @@ const universal = {
         false;
       universal.load('monitor.sink') ?
         (universal.audioClient._player.monitorSink =
-            universal.load('monitor.sink')) :
+          universal.load('monitor.sink')) :
         'default';
     } catch (e) {
       console.error(e + ' | Universal: initialize failed.');
@@ -301,7 +339,7 @@ const universal = {
       lines.forEach((line) => {
         const comma = line.split(',!');
         const meta = {
-          file: url+'/' + comma[0],
+          file: comma[0],
           githubRepo: 'https://github.com/' + comma[1],
           name: comma[2],
           author: comma[3],
@@ -312,6 +350,27 @@ const universal = {
         _plugins.push(meta);
       });
       return _plugins;
+    },
+  },
+  uiSounds: {
+    enabled: false,
+    soundPack: 'fdsp-beta.soundpack',
+    info: {},
+    sounds: {},
+    playing: [],
+    load: async () => {
+      const res = await fetch('/companion/sounds/' + universal.uiSounds.soundPack + '/manifest.fdsp.json');
+      const data = await res.json();
+      universal.uiSounds.sounds = data.sounds;
+      universal.uiSounds.info = data.info;
+    },
+    playSound: (name) => {
+      if (!universal.uiSounds.enabled) return;
+      universal.audioClient.play(
+          '/companion/sounds/' + universal.uiSounds.info.id + '/' + universal.uiSounds.sounds[name],
+          name,
+          true, false, 0.5,
+      );
     },
   },
   /*  */
@@ -354,6 +413,15 @@ const universal = {
       universal.keys.appendChild(tempDiv);
     });
   },
+  connHelpWizard() {
+    const promptEle = document.createElement('div');
+    promptEle.className = 'prompt';
+    const iframe = document.createElement('iframe');
+    iframe.src = '/prompt-user-connect.html';
+    iframe.frameBorder = '0';
+    promptEle.appendChild(iframe);
+    document.body.appendChild(promptEle);
+  },
   Pages: {},
   reloadProfile: () => {
     universal.config.sounds =
@@ -382,7 +450,35 @@ const universal = {
         universal.send('G', user);
         universal.send('G', user);
         universal.send('G', user);
-        universal.once('I', (data) => {
+        universal.uiSounds.load();
+        universal.once('I', async (data) => {
+          /**
+           * Decompresses a Gzip blob
+           * @param {*} blob A Gzip-compressed blob
+           * @param {*} callback A callback function
+           */
+          function decompressGzipBlob(blob, callback) {
+            blob = new Uint8Array(blob);
+            const data = pako.inflate(blob, {to: 'string'});
+            callback(null, data);
+          }
+          /**
+           * Async version of decompressGzipBlob
+           * @param {*} blob Gzip-compressed blob
+           * @return {Promise<string>} The decompressed data
+           */
+          function asyncDecompressGzipBlob(blob) {
+            return new Promise((resolve, reject) => {
+              decompressGzipBlob(blob, (err, data) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve(data);
+                }
+              });
+            });
+          }
+          data = await asyncDecompressGzipBlob(data);
           const parsed = JSON.parse(data);
           universal._information = JSON.parse(data);
           universal._pluginData = {};
@@ -395,7 +491,7 @@ const universal = {
 
           // default setup
           universal.default('notification_log', '');
-          universal.default('stopPrevious', false);
+          universal.default('playback-mode', 'play_over');
           universal.default('vol', 1);
           universal.default('pitch', 1);
           universal.default('monitor.sink', 'default');
@@ -452,20 +548,20 @@ const universal = {
               const k = Object.keys(snd)[0];
               return snd[k].uuid === interaction.uuid;
             })[0];
-            if (!universal.load('stopPrevious')) {
-              universal.save('stopPrevious', false);
+            if (!universal.load('playback-mode')) {
+              universal.save('playback-mode', 'play_over');
             }
             universal.audioClient.play(
                 interaction.data.path + '/' + interaction.data.file,
                 Object.keys(a)[0],
                 false,
-                (universal.load('stopPrevious').toLowerCase() === 'true'),
+                universal.load('stopPrevious'),
             );
             universal.audioClient.play(
                 interaction.data.path + '/' + interaction.data.file,
                 Object.keys(a)[0],
                 true,
-                (universal.load('stopPrevious').toLowerCase() === 'true'),
+                universal.load('stopPrevious'),
             );
           });
 
@@ -559,14 +655,14 @@ const universal = {
     universal.save(
         'notification_log',
         universal.load('notification_log') +
-        `,${btoa(
-            JSON.stringify({
-              timestamp: new Date(),
-              time: new Date().toTimeString(),
-              page: window.location.pathname,
-              message,
-            }),
-        )}`,
+      `,${btoa(
+          JSON.stringify({
+            timestamp: new Date(),
+            time: new Date().toTimeString(),
+            page: window.location.pathname,
+            message,
+          }),
+      )}`,
     );
   },
   send: (event, value) => {

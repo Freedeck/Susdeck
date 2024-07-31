@@ -43,6 +43,7 @@ universal._information.disabled.forEach((plugin) => {
   const a = document.createElement('button');
   a.innerText = 'Enable';
   a.onclick = () => {
+    universal.uiSounds.playSound('int_confirm');
     universal.send(universal.events.default.enable_plugin, plugin);
     if (!dialog.open) dialog.showModal();
     dialog.innerHTML = `<p>Enabling ${plugin.split('.disabled')[0]}!</p>`;
@@ -60,6 +61,7 @@ universal.on(universal.events.default.plugin_downloaded, () => {
 });
 
 document.querySelector('#upd').onclick =() => {
+  universal.uiSounds.playSound('int_yes');
   universal.send(universal.events.default.update_plugins);
   if (!dialog.open) dialog.showModal();
   dialog.innerHTML = `<p>Reloading plugins!</p>`;
@@ -67,6 +69,7 @@ document.querySelector('#upd').onclick =() => {
 
 universal.on(universal.events.default.plugins_updated, () => {
   if (!dialog.open) dialog.showModal();
+  universal.uiSounds.playSound('int_confirm');
   dialog.innerHTML = `<p>Plugins have been reloaded.</p><button id="close">Refresh</button>`;
   document.querySelector('#close').onclick = () => {
     window.location.reload();

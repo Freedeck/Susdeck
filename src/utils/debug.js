@@ -24,12 +24,16 @@ console._log = console.log;
 console.secretDebugLogNoWriteToFileOnlyDoIfYouKnowWhatYoureDoing = (...e) => console._log(...e);
 console.log = (...e) => {
   console._log(...e);
-  if (dbg.writeLogs) {
+  if (dbg.writeLogs == true) {
     const rebuilt = [];
-    e.forEach((item) => {
-      item = item.replace(os.homedir(), '(User\'s homedir)');
-      rebuilt.push(item);
-    });
+    try {
+      e.forEach((item) => {
+        item = item.replace(os.homedir(), '(User\'s homedir)');
+        rebuilt.push(item);
+      });
+    } catch (er) {
+      
+    }
     fs.appendFile(path.resolve('./FreedeckCore.log'), `C{${Date.now()}} ${rebuilt.join(',')}\n`, (err) => {
       if (err) console.error(err);
     });

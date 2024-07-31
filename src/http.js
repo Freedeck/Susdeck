@@ -74,6 +74,7 @@ compileWebpack().catch((err) => console.error(err));
 app.use(express.static(path.join(__dirname, './public')));
 
 const plugins = require('./managers/plugins');
+const tsm = require('./managers/temporarySettings');
 
 const handoffData = {
   genTime: Date.now(),
@@ -81,7 +82,7 @@ const handoffData = {
   hasAccessed: false,
 };
 
-app.use((req,res, next) => {
+app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   next();
 });
@@ -94,13 +95,13 @@ app.get('/handoff/get-token', (req, res) => {
   }
   if (!handoffData.hasAccessed) {
     // handoffData.hasAccessed = true;
-    res.send(handoffData.token);
+    return res.send(handoffData.token);
   }
   res.send('0'.repeat(handoffData.token.length));
 });
 
 app.get('/handoff/:token/download-plugin/:link', (req, res) => {
-  if (req.params.token !== handoffData.token) res.send({status: 'error', message: 'Invalid token'});
+  if (req.params.token !== handoffData.token) return res.send({status: 'error', message: 'Invalid token'});
   const stream = fs.createWriteStream(path.resolve('./plugins/' + req.params.link.split('/').pop()));
   http.get(req.params.link, (response) => {
     response.pipe(stream);
@@ -115,6 +116,7 @@ app.get('/handoff/:token/download-plugin/:link', (req, res) => {
 app.get('/handoff/:token/reload-plugins', (req, res) => {
   if (req.params.token !== handoffData.token) res.send({status: 'error', message: 'Invalid token'});
   plugins.reload();
+  notifMan.add('handoff-api', 'reload-plugins');
   res.send({status: 'success', message: 'Reloaded plugins.'});
 });
 
@@ -128,7 +130,17 @@ app.get('/connect/status', (req, res) => res.sendStatus(200));
 app.get('/connect/webpack', (req, res) => {
   res.send({compiled: hasWebpackCompiled});
 });
-
+app.get('/connect/local-ip', (req, res) => {
+  res.send({ip: networkAddresses()});
+});
+app.get('/connect/dev-status', (req, res) => {
+  res.send({
+    message: tsm.get('isMobileConnected') ?
+      'Your device is connected to Freedeck!' :
+      'Your device is not connected to Freedeck!',
+    state: tsm.get('isMobileConnected'),
+  });
+});
 app.post('/fd/api/upload/sound', (request, response) => {
   const form = new formidable.IncomingForm({
     uploadDir: path.resolve('./src/public/sounds'),

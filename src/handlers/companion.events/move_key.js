@@ -1,26 +1,33 @@
 const config = require('../../managers/settings');
 const eventNames = require('../eventNames');
 
-module.exports = ({io, data}) => {
+module.exports = ({ io, data }) => {
   data = JSON.parse(data);
   data.item = JSON.parse(data.item);
   const settings = config.settings();
+  const profile = settings.profiles[settings.profile];
   let flag = false;
-  settings.profiles[settings.profile].forEach((snd) => {
-    if (flag) return;
-    if (!(data.name in snd)) return;
-    if (snd[data.name].uuid !== data.item.uuid) return;
-    // if there's already something there
-    settings.profiles[settings.profile].forEach((d) => {
-      const datn = Object.keys(d)[0];
-      const dat = d[datn];
-      if (dat.pos === data.newIndex) {
-        dat.pos = data.oldIndex;
+
+  profile.forEach((snd) => {
+    for (const key in snd) {
+      if (snd[key].uuid === data.item.uuid) {
+        // Update positions if there's already something at the new index
+        profile.forEach((d) => {
+          for (const datn in d) {
+            const dat = d[datn];
+            if (dat.pos === data.newIndex) {
+              dat.pos = data.oldIndex;
+            }
+          }
+        });
+        snd[key].pos = data.newIndex;
+        flag = true;
+        break;
       }
-    });
-    snd[data.name].pos = data.newIndex;
-    flag = true;
+    }
+    if (flag) return;
   });
+
   config.save();
   io.emit(eventNames.default.reload);
 };

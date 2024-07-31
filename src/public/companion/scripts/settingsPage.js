@@ -265,7 +265,7 @@ const setupWizard = () => {
             showText('All done!', 'You\'re all set up! You can now use Freedeck.', () => {
               universal.sendToast('All done, reloading...');
               universal.save('has_setup', true);
-              window.location.href = '/companion/';
+              window.location.href = '/companion/index.html?err=last-step';
             });
           });
         });
@@ -354,27 +354,9 @@ function showPick(title, listContent, callback) {
 function showText(title, txt, cb) {
   const modal = document.createElement('div');
   modal.className = 'modal';
-  modal.style.position = 'fixed';
-  modal.style.top = '0';
-  modal.style.left = '0';
-  modal.style.width = '100vw';
-  modal.style.height = '100vh';
-  modal.style.background = 'rgba(0,0,0,.75)';
-  modal.style.zIndex = '9999';
-  modal.style.display = 'flex';
-  modal.style.alignItems = 'center';
-  modal.style.justifyContent = 'center';
 
   const modalContent = document.createElement('div');
   modalContent.className = 'modalContent';
-  modalContent.style.background = '#fff';
-  modalContent.style.padding = '20px';
-  modalContent.style.borderRadius = '5px';
-  modalContent.style.width = '50vw';
-  modalContent.style.height = '50vh';
-  modalContent.style.display = 'flex';
-  modalContent.style.flexDirection = 'column';
-  modalContent.style.alignItems = 'center';
 
   const modalTitle = document.createElement('h2');
   modalTitle.innerText = title;
@@ -429,3 +411,21 @@ if (err) {
       break;
   }
 }
+
+document.querySelector('.soundpack').style.display = universal.uiSounds.enabled ? 'block' : 'none';
+document.querySelector('#soundpack-id').innerText = universal.uiSounds.info.id;
+document.querySelector('#soundpack-title').innerText = universal.uiSounds.info.name;
+document.querySelector('#soundpack-version').innerText = universal.uiSounds.info.version;
+document.querySelector('#soundpack-author').innerText = universal.uiSounds.info.author;
+
+
+const uis = document.querySelector('.uisounds');
+const uisounds = universal.uiSounds.sounds;
+Object.keys(uisounds).forEach((sound) => {
+  const li = document.createElement('li');
+  li.innerText = sound;
+  li.onclick = () => {
+    universal.uiSounds.playSound(sound);
+  };
+  uis.appendChild(li);
+});

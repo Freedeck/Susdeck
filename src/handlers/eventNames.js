@@ -2,6 +2,7 @@ const eventNames = {
   client_greet: 'G',
   information: 'I',
   keypress: 'K',
+  user_mobile_conn: 'U',
   login: {
     login_data: 'lD',
     login: 'lL',
@@ -39,6 +40,8 @@ const eventNames = {
     new_key: 'ckN',
     del_key: 'ckD',
     edit_key: 'ckE',
+    edit_key_noreload: 'ckEn',
+    edit_key_noreload_data: 'ckEnd',
     move_key: 'ckM',
     set_profile: 'cpS',
     add_profile: 'cpA',

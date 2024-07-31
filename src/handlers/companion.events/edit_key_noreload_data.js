@@ -1,13 +1,19 @@
 const config = require('../../managers/settings');
 
-module.exports = ({io, data}) => {
+module.exports = ({ io, data }) => {
   data = JSON.parse(data);
   const settings = config.settings();
+  let flag = false;
 
   settings.profiles[settings.profile].forEach((snd) => {
-    const kobj = Object.keys(snd)[0];
-    if (snd[kobj].uuid !== data.uuid) return;
-    snd[kobj].data[data.key] = data.value;
-    config.save();
+    for (const key in snd) {
+      if (snd[key].uuid === data.uuid) {
+        snd[key].data[data.key] = data.value;
+        config.save();
+        flag = true;
+        break;
+      }
+    }
+    if (flag) return;
   });
 };

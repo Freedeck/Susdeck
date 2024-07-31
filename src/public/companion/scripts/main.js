@@ -48,7 +48,7 @@ document.querySelector('.toggle-sidebar button').onclick = (ev) => {
 UI.reloadSounds();
 
 window['button-types'] = [
-  {name: 'Sound', type: 'sound'},
+  {name: 'Audio File', type: 'sound'},
   // {name: 'Macro', type: 'macro'}, // Not implemented
   {name: 'Plugin', type: 'plugin'},
 ];
@@ -472,24 +472,49 @@ function showPick(title, listContent, callback) {
   modalFeedback.style.marginBottom = '20px';
   modalContent.appendChild(modalFeedback);
 
-  const modalList = document.createElement('select');
-  modalList.className = 'modalList';
-  modalList.style.marginBottom = '20px';
-  modalContent.appendChild(modalList);
+  // const modalList = document.createElement('select');
+  // modalList.className = 'modalList';
+  // modalList.style.marginBottom = '20px';
+  // modalContent.appendChild(modalList);
 
+  // listContent.forEach((item) => {
+  //   const modalItem = document.createElement('option');
+  //   modalItem.className = 'modalItem';
+  //   modalItem.setAttribute('value', JSON.stringify(item));
+  //   modalItem.innerText = item.name;
+  //   modalList.appendChild(modalItem);
+  // });
+
+  let selectedItem = null
+  const itemContainer  = document.createElement('div');
+  itemContainer.className = 'modalList';
+  itemContainer.style.display = 'flex';
+  itemContainer.style.flexWrap = 'wrap';
+  itemContainer.style.overflowY = 'auto';
+  itemContainer.style.gap = '15px';
+  itemContainer.style.padding = '15px';
+
+  itemContainer.style.marginBottom = '20px';
+  modalContent.appendChild(itemContainer);
   listContent.forEach((item) => {
-    const modalItem = document.createElement('option');
+    const modalItem = document.createElement('button');
     modalItem.className = 'modalItem';
     modalItem.setAttribute('value', JSON.stringify(item));
     modalItem.innerText = item.name;
-    modalList.appendChild(modalItem);
+    modalItem.onclick = () => {
+      selectedItem = modalItem;
+      document.querySelectorAll('.modalItem').forEach((i) => {
+        i.style.backgroundColor = 'unset';
+      });
+      modalItem.style.backgroundColor = 'var(--fd-btn-background';
+    };
+    itemContainer.appendChild(modalItem);
   });
-
 
   const modalButton = document.createElement('button');
   modalButton.innerText = 'Save';
   modalButton.onclick = () => {
-    const selectedItem = modalList.options[modalList.selectedIndex];
+    // const selectedItem = modalList.options[modalList.selectedIndex];
     const returned = callback(modal, JSON.parse(selectedItem.getAttribute('value')), modalFeedback, modalTitle, modalButton, modalContent);
     if (returned === false) return;
     modal.remove();

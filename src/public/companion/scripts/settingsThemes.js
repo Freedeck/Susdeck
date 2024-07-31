@@ -11,6 +11,7 @@ Object.keys(universal.themes).forEach((id) => {
   const apply = document.createElement('button');
   apply.innerText = 'Apply';
   apply.onclick = () => {
+    universal.save('theme', id);
     universal.send(universal.events.companion.set_theme, id);
     window.location.reload();
   };

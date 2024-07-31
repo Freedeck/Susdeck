@@ -340,7 +340,6 @@ input:disabled {
     background-color: var(--fd-btn-background);
     border-radius: var(--fd-btn-rad);
     position: relative;
-    color: black;
     display: flex;
     align-items: center;
     justify-content: center;

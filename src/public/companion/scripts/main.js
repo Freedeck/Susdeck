@@ -576,6 +576,8 @@ profileAdd.onclick = () => {
 profileSelect.value = universal.config.profile;
 
 profileSelect.onchange = () => {
+  universal.page = 0;
+  universal.save('page', universal.page);
   universal.send(universal.events.companion.set_profile, profileSelect.value);
 };
 

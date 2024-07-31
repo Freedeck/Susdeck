@@ -59,6 +59,13 @@ document.addEventListener('keydown', (ev) => {
   }
 });
 
+if(universal.config.profile != universal.load('profile')) {
+  universal.save('profile', universal.config.profile);
+  universal.page = 0;
+  universal.save('page', universal.page);
+  UI.reloadSounds();
+}
+
 document.addEventListener('touchmove', (event) => {
   event.preventDefault();
 });

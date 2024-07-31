@@ -221,6 +221,8 @@ input:disabled {
 .button, button {
     width: var(--fd-btn-w);
     height: var(--fd-btn-h);
+    max-width: var(--fd-btn-w);
+    max-height: var(--fd-btn-h);
     border-radius: var(--fd-btn-rad);
     background-color: var(--fd-btn-background);
     text-align: center;

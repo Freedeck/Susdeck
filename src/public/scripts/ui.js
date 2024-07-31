@@ -1,7 +1,6 @@
 const Pages = {};
 
 import otherHandler from './ui/otherHandler.js';
-import sliderHandler from './ui/slider.js';
 
 /**
  * @name reloadProfile
@@ -52,21 +51,13 @@ function reloadSounds() {
     }
     try {
       keyObject.setAttribute('data-interaction', JSON.stringify(snd));
-      if (snd.data.icon) {
-        keyObject.style.backgroundImage = 'url("' + snd.data.icon + '")';
-      }
-      if (snd.data.color) keyObject.style.backgroundColor = snd.data.color;
-      keyObject.innerText = k;
+      keyObject.setAttribute('data-name', k);
       keyObject.className = keyObject.className.replace('unset', '');
-      keyObject.onclick = (ev) => {
-        universal.send(
-            universal.events.keypress,
-            JSON.stringify({
-              event: ev,
-              btn: snd,
-            }),
-        );
-      };
+
+      if (snd.data.icon) keyObject.style.backgroundImage = 'url("' + snd.data.icon + '")';
+      if (snd.data.color) keyObject.style.backgroundColor = snd.data.color;
+
+      otherHandler(snd.type, keyObject, snd, sound);
 
       // check if two sounds share the same pos, if they do make this button color yellow
       const sounds = universal.config.sounds.filter((sound) => {
@@ -79,10 +70,52 @@ function reloadSounds() {
       if (sounds.length > 1) {
         keyObject.style.background = 'yellow';
       }
-    } catch (e) { }
-    otherHandler(snd.type, keyObject, snd);
+      cornerResize(keyObject);
+    } catch (e) {
+      console.error(e);
+    }
   });
   // document.getElementById('keys').style.maxHeight = document.querySelectorAll('.k').length * (10*12)/window.innerWidth + '%';
+}
+
+/**
+ * Corner Resize
+ * @param {*} button HTML Element
+ */
+function cornerResize(button) {
+  // const resize = document.createElement('div');
+  // resize.className = 'resize';
+  // resize.style.width = '10px';
+  // resize.style.height = '10px';
+  // resize.style.position = 'absolute';
+  // resize.style.bottom = '0';
+  // resize.style.right = '0';
+  // resize.style.cursor = 'nwse-resize';
+  // button.appendChild(resize);
+  // let x = 0;
+  // let y = 0;
+  // let w = 0;
+  // let h = 0;
+  // let isResizing = false;
+  // resize.onmousedown = (ev) => {
+  //   ev.preventDefault();
+  //   button.style.transitionDuration = '0s';
+  //   isResizing = true;
+  //   x = ev.clientX;
+  //   y = ev.clientY;
+  //   w = button.offsetWidth;
+  //   h = button.offsetHeight;
+  // };
+  // document.onmousemove = (ev) => {
+  //   if (isResizing) {
+  //     button.style.width = w + ev.clientX - x + 'px';
+  //     button.style.height = h + ev.clientY - y + 'px';
+  //   }
+  // };
+  // document.onmouseup = () => {
+  //   isResizing = false;
+  //   button.style.transitionDuration = '.15s';
+  // };
 }
 
 export const UI = {

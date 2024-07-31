@@ -40,6 +40,8 @@ const eventNames = {
     new_key: 'ckN',
     del_key: 'ckD',
     edit_key: 'ckE',
+    edit_key_noreload: 'ckEn',
+    edit_key_noreload_data: 'ckEnd',
     move_key: 'ckM',
     set_profile: 'cpS',
     add_profile: 'cpA',

@@ -14,7 +14,7 @@ new Sortable(document.querySelector('#keys'), {
     const ev = universal.page < 0 ? 1 : 0;
     universal.send(universal.events.companion.move_key,
         JSON.stringify({
-          name: d.item.innerText,
+          name: d.item.getAttribute('data-name'),
           item: d.item.getAttribute('data-interaction'),
           newIndex: d.newDraggableIndex + ev,
           oldIndex: d.oldDraggableIndex + ev,
@@ -281,7 +281,8 @@ function createPlugin(pos) {
           type: valuea.type,
           pos,
           uuid: 'fdc.' + Math.random() * 10000000,
-          plugin: valuea.name,
+          renderType: valuea.renderType,
+          plugin: valuea.pluginId,
           data: valuea.templateData,
         },
       }));

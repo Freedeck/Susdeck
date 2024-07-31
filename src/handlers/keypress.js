@@ -13,6 +13,10 @@ module.exports = {
       }
       try {
         ev = JSON.parse(ev);
+        if (ev.isSlider) {
+          callPlugin(types, plugins, ev);
+          return;
+        }
         if (ev.builtIn) {
           if (ev.data === 'stop-all') io.emit(eventNames.keypress, JSON.stringify({sound: {name: 'Stop All', type: 'fd.sound'}}));
           return;
@@ -21,17 +25,21 @@ module.exports = {
           socket.emit(eventNames.default.not_trusted); return;
         }
         io.emit(eventNames.keypress, JSON.stringify(ev.btn));
-        if (types().get(ev.btn.type) || plugins.get(ev.btn.type)) {
-          if (types().get(ev.btn.type)) {
-            types().get(ev.btn.type).instance.onButton(ev.btn); return;
-          }
-          if (plugins.get(ev.btn.type)) {
-            plugins.get(ev.btn.type).instance.onButton(ev.btn);
-          }
-        }
+        callPlugin(types, plugins, ev);
       } catch (e) {
         debug.log(e);
       }
     });
   },
+};
+
+const callPlugin = (types, plugins, ev) => {
+  if (types().get(ev.btn.type) || plugins.get(ev.btn.type)) {
+    if (types().get(ev.btn.type)) {
+      types().get(ev.btn.type).instance.onButton(ev.btn); return;
+    }
+    if (plugins.get(ev.btn.type)) {
+      plugins.get(ev.btn.type).instance.onButton(ev.btn);
+    }
+  }
 };

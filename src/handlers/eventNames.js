@@ -47,6 +47,7 @@ const eventNames = {
     add_profile: 'cpA',
     dup_profile: 'cpD',
     set_theme: 'ctS',
+    import_profile: 'cpI',
   },
 
 };

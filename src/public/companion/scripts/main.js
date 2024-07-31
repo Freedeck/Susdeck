@@ -579,12 +579,34 @@ const profileSelect = document.createElement('select');
 const profileAdd = document.querySelector('#pf-add');
 profileAdd.innerText = 'New Profile';
 
+const profileImport = document.querySelector('#pf-imp');
+profileImport.innerText = 'Import Profile';
+
 Object.keys(universal.config.profiles).forEach((profile) => {
   const option = document.createElement('option');
   option.innerText = profile;
   option.setAttribute('value', profile);
   profileSelect.appendChild(option);
 });
+
+profileImport.onclick = () => {
+  showEditModal('Import Profile', 'Enter the profile data to import', (modal, pfData, feedback, title, button, input, content) => {
+    try {
+      const data = JSON.parse(pfData);
+      showEditModal('Import Profile', 'Enter a name for the new profile', (modal, value, feedback, title, button, input, content) => {
+        if (value.length < 1) {
+          feedback.innerText = 'Please enter a name for the profile';
+          return false;
+        }
+        universal.send(universal.events.companion.import_profile, {name: value, data});
+      });
+      return true;
+    } catch (e) {
+      feedback.innerText = 'Invalid JSON data';
+      return false;
+    }
+  });
+}; 
 
 profileAdd.onclick = () => {
   showEditModal('New Profile', 'Enter a name for the new profile', (modal, value, feedback, title, button, input, content) => {

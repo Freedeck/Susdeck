@@ -11,10 +11,7 @@ window.onscroll = function() {
 
 UI.reloadSounds();
 
-const Pages = {};
-for (let i = 0; i < (universal.config.sounds.length / universal.config.iconCountPerPage); i++) {
-  Pages[i] = true;
-}
+
 let touchstartX = 0;
 let touchendX = 2500;
 
@@ -23,8 +20,9 @@ const checkDirection = () => {
   const range = touchendX - touchstartX;
   if (range < -50) {
     // go page up
-    if (Pages[currentPage + 1]) {
-      universal.page ++;
+    if (UI.Pages[currentPage + 1]) {
+      universal.page++;
+      universal.save('page', universal.page);
       UI.reloadSounds();
     } else {
       /* empty */
@@ -32,14 +30,34 @@ const checkDirection = () => {
   }
   if (range > 50) {
     // go page down
-    if (Pages[currentPage - 1]) {
-      universal.page --;
+    if (UI.Pages[currentPage - 1]) {
+      universal.page--;
+      universal.save('page', universal.page);
       UI.reloadSounds();
     } else {
       /* empty */
     }
   }
 };
+
+document.addEventListener('keydown', (ev) => {
+  if (ev.key == 'ArrowLeft') {
+    if (UI.Pages[universal.page - 1]) {
+      universal.page--;
+      universal.save('page', universal.page);
+      universal.uiSounds.playSound('page_down');
+      UI.reloadSounds();
+    }
+  }
+  if (ev.key == 'ArrowRight') {
+    if (UI.Pages[universal.page + 1]) {
+      universal.page++;
+      universal.save('page', universal.page);
+      universal.uiSounds.playSound('page_up');
+      UI.reloadSounds();
+    }
+  }
+});
 
 document.addEventListener('touchmove', (event) => {
   event.preventDefault();

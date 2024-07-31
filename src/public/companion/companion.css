@@ -410,7 +410,8 @@ body {
 }
 
 .unset {
-	opacity: 0.125;
+	opacity: 0.5;
+	filter: opacity(50%) brightness(50%);
 }
 
 .modal {

@@ -50,6 +50,7 @@ function reloadSounds() {
       snd.pos = newPos + universal.config.iconCountPerPage * universal.page;
     }
     try {
+      if(snd.pos >= universal.config.iconCountPerPage * (universal.page + 1)) return;
       keyObject.setAttribute('data-interaction', JSON.stringify(snd));
       keyObject.setAttribute('data-name', k);
       keyObject.className = keyObject.className.replace('unset', '');
@@ -70,8 +71,8 @@ function reloadSounds() {
       if (sounds.length > 1) {
         keyObject.style.background = 'yellow';
       }
-      cornerResize(keyObject);
     } catch (e) {
+      console.log('while rendering sound: ' + k, sound[k].pos, universal.page, sound[k].pos - universal.config.iconCountPerPage * universal.page);
       console.error(e);
     }
   });

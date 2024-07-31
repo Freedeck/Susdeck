@@ -116,6 +116,7 @@ app.get('/handoff/:token/download-plugin/:link', (req, res) => {
 app.get('/handoff/:token/reload-plugins', (req, res) => {
   if (req.params.token !== handoffData.token) res.send({status: 'error', message: 'Invalid token'});
   plugins.reload();
+  notifMan.add('handoff-api', 'reload-plugins');
   res.send({status: 'success', message: 'Reloaded plugins.'});
 });
 

@@ -339,7 +339,7 @@ const universal = {
       lines.forEach((line) => {
         const comma = line.split(',!');
         const meta = {
-          file: url + '/' + comma[0],
+          file: comma[0],
           githubRepo: 'https://github.com/' + comma[1],
           name: comma[2],
           author: comma[3],

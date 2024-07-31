@@ -57,7 +57,8 @@ const loadRepo = (repo, isUnofficial=false) => {
         dialog.showModal();
         document.querySelector('#yes').onclick = () => {
           universal.uiSounds.playSound('int_yes');
-          universal.send(universal.events.default.download_plugin, JSON.stringify({id: req.id, file: req.file, server: repo}));
+          const handoffURL = 'freedeck://download/' + req.id +'/' + encodeURIComponent(req.file);
+          window.location.href = handoffURL;
           dialog.innerHTML = `<h1>Downloading ${req.name}</h1><p>Downloading ${req.name}...</p>`;
         };
         document.querySelector('#no').onclick = () => {

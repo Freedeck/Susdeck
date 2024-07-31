@@ -79,46 +79,6 @@ function reloadSounds() {
   // document.getElementById('keys').style.maxHeight = document.querySelectorAll('.k').length * (10*12)/window.innerWidth + '%';
 }
 
-/**
- * Corner Resize
- * @param {*} button HTML Element
- */
-function cornerResize(button) {
-  // const resize = document.createElement('div');
-  // resize.className = 'resize';
-  // resize.style.width = '10px';
-  // resize.style.height = '10px';
-  // resize.style.position = 'absolute';
-  // resize.style.bottom = '0';
-  // resize.style.right = '0';
-  // resize.style.cursor = 'nwse-resize';
-  // button.appendChild(resize);
-  // let x = 0;
-  // let y = 0;
-  // let w = 0;
-  // let h = 0;
-  // let isResizing = false;
-  // resize.onmousedown = (ev) => {
-  //   ev.preventDefault();
-  //   button.style.transitionDuration = '0s';
-  //   isResizing = true;
-  //   x = ev.clientX;
-  //   y = ev.clientY;
-  //   w = button.offsetWidth;
-  //   h = button.offsetHeight;
-  // };
-  // document.onmousemove = (ev) => {
-  //   if (isResizing) {
-  //     button.style.width = w + ev.clientX - x + 'px';
-  //     button.style.height = h + ev.clientY - y + 'px';
-  //   }
-  // };
-  // document.onmouseup = () => {
-  //   isResizing = false;
-  //   button.style.transitionDuration = '.15s';
-  // };
-}
-
 export const UI = {
   reloadSounds,
   reloadProfile,

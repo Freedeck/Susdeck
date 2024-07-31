@@ -358,6 +358,9 @@ body {
 	height: 7rem;
 }
 
+#keys .button button {
+	z-index: 999;
+}
 
 .fdc-slider {
 	-webkit-appearance: none;

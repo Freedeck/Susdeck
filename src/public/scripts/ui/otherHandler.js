@@ -18,7 +18,7 @@ export default function(sndType, keyObject, snd, rawDat) {
         defaultHandler(snd, keyObject, rawDat);
         break
       case 'slider':
-        sliderHandler(snd, keyObject);
+        sliderHandler(snd, keyObject, rawDat);
         break;
     }
   }

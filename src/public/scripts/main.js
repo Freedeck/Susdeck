@@ -66,10 +66,6 @@ if(universal.config.profile != universal.load('profile')) {
   UI.reloadSounds();
 }
 
-document.addEventListener('touchmove', (event) => {
-  event.preventDefault();
-});
-
 document.addEventListener('touchstart', (e) => {
   touchstartX = e.changedTouches[0].screenX;
 });

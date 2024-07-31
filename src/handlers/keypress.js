@@ -1,6 +1,7 @@
 const eventNames = require('./eventNames');
 const debug = require('../utils/debug');
-const cfg = require('../managers/settings').settings();
+const settings = require('../managers/settings');
+const cfg = settings.settings();
 
 module.exports = {
   name: 'Keypress Handler',
@@ -15,6 +16,16 @@ module.exports = {
         ev = JSON.parse(ev);
         if (ev.isSlider) {
           callPlugin(types, plugins, ev);
+          // set the slider value
+          cfg.profiles[cfg.profile].forEach((snd) => {
+            for (const key in snd) {
+              if (snd[key].uuid === ev.uuid) {
+                snd[key].data.value = ev.value;
+                break;
+              }
+            }
+          })
+          settings.save();
           return;
         }
         if (ev.builtIn) {

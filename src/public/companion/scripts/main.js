@@ -63,9 +63,10 @@ window.oncontextmenu = function(e) {
   custMenu.style.top = e.clientY - window.scrollY + 'px';
   custMenu.style.left = e.clientX - window.scrollX + 'px';
   custMenu.style.position = 'absolute';
+  e.srcElement.dataset.name == undefined ? e.srcElement.dataset.name = '' : '';
 
   const custMenuTitle = document.createElement('div');
-  custMenuTitle.innerText = 'Editing ' + (e.srcElement.innerText != '' ? e.srcElement.innerText : 'nothing!');
+  custMenuTitle.innerText = 'Editing ' + (e.srcElement.dataset.name != '' ? e.srcElement.dataset.name : 'nothing!');
   custMenuTitle.style.fontWeight = 'bold';
   custMenuTitle.style.marginBottom = '5px';
   custMenu.appendChild(custMenuTitle);
@@ -73,7 +74,7 @@ window.oncontextmenu = function(e) {
   let custMenuItems = [
     'New Tile',
   ];
-  if (e.srcElement.innerText != '') {
+  if (e.srcElement.dataset.name != '') {
     custMenuItems = ['Edit Tile'].concat(custMenuItems);
     custMenuItems.push('Remove Tile');
   } else {
@@ -123,7 +124,7 @@ window.oncontextmenu = function(e) {
           break;
         case 'Remove Tile':
           UI.reloadProfile();
-          universal.send(universal.events.companion.del_key, JSON.stringify({name: e.srcElement.innerText, item: e.srcElement.getAttribute('data-interaction')}));
+          universal.send(universal.events.companion.del_key, JSON.stringify({name: e.srcElement.dataset.name, item: e.srcElement.getAttribute('data-interaction')}));
           break;
         case 'Copy Tile Here':
           showReplaceGUI(e.srcElement);
@@ -213,12 +214,12 @@ function editTile(e) {
   if (document.querySelector('.contextMenu')) document.querySelector('.contextMenu').style.display = 'none';
   document.querySelector('#sidebar').style.right = '-20%';
   document.querySelector('#editor').style.display = 'block';
-  document.querySelector('#editor-btn').innerText = e.srcElement.innerText;
+  document.querySelector('#editor-btn').innerText = e.srcElement.dataset.name;
   document.querySelector('#editor-btn').style.backgroundImage = 'url("' + JSON.parse(e.srcElement.getAttribute('data-interaction')).data.icon + '")';
   document.querySelector('#editor-btn').style.backgroundColor = JSON.parse(e.srcElement.getAttribute('data-interaction')).data.color;
   document.querySelector('#color').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).data.color;
-  document.querySelector('#name').value = e.srcElement.innerText;
-  document.querySelector('#editor-btn').setAttribute('data-pre-edit', e.srcElement.innerText);
+  document.querySelector('#name').value = e.srcElement.dataset.name;
+  document.querySelector('#editor-btn').setAttribute('data-pre-edit', e.srcElement.dataset.name);
   document.querySelector('#editor-btn').setAttribute('data-interaction', e.srcElement.getAttribute('data-interaction'));
   document.querySelector('#type').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).type;
   document.querySelector('#plugin').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).plugin || 'Freedeck';

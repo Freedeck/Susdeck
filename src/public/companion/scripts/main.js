@@ -210,26 +210,31 @@ document.querySelector('#color').onchange = (e) => {
  */
 function editTile(e) {
   universal.uiSounds.playSound('editor_open');
+  const interactionData = JSON.parse(e.srcElement.getAttribute('data-interaction'));
   if (document.querySelector('.toggle-sidebar').style.left != '0px') document.querySelector('.toggle-sidebar button').click();
   if (document.querySelector('.contextMenu')) document.querySelector('.contextMenu').style.display = 'none';
   document.querySelector('#sidebar').style.right = '-20%';
   document.querySelector('#editor').style.display = 'block';
   document.querySelector('#editor-btn').innerText = e.srcElement.dataset.name;
-  document.querySelector('#editor-btn').style.backgroundImage = 'url("' + JSON.parse(e.srcElement.getAttribute('data-interaction')).data.icon + '")';
-  document.querySelector('#editor-btn').style.backgroundColor = JSON.parse(e.srcElement.getAttribute('data-interaction')).data.color;
-  document.querySelector('#color').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).data.color;
+  document.querySelector('#editor-btn').style.backgroundImage = 'url("' + interactionData.data.icon + '")';
+  document.querySelector('#editor-btn').style.backgroundColor = interactionData.data.color;
+  document.querySelector('#color').value = interactionData.data.color;
   document.querySelector('#name').value = e.srcElement.dataset.name;
   document.querySelector('#editor-btn').setAttribute('data-pre-edit', e.srcElement.dataset.name);
   document.querySelector('#editor-btn').setAttribute('data-interaction', e.srcElement.getAttribute('data-interaction'));
-  document.querySelector('#type').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).type;
-  document.querySelector('#plugin').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).plugin || 'Freedeck';
-  if (JSON.parse(e.srcElement.getAttribute('data-interaction')).type == 'fd.sound') {
-    document.querySelector('#upload-sound').style.display = 'flex';
+  document.querySelector('#type').value = interactionData.type;
+  document.querySelector('#plugin').value = interactionData.plugin || 'Freedeck';
+  if (interactionData.type == 'fd.sound') {
+    document.querySelector('#audio-only').style.display = 'flex';
+    document.querySelector('#audio-file').innerText = interactionData.data.file;
+    document.querySelector('#audio-path').innerText = interactionData.data.path;
+    document.querySelector('#plugins-only').style.display = 'none';
   } else {
-    document.querySelector('#upload-sound').style.display = 'none';
+    document.querySelector('#audio-only').style.display = 'none';
+    document.querySelector('#plugins-only').style.display = 'flex';
   }
-  if (JSON.parse(e.srcElement.getAttribute('data-interaction')).data) {
-    const itm = JSON.parse(e.srcElement.getAttribute('data-interaction')).data;
+  if (interactionData.data) {
+    const itm = interactionData.data;
     loadData(itm);
   }
   // make it fade in
@@ -251,12 +256,14 @@ function createSound(pos) {
       feedback.innerText = 'Please enter a name for the tile';
       return false;
     }
+    let uuid = 'fdc.' + Math.random() * 10000000;
     UI.reloadProfile();
+    universal.save('now-editing', uuid);
     universal.send(universal.events.companion.new_key, JSON.stringify({
       [value]: {
         type: 'fd.sound',
         pos,
-        uuid: 'fdc.' + Math.random() * 10000000,
+        uuid,
         data: {file: 'Unset.mp3', path: '/sounds/'},
       },
     }));
@@ -276,12 +283,14 @@ function createPlugin(pos) {
         feedback.innerText = 'Please enter a name for the tile';
         return false;
       }
+      let uuid = 'fdc.' + Math.random() * 10000000;
       UI.reloadProfile();
+      universal.save('now-editing', uuid);
       universal.send(universal.events.companion.new_key, JSON.stringify({
         [value]: {
           type: valuea.type,
           pos,
-          uuid: 'fdc.' + Math.random() * 10000000,
+          uuid,
           renderType: valuea.renderType,
           plugin: valuea.pluginId,
           data: valuea.templateData,
@@ -294,6 +303,9 @@ function createPlugin(pos) {
 
 
 document.querySelector('#upload-sound').onclick = () => {
+  document.querySelector('#audio-file').innerText = 'Uploading...';
+  document.querySelector('#audio-path').innerText = 'Uploading...';
+  document.querySelector('#upload-sound').disabled = true;
   upload('audio/*,video/*', (data) => {
     UI.reloadProfile();
     const previousInteractionData = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
@@ -301,6 +313,9 @@ document.querySelector('#upload-sound').onclick = () => {
     document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(previousInteractionData));
     document.querySelector('#file.editor-data').value = data.newName;
     document.querySelector('#path.editor-data').value = '/sounds/';
+    document.querySelector('#audio-file').innerText = data.newName;
+    document.querySelector('#audio-path').innerText = '/sounds/';
+    document.querySelector('#upload-sound').disabled = false;
   });
 };
 
@@ -582,6 +597,21 @@ profileAdd.innerText = 'New Profile';
 const profileImport = document.querySelector('#pf-imp');
 profileImport.innerText = 'Import Profile';
 
+const profileExport = document.querySelector('#pf-exp');
+profileExport.innerText = 'Export Profile';
+
+profileExport.onclick = () => {
+  const profile = universal.config.profiles[universal.config.profile];
+  const data = JSON.stringify(profile);
+  const blob = new Blob([data], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = universal.config.profile + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 Object.keys(universal.config.profiles).forEach((profile) => {
   const option = document.createElement('option');
   option.innerText = profile;
@@ -661,6 +691,7 @@ if (universal.load('has_setup') == 'false') {
 // get url params
 const urlParams = new URLSearchParams(window.location.search);
 const err = urlParams.get('err');
+const editing = universal.load('now-editing')
 if (err) {
   switch (err) {
     case 'last-step':
@@ -668,6 +699,29 @@ if (err) {
       universal.connHelpWizard();
       break;
   }
+}
+if(editing) {
+  setTimeout(() => {
+    const interaction = universal.config.sounds.filter((sound) => {
+      const k = Object.keys(sound)[0];
+      return sound[k].uuid == editing;
+    })[0];
+    if(interaction) {
+      editTile({
+        srcElement: {
+          getAttribute: (attr) => {
+            return JSON.stringify(interaction[Object.keys(interaction)[0]]);
+          },
+          dataset: {
+            name: Object.keys(interaction)[0],
+            interaction: JSON.stringify(interaction[Object.keys(interaction)[0]]),
+          },
+          className: 'button k-0',
+        },
+      });
+    }
+    universal.remove('now-editing');
+  }, 250);
 }
 
 /**

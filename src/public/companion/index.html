@@ -23,16 +23,16 @@
     <dialog id="editor">
         <div id="editor-div">
             <div class="x" id="editor-close">Close</div>
-            <h1>Tile Editor</h1>
-            <h2>Info</h2>
             <div class="editor-section">
+                <h2>Info</h2>
+                <div class="button" id="editor-btn">Not Loaded</div>
                 <div class="flex-wrap-r">
-                    <div class="button" id="editor-btn">Not Loaded</div>
                     <div class="flex-wrap">
                         <div class="flex-wrap-r alc">
                             <label for="name">Name</label>
                             <input type="text" id="name"
-                                onkeyup="document.querySelector('#editor-btn').innerText = this.value;" value="Not Loaded">
+                                onkeyup="document.querySelector('#editor-btn').innerText = this.value;"
+                                value="Not Loaded">
                         </div>
                         <div class="flex-wrap-r alc">
                             <label for="color">Color</label>
@@ -48,16 +48,35 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <h2>Data</h2>
-            <div class="editor-section">
-                <div class="flex-wrap-r" id="editor-data"></div>
                 <br />
                 <div class="flex-wrap-r">
-                    <div class="button" style="display: none;" id="upload-sound">Upload Sound</div>
                     <div class="button" id="upload-icon">Set Icon</div>
                 </div>
             </div>
+            <div style="display:none;" id="plugins-only" class="editor-section plugin-items">
+                <div class="information">
+                    <h1>Plugins</h1>
+                    <p>Select the action this tile will perform</p>
+                </div>
+                <div class="plugin-item">YTMD: Test</div>
+                <div class="plugin-item">YTMD: AMongus</div>
+                <div class="plugin-item">WaveLink: Mute System (monitor)</div>
+            </div>
+            <div style="display:none;" id="audio-only" class="editor-section">
+                <h1>Audio</h1>
+                <p>This tile will play:</p>
+                <div class="plugin-item" id="audio-file">AUDIOFILE.MP3</div>
+                <p>from</p>
+                <div class="plugin-item" id="audio-path">/sounds/</div>
+                <p>
+                    Don't worry if you don't recognize the file name. Due to limitations of uploading files, we cannot keep the original file name.
+                </p>
+                <div class="button" id="upload-sound">Upload Sound</div>
+            </div>
+            <!-- <div class="editor-section">
+                <h2>Data</h2>
+            </div> -->
+            <div class="flex-wrap-r" id="editor-data" style="display:none;"></div>
             <!-- <h2>Ready to save?</h2> -->
             <div class="button" id="editor-save">
                 Save
@@ -126,6 +145,7 @@
                 <button id="pf-add">New Profile</button>
                 <button id="pf-dupe">Duplicate Profile</button>
                 <button id="pf-imp">Import Profile</button>
+                <button id="pf-exp">Export Profile</button>
             </div>
             <br />
         </div>

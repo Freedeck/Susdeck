@@ -57,6 +57,7 @@ function reloadSounds() {
 
       if (snd.data.icon) keyObject.style.backgroundImage = 'url("' + snd.data.icon + '")';
       if (snd.data.color) keyObject.style.backgroundColor = snd.data.color;
+      if (snd.data.fontSize) keyObject.style.fontSize = snd.data.fontSize;
 
       otherHandler(snd.type, keyObject, snd, sound);
 

@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
   };
   socket.emit = (event, data) => {
     socket._originalEmit(event, data);
-    debug.log(picocolors.green('Emitted new event ' + event + ', data: ' + JSON.stringify(data)), 'SAPIConn');
+    if(event != 'I')debug.log(picocolors.green('Emitted new event ' + event + ', data: ' + JSON.stringify(data)), 'SAPIConn');
   };
 
   if (!clients.includes(socket)) {

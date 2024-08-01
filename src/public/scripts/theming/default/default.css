@@ -52,6 +52,6 @@
 #keys .button {
     min-height: var(--fd-btn-h);
     min-width: var(--fd-btn-w);
-    width: unset;
-    height: unset;
+    /* width: unset;
+    height: unset; */
 }

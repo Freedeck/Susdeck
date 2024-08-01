@@ -229,12 +229,13 @@ input:disabled {
     position: absolute;
     top: 50%;
     left: calc(50% + env(safe-area-inset-left));
-    transform: translate(-50%, -50%);
+    transform: translate(calc(-50% - env(safe-area-inset-left)), -50%);
 }
 
 .button, button {
     width: var(--fd-btn-w);
     height: var(--fd-btn-h);
+    overflow: hidden;
     min-width: var(--fd-btn-w);
     min-height: var(--fd-btn-h);
     border-radius: var(--fd-btn-rad);

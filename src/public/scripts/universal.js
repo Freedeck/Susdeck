@@ -31,6 +31,9 @@ const universal = {
   load: (k) => {
     return atob(localStorage.getItem(btoa('fd.' + k)));
   },
+  remove: (k) => {
+    return localStorage.removeItem(btoa('fd.' + k));
+  },
   exists: (k) => {
     return localStorage.getItem(btoa('fd.' + k)) ? true : false;
   },

@@ -126,6 +126,14 @@ app.get('/handoff/:token/notify/:data', (req, res) => {
   res.send({status: 'success', message: 'Sent notification.'});
 });
 
+app.get('/connect/plugins', (req,res) => {
+  let idList = [];
+  let pl = plugins._plc.keys();
+  for(let key of pl) {
+    idList.push(key);
+  }
+  res.send({plugins: idList});
+})
 app.get('/connect/status', (req, res) => res.sendStatus(200));
 app.get('/connect/webpack', (req, res) => {
   res.send({compiled: hasWebpackCompiled});
@@ -153,9 +161,11 @@ app.post('/fd/api/upload/sound', (request, response) => {
 
     const nfp = files.file[0].filepath;
     const ext = files.file[0].mimetype.split('/')[1];
+    const originalName = files.file[0].originalFilename.split('.')[0];
 
-    fs.renameSync(nfp, nfp + '.' + ext);
-    response.send({oldName: files.file[0].originalFilename, newName: files.file[0].newFilename + '.' + ext});
+    fs.renameSync(nfp, path.resolve('./src/public/sounds/' + originalName + '.' + ext));
+    
+    response.send({oldName: files.file[0].originalFilename, newName: originalName + '.' + ext});
   });
 });
 
@@ -171,8 +181,6 @@ app.post('/fd/api/upload/icon', (request, response) => {
 
     const nfp = files.file[0].filepath;
     const ext = files.file[0].mimetype.split('/')[1];
-
-    fs.renameSync(nfp, nfp + '.' + ext);
     response.send({oldName: files.file[0].originalFilename, newName: files.file[0].newFilename + '.' + ext});
   });
 });

@@ -9,6 +9,7 @@ const pl = {
   _disabled: [],
   _tyc: new Map(),
   _ch: new Map(),
+  _settings: new Map(),
   plugins: () => {
     debug.log('Plugins accessed.');
     if (pl._plc.length >= 0) pl.update();
@@ -50,6 +51,13 @@ const pl = {
       const instantiated = await AsarBundleRunner.run(a);
       debug.log(picocolors.yellow('Plugin initialized ' + instantiated.name + ' - ID ' + instantiated.id), 'Plugin Manager');
       pl._plc.set(instantiated.id, {instance: instantiated});
+      if (instantiated.disabled) {
+        pl._disabled.push(instantiated.id);
+      }
+      if (fs.existsSync(path.resolve('./plugins/' + instantiated.id + '/settings.json'))) {
+        const settings = JSON.parse(fs.readFileSync(path.resolve('./plugins/' + instantiated.id + '/settings.json')));
+        pl._settings.set(instantiated.id, settings);
+      }
     } catch (err) {
       console.log(picocolors.red('Error while trying to load plugin ' + file + ': ' + err), 'Plugin Manager');
     }

@@ -64,6 +64,10 @@ module.exports = {
       plu.forEach((plugin) => {
         pl[plugin.instance.id] = plugin.instance;
       });
+      const plset = {};
+      plu.forEach((plugin) => {
+        plset[plugin.instance.id] = plugins._settings.get(plugin.instance.id);
+      });
       cfg.update();
       const isMobileConnected = tsm.get('isMobileConnected');
 
@@ -73,6 +77,7 @@ module.exports = {
         mobileConnected: isMobileConnected || false,
         tempLoginID: socket.tempLoginID,
         plugins: pl,
+        plSettings: plset,
         disabled: plugins._disabled,
         events: eventNames,
         version: 'OSH v' + require(path.resolve('package.json')).version,

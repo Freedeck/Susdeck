@@ -58,9 +58,7 @@
                     <h1>Plugins</h1>
                     <p>Select the action this tile will perform</p>
                 </div>
-                <div class="plugin-item">YTMD: Test</div>
-                <div class="plugin-item">YTMD: AMongus</div>
-                <div class="plugin-item">WaveLink: Mute System (monitor)</div>
+                <div id="spi-actions" class="plugin-items"></div>
             </div>
             <div style="display:none;" id="audio-only" class="editor-section">
                 <h1>Audio</h1>
@@ -68,10 +66,15 @@
                 <div class="plugin-item" id="audio-file">AUDIOFILE.MP3</div>
                 <p>from</p>
                 <div class="plugin-item" id="audio-path">/sounds/</div>
-                <p>
-                    Don't worry if you don't recognize the file name. Due to limitations of uploading files, we cannot keep the original file name.
-                </p>
+                <br/>
                 <div class="button" id="upload-sound">Upload Sound</div>
+            </div>
+            <div style="display:none;" id="none-only" class="editor-section">
+                <h1>Nothing!</h1>
+                <p>This tile does nothing yet! Select a type to get started.</p>
+                <div class="plugin-item" id="none-audio">Audio</div>
+                <br>
+                <div class="plugin-item" id="none-plugin">Plugin</div>
             </div>
             <!-- <div class="editor-section">
                 <h2>Data</h2>

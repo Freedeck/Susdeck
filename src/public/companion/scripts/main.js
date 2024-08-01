@@ -113,14 +113,29 @@ window.oncontextmenu = function(e) {
           editTile(e);
           break;
         case 'New Tile':
-          showPick('New Tile', window['button-types'], (modal, value, feedback, title, button, content) => {
-            const pos = parseInt(
-                e.srcElement.className.split(' ')[1].split('-')[1]) +
-              (universal.page < 0 ? 1 : 0) +
-              ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0));
-            if (value.type == 'sound') createSound(pos);
-            if (value.type == 'plugin') createPlugin(pos);
-          });
+          // showPick('New Tile', window['button-types'], (modal, value, feedback, title, button, content) => {
+          //   const pos = parseInt(
+          //       e.srcElement.className.split(' ')[1].split('-')[1]) +
+          //     (universal.page < 0 ? 1 : 0) +
+          //     ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0));
+          //   if (value.type == 'sound') createSound(pos);
+          //   if (value.type == 'plugin') createPlugin(pos);
+          // });
+          const pos = parseInt(
+            e.srcElement.className.split(' ')[1].split('-')[1]) +
+          (universal.page < 0 ? 1 : 0) +
+          ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0));
+          let uuid = 'fdc.' + Math.random() * 10000000;
+    UI.reloadProfile();
+    universal.save('now-editing', uuid);
+    universal.send(universal.events.companion.new_key, JSON.stringify({
+      'New Tile': {
+        type: 'fd.none',
+        pos,
+        uuid,
+        data: {file: 'Unset.mp3', path: '/sounds/'},
+      },
+    }));
           break;
         case 'Remove Tile':
           UI.reloadProfile();
@@ -224,6 +239,9 @@ function editTile(e) {
   document.querySelector('#editor-btn').setAttribute('data-interaction', e.srcElement.getAttribute('data-interaction'));
   document.querySelector('#type').value = interactionData.type;
   document.querySelector('#plugin').value = interactionData.plugin || 'Freedeck';
+  document.querySelector('#audio-only').style.display = 'none';
+  document.querySelector('#plugins-only').style.display = 'none';
+  document.querySelector('#none-only').style.display = 'none';
   if (interactionData.type == 'fd.sound') {
     document.querySelector('#audio-only').style.display = 'flex';
     document.querySelector('#audio-file').innerText = interactionData.data.file;
@@ -232,6 +250,13 @@ function editTile(e) {
   } else {
     document.querySelector('#audio-only').style.display = 'none';
     document.querySelector('#plugins-only').style.display = 'flex';
+    if(interactionData.type == 'fd.none') {
+      document.querySelector('#audio-only').style.display = 'none';
+      document.querySelector('#plugins-only').style.display = 'none';
+      document.querySelector('#none-only').style.display = 'flex';
+    } else if(interactionData.plugin)  {
+      document.querySelector('.spi[data-type="' + interactionData.type + '"][data-plugin="' + interactionData.plugin + '"]').classList.add('spi-active')
+    }
   }
   if (interactionData.data) {
     const itm = interactionData.data;
@@ -245,62 +270,37 @@ function editTile(e) {
   }, 100);
 }
 
-/**
- * @name createSound
- * @param {Number} pos The position of the new sound key.
- * @description Create a new sound key.
- */
-function createSound(pos) {
-  showEditModal('New Sound Tile', 'Enter a name for the new tile', (modal, value, feedback, title, button, input, content) => {
-    if (value.length < 1) {
-      feedback.innerText = 'Please enter a name for the tile';
-      return false;
+const spiContainer = document.querySelector('#spi-actions')
+universal._tyc.keys().forEach((type) => {
+  const element = document.createElement('div');
+  element.classList.add('plugin-item');
+  element.classList.add('spi');
+  element.setAttribute('data-type', type.type);
+  element.setAttribute('data-plugin', type.pluginId);
+  element.setAttribute('data-rt', type.renderType);
+  element.setAttribute('data-template', JSON.stringify(type.templateData));
+  element.innerText = type.display +": " + type.name;
+  element.onclick = (e) => {
+    const interaction = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+    const type = e.target.getAttribute('data-type');
+    const plugin = e.target.getAttribute('data-plugin');
+    const renderType = e.target.getAttribute('data-rt');
+    const templateData = JSON.parse(e.target.getAttribute('data-template'));
+  
+    if(interaction.plugin) {
+      document.querySelector('.spi[data-type="' + interaction.type + '"][data-plugin="' + interaction.plugin + '"]').classList.remove('spi-active')
     }
-    let uuid = 'fdc.' + Math.random() * 10000000;
-    UI.reloadProfile();
-    universal.save('now-editing', uuid);
-    universal.send(universal.events.companion.new_key, JSON.stringify({
-      [value]: {
-        type: 'fd.sound',
-        pos,
-        uuid,
-        data: {file: 'Unset.mp3', path: '/sounds/'},
-      },
-    }));
-    return true;
-  });
-}
-
-/**
- * @name createPlugin
- * @param {Number} pos The position of the new plugin key.
- * @description Create a new plugin key.
- */
-function createPlugin(pos) {
-  showPick('New Plugin Tile', universal._tyc.keys(), (modala, valuea, feedbacka, titlea, buttona, contenta) => {
-    showEditModal('New Plugin Tile', 'Enter a name for the new tile', (modal, value, feedback, title, button, input, content) => {
-      if (value.length < 1) {
-        feedback.innerText = 'Please enter a name for the tile';
-        return false;
-      }
-      let uuid = 'fdc.' + Math.random() * 10000000;
-      UI.reloadProfile();
-      universal.save('now-editing', uuid);
-      universal.send(universal.events.companion.new_key, JSON.stringify({
-        [value]: {
-          type: valuea.type,
-          pos,
-          uuid,
-          renderType: valuea.renderType,
-          plugin: valuea.pluginId,
-          data: valuea.templateData,
-        },
-      }));
-    });
-    return true;
-  });
-}
-
+    interaction.type = type;
+    interaction.plugin = plugin;
+    interaction.renderType = renderType;
+    interaction.data = templateData;
+    document.querySelector('.spi[data-type="' + type + '"][data-plugin="' + plugin + '"]').classList.add('spi-active')
+    document.querySelector('#editor-btn').setAttribute('data-interaction', JSON.stringify(interaction));
+    document.querySelector('#type').value = type;
+    document.querySelector('#plugin').value =  plugin;
+  }
+  spiContainer.appendChild(element);
+})
 
 document.querySelector('#upload-sound').onclick = () => {
   document.querySelector('#audio-file').innerText = 'Uploading...';
@@ -317,6 +317,30 @@ document.querySelector('#upload-sound').onclick = () => {
     document.querySelector('#audio-path').innerText = '/sounds/';
     document.querySelector('#upload-sound').disabled = false;
   });
+};
+
+document.querySelector('#none-audio').onclick = (e) => {
+  let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+  int.type = 'fd.sound';
+  int.data = {file: 'Unset.mp3', path: '/sounds/'};
+  document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
+  document.querySelector('#audio-file').innerText = 'Unset.mp3';
+  document.querySelector('#type').value = 'fd.sound';
+  document.querySelector('#audio-path').innerText = '/sounds/';
+  document.querySelector('#audio-only').style.display = 'flex';
+  document.querySelector('#plugins-only').style.display = 'none';
+  document.querySelector('#none-only').style.display = 'none';
+}
+
+document.querySelector('#none-plugin').onclick = (e) => {
+  let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+  int.type = 'fd.select';
+  int.data = {};
+  document.querySelector('#type').innerText = 'fd.select';
+  document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
+  document.querySelector('#audio-only').style.display = 'none';
+  document.querySelector('#plugins-only').style.display = 'flex';
+  document.querySelector('#none-only').style.display = 'none';
 };
 
 document.querySelector('#upload-icon').onclick = (e) => {

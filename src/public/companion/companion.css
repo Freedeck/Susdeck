@@ -233,7 +233,7 @@ body {
 	top: 50%;
 	left: 50%;
 	width: 50vw;
-	height: 70vh;
+	height: 85vh;
 	min-width: 50vw;
 	min-height: 70vh;
 	transform: translate(-50%, -50%);
@@ -472,7 +472,16 @@ body {
 	flex-direction: row;
 	justify-content: space-between;
 	width: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.25);
 	border-radius: 5px;
 	padding: 0.5rem;
+}
+
+.spi-active {
+	background-color: rgba(0, 0, 0, 0.75);
+}
+
+#spi-actions {
+	overflow-y: scroll;
+	overflow-x: hidden;
 }

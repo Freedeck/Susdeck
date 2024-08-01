@@ -209,7 +209,7 @@ module.exports = class Plugin {
    * @param {String} renderType The type of button to render
    */
   registerNewType(name, type, templateData={}, renderType='button') {
-    this.types.push({name, type, renderType, templateData, pluginId: this.id});
+    this.types.push({name, type, renderType, templateData, pluginId: this.id, display: this.name});
     types.types().set(type, {instance: this, display: name, renderType, templateData});
   }
 

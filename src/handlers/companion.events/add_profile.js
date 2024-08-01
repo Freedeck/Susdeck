@@ -5,10 +5,10 @@ module.exports = ({io, data}) => {
   const settings = config.settings();
   settings.profiles[data] = [{
     'Welcome': {
-      type: 'fd.sound',
+      type: 'fd.none',
       pos: 0,
       uuid: 'fdc.0.0',
-      data: {file: 'Unset.mp3', path: '/sounds/'},
+      data: {},
     },
   }];
   settings.profile = data;

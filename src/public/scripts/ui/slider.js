@@ -126,6 +126,8 @@ export default function(data, keyObject, raw) {
     sliderContainer.dataset.dragging = false;
   });
 
+  let percent = ((data.data.value - data.data.min) / (data.data.max - data.data.min)) * 100;
+  sliderPercentage.innerText = `${percent}${data.data.format ? data.data.format : '%'}`;
   sliderContainer.style.background = `linear-gradient(to right, var(--fd-slider-background) ${data.data.value}%, var(--fd-slider-foreground) ${data.data.value}%)`;
   if(data.data.direction === 'vertical') {
     sliderContainer.style.background = `linear-gradient(to top, var(--fd-slider-background) ${data.data.value}%, var(--fd-slider-foreground) ${data.data.value}%)`;

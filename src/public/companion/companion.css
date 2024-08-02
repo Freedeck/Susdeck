@@ -477,11 +477,24 @@ body {
 	padding: 0.5rem;
 }
 
+.pl-settings-item {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.25);
+	border-radius: 5px;
+	padding: 0.5rem;
+	gap: 1rem;
+}
+
 .spi-active {
 	background-color: rgba(0, 0, 0, 0.75);
 }
 
 #spi-actions {
+	width: 100%;
 	overflow-y: scroll;
 	overflow-x: hidden;
 }

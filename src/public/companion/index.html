@@ -60,6 +60,35 @@
                 </div>
                 <div id="spi-actions" class="plugin-items"></div>
             </div>
+            <div style="display:none;" id="splugins-only" class="editor-section">
+                <div class="information">
+                    <h2>Current Action: <i>sensor.aidan_temperature</i></h2>
+                    <h2>Home Assistant Freedeck Settings</h2>
+                    <div id="pl-settings">
+                        <div class="pl-settings-item">
+                            <div class="setting-title">token</div>
+                            <input type="text" id="token" value="Not Set">
+                        </div>
+                        <div class="pl-settings-item">
+                            <div class="setting-title">url</div>
+                            <input type="text" id="url" value="Not Set">
+                        </div>
+                        <div class="pl-settings-item">
+                            <div class="setting-title">statesToTrack</div>
+                            <div class="pl-settings-array">
+                                <input type="text" value="sensor.aidan_temperature">
+                                <input type="text" value="sensor.aidan_humidity">
+                            </div>
+                        </div>
+                        <div class="pl-settings-item">
+                            <div class="setting-title">silent</div>
+                            <input type="text" id="silent" value="Not Set">
+                        </div>
+                    </div>
+                    <div class="button" id="change-tile">Change Action</div>
+                </div>
+                <div id="spi-actions" class="plugin-items"></div>
+            </div>
             <div style="display:none;" id="audio-only" class="editor-section">
                 <h1>Audio</h1>
                 <p>This tile will play:</p>

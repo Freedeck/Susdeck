@@ -34,7 +34,7 @@ const eventNames = {
     plugins_updated: 'dPU',
     update_plugins: 'dUP',
   },
-
+  
   companion: {
     conn_fail: 'cF',
     new_key: 'ckN',
@@ -47,6 +47,7 @@ const eventNames = {
     add_profile: 'cpA',
     dup_profile: 'cpD',
     set_theme: 'ctS',
+    plugin_set: 'dPS',
     import_profile: 'cpI',
   },
 

@@ -17,6 +17,11 @@ export default function(data, keyObject, raw) {
   sliderThumb.className = 'slider-thumb context-aware';
   sliderContainer.appendChild(sliderThumb);
 
+  let sliderPercentage = document.createElement('div');
+  sliderPercentage.className = 'slider-percentage';
+  sliderPercentage.innerText = `${data.data.value}${data.data.format ? data.data.format : '%'}`;
+  sliderContainer.appendChild(sliderPercentage);
+
   sliderThumb.oncontextmenu = (e) => {
     sliderThumb.parentElement.parentElement.oncontextmenu(e);
   }
@@ -43,8 +48,10 @@ export default function(data, keyObject, raw) {
 
       sliderContainer.dataset.value = value;
       data.data.value = value;
-
-      sliderContainer.style.background = `linear-gradient(to top, var(--fd-slider-background) ${data.data.value}%, var(--fd-slider-foreground) ${data.data.value}%)`;
+      const percentage = ((value - data.data.min) / (data.data.max - data.data.min)) * 100;
+      sliderContainer.style.background = `linear-gradient(to top, var(--fd-slider-background) ${percentage}%, var(--fd-slider-foreground) ${percentage}%)`;
+      let rounded = value.toFixed(1);
+      sliderPercentage.innerText = `${rounded}${data.data.format ? data.data.format : '%'}`;
       return;
     }
     
@@ -57,20 +64,32 @@ export default function(data, keyObject, raw) {
     sliderContainer.dataset.value = value;
     data.data.value = value;
 
-    sliderContainer.style.background = `linear-gradient(to right, var(--fd-slider-background) ${data.data.value}%, var(--fd-slider-foreground) ${data.data.value}%)`;
+    const percentage = ((value - min) / (max - min)) * 100;
+    sliderContainer.style.background = `linear-gradient(to right, var(--fd-slider-background) ${percentage}%, var(--fd-slider-foreground) ${percentage}%)`;
+    let rounded = value.toFixed(1);
+    sliderPercentage.innerText = `${rounded}${data.data.format ? data.data.format : '%'}`;
   };
 
   setInterval(() => {
     // sync slider value with data
-    if(sliderContainer.dataset.value == data.data.value) return;
+    if (sliderContainer.dataset.value == data.data.value) return;
     else {
       data.data.value = sliderContainer.dataset.value;
-      if(data.data.direction != 'vertical')
-        sliderContainer.style.background = `linear-gradient(to right, var(--fd-slider-background) ${data.data.value}%, var(--fd-slider-foreground) ${data.data.value}%)`;
-      else
-        sliderContainer.style.background = `linear-gradient(to top, var(--fd-slider-background) ${data.data.value}%, var(--fd-slider-foreground) ${data.data.value}%)`;
+      const min = data.data.min;
+      const max = data.data.max;
+      const value = data.data.value;
+      const percentage = ((value - min) / (max - min)) * 100;
+  
+      if (data.data.direction === 'vertical') {
+        sliderContainer.style.background = `linear-gradient(to top, var(--fd-slider-background) ${percentage}%, var(--fd-slider-foreground) ${percentage}%)`;
+      } else {
+        sliderContainer.style.background = `linear-gradient(to right, var(--fd-slider-background) ${percentage}%, var(--fd-slider-foreground) ${percentage}%)`;
+      }
+
+      let rounded = parseInt(value).toFixed(1);
+      sliderPercentage.innerText = `${rounded}${data.data.format ? data.data.format : '%'}`;
     }
-  },500);
+  }, 500);
 
   sliderThumb.addEventListener('mousedown', (e) => {
     if(e.button === 2) return;

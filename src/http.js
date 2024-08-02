@@ -181,7 +181,11 @@ app.post('/fd/api/upload/icon', (request, response) => {
 
     const nfp = files.file[0].filepath;
     const ext = files.file[0].mimetype.split('/')[1];
-    response.send({oldName: files.file[0].originalFilename, newName: files.file[0].newFilename + '.' + ext});
+    const originalName = files.file[0].originalFilename.split('.')[0];
+
+    fs.renameSync(nfp, path.resolve('./src/public/us-icons/' + originalName + '.' + ext));
+
+    response.send({oldName: files.file[0].originalFilename, newName: originalName + '.' + ext});
   });
 });
 

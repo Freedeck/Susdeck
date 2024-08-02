@@ -133,7 +133,7 @@ window.oncontextmenu = function(e) {
         type: 'fd.none',
         pos,
         uuid,
-        data: {file: 'Unset.mp3', path: '/sounds/'},
+        data: {},
       },
     }));
           break;

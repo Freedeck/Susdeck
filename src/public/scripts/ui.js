@@ -8,12 +8,23 @@ import otherHandler from './ui/otherHandler.js';
  */
 function reloadProfile() {
   universal.config.sounds = universal.config.profiles[universal.config.profile];
+  let max = 0;
   for (
     let i = 0;
     i < universal.config.sounds.length / universal.config.iconCountPerPage;
     i++
   ) {
     Pages[i] = true;
+    max++;
+  }
+
+  for (const sound of universal.config.sounds) {
+    const k = Object.keys(sound)[0];
+    const snd = sound[k];
+    if (snd.pos >= max * universal.config.iconCountPerPage) {
+      max++;
+      Pages[max] = true;
+    }
   }
 }
 

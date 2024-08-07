@@ -49,6 +49,7 @@ const eventNames = {
     set_theme: 'ctS',
     plugin_set: 'dPS',
     import_profile: 'cpI',
+    native_keypress: 'nkP',
   },
 
 };

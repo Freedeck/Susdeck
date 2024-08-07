@@ -46,3 +46,4 @@ sidebar.forEach((itm) => {
 document.body.appendChild(sidebarEle);
 
 import './HookLoader.js';
+

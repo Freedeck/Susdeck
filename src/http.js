@@ -126,6 +126,14 @@ app.get('/handoff/:token/notify/:data', (req, res) => {
   res.send({status: 'success', message: 'Sent notification.'});
 });
 
+app.get('/native/*', (req,res) => {
+  fetch('http://localhost:5756/' + req.url.split('/').slice(2).join('/')).then((res)=>res.json()).then((a) => {
+    res.send(a);
+  }).catch((err) => {
+    res.send({_msg: 'NativeBridge is not running.', error: err});
+  })
+})
+
 app.get('/connect/plugins', (req,res) => {
   let idList = [];
   let pl = plugins._plc.keys();
@@ -183,7 +191,11 @@ app.post('/fd/api/upload/icon', (request, response) => {
     const ext = files.file[0].mimetype.split('/')[1];
     const originalName = files.file[0].originalFilename.split('.')[0];
 
-    fs.renameSync(nfp, path.resolve('./src/public/us-icons/' + originalName + '.' + ext));
+    try {
+      fs.renameSync(nfp, path.resolve('./src/public/us-icons/' + originalName + '.' + ext));
+    } catch (err) {
+      console.error('Error while renaming file', err);
+    }
 
     response.send({oldName: files.file[0].originalFilename, newName: originalName + '.' + ext});
   });

@@ -19,13 +19,16 @@ module.exports = {
           // set the slider value
           cfg.profiles[cfg.profile].forEach((snd) => {
             for (const key in snd) {
-              if (snd[key].uuid === ev.uuid) {
-                snd[key].data.value = ev.value;
+              if (snd[key].uuid === ev.btn.uuid) {
+                snd[key].data = ev.btn.data;
+                settings.save();
                 break;
               }
             }
           })
-          settings.save();
+          if (ev.btn.type.startsWith('fd.sys.')) {
+            io.emit(eventNames.companion.native_keypress, JSON.stringify(ev.btn));
+          }
           return;
         }
         if (ev.builtIn) {

@@ -21,6 +21,7 @@ export default function(data, keyObject, raw) {
   sliderPercentage.className = 'slider-percentage';
   sliderPercentage.innerText = `${data.data.value}${data.data.format ? data.data.format : '%'}`;
   sliderContainer.appendChild(sliderPercentage);
+  sliderContainer.dataset.value = data.data.value;
 
   sliderThumb.oncontextmenu = (e) => {
     sliderThumb.parentElement.parentElement.oncontextmenu(e);
@@ -36,40 +37,37 @@ export default function(data, keyObject, raw) {
   sliderContainer.style.left = left;
   
   let isDragging = false;
-  
   const updateSlider = (event) => {
     const rect = sliderContainer.getBoundingClientRect();
+    let value;
     if(data.data.direction === 'vertical') {
       let newTop = event.clientY - rect.top;
       if (newTop < 0) newTop = 0;
       if (newTop > rect.height) newTop = rect.height;
   
-      const value = ((rect.height - newTop) / rect.height) * (data.data.max - data.data.min) + data.data.min;
+      value = ((rect.height - newTop) / rect.height) * (data.data.max - data.data.min) + data.data.min;
+    } else {
+      let newLeft = event.clientX - rect.left;
+      if (newLeft < 0) newLeft = 0;
+      if (newLeft > rect.width) newLeft = rect.width;
 
-      sliderContainer.dataset.value = value;
-      data.data.value = value;
-      const percentage = ((value - data.data.min) / (data.data.max - data.data.min)) * 100;
-      sliderContainer.style.background = `linear-gradient(to top, var(--fd-slider-background) ${percentage}%, var(--fd-slider-foreground) ${percentage}%)`;
-      let rounded = value.toFixed(1);
-      sliderPercentage.innerText = `${rounded}${data.data.format ? data.data.format : '%'}`;
-      return;
+      value = (newLeft / rect.width) * (data.data.max - data.data.min) + data.data.min;
     }
-    
-    let newLeft = event.clientX - rect.left;
-    if (newLeft < 0) newLeft = 0;
-    if (newLeft > rect.width) newLeft = rect.width;
 
-    const value = (newLeft / rect.width) * (data.data.max - data.data.min) + data.data.min;
+    value = Math.min(Math.max(value, data.data.min), data.data.max); // Ensure value is within bounds
 
     sliderContainer.dataset.value = value;
     data.data.value = value;
 
-    const percentage = ((value - min) / (max - min)) * 100;
-    sliderContainer.style.background = `linear-gradient(to right, var(--fd-slider-background) ${percentage}%, var(--fd-slider-foreground) ${percentage}%)`;
-    let rounded = value.toFixed(1);
+    const percentage = ((value - data.data.min) / (data.data.max - data.data.min)) * 100;
+    sliderContainer.style.background = data.data.direction === 'vertical' 
+      ? `linear-gradient(to top, var(--fd-slider-background) ${percentage}%, var(--fd-slider-foreground) ${percentage}%)`
+      : `linear-gradient(to right, var(--fd-slider-background) ${percentage}%, var(--fd-slider-foreground) ${percentage}%)`;
+    
+    let rounded = parseFloat(value).toFixed(1);
     sliderPercentage.innerText = `${rounded}${data.data.format ? data.data.format : '%'}`;
   };
-
+  
   setInterval(() => {
     // sync slider value with data
     if (sliderContainer.dataset.value == data.data.value) return;
@@ -86,7 +84,7 @@ export default function(data, keyObject, raw) {
         sliderContainer.style.background = `linear-gradient(to right, var(--fd-slider-background) ${percentage}%, var(--fd-slider-foreground) ${percentage}%)`;
       }
 
-      let rounded = parseInt(value).toFixed(1);
+      let rounded = parseFloat(value).toFixed(1);
       sliderPercentage.innerText = `${rounded}${data.data.format ? data.data.format : '%'}`;
     }
   }, 500);

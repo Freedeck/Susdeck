@@ -1,3 +1,4 @@
+import {handler, generic} from "../companion/scripts/native/handler";
 
 /**
  * Open the settings menu (on clients only)
@@ -544,6 +545,7 @@ const universal = {
               return;
             }
             universal.sendEvent('button', interaction);
+
             if (interaction.type !== 'fd.sound') return;
             universal.reloadProfile();
             // get name from universal.config.sounds with uuid
@@ -622,6 +624,12 @@ const universal = {
               universal._tyc.set(type, plug);
             });
           });
+
+          if(user == 'Companion') {
+            handler();
+          }
+
+          generic();
 
           window['universal'] = universal;
           universal.sendEvent('init');

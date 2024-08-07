@@ -80,11 +80,14 @@ const pl = {
         const newPath = path.resolve('./plugins/' + file);
         const cfgPath = path.resolve(newPath, 'config.js');
         try {
+          debug.log(picocolors.yellow('Initializing unpacked plugin ' + file), 'Plugin Manager');
           const { entrypoint } = require(cfgPath);
           const entryPath = path.resolve(newPath, entrypoint);
           const entry = require(entryPath);
-          debug.log(picocolors.yellow('Loading unpacked plugin ' + file), 'Plugin Manager');
-          const instantiated = new entry.exec();
+          debug.log('--- Emulating ASAR extraction, then we\'ll load. --- ');
+          fs.cpSync(newPath, path.resolve('./tmp/_e_._plugins_' + file.split(".src")[0] + '.Freedeck'), {recursive:true});
+          debug.log('--- Loading. --- ');
+          const instantiated = entry.exec();
           pl._plc.set(instantiated.id, { instance: instantiated });
           if (instantiated.disabled) {
             pl._disabled.push(instantiated.id);

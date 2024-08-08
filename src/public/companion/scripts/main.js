@@ -946,11 +946,9 @@ document.querySelector('#es-bs-reset').onclick = (e) => {
   universal.send(universal.events.default.config_changed, setToLocalCfg('buttonSize', 6));
 }
 
-document.querySelector('#es-scroll').oninput = (e) => {
+document.querySelector('#es-scroll').onchange = (e) => {
   universal.send(universal.events.default.config_changed, setToLocalCfg('scroll', e.target.value));
   universal.send(universal.events.default.reload);
 }
 
-setImmediate(() => {
-  document.querySelector('#es-scroll').value = universal.loadObj('local-cfg').scroll || false;
-});
+document.querySelector('#es-scroll').checked = universal.loadObj('local-cfg').scroll;

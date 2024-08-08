@@ -947,7 +947,7 @@ document.querySelector('#es-bs-reset').onclick = (e) => {
 }
 
 document.querySelector('#es-scroll').onchange = (e) => {
-  universal.send(universal.events.default.config_changed, setToLocalCfg('scroll', e.target.value));
+  universal.send(universal.events.default.config_changed, setToLocalCfg('scroll', e.target.checked));
   universal.send(universal.events.default.reload);
 }
 

@@ -387,6 +387,7 @@ input:disabled {
     animation: marquee 5s linear infinite;
     white-space: nowrap;
     text-size-adjust: none;
+    pointer-events: none;
 }
 
 .button-text {
@@ -397,4 +398,5 @@ input:disabled {
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-wrap: wrap;
+    pointer-events: none;
 }

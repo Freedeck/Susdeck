@@ -11,6 +11,9 @@
     --fd-btn-w: 6rem;
     --fd-btn-h: 6rem;
 
+    --fd-tile-w: var(--fd-btn-w);
+    --fd-tile-h: var(--fd-btn-h);
+
     --fd-btn-rad: 1rem;
 
     --fd-modal-bg: white;
@@ -232,6 +235,11 @@ input:disabled {
     transform: translate(calc(-50% - env(safe-area-inset-left)), -50%);
 }
 
+#keys button {
+    width: var(--fd-tile-w);
+    height: var(--fd-tile-h);
+}
+
 .button, button {
     width: var(--fd-btn-w);
     height: var(--fd-btn-h);
@@ -362,4 +370,31 @@ input:disabled {
 	left: 50%;
 	transform: translateX(-50%);
     font-size: .75rem;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.too-big {
+    font-size: calc(var(--fd-font-size) * 1.5);
+    flex: 0 1 auto;
+    animation: marquee 5s linear infinite;
+    white-space: nowrap;
+    text-size-adjust: none;
+}
+
+.button-text {
+    font-size: var(--fd-font-size);
+    width: calc(min-content + 1rem);
+    color: white;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-wrap: wrap;
 }

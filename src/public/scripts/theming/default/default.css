@@ -50,8 +50,8 @@
 }
 
 #keys .button {
-    min-height: var(--fd-btn-h);
-    min-width: var(--fd-btn-w);
+    min-height: var(--fd-tile-h);
+    min-width: var(--fd-tile-w);
     /* width: unset;
     height: unset; */
 }

@@ -914,3 +914,43 @@ const playbackModeSetting = await universal.embedded_settings.createSelect(
 );
 
 embeddedSettingsClient.appendChild(playbackModeSetting);
+
+const setToLocalCfg = (key, value) => {
+  const cfg = universal.loadObj('local-cfg');
+  cfg[key] = value;
+  universal.save('local-cfg', JSON.stringify(cfg));
+  return JSON.stringify(cfg);
+}
+
+document.querySelector('#es-fs').oninput = (e) => {
+  document.documentElement.style.setProperty('--fd-font-size', e.target.value + 'px');
+  universal.send(universal.events.default.config_changed, setToLocalCfg('font-size', e.target.value));
+}
+
+document.querySelector('#es-bs').oninput = (e) => {
+  document.documentElement.style.setProperty('--fd-tile-w', e.target.value + 'rem');
+  document.documentElement.style.setProperty('--fd-tile-h', e.target.value + 'rem');
+  universal.send(universal.events.default.config_changed, setToLocalCfg('buttonSize', e.target.value));
+}
+
+document.querySelector('#es-fs-reset').onclick = (e) => {
+  document.documentElement.style.setProperty('--fd-font-size', '15px');
+  document.querySelector('#es-fs').value = 15;
+  universal.send(universal.events.default.config_changed, setToLocalCfg('font-size', 15));
+}
+
+document.querySelector('#es-bs-reset').onclick = (e) => {
+  document.documentElement.style.setProperty('--fd-tile-w', 'var(--fd-btn-w)');
+  document.documentElement.style.setProperty('--fd-tile-h', 'var(--fd-btn-h)');
+  document.querySelector('#es-bs').value = 6;
+  universal.send(universal.events.default.config_changed, setToLocalCfg('buttonSize', 6));
+}
+
+document.querySelector('#es-scroll').oninput = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('scroll', e.target.value));
+  universal.send(universal.events.default.reload);
+}
+
+setImmediate(() => {
+  document.querySelector('#es-scroll').value = universal.loadObj('local-cfg').scroll || false;
+});

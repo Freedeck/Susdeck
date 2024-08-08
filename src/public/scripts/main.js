@@ -66,6 +66,19 @@ if(universal.config.profile != universal.load('profile')) {
   UI.reloadSounds();
 }
 
+universal.on(universal.events.default.config_changed, (e) => {
+  universal.save('local-cfg', e);
+  e = JSON.parse(e);
+  document.documentElement.style.setProperty('--fd-font-size', e['font-size'] + 'px');
+  document.documentElement.style.setProperty('--fd-tile-w', e.buttonSize + 'rem');
+  document.documentElement.style.setProperty('--fd-tile-h', e.buttonSize + 'rem');
+})
+
+let lcfg = universal.loadObj('local-cfg');
+document.documentElement.style.setProperty('--fd-font-size', lcfg['font-size'] + 'px');
+document.documentElement.style.setProperty('--fd-tile-w', lcfg.buttonSize + 'rem');
+document.documentElement.style.setProperty('--fd-tile-h', lcfg.buttonSize + 'rem');
+
 document.addEventListener('touchstart', (e) => {
   touchstartX = e.changedTouches[0].screenX;
 });

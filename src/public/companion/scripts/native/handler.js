@@ -19,7 +19,7 @@ export function grabAndHandle() {
   fetch('/native/volume/apps').then((res) => res.json()).then(a => {
     updateKeys(a);
   }).catch((err) => {
-    console.error('Error while updating volume keys', err);
+  
   });
 }
 

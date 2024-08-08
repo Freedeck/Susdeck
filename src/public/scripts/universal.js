@@ -504,6 +504,7 @@ const universal = {
           universal.default('theme', 'default');
           universal.default('profile', 'Default');
           universal.default('repos.community', JSON.stringify([]));
+          universal.default('local-cfg', JSON.stringify({scroll: false, fontSize: 15, buttonWidth: '6rem'}));
 
           if (!universal.load('welcomed')) {
             universal.sendToast('Welcome to Freedeck.');
@@ -571,7 +572,7 @@ const universal = {
           });
 
           universal.on(universal.events.default.recompile, () => {
-            window.location.href = '/fdconnect.html';
+            window.location.href = '/fdconnect.html?id=' + user;
           });
 
           universal.on(universal.events.default.log, (data) => {
@@ -627,6 +628,10 @@ const universal = {
 
           if(user == 'Companion') {
             handler();
+          }
+
+          if(universal.loadObj('local-cfg').fontSize != 15) {
+            document.documentElement.style.setProperty('--fd-font-size', universal.loadObj('local-cfg').fontSize + 'px');
           }
 
           generic();

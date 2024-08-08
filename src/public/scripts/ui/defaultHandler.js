@@ -6,7 +6,7 @@
  */
 export default function(snd, keyObject, raw) {
   const k = Object.keys(raw)[0];
-  keyObject.innerText = k;
+  keyObject.innerHTML = '<div class="button-text"><p>' + sanitizeXSS(k) + '</div></p>';
   keyObject.onclick = (ev) => {
     universal.send(
         universal.events.keypress,
@@ -16,4 +16,16 @@ export default function(snd, keyObject, raw) {
         }),
     );
   };
+  // check if text is bigger than 2 lines (by font size)
+  if(universal.loadObj('local-cfg').scroll) {
+    let txth = keyObject.querySelector('p');
+    let size = txth.clientHeight;
+    if (size > 40) {
+      txth.classList.add('too-big')
+    }
+  }
+};
+
+const sanitizeXSS = (str) => {
+  return str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 };

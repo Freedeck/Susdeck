@@ -498,3 +498,8 @@ body {
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
+
+.fdc-checkbox {
+	width: 1.5rem;
+	height: 1.5rem;
+}

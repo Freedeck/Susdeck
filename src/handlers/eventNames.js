@@ -33,6 +33,7 @@ const eventNames = {
     enable_plugin: 'dEP',
     plugins_updated: 'dPU',
     update_plugins: 'dUP',
+    config_changed: 'dCC',
   },
   
   companion: {

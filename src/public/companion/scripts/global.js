@@ -19,7 +19,7 @@ const sidebar = [
   {'Plugins': 'plugins.html'},
   {'Marketplace': 'marketplace.html'},
   {'Settings': 'settings.html'},
-  {'Connect': '/fdconnect.html'},
+  {'Connect': '/fdconnect.html?id=Companion'},
   // {'Webpack Recompile': '+universal.send(universal.events.default.recompile)'}
 ];
 

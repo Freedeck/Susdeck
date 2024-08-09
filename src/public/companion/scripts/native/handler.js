@@ -50,4 +50,13 @@ export function handler() {
       })
     }
   })
+
+  universal.on(universal.events.keypress, (data) => {
+    data = JSON.parse(data);
+    if (data.type == 'fd.profile') {
+      universal.page = 0;
+      universal.save('page', universal.page);
+      universal.send(universal.events.companion.set_profile, data.data.profile);
+    }
+  })
 }

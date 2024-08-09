@@ -107,6 +107,13 @@
                     <select name="system-select" id="system-select"></select>
                 </div>
             </div>
+            <div style="display:none;" id="profile-only" class="editor-section plugin-items">
+                <h1>Folder Switcher</h1>
+                <div class="plugin-items">
+                    <p>Select the folder this tile will switch to</p>
+                </div>
+                <select name="eprofile-select" id="eprofile-select"></select>
+            </div>
             <div style="display:none;" id="none-only" class="editor-section">
                 <h1>Nothing!</h1>
                 <p>This tile does nothing yet! Select a type to get started.</p>
@@ -115,6 +122,8 @@
                 <div class="plugin-item" id="none-plugin">Plugin</div>
                 <br>
                 <div class="plugin-item" id="none-system">App Volume</div>
+                <br>
+                <div class="plugin-item" id="none-profiles">Folder Switcher</div>
             </div>
             <!-- <div class="editor-section">
                 <h2>Data</h2>
@@ -215,13 +224,13 @@
         </div>
         <div class="sidebar-item" id="es-profiles">
             <span><br />
-                <h1>Profiles</h1>
+                <h1>Folders</h1>
             </span>
             <div class="flex-wrap-r">
-                <button id="pf-add">New Profile</button>
-                <button id="pf-dupe">Duplicate Profile</button>
-                <button id="pf-imp">Import Profile</button>
-                <button id="pf-exp">Export Profile</button>
+                <button id="pf-add">New Folder</button>
+                <button id="pf-dupe">Duplicate Folder</button>
+                <button id="pf-imp">Import Folder</button>
+                <button id="pf-exp">Export Folder</button>
             </div>
             <br />
         </div>

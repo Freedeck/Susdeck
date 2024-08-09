@@ -16,6 +16,7 @@ export default function(sndType, keyObject, snd, rawDat) {
   else {
     switch (snd.renderType) {
       default:
+        defaultHandler(snd, keyObject, rawDat);
         break;
       case 'button':
         defaultHandler(snd, keyObject, rawDat);

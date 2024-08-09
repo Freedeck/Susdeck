@@ -101,9 +101,9 @@ body {
     background-size: var(--fd-background-size);
     animation: error-bg 5s linear infinite;
     font-family: var(--fd-font-family);
-    height: 100%;
-    /* width: 100vw; */
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    height: 100vh;
+    width: 100vw;
+    /* padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); */
     overflow-x: hidden;
     touch-action: none;
 }

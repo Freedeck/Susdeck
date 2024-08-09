@@ -83,7 +83,7 @@ window.oncontextmenu = function (e) {
   custMenuItems = custMenuItems.concat([
     '',
     'New Page',
-    'Profile: ' + universal.config.profile,
+    'Folder: ' + universal.config.profile,
   ]);
 
   custMenuItems.forEach((item) => {
@@ -100,10 +100,12 @@ window.oncontextmenu = function (e) {
           break;
         case '---':
           break;
-        case 'Profile: ' + universal.config.profile:
-          showPick('Profile', Object.keys(universal.config.profiles).map((profile) => {
+        case 'Folder: ' + universal.config.profile:
+          showPick('Switch to another Folder:', Object.keys(universal.config.profiles).map((profile) => {
             return { name: profile };
           }), (modal, value, feedback, title, button, content) => {
+            universal.page = 0;
+            universal.save('page', universal.page);
             universal.send(universal.events.companion.set_profile, value.name);
           });
           break;
@@ -226,6 +228,21 @@ document.querySelector('#color').onchange = (e) => {
   loadData(interaction.data);
 };
 
+const selectableViews = [
+  'audio',
+  'plugins',
+  'system',
+  'none',
+  'profile'
+]
+
+const openViewCloseAll = (view) => {
+  selectableViews.forEach((v) => {
+    document.querySelector('#' + v + '-only').style.display = 'none';
+  });
+  document.querySelector('#' + view + '-only').style.display = 'flex';
+}
+
 /**
  * Edit a tile
  * @param {*} e HTML Element corresponding to the button that we grabbed context from
@@ -250,27 +267,21 @@ function editTile(e) {
   document.querySelector('#plugins-only').style.display = 'none';
   document.querySelector('#system-only').style.display = 'none';
   document.querySelector('#none-only').style.display = 'none';
+  document.querySelector('#profile-only').style.display = 'none';
   if (interactionData.type == 'fd.sound') {
-    document.querySelector('#audio-only').style.display = 'flex';
     document.querySelector('#audio-file').innerText = interactionData.data.file;
     document.querySelector('#audio-path').innerText = interactionData.data.path;
-    document.querySelector('#plugins-only').style.display = 'none';
-    document.querySelector('#system-only').style.display = 'none';
+    openViewCloseAll('audio');
   } else {
-    document.querySelector('#audio-only').style.display = 'none';
-    document.querySelector('#plugins-only').style.display = 'flex';
-    document.querySelector('#system-only').style.display = 'none';
+    openViewCloseAll('plugins');
     if (interactionData.type.startsWith('fd.sys')) {
-      document.querySelector('#system-only').style.display = 'flex';
-      document.querySelector('#audio-only').style.display = 'none';
-      document.querySelector('#plugins-only').style.display = 'none';
-      document.querySelector('#none-only').style.display = 'none';
+      openViewCloseAll('system');
       fetch('/native/volume/apps').then((res) => res.json()).then((data) => {
         if (data._msg) {
           universal.sendToast('NativeBridge is not running. Please start it to use this feature.');
         }
         let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
-
+        
         const select = document.querySelector('#system-select');
         data.push({
           name: '_fd.System',
@@ -303,11 +314,13 @@ function editTile(e) {
         document.querySelector('#system-select').value = interactionData.data.app;
       }
     }
+    if(interactionData.type == 'fd.profile') {
+      generateProfileSelect();
+      document.querySelector('#eprofile-select').value = interactionData.data.profile;
+      openViewCloseAll('profile');
+    }
     if (interactionData.type == 'fd.none') {
-      document.querySelector('#audio-only').style.display = 'none';
-      document.querySelector('#plugins-only').style.display = 'none';
-      document.querySelector('#system-only').style.display = 'none';
-      document.querySelector('#none-only').style.display = 'flex';
+      openViewCloseAll('none');
     } else if (interactionData.plugin) {
       document.querySelector('.spi[data-type="' + interactionData.type + '"][data-plugin="' + interactionData.plugin + '"]').classList.add('spi-active')
     }
@@ -323,6 +336,22 @@ function editTile(e) {
     document.querySelector('#editor').style.opacity = '1';
   }, 100);
 }
+
+const generateProfileSelect = () => {
+  const select = document.querySelector('#eprofile-select');
+  select.innerHTML = '';
+  Object.keys(universal.config.profiles).forEach((profile) => {
+    const option = document.createElement('option');
+    option.innerText = profile;
+    option.value = profile;
+    select.appendChild(option);
+  });
+  select.onchange = (e) => {
+    let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+    int.data.profile = e.srcElement.value;
+    document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
+  }
+};
 
 const spiContainer = document.querySelector('#spi-actions')
 universal._tyc.keys().forEach((type) => {
@@ -355,6 +384,7 @@ universal._tyc.keys().forEach((type) => {
   }
   spiContainer.appendChild(element);
 })
+generateProfileSelect();
 
 document.querySelector('#upload-sound').onclick = () => {
   document.querySelector('#audio-file').innerText = 'Uploading...';
@@ -381,9 +411,18 @@ document.querySelector('#none-audio').onclick = (e) => {
   document.querySelector('#audio-file').innerText = 'Unset.mp3';
   document.querySelector('#type').value = 'fd.sound';
   document.querySelector('#audio-path').innerText = '/sounds/';
-  document.querySelector('#audio-only').style.display = 'flex';
-  document.querySelector('#plugins-only').style.display = 'none';
-  document.querySelector('#none-only').style.display = 'none';
+  openViewCloseAll('audio');
+}
+
+document.querySelector('#none-profiles').onclick = (e) => {
+  let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+  int.type = 'fd.profile';
+  int.data = {profile:'Default'};
+  document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
+  document.querySelector('#type').value = 'fd.profile';
+  generateProfileSelect();
+  document.querySelector('#eprofile-select').value = int.data.profile;
+  openViewCloseAll('profile');
 }
 
 document.querySelector('#none-system').onclick = (e) => {

@@ -400,3 +400,12 @@ input:disabled {
     flex-wrap: wrap;
     pointer-events: none;
 }
+
+#keys {
+    width: calc(100% - env(safe-area-inset-left) - env(safe-area-inset-right));
+}
+
+#keys .button {
+    min-height: var(--fd-tile-h);
+    min-width: var(--fd-tile-w);
+}

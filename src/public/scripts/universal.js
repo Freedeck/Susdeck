@@ -229,65 +229,15 @@ const universal = {
     universal.send(universal.events.login.login, { passwd });
   },
   themeData: {},
-  themes: {
-    default: {
-      'name': 'Default',
-      'description': 'The default theme for Freedeck',
-    },
-    red: {
-      'name': 'Red',
-      'description': 'A red theme for Freedeck',
-    },
-    blue: {
-      'name': 'Blue',
-      'description': 'A blue theme for Freedeck',
-    },
-    green: {
-      'name': 'Green',
-      'description': 'A green theme for Freedeck',
-    },
-    yellow: {
-      'name': 'Yellow',
-      'description': 'A yellow theme for Freedeck',
-    },
-    gruggly: {
-      'name': 'Gruggly',
-      'description': 'A gruggly theme for Freedeck (pantone 448c)',
-    },
-    catppuccin_mocha: {
-      'name': 'Catppuccin Mocha',
-      'description': 'A soothing pastel theme for Freedeck',
-    },
-    dark: {
-      'name': 'Dark',
-      'description': 'A dark theme for Freedeck',
-    },
-    fun: {
-      'name': 'Fun',
-      'description': 'A fun theme for Freedeck',
-    },
-    bigger: {
-      'name': 'Bigger Buttons',
-      'description': 'The default theme with bigger buttons',
-    },
-    circular: {
-      'name': 'Circular',
-      'description': 'A circular theme for Freedeck',
-    },
-    big_black: {
-      'name': 'Bigger Buttons (Black)',
-      'description': 'The default theme with bigger buttons and a black (AMOLED-like) background',
-    },
-    black: {
-      'name': 'Black',
-      'description': 'A black (AMOLED-like) theme for Freedeck',
-    },
-  }, /* Theme list */
+  themes: import("/scripts/theming/index.json"), /* Theme list */
   setTheme: function (name, global = true) {
     let fu = name;
     fetch('/scripts/theming/' + name + '/manifest.json').then((res) => res.json()).then((json) => {
       fu = json.theme;
-    });
+    }).catch(() => {
+      console.log('Theme not found, back to default.');
+      universal.setTheme('default', true);
+    })
     fetch('/scripts/theming/' + name + '/' + fu + '.css').then((res) => res.text()).then((css) => {
       const stylea = document.createElement('style');
       stylea.innerText += css;
@@ -344,6 +294,20 @@ const universal = {
               universal.audioClient._player.monitorPotential.push(device);
               universal.CLU('Boot', 'Created monitor potential devices');
             });
+          }
+          if (universal.loadObj('local-cfg').fill) {
+            let style = document.createElement('style');
+            style.type = 'text/css';
+            let styles = `
+                #keys .button {
+                width: unset; height: unset;
+                }
+            `;
+            if (style.styleSheet)
+              style.styleSheet.cssText = styles;
+            else
+              style.appendChild(document.createTextNode(styles));
+            document.head.appendChild(style);
           }
           universal.load('vb.sink') ?
             (universal.audioClient._player.sink = universal.load('vb.sink')) :
@@ -527,7 +491,7 @@ const universal = {
         universal._socket.on('connect', () => {
           universal.connected = true;
           universal.name = user;
-          if(universal.lastRetry != -1) {
+          if (universal.lastRetry != -1) {
             universal.sendToast('Reconnected to server.');
             // tell server we're disconnecting
             universal._socket.disconnect();

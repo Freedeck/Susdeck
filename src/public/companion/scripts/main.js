@@ -1057,4 +1057,10 @@ setValue('#es-fs', universal.loadObj('local-cfg')['font-size']);
 setValue('#es-bs', universal.loadObj('local-cfg')['buttonSize']);
 setValue('#es-tc', universal.loadObj('local-cfg')['iconCountPerPage']);
 
+document.querySelector('#es-fill').onchange = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('fill', e.target.checked));
+  universal.send(universal.events.default.reload);
+}
+
 document.querySelector('#es-scroll').checked = universal.loadObj('local-cfg').scroll;
+document.querySelector('#es-fill').checked = universal.loadObj('local-cfg').fill;

@@ -385,6 +385,13 @@ document.querySelector('#change-pl-settings').onclick = () => {
 const loadSettings = (plugin) => {
   const settingsElement = document.querySelector('#pl-settings'); 
   settingsElement.innerHTML = '';
+  document.querySelector('#pl-title').innerText = 'Plugin Settings';
+  if(!universal.plugins[plugin]) {
+    settingsElement.innerHTML = '<h2>The plugin for this Tile is missing.</h2><p>Please re-enable or download it.</p>'
+    document.querySelector('#change-pl-settings').style.display = 'none';
+    return;
+  }
+  document.querySelector('#change-pl-settings').style.display = 'block';
   document.querySelector('#pl-title').innerText = universal.plugins[plugin].name + ' Settings';
   const settings = universal.plugins[plugin].Settings;
   Object.keys(settings).forEach((key) => {

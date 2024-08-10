@@ -1,6 +1,10 @@
-import { universal } from '../../scripts/universal.js';
+import {
+  universal
+} from '../../scripts/universal.js';
 import Sortable from 'sortablejs';
-import { UI } from '../../scripts/ui.js';
+import {
+  UI
+} from '../../scripts/ui.js';
 import './global.js';
 import './authfulPage.js'; // Only for authenticated pages
 
@@ -46,9 +50,14 @@ document.querySelector('.toggle-sidebar button').onclick = (ev) => {
 };
 
 
-window['button-types'] = [
-  { name: 'Audio File', type: 'sound' },
-  { name: 'Plugin', type: 'plugin' },
+window['button-types'] = [{
+    name: 'Audio File',
+    type: 'sound'
+  },
+  {
+    name: 'Plugin',
+    type: 'plugin'
+  },
 ];
 
 window.oncontextmenu = function (e) {
@@ -101,7 +110,9 @@ window.oncontextmenu = function (e) {
           break;
         case 'Folder: ' + universal.config.profile:
           showPick('Switch to another Folder:', Object.keys(universal.config.profiles).map((profile) => {
-            return { name: profile };
+            return {
+              name: profile
+            };
           }), (modal, value, feedback, title, button, content) => {
             universal.page = 0;
             universal.save('page', universal.page);
@@ -122,7 +133,7 @@ window.oncontextmenu = function (e) {
           //   if (value.type == 'plugin') createPlugin(pos);
           // });
           const pos = parseInt(
-            e.srcElement.className.split(' ')[1].split('-')[1]) +
+              e.srcElement.className.split(' ')[1].split('-')[1]) +
             (universal.page < 0 ? 1 : 0) +
             ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0));
           let uuid = 'fdc.' + Math.random() * 10000000;
@@ -139,7 +150,10 @@ window.oncontextmenu = function (e) {
           break;
         case 'Remove Tile':
           UI.reloadProfile();
-          universal.send(universal.events.companion.del_key, JSON.stringify({ name: e.srcElement.dataset.name, item: e.srcElement.getAttribute('data-interaction') }));
+          universal.send(universal.events.companion.del_key, JSON.stringify({
+            name: e.srcElement.dataset.name,
+            item: e.srcElement.getAttribute('data-interaction')
+          }));
           break;
         case 'Copy Tile Here':
           showReplaceGUI(e.srcElement);
@@ -163,7 +177,10 @@ function showReplaceGUI(srcElement) {
   UI.reloadProfile();
   showPick('Copy from:', universal.config.sounds.map((sound) => {
     const k = Object.keys(sound)[0];
-    return { name: k, type: sound[k].type };
+    return {
+      name: k,
+      type: sound[k].type
+    };
   }), (modal, value, feedback, title, button, content) => {
     UI.reloadProfile();
     const valueToo = universal.config.sounds.filter((sound) => {
@@ -171,7 +188,7 @@ function showReplaceGUI(srcElement) {
       return k == value.name;
     })[0][value.name];
     const pos = parseInt(
-      srcElement.className.split(' ')[1].split('-')[1]) +
+        srcElement.className.split(' ')[1].split('-')[1]) +
       (universal.page <= 0 ? 1 : 0) +
       ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0));
     // we need to clone value, and change the pos, and uuid, then make a new key.
@@ -261,7 +278,7 @@ function editTile(e) {
   document.querySelector('#editor-btn').setAttribute('data-pre-edit', e.srcElement.dataset.name);
   document.querySelector('#editor-btn').setAttribute('data-interaction', e.srcElement.getAttribute('data-interaction'));
   document.querySelector('#type').value = interactionData.type;
-  if(interactionData.plugin == 'Freedeck' || !interactionData.plugin) {
+  if (interactionData.plugin == 'Freedeck' || !interactionData.plugin) {
     document.querySelector('#plugin').style.display = 'none';
     document.querySelector('label[for="plugin"]').style.display = 'none';
   } else {
@@ -281,9 +298,9 @@ function editTile(e) {
   } else {
     if (!interactionData.type.startsWith('fd.')) {
       document.querySelectorAll('.spiaction').forEach((el) => {
-        if(el.classList.contains('pl-' + interactionData.plugin)) el.style.display = 'block';
+        if (el.classList.contains('pl-' + interactionData.plugin)) el.style.display = 'block';
       });
-      document.querySelectorAll('.spiback').forEach(el=>el.style.display='block');
+      document.querySelectorAll('.spiback').forEach(el => el.style.display = 'block');
       document.querySelectorAll('.spiplugin').forEach((el) => {
         el.style.display = 'none';
       });
@@ -291,7 +308,7 @@ function editTile(e) {
       document.querySelectorAll('.spiaction').forEach((el) => {
         el.style.display = 'none';
       });
-      document.querySelectorAll('.spiback').forEach(el=>el.style.display='none');
+      document.querySelectorAll('.spiback').forEach(el => el.style.display = 'none');
       document.querySelectorAll('.spiplugin').forEach((el) => {
         el.style.display = 'block';
       });
@@ -304,7 +321,7 @@ function editTile(e) {
           universal.sendToast('NativeBridge is not running. Please start it to use this feature.');
         }
         let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
-        
+
         const select = document.querySelector('#system-select');
         data.push({
           name: '_fd.System',
@@ -313,7 +330,7 @@ function editTile(e) {
         data.forEach((app) => {
           const option = document.createElement('option');
           let friendly = app.friendly != '' ? app.friendly + ' (' + app.name + ')' : app.name;
-          if(app.name == '_fd.System') friendly = 'System';
+          if (app.name == '_fd.System') friendly = 'System';
           option.innerText = friendly;
           option.value = app.name;
           if (int.data && int.data.app && int.data.app == app.name) option.selected = true;
@@ -337,7 +354,7 @@ function editTile(e) {
         document.querySelector('#system-select').value = interactionData.data.app;
       }
     }
-    if(interactionData.type == 'fd.profile') {
+    if (interactionData.type == 'fd.profile') {
       generateProfileSelect();
       document.querySelector('#eprofile-select').value = interactionData.data.profile;
       openViewCloseAll('profile');
@@ -345,10 +362,15 @@ function editTile(e) {
     if (interactionData.type == 'fd.none') {
       openViewCloseAll('none');
     } else if (interactionData.plugin) {
-      if(document.querySelector('.spi[data-type="' + interactionData.type + '"][data-plugin="' + interactionData.plugin + '"]'))
-        document.querySelector('.spi[data-type="' + interactionData.type + '"][data-plugin="' + interactionData.plugin + '"]').classList.add('spi-active')
-      document.querySelector('.spi-active')?
-        document.querySelector('.spi-active').classList.remove('spi-active'):false;
+      document.querySelectorAll('.spiaction').forEach((a) => {
+        a.style.display = 'none'
+        a.classList.remove('spi-active')
+        if (a.dataset.plugin == interactionData.plugin) {
+          if (a.dataset.type == interactionData.type)
+            a.classList.add('spi-active')
+          a.style.display = 'block'
+        }
+      });
       loadSettings(interactionData.plugin);
     }
   }
@@ -379,14 +401,17 @@ document.querySelector('#change-pl-settings').onclick = () => {
       settings[key] = el.querySelector('input').value;
     }
   });
-  universal.send(universal.events.companion.plugin_set_all, JSON.stringify({ plugin, settings }));
+  universal.send(universal.events.companion.plugin_set_all, JSON.stringify({
+    plugin,
+    settings
+  }));
 }
 
 const loadSettings = (plugin) => {
-  const settingsElement = document.querySelector('#pl-settings'); 
+  const settingsElement = document.querySelector('#pl-settings');
   settingsElement.innerHTML = '';
   document.querySelector('#pl-title').innerText = 'Plugin Settings';
-  if(!universal.plugins[plugin]) {
+  if (!universal.plugins[plugin]) {
     settingsElement.innerHTML = '<h2>The plugin for this Tile is missing.</h2><p>Please re-enable or download it.</p>'
     document.querySelector('#change-pl-settings').style.display = 'none';
     return;
@@ -402,7 +427,7 @@ const loadSettings = (plugin) => {
     title.innerText = key;
     container.appendChild(title);
     console.log(typeof value)
-    if(typeof value == 'array' || typeof value == 'object') {
+    if (typeof value == 'array' || typeof value == 'object') {
       const arrayContainer = document.createElement('div');
       arrayContainer.classList.add('pl-settings-array');
       let i = 0;
@@ -447,21 +472,21 @@ document.querySelector('#spiback').onclick = (e) => {
   document.querySelectorAll('.spiaction').forEach((el) => {
     el.style.display = 'none';
   });
-  document.querySelectorAll('.spiback').forEach(el=>el.style.display='none');
+  document.querySelectorAll('.spiback').forEach(el => el.style.display = 'none');
   document.querySelectorAll('.spiplugin').forEach((el) => {
     el.style.display = 'block';
   });
 }
 
 document.querySelector('#spiav').onclick = () => {
-  if(document.querySelector('#advanced-view').style.display == 'block')
+  if (document.querySelector('#advanced-view').style.display == 'block')
     document.querySelector('#advanced-view').style.display = 'none';
   else document.querySelector('#advanced-view').style.display = 'block';
 }
 
 const spiContainer = document.querySelector('#spi-actions')
 universal._tyc.keys().forEach((type) => {
-  if(!document.querySelector('.rpl-' + type.pluginId)) {
+  if (!document.querySelector('.rpl-' + type.pluginId)) {
     const element = document.createElement('div');
     element.classList.add('rpl-' + type.pluginId);
     element.classList.add('plugin-item');
@@ -472,7 +497,7 @@ universal._tyc.keys().forEach((type) => {
       document.querySelectorAll('.spiaction.pl-' + type.pluginId).forEach((el) => {
         el.style.display = 'block';
       });
-      document.querySelectorAll('.spiback').forEach(el=>el.style.display='block');
+      document.querySelectorAll('.spiback').forEach(el => el.style.display = 'block');
       document.querySelectorAll('.spiplugin').forEach((el) => {
         el.style.display = 'none';
       });
@@ -532,7 +557,10 @@ document.querySelector('#upload-sound').onclick = () => {
 document.querySelector('#none-audio').onclick = (e) => {
   let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
   int.type = 'fd.sound';
-  int.data = { file: 'Unset.mp3', path: '/sounds/' };
+  int.data = {
+    file: 'Unset.mp3',
+    path: '/sounds/'
+  };
   document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
   document.querySelector('#audio-file').innerText = 'Unset.mp3';
   document.querySelector('#type').value = 'fd.sound';
@@ -543,7 +571,9 @@ document.querySelector('#none-audio').onclick = (e) => {
 document.querySelector('#none-profiles').onclick = (e) => {
   let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
   int.type = 'fd.profile';
-  int.data = {profile:'Default'};
+  int.data = {
+    profile: 'Default'
+  };
   document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
   document.querySelector('#type').value = 'fd.profile';
   generateProfileSelect();
@@ -563,7 +593,7 @@ document.querySelector('#none-system').onclick = (e) => {
     data.forEach((app) => {
       const option = document.createElement('option');
       let friendly = app.friendly != '' ? app.friendly + ' (' + app.name + ')' : app.name;
-      if(app.name == '_fd.System') friendly = 'System';
+      if (app.name == '_fd.System') friendly = 'System';
       option.innerText = friendly;
       option.value = app.name;
       if (int.data && int.data.app && int.data.app == app.name) option.selected = true;
@@ -587,7 +617,14 @@ document.querySelector('#none-system').onclick = (e) => {
 
     int.type = 'fd.sys.volume.sys';
     int.renderType = 'slider';
-    int.data = { app: '_fd.System', min: 0, max: 100, value: 50, format: '%', direction: 'vertical' };
+    int.data = {
+      app: '_fd.System',
+      min: 0,
+      max: 100,
+      value: 50,
+      format: '%',
+      direction: 'vertical'
+    };
     document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
     document.querySelector('#type').value = 'fd.sys.volume.sys';
     document.querySelector('#system-only').style.display = 'flex';
@@ -894,7 +931,9 @@ profileExport.innerText = 'Export Profile';
 profileExport.onclick = () => {
   const profile = universal.config.profiles[universal.config.profile];
   const data = JSON.stringify(profile);
-  const blob = new Blob([data], { type: 'application/json' });
+  const blob = new Blob([data], {
+    type: 'application/json'
+  });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -919,7 +958,10 @@ profileImport.onclick = () => {
           feedback.innerText = 'Please enter a name for the folder';
           return false;
         }
-        universal.send(universal.events.companion.import_profile, { name: value, data });
+        universal.send(universal.events.companion.import_profile, {
+          name: value,
+          data
+        });
       });
       return true;
     } catch (e) {
@@ -1025,7 +1067,10 @@ async function getAudioOutputDevices(isCable = false) {
   const devices = await navigator.mediaDevices.enumerateDevices();
   const audioOutputs = devices
     .filter((device) => device.kind === 'audiooutput' && (isCable ? device.label.includes('VB-Audio') : !device.label.includes('VB-Audio')))
-    .map((device) => ({ name: device.label || 'Unknown Audio Output', value: device.deviceId }));
+    .map((device) => ({
+      name: device.label || 'Unknown Audio Output',
+      value: device.deviceId
+    }));
   return audioOutputs;
 }
 
@@ -1063,9 +1108,14 @@ getAudioOutputDevices(true).then(async (audioOutputs) => {
   embeddedSettingsAudio.appendChild(select);
 });
 
-const playbackModes = [
-  { label: 'Stop Previous', value: 'stop_prev' },
-  { label: 'Play Over', value: 'play_over' },
+const playbackModes = [{
+    label: 'Stop Previous',
+    value: 'stop_prev'
+  },
+  {
+    label: 'Play Over',
+    value: 'play_over'
+  },
 ];
 
 const playbackModeSetting = await universal.embedded_settings.createSelect(
@@ -1172,7 +1222,7 @@ document.querySelector('#es-tc').oninput = (e) => {
 }
 
 document.querySelector('#es-tc').onmouseup = (e) => {
-  if(e.target.value == universal.config.iconCountPerPage) {
+  if (e.target.value == universal.config.iconCountPerPage) {
     window.location.reload();
     return;
   }

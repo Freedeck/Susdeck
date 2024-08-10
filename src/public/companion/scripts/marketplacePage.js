@@ -105,7 +105,7 @@ universal.on(universal.events.default.plugin_downloaded, () => {
 
 universal.on(universal.events.default.plugins_updated, () => {
   if (!dialog.open) dialog.showModal();
-  dialog.innerHTML = `<p>Plugin indexes updated.</p><button id="close">Refresh</button>`;
+  dialog.innerHTML = `<p>Plugins reloaded.</p><button id="close">Refresh</button>`;
   document.querySelector('#close').onclick = () => {
     universal.uiSounds.playSound('click');
     window.location.reload();

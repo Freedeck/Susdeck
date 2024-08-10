@@ -34,22 +34,17 @@ Object.keys(universal.plugins).forEach((plugin) => {
 });
 
 universal._information.disabled.forEach((plugin) => {
-  const li = document.createElement('li');
-  li.setAttribute('hovereffect', 'yes');
-  li.style.cursor = 'default';
   if (seen[plugin]) return;
   seen[plugin] = true;
-  li.innerText = `${plugin.split('.disabled')[0]}`;
   const a = document.createElement('button');
-  a.innerText = 'Enable';
+  a.innerText = 'Enable ' + plugin;
   a.onclick = () => {
     universal.uiSounds.playSound('int_confirm');
     universal.send(universal.events.default.enable_plugin, plugin);
     if (!dialog.open) dialog.showModal();
     dialog.innerHTML = `<p>Enabling ${plugin.split('.disabled')[0]}!</p>`;
   };
-  li.appendChild(a);
-  document.querySelector('#disbl-list').appendChild(li);
+  document.querySelector('#disbl-list').appendChild(a);
 });
 
 const dialog = document.createElement('dialog');

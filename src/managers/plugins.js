@@ -38,7 +38,7 @@ const pl = {
     pl._plc.clear();
     pl._tyc.clear();
     const files = fs.readdirSync(path.resolve('./plugins'));
-    const loadPromises = files.filter((file) => file.endsWith('.Freedeck') || file.endsWith('.src') || file.endsWith('.fdr.js') && !file.endsWith('.disabled')).map((file) => pl.load(file));
+    const loadPromises = files.filter((file) => file.endsWith('.Freedeck') || file.endsWith('.src') || file.endsWith('.fdr.js') || file.endsWith('.disabled')).map((file) => pl.load(file));
     try {
       await Promise.all(loadPromises);
     } catch (er) {
@@ -65,6 +65,10 @@ const pl = {
 
   },
   load: async (file) => {
+    if(file.includes('.disabled')) {
+      pl._disabled.push(file.split('.')[0]);
+      return;
+    }
     try {
       if (file.endsWith('.fdr.js')) {
         try {

@@ -13,11 +13,15 @@ function settingsMenu() {
 }
 
 const universal = {
-  _socket: io(),
+  _socket: null,
+  _ca: [],
+  lastRetry: -1,
   connected: false,
   reconnect: () => {
-    universal._socket = io();
     universal.connected = false;
+    universal.lastRetry = new Date();
+    universal._socket.connect();
+    universal._ca.push(universal.lastRetry);
   },
   _information: {},
   _init: false,
@@ -518,9 +522,17 @@ const universal = {
       try {
         window['universal'] = universal;
         universal.uiSounds.load();
+        universal._socket = io();
         universal._socket.on('connect', () => {
           universal.connected = true;
           universal.name = user;
+          if(universal.lastRetry != -1) {
+            universal.sendToast('Reconnected to server.');
+            // tell server we're disconnecting
+            universal._socket.disconnect();
+            window.location.reload();
+            return;
+          }
           universal.send('G', user);
           dataHandler(universal, user).then(() => {
             eventsHandler(universal, user).then(() => {

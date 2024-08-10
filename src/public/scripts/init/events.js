@@ -1,5 +1,6 @@
 export default function eventsHandler(universal, user) {
   return new Promise((resolve, reject) => {
+    universal.CLU('Bootd', 'Creating event handlers...');
     universal.on(universal.events.default.not_trusted, () =>
       universal.sendToast('Not trusted to do this action.'),
     );
@@ -78,13 +79,13 @@ export default function eventsHandler(universal, user) {
     universal._socket.on('disconnect', () => {
       universal.connected = false;
       universal.sendToast('Disconnected from server.');
+      universal.lastRetry = new Date();
       const retryLoop = setInterval(() => {
         universal.sendToast('Attempting to reconnect...');
         universal.reconnect();
         setTimeout(() => {
           if (universal.connected === true) {
             clearInterval(retryLoop);
-            universal.sendToast('Reconnected!');
           }
         }, 1500);
       }, 2000);

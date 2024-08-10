@@ -34,7 +34,7 @@ universal.listenFor('init', () => {
       universal.save('logintime', Date.now());
       document.querySelector('#login-div').style.opacity = '0';
       document.querySelector('#login-dialog').style.opacity = '0';
-      setTimeout(() => document.querySelector('#login-dialog').remove(), 250);
+      setTimeout(() => document.querySelector('#login-dialog').style.display='none', 250);
     } else {
       document.querySelector('#login-msg').setHTML('Login failed.');
     }

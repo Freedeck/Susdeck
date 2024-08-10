@@ -103,7 +103,6 @@ export default function eventsHandler(universal, user) {
         universal.sendToast('Incorrect password!');
         if (document.querySelector('#login-dialog')) document.querySelector('#login-dialog').style.display = 'block';
       } else {
-        console.log('GOOD')
       }
       universal.sendEvent('auth', auth);
     });

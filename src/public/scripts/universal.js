@@ -325,7 +325,7 @@ const universal = {
         universal.CLU('Boot', 'Pre-init');
         universal._initFn(user).then(async () => {
           universal.CLU('Boot', 'Init complete');
-          console.log(universal.config)
+          universal.CLU('Boot', 'Received config', universal.config);
           universal.setTheme(universal.config.theme ? universal.config.theme : 'default', false);
           universal.CLU('Boot', 'Set theme');
           UI.reloadSounds();

@@ -18,7 +18,7 @@ export default function dataHandler(universal, user) {
       universal._init = true;
   
       // default setup
-      console.log(data, parsed, universal, universal.events)
+      universal.CLU('Boot', data, parsed, universal, universal.events)
   
       universal.default('notification_log', '');
       universal.default('playback-mode', 'play_over');

@@ -63,8 +63,8 @@ window['button-types'] = [{
 window.oncontextmenu = function (e) {
   // console.log(e.srcElement)
   if (document.querySelector('.contextMenu')) document.querySelector('.contextMenu').remove();
-  if (!e.srcElement.className.includes('button')) return false;
-  if (e.srcElement.className.includes('builtin')) return false;
+  if (!e.srcElement.classList.contains('button')) return false;
+  if (e.srcElement.classList.contains('builtin')) return false;
   const custMenu = document.createElement('div');
   custMenu.className = 'contextMenu';
   custMenu.style.top = e.clientY - window.scrollY + 'px';

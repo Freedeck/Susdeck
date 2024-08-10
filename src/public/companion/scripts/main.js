@@ -1290,5 +1290,10 @@ document.querySelector('#es-lp-reset').onclick = (e) => {
   universal.send(universal.events.default.reload);
 }
 
+document.querySelector('#es-tr-reset').onclick = (e) => {
+  setValue('#es-tr', 5);
+  universal.send(universal.events.default.config_changed, setToLocalCfg('tileRows', 5));
+}
+
 document.querySelector('#es-scroll').checked = universal.loadObj('local-cfg').scroll;
 document.querySelector('#es-fill').checked = universal.loadObj('local-cfg').fill;

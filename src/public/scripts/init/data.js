@@ -29,7 +29,7 @@ export default function dataHandler(universal, user) {
       universal.default('theme', 'default');
       universal.default('profile', 'Default');
       universal.default('repos.community', JSON.stringify([]));
-      universal.default('local-cfg', JSON.stringify({ scroll: false, fontSize: 15, buttonWidth: '6rem' }));
+      universal.default('local-cfg', JSON.stringify({ scroll: false, fill:false, 'font-size': 15, buttonSize: 6, iconCountPerPage:12, longPressTime: 3, tileRows: 5 }));
   
       if (!universal.load('welcomed')) {
         universal.sendToast('Welcome to Freedeck.');

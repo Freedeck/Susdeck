@@ -105,6 +105,7 @@ window.oncontextmenu = function (e) {
           UI.Pages[Object.keys(UI.Pages).length] = [];
           universal.page = Object.keys(UI.Pages).length - 1;
           UI.reloadSounds();
+          universal.sendEvent('page_change');
           break;
         case '---':
           break;
@@ -895,6 +896,7 @@ document.querySelector('#pg-left').addEventListener('click', () => {
     universal.save('page', universal.page);
     universal.uiSounds.playSound('page_down');
     UI.reloadSounds();
+    universal.sendEvent('page_change');
   }
 });
 
@@ -904,6 +906,7 @@ document.querySelector('#pg-right').addEventListener('click', () => {
     universal.save('page', universal.page);
     universal.uiSounds.playSound('page_up');
     UI.reloadSounds();
+    universal.sendEvent('page_change');
   }
 });
 
@@ -914,6 +917,7 @@ document.addEventListener('keydown', (ev) => {
       universal.save('page', universal.page);
       universal.uiSounds.playSound('page_down');
       UI.reloadSounds();
+      universal.sendEvent('page_change');
     }
   }
   if (ev.key == 'ArrowRight') {
@@ -922,6 +926,7 @@ document.addEventListener('keydown', (ev) => {
       universal.save('page', universal.page);
       universal.uiSounds.playSound('page_up');
       UI.reloadSounds();
+      universal.sendEvent('page_change');
     }
   }
 });

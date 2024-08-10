@@ -11,9 +11,12 @@
     --fd-btn-w: 6rem;
     --fd-btn-h: 6rem;
 
+    --fd-tile-w: var(--fd-btn-w);
+    --fd-tile-h: var(--fd-btn-h);
+
     --fd-btn-rad: 1rem;
 
-    --fd-modal-bg: white;
+    --fd-modal-bg: rgba(0,0,0,0.25);
 
     --fd-col: white;
     --fd-txt-col: black;
@@ -98,11 +101,13 @@ body {
     background-size: var(--fd-background-size);
     animation: error-bg 5s linear infinite;
     font-family: var(--fd-font-family);
-    height: 100%;
-    /* width: 100vw; */
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    height: 100vh;
+    width: 100vw;
+    /* padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); */
     overflow-x: hidden;
     touch-action: none;
+    -webkit-user-select: none; /* disable selection/Copy of UIWebView */
+    -webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
 }
 
 .unset {
@@ -215,7 +220,7 @@ input:disabled {
     gap: 2px 7px;
     width: 100%;
     height: 100%;
-    margin: 0;
+    margin: 0;    
 }
 
 #client-key-container {
@@ -229,12 +234,18 @@ input:disabled {
     position: absolute;
     top: 50%;
     left: calc(50% + env(safe-area-inset-left));
-    transform: translate(-50%, -50%);
+    transform: translate(calc(-50% - env(safe-area-inset-left)), -50%);
+}
+
+#keys button {
+    width: var(--fd-tile-w);
+    height: var(--fd-tile-h);
 }
 
 .button, button {
     width: var(--fd-btn-w);
     height: var(--fd-btn-h);
+    overflow: hidden;
     min-width: var(--fd-btn-w);
     min-height: var(--fd-btn-h);
     border-radius: var(--fd-btn-rad);
@@ -343,8 +354,16 @@ input:disabled {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* pointer-events: none; */
+    transition-duration: 0s;
 }
+
+.slider-title {
+    font-size: var(--fd-font-size);
+    color: white;
+    text-align: center;
+    pointer-events: none;
+}
+
 .slider-thumb {
     width: 100%;
     height: 100%;
@@ -353,4 +372,122 @@ input:disabled {
     position: absolute;
     cursor: pointer;
     /* pointer-events: none */
+}
+
+.slider-percentage {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+    font-size: .75rem;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.too-big {
+    font-size: calc(var(--fd-font-size) * 1.5);
+    flex: 0 1 auto;
+    animation: marquee 5s linear infinite;
+    white-space: nowrap;
+    text-size-adjust: none;
+    pointer-events: none;
+}
+
+.button-text {
+    font-size: var(--fd-font-size);
+    width: calc(min-content + 1rem);
+    color: white;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-wrap: wrap;
+    pointer-events: none;
+}
+
+#keys {
+    width: calc(100% - env(safe-area-inset-left) - env(safe-area-inset-right));
+}
+
+#keys .button {
+    position: relative;
+    min-height: var(--fd-tile-h);
+    min-width: var(--fd-tile-w);
+}
+
+.plugin-missing {
+    background-color: rgba(255, 0, 0, 0.5);
+    border-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid black;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin: 0.5rem;
+    /* bottom right of parent */
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+}
+.plugin-type-missing {
+    background-color: rgba(255, 255, 0, 0.5);
+    border-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid black;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin: 0.5rem;
+    /* bottom right of parent */
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+}
+.indicator-green {
+    background-color: rgba(0, 255, 0, 0.5);
+    border-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid black;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin: 0.5rem;
+    /* bottom right of parent */
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 9999;
+}
+.indicator-yellow {
+    background-color: rgba(255, 255, 0, 0.5);
+    border-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid black;
+    color: white;
+    padding: 0.5rem;    
+    border-radius: 0.5rem;
+    margin: 0.5rem;
+    /* bottom right of parent */
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 9999;
+}
+.indicator-red {
+    background-color: rgba(255, 0, 0, 0.5);
+    border-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid black;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin: 0.5rem;
+    /* bottom right of parent */
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 9999;
 }

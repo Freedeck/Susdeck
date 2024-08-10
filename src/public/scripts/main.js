@@ -9,8 +9,6 @@ window.onscroll = function() {
   window.scrollTo(0, 0);
 };
 
-UI.reloadSounds();
-
 
 let touchstartX = 0;
 let touchendX = 2500;
@@ -24,6 +22,7 @@ const checkDirection = () => {
       universal.page++;
       universal.save('page', universal.page);
       UI.reloadSounds();
+      universal.sendEvent('page_change');
     } else {
       /* empty */
     }
@@ -34,6 +33,7 @@ const checkDirection = () => {
       universal.page--;
       universal.save('page', universal.page);
       UI.reloadSounds();
+      universal.sendEvent('page_change');
     } else {
       /* empty */
     }
@@ -47,6 +47,7 @@ document.addEventListener('keydown', (ev) => {
       universal.save('page', universal.page);
       universal.uiSounds.playSound('page_down');
       UI.reloadSounds();
+      universal.sendEvent('page_change');
     }
   }
   if (ev.key == 'ArrowRight') {
@@ -55,6 +56,7 @@ document.addEventListener('keydown', (ev) => {
       universal.save('page', universal.page);
       universal.uiSounds.playSound('page_up');
       UI.reloadSounds();
+      universal.sendEvent('page_change');
     }
   }
 });
@@ -66,8 +68,37 @@ if(universal.config.profile != universal.load('profile')) {
   UI.reloadSounds();
 }
 
-document.addEventListener('touchstart', (e) => {
+universal.on(universal.events.default.config_changed, (e) => {
+  universal.save('local-cfg', e);
+  e = JSON.parse(e);
+  document.documentElement.style.setProperty('--fd-font-size', e['font-size'] + 'px');
+  document.documentElement.style.setProperty('--fd-tile-w', e.buttonSize + 'rem');
+  document.documentElement.style.setProperty('--fd-tile-h', e.buttonSize + 'rem');
+  let tc = 'repeat(5, 2fr)';
+  if(e.tileRows) tc = tc.replace('5', e.tileRows);
+  document.documentElement.style.setProperty('--fd-template-columns', tc);
+})
+
+let lcfg = universal.loadObj('local-cfg');
+document.documentElement.style.setProperty('--fd-font-size', lcfg['font-size'] + 'px');
+document.documentElement.style.setProperty('--fd-tile-w', lcfg.buttonSize + 'rem');
+document.documentElement.style.setProperty('--fd-tile-h', lcfg.buttonSize + 'rem');
+
+let tc = 'repeat(5, 2fr)';
+if(lcfg.tileRows) tc = tc.replace('5', lcfg.tileRows);
+document.documentElement.style.setProperty('--fd-template-columns', tc);
+
+window.addEventListener('touchstart', (e) => {
   touchstartX = e.changedTouches[0].screenX;
+});
+
+window.addEventListener('mousedown', (e) => {
+  touchstartX = e.screenX;
+});
+
+document.addEventListener('mouseup', (e) => {
+  touchendX = e.screenX;
+  checkDirection();
 });
 
 document.addEventListener('touchend', (e) => {

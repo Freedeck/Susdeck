@@ -48,7 +48,7 @@ io.on('connection', (socket) => {
       }
       return;
     }
-    io.emit(eventNames.default.notif, JSON.stringify(notification));
+    socket.emit(eventNames.default.notif, JSON.stringify(notification));
     NotificationManager.once('newNotification', sendNotification);
   }
 
@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
   };
   socket.emit = (event, data) => {
     socket._originalEmit(event, data);
-    debug.log(picocolors.green('Emitted new event ' + event + ', data: ' + JSON.stringify(data)), 'SAPIConn');
+    if(event != 'I')debug.log(picocolors.green('Emitted new event ' + event + ', data: ' + JSON.stringify(data)), 'SAPIConn');
   };
 
   if (!clients.includes(socket)) {
@@ -79,7 +79,7 @@ io.on('connection', (socket) => {
   try {
     handlers.forEach((handler) => {
       try {
-        handler.exec({socket, types, plugins, io});
+        handler.exec({socket, types, plugins, io, clients});
       } catch (e) {
         debug.log(picocolors.red(e));
       }

@@ -4,9 +4,7 @@ const eventNames = require('../eventNames');
 const fs = require('fs');
 
 module.exports = ({io, data}) => {
-  console.log('Enabling ' + data);
-  const newPath = data.split('.disabled')[0];
-  fs.renameSync(path.resolve('./plugins/' + data), path.resolve('./plugins/' + newPath));
+  fs.renameSync(path.resolve('./plugins/' + data+'.Freedeck.disabled'), path.resolve('./plugins/' + data+'.Freedeck' ));
   plugins.reload();
   io.emit(eventNames.default.reload);
 };

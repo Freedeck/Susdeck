@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="companion.css">
-    <title>Freedeck v6 - Settings</title>
+    <title>Freedeck v6 - Themes</title>
     <style>
         #keys {
             display: none;
@@ -25,23 +25,17 @@
             <button onclick="universal.login(document.getElementById('password').value)">Login</button>
         </div>
     </dialog>
-
-    <h1>Settings</h1>
-    <p>Change every small detail of your Freedeck!</p>
-    <p>Socket Handler: Freedeck <span id="vl">Loading</span></p>
-    <p>Server: <span id="svl">Loading</span></p>
-
     <h1>Themes</h1>
     <div class="themelist"></div>
-    <div class="soundpack">
+
+    <!-- <div class="soundpack">
         <br />
         <h1>UI Sounds</h1>
         <p>Sound Pack: <span id="soundpack-title">Soundpack</span> (<span id="soundpack-id"></span>) v<span id="soundpack-version">0.0.0</span> by <span
                 id="soundpack-author">somebody</span></p>
         <ul class="uisounds"></ul>
-    </div>
-    <br />
-    <h1>Configuration</h1>
+    </div> -->
+    <h1>Developer Tools</h1>
     <style>
         .uisounds {
             display: flex;
@@ -61,8 +55,7 @@
     </style>
     <button onclick="universal.send(universal.events.default.recompile)">Ask server to recompile Webpack
         bundles</button>
-    <button onclick="window.location.href = '/'">To Client View</button>
-    <div class="settings"></div>
+        <div class="settings"></div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="dist/settingsPage.js" type="module"></script>
 </body>

@@ -11,7 +11,7 @@
     <title>Freedeck v6 - Home</title>
 </head>
 
-<body>
+<body style="overflow: hidden;">
     <dialog class="dialog" id="login-dialog">
         <div id="login-div">
             <h1>Freedeck v6</h1>
@@ -23,20 +23,24 @@
     <dialog id="editor">
         <div id="editor-div">
             <div class="x" id="editor-close">Close</div>
-            <h1>Tile Editor</h1>
-            <h2>Info</h2>
             <div class="editor-section">
+                <h2>Info</h2>
+                <div class="button" id="editor-btn">Not Loaded</div>
                 <div class="flex-wrap-r">
-                    <div class="button" id="editor-btn">Not Loaded</div>
                     <div class="flex-wrap">
                         <div class="flex-wrap-r alc">
                             <label for="name">Name</label>
                             <input type="text" id="name"
-                                onkeyup="document.querySelector('#editor-btn').innerText = this.value;" value="Not Loaded">
+                                onkeyup="document.querySelector('#editor-btn').innerText = this.value;"
+                                value="Not Loaded">
                         </div>
                         <div class="flex-wrap-r alc">
                             <label for="color">Color</label>
                             <input type="color" id="color" data-has_set="false" value="#000">
+                        </div>
+                        <div class="flex-wrap-r alc">
+                            <label for="lp">Long Press</label>
+                            <input class="fdc-checkbox" type="checkbox" id="lp">
                         </div>
                         <div class="flex-wrap-r alc">
                             <label for="type">Type</label>
@@ -48,14 +52,77 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <h2>Data</h2>
-            <div class="editor-section">
-                <div class="flex-wrap-r" id="editor-data"></div>
                 <br />
                 <div class="flex-wrap-r">
-                    <div class="button" style="display: none;" id="upload-sound">Upload Sound</div>
                     <div class="button" id="upload-icon">Set Icon</div>
+                </div>
+            </div>
+            <div style="display:none;" id="plugins-only" class="editor-section plugin-items">
+                <div class="information">
+                    <h1>Plugins</h1>
+                    <p>Select the plugin this tile will control</p>
+                </div>
+                <div id="spi-actions" class="plugin-items"></div>
+                <div class="flex-wrap-r">
+                    <button class="spiback" id="spiback" style="display: none;">Back</button>
+                    <button class="spiback" id="spiav" style="display: none;">View Settings</button>
+                </div>
+            </div>
+            <div style="display:none;" id="audio-only" class="editor-section">
+                <h1>Audio</h1>
+                <p>This tile will play:</p>
+                <div class="plugin-item" id="audio-file">AUDIOFILE.MP3</div>
+                <p>from</p>
+                <div class="plugin-item" id="audio-path">/sounds/</div>
+                <br/>
+                <div class="button" id="upload-sound">Upload Sound</div>
+            </div>
+            <div style="display:none;" id="system-only" class="editor-section">
+                <h1>App Volume</h1>
+                <div id="sys-actions" class="plugin-items">
+                    <p>
+                        This tile will change the volume of:
+                    </p>
+                    <select name="system-select" id="system-select"></select>
+                </div>
+            </div>
+            <div style="display:none;" id="profile-only" class="editor-section plugin-items">
+                <h1>Folder Switcher</h1>
+                <div class="plugin-items">
+                    <p>Select the folder this tile will switch to</p>
+                </div>
+                <select name="eprofile-select" id="eprofile-select"></select>
+            </div>
+            <div style="display:none;" id="none-only" class="editor-section">
+                <h1>Nothing!</h1>
+                <p>This tile does nothing yet! Select a type to get started.</p>
+                <div class="plugin-item" id="none-audio">Audio</div>
+                <br>
+                <div class="plugin-item" id="none-plugin">Plugin</div>
+                <br>
+                <div style="display:none;" class="plugin-item" id="none-system">App Volume</div>
+                <!-- <br> -->
+                <div class="plugin-item" id="none-profiles">Folder Switcher</div>
+            </div>
+            <div id="advanced-view" style="display:none;">
+                <div class="flex-wrap">
+                    <div class="esection">
+                        <div class="information">
+                            <h2 id="pl-title">Plugin Settings</h2>
+                            <div id="pl-settings">
+                            </div>
+                            <br>
+                            <div class="button" id="change-pl-settings">Save Changes</div>
+                        </div>
+                        <div id="spi-actions" class="plugin-items"></div>
+                    </div>
+                    <div class="esection" id="tiledata">
+                        <h2>Tile Data</h2>
+                        <p>
+                            These are advanced settings!
+                        </p>
+                        <div class="flex-wrap-r" id="editor-data"></div>
+                    </div>
                 </div>
             </div>
             <!-- <h2>Ready to save?</h2> -->
@@ -86,6 +153,77 @@
                 <button id="pg-left">Previous Page</button>
                 <button id="pg-right">Next Page</button>
             </div>
+        </div>
+        <div class="sidebar-item">
+            <span><br />
+                <h1>Style</h1>
+                <div class="flex-wrap-r">
+                    <div class="alc">
+                        <label for="es-fs">
+                            <h2>Font Size</h2>
+                        </label>
+                        <input class="fdc-slider" postfix="px" type="range" min="10" max="25" value="15" step="1" id="es-fs"
+                            style="width: 7rem;">
+                    </div>
+                    <button id="es-fs-reset">Reset</button>
+                </div>
+                <div class="flex-wrap-r">
+                    <div class="alc">
+                        <label for="es-bs">
+                            <h2>Tile Size</h2>
+                        </label>
+                        <input class="fdc-slider" postfix="rem" type="range" min="6" max="12" value="6" step="1" id="es-bs"
+                            style="width: 7rem;">
+                    </div>
+                    <button id="es-bs-reset">Reset</button>
+                </div>
+                <div class="flex-wrap-r">
+                    <div class="alc">
+                        <label for="es-tc">
+                            <h2>Tile Count</h2>
+                        </label>
+                        <input class="fdc-slider" postfix=" tiles" type="range" min="12" max="54" value="12" step="1" id="es-tc"
+                            style="width: 7rem;">
+                    </div>
+                    <button id="es-tc-reset">Reset</button>
+                </div>
+                <div class="flex-wrap-r">
+                    <div class="alc">
+                        <label for="es-tr">
+                            <h2>Rows</h2>
+                        </label>
+                        <input class="fdc-slider" postfix=" rows" type="range" min="4" max="15" value="5" step="1" id="es-tr"
+                            style="width: 7rem;">
+                    </div>
+                    <button id="es-tc-reset">Reset</button>
+                </div>
+                <div class="flex-wrap-r">
+                    <div class="alc">
+                        <label for="es-lp">
+                            <h2>Hold Time</h2>
+                        </label>
+                        <input class="fdc-slider" postfix="sec" type="range" min="2" max="6" value="3" step="1" id="es-lp"
+                            style="width: 7rem;">
+                    </div>
+                    <button id="es-lp-reset">Reset</button>
+                </div>
+                <div class="flex-wrap-r">
+                    <div class="flex-wrap-r alc">
+                        <label for="es-scroll">
+                            <h2>Scroll Long Text</h2>
+                        </label>
+                        <input class="fdc-checkbox" type="checkbox" id="es-scroll">
+                    </div>
+                </div>
+                <div class="flex-wrap-r">
+                    <div class="flex-wrap-r alc">
+                        <label for="es-fill">
+                            <h2>Fill Tiles</h2>
+                        </label>
+                        <input class="fdc-checkbox" type="checkbox" id="es-fill">
+                    </div>
+                </div>
+            </span>
         </div>
         <div class="sidebar-item" id="es-audio">
             <span><br />
@@ -120,11 +258,21 @@
         </div>
         <div class="sidebar-item" id="es-profiles">
             <span><br />
-                <h1>Profiles</h1>
+                <h1>Folders</h1>
             </span>
             <div class="flex-wrap-r">
-                <button id="pf-add">New Profile</button>
-                <button id="pf-dupe">Duplicate Profile</button>
+                <button id="pf-add">
+                    <object data="/companion/icons/fnew.svg" class="ico"></object>
+                </button>
+                <button id="pf-dupe">
+                    <object data="/companion/icons/fdupe.svg" class="ico"></object>
+                </button>
+                <button id="pf-imp">
+                    <object data="/companion/icons/fimport.svg" class="ico"></object>
+                </button>
+                <button id="pf-exp">
+                    <object data="/companion/icons/fexport.svg" class="ico"></object>
+                </button>
             </div>
             <br />
         </div>

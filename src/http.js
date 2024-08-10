@@ -25,15 +25,10 @@ module.exports = {
 
 const {webpack} = require('webpack');
 const webpackConfig = require('../webpack.config');
-if (!fs.existsSync(path.resolve('./src/public/companion/dist'))) {
+if (!fs.existsSync(path.resolve(__dirname, 'public/companion/dist'))) {
   console.log('Welcome to Freedeck! This is your first time running Freedeck, so it will take a moment to set up.');
   console.log('Creating companion/dist directory');
-  fs.mkdirSync(path.resolve('./src/public/companion/dist'));
-}
-
-if (!fs.existsSync(path.resolve('./src/public/dist'))) {
-  console.log('Creating dist directory');
-  fs.mkdirSync(path.resolve('./src/public/dist'));
+  fs.mkdirSync(path.resolve(__dirname, 'public/companion/dist'));
 }
 
 let compileTime = 0;
@@ -126,6 +121,22 @@ app.get('/handoff/:token/notify/:data', (req, res) => {
   res.send({status: 'success', message: 'Sent notification.'});
 });
 
+app.get('/native/*', (req,res) => {
+  fetch('http://localhost:5756/' + req.url.split('/').slice(2).join('/')).then((res)=>res.json()).then((a) => {
+    res.send(a);
+  }).catch((err) => {
+    res.send({_msg: 'NativeBridge is not running.', error: err});
+  })
+})
+
+app.get('/connect/plugins', (req,res) => {
+  let idList = [];
+  let pl = plugins._plc.keys();
+  for(let key of pl) {
+    idList.push(key);
+  }
+  res.send({plugins: idList});
+})
 app.get('/connect/status', (req, res) => res.sendStatus(200));
 app.get('/connect/webpack', (req, res) => {
   res.send({compiled: hasWebpackCompiled});
@@ -153,9 +164,11 @@ app.post('/fd/api/upload/sound', (request, response) => {
 
     const nfp = files.file[0].filepath;
     const ext = files.file[0].mimetype.split('/')[1];
+    const originalName = files.file[0].originalFilename.split('.')[0];
 
-    fs.renameSync(nfp, nfp + '.' + ext);
-    response.send({oldName: files.file[0].originalFilename, newName: files.file[0].newFilename + '.' + ext});
+    fs.renameSync(nfp, path.resolve('./src/public/sounds/' + originalName + '.' + ext));
+    
+    response.send({oldName: files.file[0].originalFilename, newName: originalName + '.' + ext});
   });
 });
 
@@ -171,9 +184,15 @@ app.post('/fd/api/upload/icon', (request, response) => {
 
     const nfp = files.file[0].filepath;
     const ext = files.file[0].mimetype.split('/')[1];
+    const originalName = files.file[0].originalFilename.split('.')[0];
 
-    fs.renameSync(nfp, nfp + '.' + ext);
-    response.send({oldName: files.file[0].originalFilename, newName: files.file[0].newFilename + '.' + ext});
+    try {
+      fs.renameSync(nfp, path.resolve('./src/public/us-icons/' + originalName + '.' + ext));
+    } catch (err) {
+      console.error('Error while renaming file', err);
+    }
+
+    response.send({oldName: files.file[0].originalFilename, newName: originalName + '.' + ext});
   });
 });
 

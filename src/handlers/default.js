@@ -16,6 +16,7 @@ module.exports = {
   exec: ({
     socket,
     io,
+    clients,
   }) => {
     socket._id = Math.random() * 2048 + '.fd';
     socket.tempLoginID = Math.random() * 1024 + '.tlid.fd';
@@ -59,10 +60,15 @@ module.exports = {
         tsm.set('IC', socket._id);
       }
       console.log('Client ' + user + ' has greeted server at ' + new Date());
+      console.log('There are ' + io.engine.clientsCount + ' clients connected, server counted', clients.length);
       const pl = {};
       const plu = plugins.plugins();
       plu.forEach((plugin) => {
         pl[plugin.instance.id] = plugin.instance;
+      });
+      const plset = {};
+      plu.forEach((plugin) => {
+        plset[plugin.instance.id] = plugins._settings.get(plugin.instance.id);
       });
       cfg.update();
       const isMobileConnected = tsm.get('isMobileConnected');
@@ -73,6 +79,7 @@ module.exports = {
         mobileConnected: isMobileConnected || false,
         tempLoginID: socket.tempLoginID,
         plugins: pl,
+        plSettings: plset,
         disabled: plugins._disabled,
         events: eventNames,
         version: 'OSH v' + require(path.resolve('package.json')).version,

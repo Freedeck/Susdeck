@@ -45,6 +45,9 @@ const loadRepo = (repo, isUnofficial=false) => {
       const desc = document.createElement('div');
       desc.innerText = req.description;
       li.appendChild(desc);
+      const rl = document.createElement('div');
+      rl.innerText = "Repository: " + repo.title;
+      li.appendChild(rl);
       const file = document.createElement('button');
       file.onclick = () => {
         universal.uiSounds.playSound('int_confirm');
@@ -105,7 +108,7 @@ universal.on(universal.events.default.plugin_downloaded, () => {
 
 universal.on(universal.events.default.plugins_updated, () => {
   if (!dialog.open) dialog.showModal();
-  dialog.innerHTML = `<p>Plugin indexes updated.</p><button id="close">Refresh</button>`;
+  dialog.innerHTML = `<p>Plugins reloaded.</p><button id="close">Refresh</button>`;
   document.querySelector('#close').onclick = () => {
     universal.uiSounds.playSound('click');
     window.location.reload();

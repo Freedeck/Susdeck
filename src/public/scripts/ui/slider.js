@@ -17,6 +17,12 @@ export default function(data, keyObject, raw) {
   sliderThumb.className = 'slider-thumb context-aware';
   sliderContainer.appendChild(sliderThumb);
 
+  let sliderPercentage = document.createElement('div');
+  sliderPercentage.className = 'slider-percentage';
+  sliderPercentage.innerText = `${data.data.value}${data.data.format ? data.data.format : '%'}`;
+  sliderContainer.appendChild(sliderPercentage);
+  sliderContainer.dataset.value = data.data.value;
+
   sliderThumb.oncontextmenu = (e) => {
     sliderThumb.parentElement.parentElement.oncontextmenu(e);
   }
@@ -31,59 +37,68 @@ export default function(data, keyObject, raw) {
   sliderContainer.style.left = left;
   
   let isDragging = false;
-  
   const updateSlider = (event) => {
     const rect = sliderContainer.getBoundingClientRect();
+    let value;
     if(data.data.direction === 'vertical') {
       let newTop = event.clientY - rect.top;
       if (newTop < 0) newTop = 0;
       if (newTop > rect.height) newTop = rect.height;
   
-      const value = ((rect.height - newTop) / rect.height) * (data.data.max - data.data.min) + data.data.min;
+      value = ((rect.height - newTop) / rect.height) * (data.data.max - data.data.min) + data.data.min;
+    } else {
+      let newLeft = event.clientX - rect.left;
+      if (newLeft < 0) newLeft = 0;
+      if (newLeft > rect.width) newLeft = rect.width;
 
-      sliderContainer.dataset.value = value;
-      data.data.value = value;
-
-      sliderContainer.style.background = `linear-gradient(to top, var(--fd-slider-background) ${data.data.value}%, var(--fd-slider-foreground) ${data.data.value}%)`;
-      return;
+      value = (newLeft / rect.width) * (data.data.max - data.data.min) + data.data.min;
     }
-    
-    let newLeft = event.clientX - rect.left;
-    if (newLeft < 0) newLeft = 0;
-    if (newLeft > rect.width) newLeft = rect.width;
 
-    const value = (newLeft / rect.width) * (data.data.max - data.data.min) + data.data.min;
+    value = Math.min(Math.max(value, data.data.min), data.data.max); // Ensure value is within bounds
 
     sliderContainer.dataset.value = value;
     data.data.value = value;
 
-    sliderContainer.style.background = `linear-gradient(to right, var(--fd-slider-background) ${data.data.value}%, var(--fd-slider-foreground) ${data.data.value}%)`;
+    const percentage = ((value - data.data.min) / (data.data.max - data.data.min)) * 100;
+    sliderContainer.style.background = data.data.direction === 'vertical' 
+      ? `linear-gradient(to top, var(--fd-slider-background) ${percentage}%, var(--fd-slider-foreground) ${percentage}%)`
+      : `linear-gradient(to right, var(--fd-slider-background) ${percentage}%, var(--fd-slider-foreground) ${percentage}%)`;
+    
+    let rounded = parseFloat(value).toFixed(1);
+    sliderPercentage.innerText = `${rounded}${data.data.format ? data.data.format : '%'}`;
   };
-
+  
   setInterval(() => {
     // sync slider value with data
-    if(sliderContainer.dataset.value == data.data.value) return;
+    if (sliderContainer.dataset.value == data.data.value) return;
     else {
       data.data.value = sliderContainer.dataset.value;
-      if(data.data.direction != 'vertical')
-        sliderContainer.style.background = `linear-gradient(to right, var(--fd-slider-background) ${data.data.value}%, var(--fd-slider-foreground) ${data.data.value}%)`;
-      else
-        sliderContainer.style.background = `linear-gradient(to top, var(--fd-slider-background) ${data.data.value}%, var(--fd-slider-foreground) ${data.data.value}%)`;
-    }
-  },500);
-
-  sliderThumb.addEventListener('mousedown', (e) => {
-    if(e.button === 2) return;
-    if(e.target !== sliderThumb) return;
-    sliderContainer.dataset.dragging = true;
-    isDragging = true;
-  });
+      const min = data.data.min;
+      const max = data.data.max;
+      const value = data.data.value;
+      const percentage = ((value - min) / (max - min)) * 100;
   
-  sliderThumb.addEventListener('touchstart', (e) => {
-    if(e.target !== sliderThumb) return;
+      if (data.data.direction === 'vertical') {
+        sliderContainer.style.background = `linear-gradient(to top, var(--fd-slider-background) ${percentage}%, var(--fd-slider-foreground) ${percentage}%)`;
+      } else {
+        sliderContainer.style.background = `linear-gradient(to right, var(--fd-slider-background) ${percentage}%, var(--fd-slider-foreground) ${percentage}%)`;
+      }
+
+      let rounded = parseFloat(value).toFixed(1);
+      sliderPercentage.innerText = `${rounded}${data.data.format ? data.data.format : '%'}`;
+    }
+  }, 500);
+
+  const touchDownEvent = (e) => {
+    if (e.target !== sliderThumb) return;
     sliderContainer.dataset.dragging = true;
     isDragging = true;
-  });
+  };
+
+  sliderThumb.addEventListener('mousedown', touchDownEvent);
+  sliderThumb.addEventListener('touchstart', touchDownEvent);
+  sliderContainer.addEventListener('mousedown', touchDownEvent);
+  sliderContainer.addEventListener('touchstart', touchDownEvent);
   
   document.addEventListener('mousemove', (event) => {
     if (isDragging) {
@@ -107,9 +122,10 @@ export default function(data, keyObject, raw) {
     sliderContainer.dataset.dragging = false;
   });
 
-  sliderContainer.style.background = `linear-gradient(to right, var(--fd-slider-background) ${data.data.value}%, var(--fd-slider-foreground) ${data.data.value}%)`;
+  let percent = ((data.data.value - data.data.min) / (data.data.max - data.data.min)) * 100;
+  sliderContainer.style.background = `linear-gradient(to right, var(--fd-slider-background) ${percent}%, var(--fd-slider-foreground) ${percent}%)`;
   if(data.data.direction === 'vertical') {
-    sliderContainer.style.background = `linear-gradient(to top, var(--fd-slider-background) ${data.data.value}%, var(--fd-slider-foreground) ${data.data.value}%)`;
+    sliderContainer.style.background = `linear-gradient(to top, var(--fd-slider-background) ${percent}%, var(--fd-slider-foreground) ${percent}%)`;
   }
 
   keyObject.onclick = (ev) => {

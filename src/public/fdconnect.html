@@ -32,6 +32,11 @@
     const er = document.querySelector('.err');
     let s = false;
 
+    const urls = new URLSearchParams(window.location.search);
+
+    const serverUrl = window.location.href.split('/fdconnect.html')[0];
+    url.value = serverUrl;
+
     subm.onclick = (ev) => {
       concon.innerText = url.value;
       // datsta.innerText = "Searching for server..."
@@ -49,7 +54,15 @@
             localStorage.removeItem(btoa('fd.BfCon'));
             window.location.href = atob(localStorage.getItem(btoa('fd.BfCon')));
           }
-          window.location.replace(url.value + '/companion?fdc=true');
+          if(urls.has('id') && urls.get('id').includes('Companion')) {
+            window.location.replace(url.value + '/companion?fdc=true');
+          } else {
+            window.location.replace(url.value);
+            setTimeout(() => {
+              // if on mobile or not loaded
+              window.close();
+            },500);
+          }
         }).catch(failure => {
           er.style.display = 'block';
           er.innerText = failure.toString();

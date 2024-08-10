@@ -28,7 +28,7 @@ const cfg = {
   externals: {
     Sortable: 'Sortable',
     settingsHelpers: 'settingsHelpers',
-  },
+  }
 };
 
 module.exports = cfg;

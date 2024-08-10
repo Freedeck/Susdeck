@@ -33,8 +33,9 @@ const eventNames = {
     enable_plugin: 'dEP',
     plugins_updated: 'dPU',
     update_plugins: 'dUP',
+    config_changed: 'dCC',
   },
-
+  
   companion: {
     conn_fail: 'cF',
     new_key: 'ckN',
@@ -47,6 +48,10 @@ const eventNames = {
     add_profile: 'cpA',
     dup_profile: 'cpD',
     set_theme: 'ctS',
+    plugin_set: 'dPS',
+    plugin_set_all: 'dPSA',
+    import_profile: 'cpI',
+    native_keypress: 'nkP',
   },
 
 };

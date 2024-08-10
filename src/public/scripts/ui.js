@@ -8,12 +8,21 @@ import otherHandler from './ui/otherHandler.js';
  */
 function reloadProfile() {
   universal.config.sounds = universal.config.profiles[universal.config.profile];
+  let max = 0;
   for (
-    let i = 0;
-    i < universal.config.sounds.length / universal.config.iconCountPerPage;
-    i++
+    let i = 0; i < universal.config.sounds.length / universal.config.iconCountPerPage; i++
   ) {
     Pages[i] = true;
+    max++;
+  }
+
+  for (const sound of universal.config.sounds) {
+    const k = Object.keys(sound)[0];
+    const snd = sound[k];
+    if (snd.pos >= max * universal.config.iconCountPerPage) {
+      max++;
+      Pages[max] = true;
+    }
   }
 }
 
@@ -50,15 +59,36 @@ function reloadSounds() {
       snd.pos = newPos + universal.config.iconCountPerPage * universal.page;
     }
     try {
-      if(snd.pos >= universal.config.iconCountPerPage * (universal.page + 1)) return;
+      if (snd.pos >= universal.config.iconCountPerPage * (universal.page + 1)) return;
       keyObject.setAttribute('data-interaction', JSON.stringify(snd));
       keyObject.setAttribute('data-name', k);
       keyObject.className = keyObject.className.replace('unset', '');
 
       if (snd.data.icon) keyObject.style.backgroundImage = 'url("' + snd.data.icon + '")';
       if (snd.data.color) keyObject.style.backgroundColor = snd.data.color;
+      if (snd.data.fontSize) keyObject.style.fontSize = snd.data.fontSize;
 
       otherHandler(snd.type, keyObject, snd, sound);
+
+      if (!snd.type.includes('fd.')) {
+        if(!universal.plugins[snd.plugin]) {
+          console.log('plugin missing', snd.plugin);
+          let indicator = document.createElement('div');
+          indicator.className = 'plugin-missing';
+          keyObject.appendChild(indicator);
+          return;
+        }
+        let typeExists = false;
+        for (const tyc of universal._tyc.keys()) {
+          if (tyc.type == snd.type) typeExists = true;
+        }
+        if (!typeExists) {
+          console.log('type missing', snd.type);
+          let indicator = document.createElement('div');
+          indicator.className = 'plugin-type-missing';
+          keyObject.appendChild(indicator);
+        }
+      }
 
       // check if two sounds share the same pos, if they do make this button color yellow
       const sounds = universal.config.sounds.filter((sound) => {

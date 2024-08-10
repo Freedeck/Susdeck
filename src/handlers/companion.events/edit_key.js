@@ -10,10 +10,10 @@ module.exports = ({ io, data }) => {
   profiles.forEach((snd) => {
     for (const key in snd) {
       if (snd[key].uuid === interaction.uuid) {
-        snd[name] = interaction;
         if (name !== key) {
           delete snd[key];
         }
+        snd[name] = interaction;
         break;
       }
     }

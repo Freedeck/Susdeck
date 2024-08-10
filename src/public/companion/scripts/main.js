@@ -1,6 +1,10 @@
-import {universal} from '../../scripts/universal.js';
+import {
+  universal
+} from '../../scripts/universal.js';
 import Sortable from 'sortablejs';
-import {UI} from '../../scripts/ui.js';
+import {
+  UI
+} from '../../scripts/ui.js';
 import './global.js';
 import './authfulPage.js'; // Only for authenticated pages
 
@@ -13,12 +17,12 @@ new Sortable(document.querySelector('#keys'), {
 
     const ev = universal.page < 0 ? 1 : 0;
     universal.send(universal.events.companion.move_key,
-        JSON.stringify({
-          name: d.item.getAttribute('data-name'),
-          item: d.item.getAttribute('data-interaction'),
-          newIndex: d.newDraggableIndex + ev,
-          oldIndex: d.oldDraggableIndex + ev,
-        }));
+      JSON.stringify({
+        name: d.item.getAttribute('data-name'),
+        item: d.item.getAttribute('data-interaction'),
+        newIndex: d.newDraggableIndex + ev,
+        oldIndex: d.oldDraggableIndex + ev,
+      }));
     universal.page = 0;
   },
   filter: '.unset',
@@ -45,19 +49,22 @@ document.querySelector('.toggle-sidebar button').onclick = (ev) => {
   }
 };
 
-UI.reloadSounds();
 
-window['button-types'] = [
-  {name: 'Audio File', type: 'sound'},
-  // {name: 'Macro', type: 'macro'}, // Not implemented
-  {name: 'Plugin', type: 'plugin'},
+window['button-types'] = [{
+    name: 'Audio File',
+    type: 'sound'
+  },
+  {
+    name: 'Plugin',
+    type: 'plugin'
+  },
 ];
 
-window.oncontextmenu = function(e) {
+window.oncontextmenu = function (e) {
   // console.log(e.srcElement)
   if (document.querySelector('.contextMenu')) document.querySelector('.contextMenu').remove();
-  if (!e.srcElement.className.includes('button')) return false;
-  if (e.srcElement.className.includes('builtin')) return false;
+  if (!e.srcElement.classList.contains('button')) return false;
+  if (e.srcElement.classList.contains('builtin')) return false;
   const custMenu = document.createElement('div');
   custMenu.className = 'contextMenu';
   custMenu.style.top = e.clientY - window.scrollY + 'px';
@@ -84,7 +91,7 @@ window.oncontextmenu = function(e) {
   custMenuItems = custMenuItems.concat([
     '',
     'New Page',
-    'Profile: ' + universal.config.profile,
+    'Folder: ' + universal.config.profile,
   ]);
 
   custMenuItems.forEach((item) => {
@@ -98,13 +105,18 @@ window.oncontextmenu = function(e) {
           UI.Pages[Object.keys(UI.Pages).length] = [];
           universal.page = Object.keys(UI.Pages).length - 1;
           UI.reloadSounds();
+          universal.sendEvent('page_change');
           break;
         case '---':
           break;
-        case 'Profile: ' + universal.config.profile:
-          showPick('Profile', Object.keys(universal.config.profiles).map((profile) => {
-            return {name: profile};
+        case 'Folder: ' + universal.config.profile:
+          showPick('Switch to another Folder:', Object.keys(universal.config.profiles).map((profile) => {
+            return {
+              name: profile
+            };
           }), (modal, value, feedback, title, button, content) => {
+            universal.page = 0;
+            universal.save('page', universal.page);
             universal.send(universal.events.companion.set_profile, value.name);
           });
           break;
@@ -113,18 +125,36 @@ window.oncontextmenu = function(e) {
           editTile(e);
           break;
         case 'New Tile':
-          showPick('New Tile', window['button-types'], (modal, value, feedback, title, button, content) => {
-            const pos = parseInt(
-                e.srcElement.className.split(' ')[1].split('-')[1]) +
-              (universal.page < 0 ? 1 : 0) +
-              ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0));
-            if (value.type == 'sound') createSound(pos);
-            if (value.type == 'plugin') createPlugin(pos);
-          });
+          // showPick('New Tile', window['button-types'], (modal, value, feedback, title, button, content) => {
+          //   const pos = parseInt(
+          //       e.srcElement.className.split(' ')[1].split('-')[1]) +
+          //     (universal.page < 0 ? 1 : 0) +
+          //     ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0));
+          //   if (value.type == 'sound') createSound(pos);
+          //   if (value.type == 'plugin') createPlugin(pos);
+          // });
+          const pos = parseInt(
+              e.srcElement.className.split(' ')[1].split('-')[1]) +
+            (universal.page < 0 ? 1 : 0) +
+            ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0));
+          let uuid = 'fdc.' + Math.random() * 10000000;
+          UI.reloadProfile();
+          universal.save('now-editing', uuid);
+          universal.send(universal.events.companion.new_key, JSON.stringify({
+            'New Tile': {
+              type: 'fd.none',
+              pos,
+              uuid,
+              data: {},
+            },
+          }));
           break;
         case 'Remove Tile':
           UI.reloadProfile();
-          universal.send(universal.events.companion.del_key, JSON.stringify({name: e.srcElement.dataset.name, item: e.srcElement.getAttribute('data-interaction')}));
+          universal.send(universal.events.companion.del_key, JSON.stringify({
+            name: e.srcElement.dataset.name,
+            item: e.srcElement.getAttribute('data-interaction')
+          }));
           break;
         case 'Copy Tile Here':
           showReplaceGUI(e.srcElement);
@@ -148,7 +178,10 @@ function showReplaceGUI(srcElement) {
   UI.reloadProfile();
   showPick('Copy from:', universal.config.sounds.map((sound) => {
     const k = Object.keys(sound)[0];
-    return {name: k, type: sound[k].type};
+    return {
+      name: k,
+      type: sound[k].type
+    };
   }), (modal, value, feedback, title, button, content) => {
     UI.reloadProfile();
     const valueToo = universal.config.sounds.filter((sound) => {
@@ -179,6 +212,7 @@ function showReplaceGUI(srcElement) {
  */
 function loadData(itm) {
   document.querySelector('#editor-data').innerHTML = '';
+  document.querySelector('#system-select').innerHTML = '';
   Object.keys(itm).forEach((key) => {
     const elem = document.createElement('input');
     elem.type = 'text';
@@ -194,6 +228,13 @@ function loadData(itm) {
   });
 }
 
+function setEditorData(key, value, int) {
+  if (document.querySelector('.editor-data#' + key)) {
+    document.querySelector('.editor-data#' + key).value = value;
+  }
+  int.data[key] = value;
+}
+
 document.querySelector('#color').onchange = (e) => {
   document.querySelector('#editor-btn').style.backgroundColor = e.srcElement.value;
   document.querySelector('#color').dataset.has_set = 'true';
@@ -204,34 +245,144 @@ document.querySelector('#color').onchange = (e) => {
   loadData(interaction.data);
 };
 
+const selectableViews = [
+  'audio',
+  'plugins',
+  'system',
+  'none',
+  'profile'
+]
+
+const openViewCloseAll = (view) => {
+  selectableViews.forEach((v) => {
+    document.querySelector('#' + v + '-only').style.display = 'none';
+  });
+  document.querySelector('#' + view + '-only').style.display = 'flex';
+}
+
 /**
  * Edit a tile
  * @param {*} e HTML Element corresponding to the button that we grabbed context from
  */
 function editTile(e) {
   universal.uiSounds.playSound('editor_open');
+  const interactionData = JSON.parse(e.srcElement.getAttribute('data-interaction'));
   if (document.querySelector('.toggle-sidebar').style.left != '0px') document.querySelector('.toggle-sidebar button').click();
   if (document.querySelector('.contextMenu')) document.querySelector('.contextMenu').style.display = 'none';
+  document.querySelector('#advanced-view').style.display = 'none';
   document.querySelector('#sidebar').style.right = '-20%';
   document.querySelector('#editor').style.display = 'block';
   document.querySelector('#editor-btn').innerText = e.srcElement.dataset.name;
-  document.querySelector('#editor-btn').style.backgroundImage = 'url("' + JSON.parse(e.srcElement.getAttribute('data-interaction')).data.icon + '")';
-  document.querySelector('#editor-btn').style.backgroundColor = JSON.parse(e.srcElement.getAttribute('data-interaction')).data.color;
-  document.querySelector('#color').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).data.color;
+  document.querySelector('#editor-btn').style.backgroundImage = 'url("' + interactionData.data.icon + '")';
+  document.querySelector('#editor-btn').style.backgroundColor = interactionData.data.color;
+  document.querySelector('#color').value = interactionData.data.color;
   document.querySelector('#name').value = e.srcElement.dataset.name;
   document.querySelector('#editor-btn').setAttribute('data-pre-edit', e.srcElement.dataset.name);
   document.querySelector('#editor-btn').setAttribute('data-interaction', e.srcElement.getAttribute('data-interaction'));
-  document.querySelector('#type').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).type;
-  document.querySelector('#plugin').value = JSON.parse(e.srcElement.getAttribute('data-interaction')).plugin || 'Freedeck';
-  if (JSON.parse(e.srcElement.getAttribute('data-interaction')).type == 'fd.sound') {
-    document.querySelector('#upload-sound').style.display = 'flex';
+  document.querySelector('#type').value = interactionData.type;
+  if (interactionData.plugin == 'Freedeck' || !interactionData.plugin) {
+    document.querySelector('#plugin').style.display = 'none';
+    document.querySelector('label[for="plugin"]').style.display = 'none';
   } else {
-    document.querySelector('#upload-sound').style.display = 'none';
+    document.querySelector('label[for="plugin"]').style.display = 'block';
+    document.querySelector('#plugin').style.display = 'block';
+    document.querySelector('#plugin').value = interactionData.plugin || 'Freedeck';
   }
-  if (JSON.parse(e.srcElement.getAttribute('data-interaction')).data) {
-    const itm = JSON.parse(e.srcElement.getAttribute('data-interaction')).data;
+  document.querySelector('#audio-only').style.display = 'none';
+  document.querySelector('#plugins-only').style.display = 'none';
+  document.querySelector('#system-only').style.display = 'none';
+  document.querySelector('#none-only').style.display = 'none';
+  document.querySelector('#profile-only').style.display = 'none';
+  if (interactionData.type == 'fd.sound') {
+    document.querySelector('#audio-file').innerText = interactionData.data.file;
+    document.querySelector('#audio-path').innerText = interactionData.data.path;
+    openViewCloseAll('audio');
+  } else {
+    if (!interactionData.type.startsWith('fd.')) {
+      document.querySelectorAll('.spiaction').forEach((el) => {
+        if (el.classList.contains('pl-' + interactionData.plugin)) el.style.display = 'block';
+      });
+      document.querySelectorAll('.spiback').forEach(el => el.style.display = 'block');
+      document.querySelectorAll('.spiplugin').forEach((el) => {
+        el.style.display = 'none';
+      });
+    } else {
+      document.querySelectorAll('.spiaction').forEach((el) => {
+        el.style.display = 'none';
+      });
+      document.querySelectorAll('.spiback').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.spiplugin').forEach((el) => {
+        el.style.display = 'block';
+      });
+    }
+    openViewCloseAll('plugins');
+    if (interactionData.type.startsWith('fd.sys')) {
+      openViewCloseAll('system');
+      fetch('/native/volume/apps').then((res) => res.json()).then((data) => {
+        if (data._msg) {
+          universal.sendToast('NativeBridge is not running. Please start it to use this feature.');
+        }
+        let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+
+        const select = document.querySelector('#system-select');
+        data.push({
+          name: '_fd.System',
+          friendly: 'System',
+        })
+        data.forEach((app) => {
+          const option = document.createElement('option');
+          let friendly = app.friendly != '' ? app.friendly + ' (' + app.name + ')' : app.name;
+          if (app.name == '_fd.System') friendly = 'System';
+          option.innerText = friendly;
+          option.value = app.name;
+          if (int.data && int.data.app && int.data.app == app.name) option.selected = true;
+          select.appendChild(option);
+        });
+        select.onchange = (e) => {
+          let dt = e.srcElement.value != '_fd.System' ? 'fd.sys.volume' : 'fd.sys.volume.sys';
+          document.querySelector('#type').value = dt;
+          int.type = dt;
+          int.renderType = 'slider';
+          setEditorData('app', e.srcElement.value, int);
+          setEditorData('min', 0, int);
+          setEditorData('max', 100, int);
+          setEditorData('value', 50, int);
+          setEditorData('format', '%', int);
+          setEditorData('direction', 'vertical', int);
+          document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
+        }
+      });
+      if (interactionData.type.startsWith('fd.sys.volume')) {
+        document.querySelector('#system-select').value = interactionData.data.app;
+      }
+    }
+    if (interactionData.type == 'fd.profile') {
+      generateProfileSelect();
+      document.querySelector('#eprofile-select').value = interactionData.data.profile;
+      openViewCloseAll('profile');
+    }
+    if (interactionData.type == 'fd.none') {
+      openViewCloseAll('none');
+    } else if (interactionData.plugin) {
+      document.querySelectorAll('.spiaction').forEach((a) => {
+        a.style.display = 'none'
+        a.classList.remove('spi-active')
+        if (a.dataset.plugin == interactionData.plugin) {
+          if (a.dataset.type == interactionData.type)
+            a.classList.add('spi-active')
+          a.style.display = 'block'
+        }
+      });
+      loadSettings(interactionData.plugin);
+    }
+  }
+  if (interactionData.data) {
+    const itm = interactionData.data;
     loadData(itm);
   }
+  document.querySelector('#lp').checked = interactionData.data.longPress;
+  document.querySelector('#lp').style.display = interactionData.renderType == 'slider' ? 'none' : 'block';
+  document.querySelector('label[for="lp"]').style.display = interactionData.renderType == 'slider' ? 'none' : 'block';
   // make it fade in
   document.querySelector('#editor').style.opacity = '0';
   document.querySelector('.toggle-sidebar button').style.display = 'none';
@@ -240,60 +391,177 @@ function editTile(e) {
   }, 100);
 }
 
-/**
- * @name createSound
- * @param {Number} pos The position of the new sound key.
- * @description Create a new sound key.
- */
-function createSound(pos) {
-  showEditModal('New Sound Tile', 'Enter a name for the new tile', (modal, value, feedback, title, button, input, content) => {
-    if (value.length < 1) {
-      feedback.innerText = 'Please enter a name for the tile';
-      return false;
+document.querySelector('#lp').onclick = () => {
+  const int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+  if (!int.data.longPress) int.data.longPress = true;
+  else int.data.longPress = !int.data.longPress;
+  document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
+  loadData(int.data);
+  document.querySelector('#lp').checked = int.data.longPress;
+}
+
+document.querySelector('#change-pl-settings').onclick = () => {
+  const plugin = document.querySelector('#plugin').value;
+  const settings = {};
+  document.querySelectorAll('.pl-settings-item').forEach((el) => {
+    const key = el.querySelector('div').innerText;
+    if (el.querySelector('.pl-settings-array')) {
+      const array = [];
+      el.querySelectorAll('.pl-settings-array input').forEach((item) => {
+        array.push(item.value);
+      });
+      settings[key] = array;
+    } else {
+      settings[key] = el.querySelector('input').value;
     }
-    UI.reloadProfile();
-    universal.send(universal.events.companion.new_key, JSON.stringify({
-      [value]: {
-        type: 'fd.sound',
-        pos,
-        uuid: 'fdc.' + Math.random() * 10000000,
-        data: {file: 'Unset.mp3', path: '/sounds/'},
-      },
-    }));
-    return true;
+  });
+  universal.send(universal.events.companion.plugin_set_all, JSON.stringify({
+    plugin,
+    settings
+  }));
+}
+
+const loadSettings = (plugin) => {
+  const settingsElement = document.querySelector('#pl-settings');
+  settingsElement.innerHTML = '';
+  document.querySelector('#pl-title').innerText = 'Plugin Settings';
+  if (!universal.plugins[plugin]) {
+    settingsElement.innerHTML = '<h2>The plugin for this Tile is missing.</h2><p>Please re-enable or download it.</p>'
+    document.querySelector('#change-pl-settings').style.display = 'none';
+    return;
+  }
+  document.querySelector('#change-pl-settings').style.display = 'block';
+  document.querySelector('#pl-title').innerText = universal.plugins[plugin].name + ' Settings';
+  const settings = universal.plugins[plugin].Settings;
+  Object.keys(settings).forEach((key) => {
+    let value = settings[key];
+    const container = document.createElement('div');
+    container.classList.add('pl-settings-item');
+    const title = document.createElement('div');
+    title.innerText = key;
+    container.appendChild(title);
+    if (typeof value == 'array' || typeof value == 'object') {
+      const arrayContainer = document.createElement('div');
+      arrayContainer.classList.add('pl-settings-array');
+      let i = 0;
+      value.forEach((val) => {
+        const item = document.createElement('input');
+        item.type = (key != 'password' || key != 'token') ? 'text' : 'password';
+        item.id = key;
+        item.dataset.index = i;
+        item.value = val;
+        arrayContainer.appendChild(item);
+        i++;
+      });
+      container.appendChild(arrayContainer);
+    } else {
+      const item = document.createElement('input');
+      item.type = (key != 'password' || key != 'token') ? 'text' : 'password';
+      item.id = key;
+      item.value = value;
+      container.appendChild(item);
+    }
+    settingsElement.appendChild(container);
   });
 }
 
-/**
- * @name createPlugin
- * @param {Number} pos The position of the new plugin key.
- * @description Create a new plugin key.
- */
-function createPlugin(pos) {
-  showPick('New Plugin Tile', universal._tyc.keys(), (modala, valuea, feedbacka, titlea, buttona, contenta) => {
-    showEditModal('New Plugin Tile', 'Enter a name for the new tile', (modal, value, feedback, title, button, input, content) => {
-      if (value.length < 1) {
-        feedback.innerText = 'Please enter a name for the tile';
-        return false;
-      }
-      UI.reloadProfile();
-      universal.send(universal.events.companion.new_key, JSON.stringify({
-        [value]: {
-          type: valuea.type,
-          pos,
-          uuid: 'fdc.' + Math.random() * 10000000,
-          renderType: valuea.renderType,
-          plugin: valuea.pluginId,
-          data: valuea.templateData,
-        },
-      }));
-    });
-    return true;
+const generateProfileSelect = () => {
+  const select = document.querySelector('#eprofile-select');
+  select.innerHTML = '';
+  Object.keys(universal.config.profiles).forEach((profile) => {
+    const option = document.createElement('option');
+    option.innerText = profile;
+    option.value = profile;
+    select.appendChild(option);
+  });
+  select.onchange = (e) => {
+    let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+    int.data.profile = e.srcElement.value;
+    document.querySelector('#editor-btn').setAttribute('data-interaction', JSON.stringify(int));
+  }
+};
+
+document.querySelector('#spiback').onclick = (e) => {
+  document.querySelectorAll('.spiaction').forEach((el) => {
+    el.style.display = 'none';
+  });
+  document.querySelectorAll('.spiback').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.spiplugin').forEach((el) => {
+    el.style.display = 'block';
   });
 }
 
+document.querySelector('#spiav').onclick = () => {
+  let interaction = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+  if (!interaction.data || Object.keys(interaction.data).length == 0 || interaction.data == {}) {
+    document.querySelector('#tiledata').style.display = 'none';
+  } else {
+    document.querySelector('#tiledata').style.display = 'flex';
+  }
+  if (document.querySelector('#advanced-view').style.display == 'block')
+    document.querySelector('#advanced-view').style.display = 'none';
+  else document.querySelector('#advanced-view').style.display = 'block';
+}
+
+const spiContainer = document.querySelector('#spi-actions')
+universal._tyc.keys().forEach((type) => {
+  if (!document.querySelector('.rpl-' + type.pluginId)) {
+    const element = document.createElement('div');
+    element.classList.add('rpl-' + type.pluginId);
+    element.classList.add('plugin-item');
+    element.classList.add('spi');
+    element.classList.add('spiplugin');
+    element.innerText = type.display;
+    element.onclick = (e) => {
+      document.querySelectorAll('.spiaction.pl-' + type.pluginId).forEach((el) => {
+        el.style.display = 'block';
+      });
+      document.querySelectorAll('.spiback').forEach(el => el.style.display = 'block');
+      document.querySelectorAll('.spiplugin').forEach((el) => {
+        el.style.display = 'none';
+      });
+    }
+    spiContainer.appendChild(element);
+  }
+  const element = document.createElement('div');
+  element.classList.add('pl-' + type.pluginId);
+  element.classList.add('plugin-item');
+  element.classList.add('spi');
+  element.classList.add('spiaction');
+  element.setAttribute('data-type', type.type);
+  element.setAttribute('data-plugin', type.pluginId);
+  element.setAttribute('data-rt', type.renderType);
+  element.setAttribute('data-template', JSON.stringify(type.templateData));
+  element.innerText = type.display + ": " + type.name;
+  element.onclick = (e) => {
+    const interaction = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+    const type = e.target.getAttribute('data-type');
+    const plugin = e.target.getAttribute('data-plugin');
+    const renderType = e.target.getAttribute('data-rt');
+    const templateData = JSON.parse(e.target.getAttribute('data-template'));
+
+    if (interaction.plugin) {
+      document.querySelector('.spi[data-type="' + interaction.type + '"][data-plugin="' + interaction.plugin + '"]').classList.remove('spi-active')
+    }
+    interaction.type = type;
+    interaction.plugin = plugin;
+    interaction.renderType = renderType;
+    interaction.data = templateData;
+    document.querySelector('.spi[data-type="' + type + '"][data-plugin="' + plugin + '"]').classList.add('spi-active')
+    document.querySelector('#editor-btn').setAttribute('data-interaction', JSON.stringify(interaction));
+    document.querySelector('#type').value = type;
+    document.querySelector('#plugin').value = plugin;
+    loadData(interaction.data);
+    loadSettings(interaction.plugin);
+  }
+  spiContainer.appendChild(element);
+})
+generateProfileSelect();
 
 document.querySelector('#upload-sound').onclick = () => {
+  document.querySelector('#audio-file').innerText = 'Uploading...';
+  document.querySelector('#audio-path').innerText = 'Uploading...';
+  document.querySelector('#upload-sound').disabled = true;
   upload('audio/*,video/*', (data) => {
     UI.reloadProfile();
     const previousInteractionData = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
@@ -301,7 +569,103 @@ document.querySelector('#upload-sound').onclick = () => {
     document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(previousInteractionData));
     document.querySelector('#file.editor-data').value = data.newName;
     document.querySelector('#path.editor-data').value = '/sounds/';
+    document.querySelector('#audio-file').innerText = data.newName;
+    document.querySelector('#audio-path').innerText = '/sounds/';
+    document.querySelector('#upload-sound').disabled = false;
   });
+};
+
+document.querySelector('#none-audio').onclick = (e) => {
+  let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+  int.type = 'fd.sound';
+  int.data = {
+    file: 'Unset.mp3',
+    path: '/sounds/'
+  };
+  document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
+  document.querySelector('#audio-file').innerText = 'Unset.mp3';
+  document.querySelector('#type').value = 'fd.sound';
+  document.querySelector('#audio-path').innerText = '/sounds/';
+  openViewCloseAll('audio');
+}
+
+document.querySelector('#none-profiles').onclick = (e) => {
+  let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+  int.type = 'fd.profile';
+  int.data = {
+    profile: 'Default'
+  };
+  document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
+  document.querySelector('#type').value = 'fd.profile';
+  generateProfileSelect();
+  document.querySelector('#eprofile-select').value = int.data.profile;
+  openViewCloseAll('profile');
+}
+
+document.querySelector('#none-system').onclick = (e) => {
+  fetch('/native/volume/apps').then((res) => res.json()).then((data) => {
+    if (data._msg) {
+      universal.sendToast('NativeBridge is not running. Please start it to use this feature.');
+      return;
+    }
+    let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+    const select = document.querySelector('#system-select');
+
+    data.forEach((app) => {
+      const option = document.createElement('option');
+      let friendly = app.friendly != '' ? app.friendly + ' (' + app.name + ')' : app.name;
+      if (app.name == '_fd.System') friendly = 'System';
+      option.innerText = friendly;
+      option.value = app.name;
+      if (int.data && int.data.app && int.data.app == app.name) option.selected = true;
+      select.appendChild(option);
+    });
+
+    select.onchange = (e) => {
+      let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+      let dt = e.srcElement.value != '_fd.System' ? 'fd.sys.volume' : 'fd.sys.volume.sys';
+      document.querySelector('#type').value = dt;
+      int.type = dt;
+      int.renderType = 'slider';
+      setEditorData('app', e.srcElement.value, int);
+      setEditorData('min', 0, int);
+      setEditorData('max', 100, int);
+      setEditorData('value', 50, int);
+      setEditorData('format', '%', int);
+      setEditorData('direction', 'vertical', int);
+      document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
+    }
+
+    int.type = 'fd.sys.volume.sys';
+    int.renderType = 'slider';
+    int.data = {
+      app: '_fd.System',
+      min: 0,
+      max: 100,
+      value: 50,
+      format: '%',
+      direction: 'vertical'
+    };
+    document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
+    document.querySelector('#type').value = 'fd.sys.volume.sys';
+    document.querySelector('#system-only').style.display = 'flex';
+    document.querySelector('#audio-only').style.display = 'none';
+    document.querySelector('#plugins-only').style.display = 'none';
+    document.querySelector('#none-only').style.display = 'none';
+  });
+}
+
+document.querySelector('#none-plugin').onclick = (e) => {
+  document.querySelector('label[for="plugin"]').style.display = 'block';
+  document.querySelector('#plugin').style.display = 'block';
+  let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+  int.type = 'fd.select';
+  int.data = {};
+  document.querySelector('#type').innerText = 'fd.select';
+  document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
+  document.querySelector('#audio-only').style.display = 'none';
+  document.querySelector('#plugins-only').style.display = 'flex';
+  document.querySelector('#none-only').style.display = 'none';
 };
 
 document.querySelector('#upload-icon').onclick = (e) => {
@@ -309,6 +673,7 @@ document.querySelector('#upload-icon').onclick = (e) => {
     UI.reloadProfile();
     const previousInteractionData = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
     previousInteractionData.data.icon = '/us-icons/' + data.newName;
+    document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(previousInteractionData));
     document.querySelector('#editor-btn').style.backgroundImage = `url("${'/us-icons/' + data.newName}")`;
     loadData(previousInteractionData.data);
   }, 'icon');
@@ -486,7 +851,7 @@ function showPick(title, listContent, callback) {
   // });
 
   let selectedItem = null
-  const itemContainer  = document.createElement('div');
+  const itemContainer = document.createElement('div');
   itemContainer.className = 'modalList';
   itemContainer.style.display = 'flex';
   itemContainer.style.flexWrap = 'wrap';
@@ -506,7 +871,7 @@ function showPick(title, listContent, callback) {
       document.querySelectorAll('.modalItem').forEach((i) => {
         i.style.backgroundColor = 'unset';
       });
-      modalItem.style.backgroundColor = 'var(--fd-btn-background';
+      modalItem.style.backgroundColor = 'var(--fd-btn-background)';
     };
     itemContainer.appendChild(modalItem);
   });
@@ -526,13 +891,12 @@ function showPick(title, listContent, callback) {
   document.body.appendChild(modal);
 }
 
-window.onclick = function(e) {
+window.onclick = function (e) {
   if (e.srcElement.className != 'contextMenu') {
     if (document.querySelector('.contextMenu')) document.querySelector('.contextMenu').remove();
   }
 };
 
-UI.reloadProfile();
 
 document.querySelector('#pg-left').addEventListener('click', () => {
   if (UI.Pages[universal.page - 1]) {
@@ -540,6 +904,7 @@ document.querySelector('#pg-left').addEventListener('click', () => {
     universal.save('page', universal.page);
     universal.uiSounds.playSound('page_down');
     UI.reloadSounds();
+    universal.sendEvent('page_change');
   }
 });
 
@@ -549,6 +914,7 @@ document.querySelector('#pg-right').addEventListener('click', () => {
     universal.save('page', universal.page);
     universal.uiSounds.playSound('page_up');
     UI.reloadSounds();
+    universal.sendEvent('page_change');
   }
 });
 
@@ -559,6 +925,7 @@ document.addEventListener('keydown', (ev) => {
       universal.save('page', universal.page);
       universal.uiSounds.playSound('page_down');
       UI.reloadSounds();
+      universal.sendEvent('page_change');
     }
   }
   if (ev.key == 'ArrowRight') {
@@ -567,6 +934,7 @@ document.addEventListener('keydown', (ev) => {
       universal.save('page', universal.page);
       universal.uiSounds.playSound('page_up');
       UI.reloadSounds();
+      universal.sendEvent('page_change');
     }
   }
 });
@@ -577,7 +945,24 @@ profileTxt.innerHTML = 'Profile:&nbsp<i>' + universal.config.profile + '</i>';
 
 const profileSelect = document.createElement('select');
 const profileAdd = document.querySelector('#pf-add');
-profileAdd.innerText = 'New Profile';
+
+const profileImport = document.querySelector('#pf-imp');
+
+const profileExport = document.querySelector('#pf-exp');
+
+profileExport.onclick = () => {
+  const profile = universal.config.profiles[universal.config.profile];
+  const data = JSON.stringify(profile);
+  const blob = new Blob([data], {
+    type: 'application/json'
+  });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = universal.config.profile + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 Object.keys(universal.config.profiles).forEach((profile) => {
   const option = document.createElement('option');
@@ -586,10 +971,32 @@ Object.keys(universal.config.profiles).forEach((profile) => {
   profileSelect.appendChild(option);
 });
 
+profileImport.onclick = () => {
+  showEditModal('Import Folder', 'Enter the folder data to import', (modal, pfData, feedback, title, button, input, content) => {
+    try {
+      const data = JSON.parse(pfData);
+      showEditModal('Import Folder', 'Enter a name for the new folder', (modal, value, feedback, title, button, input, content) => {
+        if (value.length < 1) {
+          feedback.innerText = 'Please enter a name for the folder';
+          return false;
+        }
+        universal.send(universal.events.companion.import_profile, {
+          name: value,
+          data
+        });
+      });
+      return true;
+    } catch (e) {
+      feedback.innerText = 'Invalid JSON data';
+      return false;
+    }
+  });
+};
+
 profileAdd.onclick = () => {
-  showEditModal('New Profile', 'Enter a name for the new profile', (modal, value, feedback, title, button, input, content) => {
+  showEditModal('New Folder', 'Enter a name for the new folder', (modal, value, feedback, title, button, input, content) => {
     if (value.length < 1) {
-      feedback.innerText = 'Please enter a name for the profile';
+      feedback.innerText = 'Please enter a name for the folder';
       return false;
     }
     universal.page = 0;
@@ -610,7 +1017,6 @@ profileSelect.onchange = () => {
 document.querySelector('#es-profiles').appendChild(profileSelect);
 
 const profileDupe = document.querySelector('#pf-dupe');
-profileDupe.innerText = 'Duplicate Profile';
 
 profileDupe.onclick = () => {
   showEditModal('Duplicate Profile', 'Enter a name for the new profile', (modal, value, feedback, title, button, input, content) => {
@@ -639,6 +1045,7 @@ if (universal.load('has_setup') == 'false') {
 // get url params
 const urlParams = new URLSearchParams(window.location.search);
 const err = urlParams.get('err');
+const editing = universal.load('now-editing')
 if (err) {
   switch (err) {
     case 'last-step':
@@ -647,6 +1054,29 @@ if (err) {
       break;
   }
 }
+if (editing) {
+  setTimeout(() => {
+    const interaction = universal.config.sounds.filter((sound) => {
+      const k = Object.keys(sound)[0];
+      return sound[k].uuid == editing;
+    })[0];
+    if (interaction) {
+      editTile({
+        srcElement: {
+          getAttribute: (attr) => {
+            return JSON.stringify(interaction[Object.keys(interaction)[0]]);
+          },
+          dataset: {
+            name: Object.keys(interaction)[0],
+            interaction: JSON.stringify(interaction[Object.keys(interaction)[0]]),
+          },
+          className: 'button k-0',
+        },
+      });
+    }
+    universal.remove('now-editing');
+  }, 250);
+}
 
 /**
  * @name getAudioOutputDevices
@@ -654,11 +1084,14 @@ if (err) {
  * @param {Boolean} isCable If we're looking for VB-Cable instances or Monitor
  * @return {Object[]}
  */
-async function getAudioOutputDevices(isCable=false) {
+async function getAudioOutputDevices(isCable = false) {
   const devices = await navigator.mediaDevices.enumerateDevices();
   const audioOutputs = devices
-      .filter((device) => device.kind === 'audiooutput' && (isCable ? device.label.includes('VB-Audio') : !device.label.includes('VB-Audio')))
-      .map((device) => ({name: device.label || 'Unknown Audio Output', value: device.deviceId}));
+    .filter((device) => device.kind === 'audiooutput' && (isCable ? device.label.includes('VB-Audio') : !device.label.includes('VB-Audio')))
+    .map((device) => ({
+      name: device.label || 'Unknown Audio Output',
+      value: device.deviceId
+    }));
   return audioOutputs;
 }
 
@@ -668,49 +1101,194 @@ const embeddedSettingsClient = document.querySelector('#es-client');
 
 getAudioOutputDevices().then(async (audioOutputs) => {
   const select = await universal.embedded_settings.createSelect(
-      'Monitor',
-      'es-monitor',
-      audioOutputs.map((device) => (device.value)),
-      audioOutputs.map((device) => (device.name)),
-      universal.load('monitor.sink'),
-      (ev) => {
-        universal.save('monitor.sink', ev.target.value);
-        console.log('Pitch set to ' + ev.target.value);
-      },
+    'Monitor',
+    'es-monitor',
+    audioOutputs.map((device) => (device.value)),
+    audioOutputs.map((device) => (device.name)),
+    universal.load('monitor.sink'),
+    (ev) => {
+      universal.save('monitor.sink', ev.target.value);
+      console.log('Pitch set to ' + ev.target.value);
+    },
   );
   embeddedSettingsAudio.appendChild(select);
 });
 
 getAudioOutputDevices(true).then(async (audioOutputs) => {
   const select = await universal.embedded_settings.createSelect(
-      'VB-Cable',
-      'es-cable',
-      audioOutputs.map((device) => (device.value)),
-      audioOutputs.map((device) => (device.name)),
-      universal.load('vb.sink'),
-      (ev) => {
-        universal.save('vb.sink', ev.target.value);
-        console.log('Cable set to ' + ev.target.value);
-      },
+    'VB-Cable',
+    'es-cable',
+    audioOutputs.map((device) => (device.value)),
+    audioOutputs.map((device) => (device.name)),
+    universal.load('vb.sink'),
+    (ev) => {
+      universal.save('vb.sink', ev.target.value);
+      console.log('Cable set to ' + ev.target.value);
+    },
   );
   embeddedSettingsAudio.appendChild(select);
 });
 
-const playbackModes = [
-  {label: 'Stop Previous', value: 'stop_prev'},
-  {label: 'Play Over', value: 'play_over'},
+const playbackModes = [{
+    label: 'Stop Previous',
+    value: 'stop_prev'
+  },
+  {
+    label: 'Play Over',
+    value: 'play_over'
+  },
 ];
 
 const playbackModeSetting = await universal.embedded_settings.createSelect(
-    'Playback Mode',
-    'es-playback',
-    playbackModes.map((mode) => mode.value),
-    playbackModes.map((mode) => mode.label),
-    universal.load('playback-mode'),
-    (ev) => {
-      universal.save('playback-mode', ev.target.value);
-      console.log('Playback mode set to ' + ev.target.value);
-    },
+  'Playback Mode',
+  'es-playback',
+  playbackModes.map((mode) => mode.value),
+  playbackModes.map((mode) => mode.label),
+  universal.load('playback-mode'),
+  (ev) => {
+    universal.save('playback-mode', ev.target.value);
+    console.log('Playback mode set to ' + ev.target.value);
+  },
 );
 
 embeddedSettingsClient.appendChild(playbackModeSetting);
+
+const setToLocalCfg = (key, value) => {
+  const cfg = universal.loadObj('local-cfg');
+  cfg[key] = value;
+  universal.save('local-cfg', JSON.stringify(cfg));
+  return JSON.stringify(cfg);
+}
+
+document.querySelectorAll('.fdc-slider').forEach((slider) => {
+  // create min/max text that floats below the slider
+  let postfix = slider.getAttribute('postfix') || '';
+  const min = document.createElement('div');
+  min.innerText = slider.min;
+  min.className = 'fdc-slider-min';
+  slider.parentElement.appendChild(min);
+  const max = document.createElement('div');
+  max.innerText = slider.max;
+  max.className = 'fdc-slider-max';
+  slider.parentElement.appendChild(max);
+  const value = document.createElement('div');
+  value.innerText = slider.value + postfix;
+  value.className = 'fdc-slider-value';
+  slider.parentElement.appendChild(value);
+  slider.addEventListener('input', (e) => {
+    value.innerText = e.target.value + postfix;
+  });
+  slider.addEventListener('change', (e) => {
+    value.innerText = e.target.value + postfix;
+  });
+});
+
+function setValue(id, val) {
+  document.querySelector(id).value = val;
+  document.querySelector(id).parentElement.querySelector('.fdc-slider-value').innerText = val + (document.querySelector(id).getAttribute('postfix') || '');
+}
+
+document.querySelector('#es-fs').oninput = (e) => {
+  document.documentElement.style.setProperty('--fd-font-size', e.target.value + 'px');
+  universal.send(universal.events.default.config_changed, setToLocalCfg('font-size', e.target.value));
+}
+
+document.querySelector('#es-bs').oninput = (e) => {
+  document.documentElement.style.setProperty('--fd-tile-w', e.target.value + 'rem');
+  document.documentElement.style.setProperty('--fd-tile-h', e.target.value + 'rem');
+  universal.send(universal.events.default.config_changed, setToLocalCfg('buttonSize', e.target.value));
+}
+
+document.querySelector('#es-fs-reset').onclick = (e) => {
+  document.documentElement.style.setProperty('--fd-font-size', '15px');
+  setValue('#es-fs', 15);
+  universal.send(universal.events.default.config_changed, setToLocalCfg('font-size', 15));
+}
+
+document.querySelector('#es-bs-reset').onclick = (e) => {
+  document.documentElement.style.setProperty('--fd-tile-w', 'var(--fd-btn-w)');
+  document.documentElement.style.setProperty('--fd-tile-h', 'var(--fd-btn-h)');
+  setValue('#es-bs', 6);
+  universal.send(universal.events.default.config_changed, setToLocalCfg('buttonSize', 6));
+}
+
+document.querySelector('#es-tc-reset').onclick = (e) => {
+  setValue('#es-tc', 12);
+  universal.send(universal.events.default.config_changed, setToLocalCfg('iconCountPerPage', 12));
+  universal.send(universal.events.default.reload);
+};
+
+document.querySelector('#es-scroll').onchange = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('scroll', e.target.checked));
+  universal.send(universal.events.default.reload);
+}
+
+document.querySelector('#es-tc').oninput = (e) => {
+  let prepend = document.querySelector('#keys');
+  let count = document.querySelectorAll('.fdc-placeholder').length;
+  let diff = e.target.value - count;
+  if (diff > 0) {
+    document.querySelector('#keys').innerHTML = '';
+    for (let i = 0; i < diff + 3; i++) {
+      let clone = document.createElement('div');
+      clone.className = 'button builtin unset k-' + (count + i);
+      prepend.appendChild(clone);
+    }
+  } else {
+    for (let i = 0; i < Math.abs(diff); i++) {
+      let last = document.querySelector('.button.k-' + (count - i - 1));
+      last.remove();
+    }
+  }
+}
+
+document.querySelector('#es-tc').onmouseup = (e) => {
+  if (e.target.value == universal.config.iconCountPerPage) {
+    window.location.reload();
+    return;
+  }
+}
+
+document.querySelector('#es-tc').onchange = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('iconCountPerPage', e.target.value));
+  universal.send(universal.events.default.reload);
+}
+
+setValue('#es-fs', universal.loadObj('local-cfg')['font-size']);
+setValue('#es-bs', universal.loadObj('local-cfg')['buttonSize']);
+setValue('#es-tc', universal.loadObj('local-cfg')['iconCountPerPage']);
+setValue('#es-lp', universal.loadObj('local-cfg')['longPressTime']);
+setValue('#es-tr', universal.loadObj('local-cfg')['tileRows']);
+let lcfg = universal.loadObj('local-cfg');
+
+document.querySelector('#es-tr').oninput = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('tileRows', e.target.value));
+  let tc = 'repeat(5, 2fr)';
+  if (lcfg.tileRows) tc = tc.replace('5', e.target.value);
+  document.documentElement.style.setProperty('--fd-template-columns', tc);
+}
+
+let tc = 'repeat(5, 2fr)';
+if (lcfg.tileRows) tc = tc.replace('5', lcfg.tileRows);
+document.documentElement.style.setProperty('--fd-template-columns', tc);
+document.querySelector('#es-fill').onchange = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('fill', e.target.checked));
+  universal.send(universal.events.default.reload);
+}
+
+document.querySelector('#es-lp').oninput = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('longPressTime', e.target.value));
+}
+
+document.querySelector('#es-lp').onmouseup = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('longPressTime', e.target.value));
+  universal.send(universal.events.default.reload);
+}
+
+document.querySelector('#es-lp-reset').onclick = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('longPressTime', 3));
+  universal.send(universal.events.default.reload);
+}
+
+document.querySelector('#es-scroll').checked = universal.loadObj('local-cfg').scroll;
+document.querySelector('#es-fill').checked = universal.loadObj('local-cfg').fill;

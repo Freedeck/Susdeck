@@ -5,80 +5,7 @@ import './settingsThemes.js';
 
 await universal.init('Companion:Settings');
 
-document.querySelector('#vl').innerText = universal._information.version;
-document.querySelector('#svl').innerText = universal._information.server;
-
-createSettingCategory('Audio Client $(NEW!)', 'audioclient');
-
-createSettingCategory('Freedeck Client', 'fdc', true);
-
 createSettingCategory('Danger Zone $(DANGEROUS)', 'dz');
-
-createSelectSetting('Default Profile', 'default-profile', async (select) => {
-  return new Promise(async (resolve) => {
-    Object.keys(universal.config.profiles).forEach((data) => {
-      const tmpBtn = document.createElement('option');
-      tmpBtn.innerText = data;
-      tmpBtn.value = data;
-      tmpBtn.id = data;
-      select.appendChild(tmpBtn);
-    });
-    resolve();
-  });
-}, universal.config.profile, '.fdc', (value) => {
-  if (value != universal.config.profile) universal.send(universal.events.companion.set_profile, value);
-});
-
-createSelectSetting('Playback Mode', 'stopPrevious', async (select) => {
-  return new Promise(async (resolve) => {
-    const options = [
-      {label: 'Stop Previous', value: 'true'},
-      {label: 'Play Over', value: 'false'},
-    ];
-    options.forEach((option) => {
-      const optionElement = document.createElement('option');
-      optionElement.innerText = option.label;
-      optionElement.value = option.value;
-      select.appendChild(optionElement);
-    });
-    resolve();
-  });
-}, universal.load('stopPrevious'), '.fdc', (value) => {
-  universal.save('stopPrevious', value);
-});
-
-createSelectSetting('Monitor Device', 'monitor.sink', async (select) => {
-  return new Promise(async (resolve) => {
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    devices.forEach((device) => {
-      if (device.kind == 'audiooutput') {
-        const tmpBtn = document.createElement('option');
-        tmpBtn.innerText = device.label;
-        tmpBtn.value = device.deviceId;
-        tmpBtn.id = device.deviceId;
-        select.appendChild(tmpBtn);
-      }
-    });
-    resolve();
-  });
-}, universal.audioClient._player.monitorSink, '.audioclient');
-
-
-createSelectSetting('VB Cable', 'vb.sink', async (select) => {
-  return new Promise(async (resolve) => {
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    devices.forEach((device) => {
-      if (device.kind == 'audiooutput') {
-        const tmpBtn = document.createElement('option');
-        tmpBtn.innerText = device.label;
-        tmpBtn.value = device.deviceId;
-        tmpBtn.id = device.deviceId;
-        select.appendChild(tmpBtn);
-      }
-    });
-    resolve();
-  });
-}, universal.audioClient._player.sink, '.audioclient');
 
 createSelectSetting('Erase all data', 'erase', async (select) => {
   return new Promise(async (resolve) => {
@@ -101,7 +28,10 @@ createSelectSetting('Erase all data', 'erase', async (select) => {
           const key = localStorage.key(i);
           localStorage.removeItem(key);
         }
-        window.location.href = '/companion/';
+        universal.storage.reset();
+        setTimeout(() => {
+          window.location.href = '/companion/';
+        },500);
       }
     });
   }
@@ -296,14 +226,6 @@ function showPick(title, listContent, callback) {
 
   const modalContent = document.createElement('div');
   modalContent.className = 'modalContent';
-  modalContent.style.background = '#fff';
-  modalContent.style.padding = '20px';
-  modalContent.style.borderRadius = '5px';
-  modalContent.style.width = '50vw';
-  modalContent.style.height = '50vh';
-  modalContent.style.display = 'flex';
-  modalContent.style.flexDirection = 'column';
-  modalContent.style.alignItems = 'center';
 
   const modalTitle = document.createElement('h2');
   modalTitle.innerText = title;
@@ -412,11 +334,11 @@ if (err) {
   }
 }
 
-document.querySelector('.soundpack').style.display = universal.uiSounds.enabled ? 'block' : 'none';
-document.querySelector('#soundpack-id').innerText = universal.uiSounds.info.id;
-document.querySelector('#soundpack-title').innerText = universal.uiSounds.info.name;
-document.querySelector('#soundpack-version').innerText = universal.uiSounds.info.version;
-document.querySelector('#soundpack-author').innerText = universal.uiSounds.info.author;
+// document.querySelector('.soundpack').style.display = universal.uiSounds.enabled ? 'block' : 'none';
+// document.querySelector('#soundpack-id').innerText = universal.uiSounds.info.id;
+// document.querySelector('#soundpack-title').innerText = universal.uiSounds.info.name;
+// document.querySelector('#soundpack-version').innerText = universal.uiSounds.info.version;
+// document.querySelector('#soundpack-author').innerText = universal.uiSounds.info.author;
 
 
 const uis = document.querySelector('.uisounds');

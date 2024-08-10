@@ -14,6 +14,7 @@ module.exports = class Plugin {
   jsSockHook;
   jsSockHookPath;
   imports = [];
+  Settings = {};
   id;
   disabled = false;
   stopped = false;
@@ -172,6 +173,7 @@ module.exports = class Plugin {
   getFromSaveData(k) {
     this.createSaveData();
     const data = JSON.parse(fs.readFileSync(path.resolve('./plugins/'+this.id+'/settings.json')));
+    this.Settings[k] = data[k];
     return data[k];
   }
 
@@ -184,6 +186,7 @@ module.exports = class Plugin {
     this.createSaveData();
     const data = JSON.parse(fs.readFileSync(path.resolve('./plugins/'+this.id+'/settings.json')));
     data[k] = v;
+    this.Settings[k] = v;
     fs.writeFileSync(path.resolve('./plugins/'+this.id+'/settings.json'), JSON.stringify(data));
   }
 
@@ -209,8 +212,22 @@ module.exports = class Plugin {
    * @param {String} renderType The type of button to render
    */
   registerNewType(name, type, templateData={}, renderType='button') {
-    this.types.push({name, type, renderType, templateData, pluginId: this.id});
+    this.types.push({name, type, renderType, templateData, pluginId: this.id, display: this.name});
     types.types().set(type, {instance: this, display: name, renderType, templateData});
+  }
+
+  /**
+   * Remove a type from Companion
+   * @param {String} type The identifier for the button type
+   * @return {Boolean} If the type was removed successfully
+   */
+  deregisterType(type) {
+    if (types.types().has(type)) {
+      types.types().delete(type);
+      this.types = this.types.filter((t) => t.type != type);
+      return true;
+    }
+    return false;
   }
 
   /**

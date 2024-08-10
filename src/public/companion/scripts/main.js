@@ -439,14 +439,13 @@ const loadSettings = (plugin) => {
     const title = document.createElement('div');
     title.innerText = key;
     container.appendChild(title);
-    console.log(typeof value)
     if (typeof value == 'array' || typeof value == 'object') {
       const arrayContainer = document.createElement('div');
       arrayContainer.classList.add('pl-settings-array');
       let i = 0;
       value.forEach((val) => {
         const item = document.createElement('input');
-        item.type = key != 'password' || key != 'token' ? 'text' : 'password';
+        item.type = (key != 'password' || key != 'token') ? 'text' : 'password';
         item.id = key;
         item.dataset.index = i;
         item.value = val;
@@ -456,7 +455,7 @@ const loadSettings = (plugin) => {
       container.appendChild(arrayContainer);
     } else {
       const item = document.createElement('input');
-      item.type = 'text';
+      item.type = (key != 'password' || key != 'token') ? 'text' : 'password';
       item.id = key;
       item.value = value;
       container.appendChild(item);

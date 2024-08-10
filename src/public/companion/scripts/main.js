@@ -386,6 +386,15 @@ function editTile(e) {
   }, 100);
 }
 
+document.querySelector('#lp').onclick = () => {
+  const int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+  if(!int.data.longPress) int.data.longPress = true;
+  else int.data.longPress = !int.data.longPress;
+  document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
+  loadData(int.data);
+  document.querySelector('#lp').checked = int.data.longPress;
+}
+
 document.querySelector('#change-pl-settings').onclick = () => {
   const plugin = document.querySelector('#plugin').value;
   const settings = {};

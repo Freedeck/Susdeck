@@ -79,7 +79,7 @@ io.on('connection', (socket) => {
   try {
     handlers.forEach((handler) => {
       try {
-        handler.exec({socket, types, plugins, io});
+        handler.exec({socket, types, plugins, io, clients});
       } catch (e) {
         debug.log(picocolors.red(e));
       }

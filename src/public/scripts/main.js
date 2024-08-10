@@ -9,8 +9,6 @@ window.onscroll = function() {
   window.scrollTo(0, 0);
 };
 
-UI.reloadSounds();
-
 
 let touchstartX = 0;
 let touchendX = 2500;
@@ -79,8 +77,17 @@ document.documentElement.style.setProperty('--fd-font-size', lcfg['font-size'] +
 document.documentElement.style.setProperty('--fd-tile-w', lcfg.buttonSize + 'rem');
 document.documentElement.style.setProperty('--fd-tile-h', lcfg.buttonSize + 'rem');
 
-document.addEventListener('touchstart', (e) => {
+window.addEventListener('touchstart', (e) => {
   touchstartX = e.changedTouches[0].screenX;
+});
+
+window.addEventListener('mousedown', (e) => {
+  touchstartX = e.screenX;
+});
+
+document.addEventListener('mouseup', (e) => {
+  touchendX = e.screenX;
+  checkDirection();
 });
 
 document.addEventListener('touchend', (e) => {

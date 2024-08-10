@@ -45,7 +45,6 @@ document.querySelector('.toggle-sidebar button').onclick = (ev) => {
   }
 };
 
-UI.reloadSounds();
 
 window['button-types'] = [
   { name: 'Audio File', type: 'sound' },
@@ -349,7 +348,7 @@ const generateProfileSelect = () => {
   select.onchange = (e) => {
     let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
     int.data.profile = e.srcElement.value;
-    document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
+    document.querySelector('#editor-btn').setAttribute('data-interaction', JSON.stringify(int));
   }
 };
 
@@ -710,7 +709,6 @@ window.onclick = function (e) {
   }
 };
 
-UI.reloadProfile();
 
 document.querySelector('#pg-left').addEventListener('click', () => {
   if (UI.Pages[universal.page - 1]) {
@@ -783,12 +781,12 @@ Object.keys(universal.config.profiles).forEach((profile) => {
 });
 
 profileImport.onclick = () => {
-  showEditModal('Import Profile', 'Enter the profile data to import', (modal, pfData, feedback, title, button, input, content) => {
+  showEditModal('Import Folder', 'Enter the folder data to import', (modal, pfData, feedback, title, button, input, content) => {
     try {
       const data = JSON.parse(pfData);
-      showEditModal('Import Profile', 'Enter a name for the new profile', (modal, value, feedback, title, button, input, content) => {
+      showEditModal('Import Folder', 'Enter a name for the new folder', (modal, value, feedback, title, button, input, content) => {
         if (value.length < 1) {
-          feedback.innerText = 'Please enter a name for the profile';
+          feedback.innerText = 'Please enter a name for the folder';
           return false;
         }
         universal.send(universal.events.companion.import_profile, { name: value, data });
@@ -802,9 +800,9 @@ profileImport.onclick = () => {
 };
 
 profileAdd.onclick = () => {
-  showEditModal('New Profile', 'Enter a name for the new profile', (modal, value, feedback, title, button, input, content) => {
+  showEditModal('New Folder', 'Enter a name for the new folder', (modal, value, feedback, title, button, input, content) => {
     if (value.length < 1) {
-      feedback.innerText = 'Please enter a name for the profile';
+      feedback.innerText = 'Please enter a name for the folder';
       return false;
     }
     universal.page = 0;

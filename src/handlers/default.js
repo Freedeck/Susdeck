@@ -16,6 +16,7 @@ module.exports = {
   exec: ({
     socket,
     io,
+    clients,
   }) => {
     socket._id = Math.random() * 2048 + '.fd';
     socket.tempLoginID = Math.random() * 1024 + '.tlid.fd';
@@ -59,6 +60,7 @@ module.exports = {
         tsm.set('IC', socket._id);
       }
       console.log('Client ' + user + ' has greeted server at ' + new Date());
+      console.log('There are ' + io.engine.clientsCount + ' clients connected, server counted', clients.length);
       const pl = {};
       const plu = plugins.plugins();
       plu.forEach((plugin) => {

@@ -29,6 +29,7 @@ const cfg = {
     Sortable: 'Sortable',
     settingsHelpers: 'settingsHelpers',
   },
+  devtool: 'source-map',
 };
 
 module.exports = cfg;

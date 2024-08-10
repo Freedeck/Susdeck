@@ -1,4 +1,4 @@
-{
+export default {
   "default": {
     "name": "Default",
     "description": "The default theme for Freedeck"

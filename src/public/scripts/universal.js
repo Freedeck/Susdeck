@@ -1,6 +1,7 @@
 import { handler, generic } from "../companion/scripts/native/handler";
 import dataHandler from "./init/data";
 import eventsHandler from "./init/events";
+import themeIndex from "./theming/themeIndex";
 import { UI } from "./ui";
 
 /**
@@ -229,7 +230,7 @@ const universal = {
     universal.send(universal.events.login.login, { passwd });
   },
   themeData: {},
-  themes: import("/scripts/theming/index.json"), /* Theme list */
+  themes: themeIndex, /* Theme list */
   setTheme: function (name, global = true) {
     let fu = name;
     fetch('/scripts/theming/' + name + '/manifest.json').then((res) => res.json()).then((json) => {

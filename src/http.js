@@ -25,15 +25,10 @@ module.exports = {
 
 const {webpack} = require('webpack');
 const webpackConfig = require('../webpack.config');
-if (!fs.existsSync(path.resolve('./src/public/companion/dist'))) {
+if (!fs.existsSync(path.resolve(__dirname, 'public/companion/dist'))) {
   console.log('Welcome to Freedeck! This is your first time running Freedeck, so it will take a moment to set up.');
   console.log('Creating companion/dist directory');
-  fs.mkdirSync(path.resolve('./src/public/companion/dist'));
-}
-
-if (!fs.existsSync(path.resolve('./src/public/dist'))) {
-  console.log('Creating dist directory');
-  fs.mkdirSync(path.resolve('./src/public/dist'));
+  fs.mkdirSync(path.resolve(__dirname, 'public/companion/dist'));
 }
 
 let compileTime = 0;

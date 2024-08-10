@@ -74,12 +74,19 @@ universal.on(universal.events.default.config_changed, (e) => {
   document.documentElement.style.setProperty('--fd-font-size', e['font-size'] + 'px');
   document.documentElement.style.setProperty('--fd-tile-w', e.buttonSize + 'rem');
   document.documentElement.style.setProperty('--fd-tile-h', e.buttonSize + 'rem');
+  let tc = 'repeat(5, 2fr)';
+  if(e.tileRows) tc = tc.replace('5', e.tileRows);
+  document.documentElement.style.setProperty('--fd-template-columns', tc);
 })
 
 let lcfg = universal.loadObj('local-cfg');
 document.documentElement.style.setProperty('--fd-font-size', lcfg['font-size'] + 'px');
 document.documentElement.style.setProperty('--fd-tile-w', lcfg.buttonSize + 'rem');
 document.documentElement.style.setProperty('--fd-tile-h', lcfg.buttonSize + 'rem');
+
+let tc = 'repeat(5, 2fr)';
+if(lcfg.tileRows) tc = tc.replace('5', lcfg.tileRows);
+document.documentElement.style.setProperty('--fd-template-columns', tc);
 
 window.addEventListener('touchstart', (e) => {
   touchstartX = e.changedTouches[0].screenX;

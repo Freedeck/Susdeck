@@ -393,7 +393,7 @@ function editTile(e) {
 
 document.querySelector('#lp').onclick = () => {
   const int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
-  if(!int.data.longPress) int.data.longPress = true;
+  if (!int.data.longPress) int.data.longPress = true;
   else int.data.longPress = !int.data.longPress;
   document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(int));
   loadData(int.data);
@@ -493,8 +493,8 @@ document.querySelector('#spiback').onclick = (e) => {
 
 document.querySelector('#spiav').onclick = () => {
   let interaction = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
-  if(!interaction.data || Object.keys(interaction.data).length==0 || interaction.data == {}) {
-    document.querySelector('#tiledata').style.display = 'none'; 
+  if (!interaction.data || Object.keys(interaction.data).length == 0 || interaction.data == {}) {
+    document.querySelector('#tiledata').style.display = 'none';
   } else {
     document.querySelector('#tiledata').style.display = 'flex';
   }
@@ -1258,7 +1258,19 @@ setValue('#es-fs', universal.loadObj('local-cfg')['font-size']);
 setValue('#es-bs', universal.loadObj('local-cfg')['buttonSize']);
 setValue('#es-tc', universal.loadObj('local-cfg')['iconCountPerPage']);
 setValue('#es-lp', universal.loadObj('local-cfg')['longPressTime']);
+setValue('#es-tr', universal.loadObj('local-cfg')['tileRows']);
+let lcfg = universal.loadObj('local-cfg');
 
+document.querySelector('#es-tr').oninput = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('tileRows', e.target.value));
+  let tc = 'repeat(5, 2fr)';
+  if (lcfg.tileRows) tc = tc.replace('5', e.target.value);
+  document.documentElement.style.setProperty('--fd-template-columns', tc);
+}
+
+let tc = 'repeat(5, 2fr)';
+if (lcfg.tileRows) tc = tc.replace('5', lcfg.tileRows);
+document.documentElement.style.setProperty('--fd-template-columns', tc);
 document.querySelector('#es-fill').onchange = (e) => {
   universal.send(universal.events.default.config_changed, setToLocalCfg('fill', e.target.checked));
   universal.send(universal.events.default.reload);

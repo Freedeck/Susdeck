@@ -14,6 +14,7 @@ module.exports = class Plugin {
   jsSockHook;
   jsSockHookPath;
   imports = [];
+  Settings = {};
   id;
   disabled = false;
   stopped = false;
@@ -172,6 +173,7 @@ module.exports = class Plugin {
   getFromSaveData(k) {
     this.createSaveData();
     const data = JSON.parse(fs.readFileSync(path.resolve('./plugins/'+this.id+'/settings.json')));
+    this.Settings[k] = data[k];
     return data[k];
   }
 
@@ -184,6 +186,7 @@ module.exports = class Plugin {
     this.createSaveData();
     const data = JSON.parse(fs.readFileSync(path.resolve('./plugins/'+this.id+'/settings.json')));
     data[k] = v;
+    this.Settings[k] = v;
     fs.writeFileSync(path.resolve('./plugins/'+this.id+'/settings.json'), JSON.stringify(data));
   }
 

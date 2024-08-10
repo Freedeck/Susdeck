@@ -18,7 +18,6 @@ export default function eventsHandler(universal, user) {
     universal.on(universal.events.default.no_init_info, (data) => {
       const parsedToo = JSON.parse(data);
       universal._information = JSON.parse(data);
-      universal._pluginData = {};
       universal.events = parsedToo.events;
       universal.config = parsedToo.cfg;
       universal.plugins = parsedToo.plugins;

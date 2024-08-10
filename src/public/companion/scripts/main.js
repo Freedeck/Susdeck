@@ -279,6 +279,23 @@ function editTile(e) {
     document.querySelector('#audio-path').innerText = interactionData.data.path;
     openViewCloseAll('audio');
   } else {
+    if (!interactionData.type.startsWith('fd.')) {
+      document.querySelectorAll('.spiaction').forEach((el) => {
+        if(el.classList.contains('pl-' + interactionData.plugin)) el.style.display = 'block';
+      });
+      document.querySelectorAll('.spiback').forEach(el=>el.style.display='block');
+      document.querySelectorAll('.spiplugin').forEach((el) => {
+        el.style.display = 'none';
+      });
+    } else {
+      document.querySelectorAll('.spiaction').forEach((el) => {
+        el.style.display = 'none';
+      });
+      document.querySelectorAll('.spiback').forEach(el=>el.style.display='none');
+      document.querySelectorAll('.spiplugin').forEach((el) => {
+        el.style.display = 'block';
+      });
+    }
     openViewCloseAll('plugins');
     if (interactionData.type.startsWith('fd.sys')) {
       openViewCloseAll('system');
@@ -332,6 +349,7 @@ function editTile(e) {
         document.querySelector('.spi[data-type="' + interactionData.type + '"][data-plugin="' + interactionData.plugin + '"]').classList.add('spi-active')
       document.querySelector('.spi-active')?
         document.querySelector('.spi-active').classList.remove('spi-active'):false;
+      loadSettings(interactionData.plugin);
     }
   }
   if (interactionData.data) {
@@ -344,6 +362,10 @@ function editTile(e) {
   setTimeout(() => {
     document.querySelector('#editor').style.opacity = '1';
   }, 100);
+}
+
+const loadSettings = (plugin) => {
+// Impl soon
 }
 
 const generateProfileSelect = () => {
@@ -362,11 +384,47 @@ const generateProfileSelect = () => {
   }
 };
 
+document.querySelector('#spiback').onclick = (e) => {
+  document.querySelectorAll('.spiaction').forEach((el) => {
+    el.style.display = 'none';
+  });
+  document.querySelectorAll('.spiback').forEach(el=>el.style.display='none');
+  document.querySelectorAll('.spiplugin').forEach((el) => {
+    el.style.display = 'block';
+  });
+}
+
+document.querySelector('#spiav').onclick = () => {
+  if(document.querySelector('#advanced-view').style.display == 'block')
+    document.querySelector('#advanced-view').style.display = 'none';
+  else document.querySelector('#advanced-view').style.display = 'block';
+}
+
 const spiContainer = document.querySelector('#spi-actions')
 universal._tyc.keys().forEach((type) => {
+  if(!document.querySelector('.rpl-' + type.pluginId)) {
+    const element = document.createElement('div');
+    element.classList.add('rpl-' + type.pluginId);
+    element.classList.add('plugin-item');
+    element.classList.add('spi');
+    element.classList.add('spiplugin');
+    element.innerText = type.display;
+    element.onclick = (e) => {
+      document.querySelectorAll('.spiaction.pl-' + type.pluginId).forEach((el) => {
+        el.style.display = 'block';
+      });
+      document.querySelectorAll('.spiback').forEach(el=>el.style.display='block');
+      document.querySelectorAll('.spiplugin').forEach((el) => {
+        el.style.display = 'none';
+      });
+    }
+    spiContainer.appendChild(element);
+  }
   const element = document.createElement('div');
+  element.classList.add('pl-' + type.pluginId);
   element.classList.add('plugin-item');
   element.classList.add('spi');
+  element.classList.add('spiaction');
   element.setAttribute('data-type', type.type);
   element.setAttribute('data-plugin', type.pluginId);
   element.setAttribute('data-rt', type.renderType);

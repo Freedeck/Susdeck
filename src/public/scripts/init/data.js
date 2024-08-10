@@ -9,7 +9,6 @@ export default function dataHandler(universal, user) {
       data = await universal.asyncDecompressGzipBlob(data);
       const parsed = JSON.parse(data);
       universal._information = JSON.parse(data);
-      universal._pluginData = {};
       universal.events = parsed.events;
       universal.config = parsed.cfg;
       universal.config.sounds = parsed.cfg.profiles[parsed.cfg.profile];

@@ -56,38 +56,13 @@
             <div style="display:none;" id="plugins-only" class="editor-section plugin-items">
                 <div class="information">
                     <h1>Plugins</h1>
-                    <p>Select the action this tile will perform</p>
+                    <p>Select the plugin this tile will control</p>
                 </div>
                 <div id="spi-actions" class="plugin-items"></div>
-            </div>
-            <div style="display:none;" id="splugins-only" class="editor-section">
-                <div class="information">
-                    <h2>Current Action: <i>sensor.aidan_temperature</i></h2>
-                    <h2>Home Assistant Freedeck Settings</h2>
-                    <div id="pl-settings">
-                        <div class="pl-settings-item">
-                            <div class="setting-title">token</div>
-                            <input type="text" id="token" value="Not Set">
-                        </div>
-                        <div class="pl-settings-item">
-                            <div class="setting-title">url</div>
-                            <input type="text" id="url" value="Not Set">
-                        </div>
-                        <div class="pl-settings-item">
-                            <div class="setting-title">statesToTrack</div>
-                            <div class="pl-settings-array">
-                                <input type="text" value="sensor.aidan_temperature">
-                                <input type="text" value="sensor.aidan_humidity">
-                            </div>
-                        </div>
-                        <div class="pl-settings-item">
-                            <div class="setting-title">silent</div>
-                            <input type="text" id="silent" value="Not Set">
-                        </div>
-                    </div>
-                    <div class="button" id="change-tile">Change Action</div>
+                <div class="flex-wrap-r">
+                    <button class="spiback" id="spiback" style="display: none;">Back</button>
+                    <button class="spiback" id="spiav" style="display: none;">View Settings</button>
                 </div>
-                <div id="spi-actions" class="plugin-items"></div>
             </div>
             <div style="display:none;" id="audio-only" class="editor-section">
                 <h1>Audio</h1>
@@ -125,10 +100,44 @@
                 <br>
                 <div class="plugin-item" id="none-profiles">Folder Switcher</div>
             </div>
-            <!-- <div class="editor-section">
-                <h2>Data</h2>
-            </div> -->
-            <div class="flex-wrap-r" id="editor-data" style="display:none;"></div>
+            <div id="advanced-view" style="display:none;">
+                <div class="flex-wrap">
+                    <div class="esection">
+                        <div class="information">
+                            <h2>Home Assistant Freedeck Settings</h2>
+                            <div id="pl-settings">
+                                <div class="pl-settings-item">
+                                    <div class="setting-title">token</div>
+                                    <input type="text" id="token" value="Not Set">
+                                </div>
+                                <div class="pl-settings-item">
+                                    <div class="setting-title">url</div>
+                                    <input type="text" id="url" value="Not Set">
+                                </div>
+                                <div class="pl-settings-item">
+                                    <div class="setting-title">statesToTrack</div>
+                                    <div class="pl-settings-array">
+                                        <input type="text" value="sensor.aidan_temperature">
+                                        <input type="text" value="sensor.aidan_humidity">
+                                    </div>
+                                </div>
+                                <div class="pl-settings-item">
+                                    <div class="setting-title">silent</div>
+                                    <input type="text" id="silent" value="Not Set">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="button" id="change-tile" disabled>Save Changes</div>
+                        </div>
+                        <div id="spi-actions" class="plugin-items"></div>
+                    </div>
+                    <div class="esection">
+                        <h2>Tile Data</h2>
+                        <p><strong><span style="color:red;">If you don't know what these do, ignore it and let Freedeck do this part! Your Tile may not work, or may crash a plugin.</span></strong></p>
+                        <div class="flex-wrap-r" id="editor-data"></div>
+                    </div>
+                </div>
+            </div>
             <!-- <h2>Ready to save?</h2> -->
             <div class="button" id="editor-save">
                 Save

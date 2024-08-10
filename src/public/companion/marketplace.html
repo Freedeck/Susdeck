@@ -38,6 +38,7 @@
     }
     .item {
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
         align-items: center;
         padding: 1rem;
@@ -45,7 +46,8 @@
         border-radius: 5px;
         margin: 0.5rem 0;
         gap: 1rem;
-        /* min-width: 5%; */
+        width: 200px;
+        text-overflow: ellipsis;
 
         background: var(--fdm-background);
         background-size: var(--fdm-background-size);
@@ -75,7 +77,7 @@
                 <label for="title">Repository Title</label><input type="text" id="title" placeholder="freedeck.app">
                 <label for="url">Repository Access URL</label><input type="text" id="url" placeholder="https://freedeck.app/_fd/repository.php">
                 <button id="submit">Submit</button>
-                <button onclick="universal.uiSounds.playSound('int_no'); document.querySelector('.dialog').style.display='none';">Cancel</button>
+                <button onclick="universal.uiSounds.playSound('int_no'); document.querySelector('#repo-dialog').style.display='none';">Cancel</button>
             </div>
         `;
         console.log(modal)

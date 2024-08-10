@@ -45,6 +45,9 @@ const loadRepo = (repo, isUnofficial=false) => {
       const desc = document.createElement('div');
       desc.innerText = req.description;
       li.appendChild(desc);
+      const rl = document.createElement('div');
+      rl.innerText = "Repository: " + repo.title;
+      li.appendChild(rl);
       const file = document.createElement('button');
       file.onclick = () => {
         universal.uiSounds.playSound('int_confirm');

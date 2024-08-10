@@ -414,6 +414,22 @@ input:disabled {
 }
 
 #keys .button {
+    position: relative;
     min-height: var(--fd-tile-h);
     min-width: var(--fd-tile-w);
+}
+
+.plugin-type-missing {
+    background-color: rgba(255, 0, 0, 0.5);
+    border-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid black;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin: 0.5rem;
+    /* bottom right of parent */
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
 }

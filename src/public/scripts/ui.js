@@ -10,9 +10,7 @@ function reloadProfile() {
   universal.config.sounds = universal.config.profiles[universal.config.profile];
   let max = 0;
   for (
-    let i = 0;
-    i < universal.config.sounds.length / universal.config.iconCountPerPage;
-    i++
+    let i = 0; i < universal.config.sounds.length / universal.config.iconCountPerPage; i++
   ) {
     Pages[i] = true;
     max++;
@@ -61,7 +59,7 @@ function reloadSounds() {
       snd.pos = newPos + universal.config.iconCountPerPage * universal.page;
     }
     try {
-      if(snd.pos >= universal.config.iconCountPerPage * (universal.page + 1)) return;
+      if (snd.pos >= universal.config.iconCountPerPage * (universal.page + 1)) return;
       keyObject.setAttribute('data-interaction', JSON.stringify(snd));
       keyObject.setAttribute('data-name', k);
       keyObject.className = keyObject.className.replace('unset', '');
@@ -71,6 +69,19 @@ function reloadSounds() {
       if (snd.data.fontSize) keyObject.style.fontSize = snd.data.fontSize;
 
       otherHandler(snd.type, keyObject, snd, sound);
+
+      if (!snd.type.includes('fd.')) {
+        let typeExists = false;
+        for (const tyc of universal._tyc.keys()) {
+          if (tyc.type == snd.type) typeExists = true;
+        }
+        if (!typeExists) {
+          console.log('type missing', snd.type);
+          let indicator = document.createElement('div');
+          indicator.className = 'plugin-type-missing';
+          keyObject.appendChild(indicator);
+        }
+      }
 
       // check if two sounds share the same pos, if they do make this button color yellow
       const sounds = universal.config.sounds.filter((sound) => {

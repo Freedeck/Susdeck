@@ -224,6 +224,7 @@ document.querySelector('#color').onchange = (e) => {
   const interaction = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
   interaction.data.color = e.srcElement.value;
   document.querySelector('#editor-btn').setAttribute('data-interaction', JSON.stringify(interaction));
+  loadData(interaction.data);
 };
 
 const selectableViews = [
@@ -487,6 +488,7 @@ document.querySelector('#upload-icon').onclick = (e) => {
     previousInteractionData.data.icon = '/us-icons/' + data.newName;
     document.querySelector('#editor-btn[data-interaction]').setAttribute('data-interaction', JSON.stringify(previousInteractionData));
     document.querySelector('#editor-btn').style.backgroundImage = `url("${'/us-icons/' + data.newName}")`;
+    loadData(interaction.data);
   }, 'icon');
 };
 

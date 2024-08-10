@@ -71,6 +71,13 @@ function reloadSounds() {
       otherHandler(snd.type, keyObject, snd, sound);
 
       if (!snd.type.includes('fd.')) {
+        if(!universal.plugins[snd.plugin]) {
+          console.log('plugin missing', snd.plugin);
+          let indicator = document.createElement('div');
+          indicator.className = 'plugin-missing';
+          keyObject.appendChild(indicator);
+          return;
+        }
         let typeExists = false;
         for (const tyc of universal._tyc.keys()) {
           if (tyc.type == snd.type) typeExists = true;

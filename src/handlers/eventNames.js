@@ -49,6 +49,7 @@ const eventNames = {
     dup_profile: 'cpD',
     set_theme: 'ctS',
     plugin_set: 'dPS',
+    plugin_set_all: 'dPSA',
     import_profile: 'cpI',
     native_keypress: 'nkP',
   },

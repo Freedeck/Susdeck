@@ -364,8 +364,60 @@ function editTile(e) {
   }, 100);
 }
 
+document.querySelector('#change-pl-settings').onclick = () => {
+  const plugin = document.querySelector('#plugin').value;
+  const settings = {};
+  document.querySelectorAll('.pl-settings-item').forEach((el) => {
+    const key = el.querySelector('div').innerText;
+    if (el.querySelector('.pl-settings-array')) {
+      const array = [];
+      el.querySelectorAll('.pl-settings-array input').forEach((item) => {
+        array.push(item.value);
+      });
+      settings[key] = array;
+    } else {
+      settings[key] = el.querySelector('input').value;
+    }
+  });
+  universal.send(universal.events.companion.plugin_set_all, JSON.stringify({ plugin, settings }));
+}
+
 const loadSettings = (plugin) => {
-// Impl soon
+  const settingsElement = document.querySelector('#pl-settings'); 
+  settingsElement.innerHTML = '';
+  document.querySelector('#pl-title').innerText = universal.plugins[plugin].name + ' Settings';
+  const settings = universal.plugins[plugin].Settings;
+  Object.keys(settings).forEach((key) => {
+    let value = settings[key];
+    const container = document.createElement('div');
+    container.classList.add('pl-settings-item');
+    const title = document.createElement('div');
+    title.innerText = key;
+    container.appendChild(title);
+    console.log(typeof value)
+    if(typeof value == 'array' || typeof value == 'object') {
+      const arrayContainer = document.createElement('div');
+      arrayContainer.classList.add('pl-settings-array');
+      let i = 0;
+      value.forEach((val) => {
+        const item = document.createElement('input');
+        item.type = 'text';
+        item.id = key;
+        item.dataset.index = i;
+        item.value = val;
+        arrayContainer.appendChild(item);
+        i++;
+      });
+      container.appendChild(arrayContainer);
+    } else {
+      const item = document.createElement('input');
+      item.type = 'text';
+      item.id = key;
+      item.value = value;
+      container.appendChild(item);
+    }
+    settingsElement.appendChild(container);
+  });
 }
 
 const generateProfileSelect = () => {

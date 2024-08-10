@@ -959,6 +959,34 @@ const setToLocalCfg = (key, value) => {
   return JSON.stringify(cfg);
 }
 
+document.querySelectorAll('.fdc-slider').forEach((slider) => {
+  // create min/max text that floats below the slider
+  let postfix = slider.getAttribute('postfix') || '';
+  const min = document.createElement('div');
+  min.innerText = slider.min;
+  min.className = 'fdc-slider-min';
+  slider.parentElement.appendChild(min);
+  const max = document.createElement('div');
+  max.innerText = slider.max;
+  max.className = 'fdc-slider-max';
+  slider.parentElement.appendChild(max);
+  const value = document.createElement('div');
+  value.innerText = slider.value + postfix;
+  value.className = 'fdc-slider-value';
+  slider.parentElement.appendChild(value);
+  slider.addEventListener('input', (e) => {
+    value.innerText = e.target.value + postfix;
+  });
+  slider.addEventListener('change', (e) => {
+    value.innerText = e.target.value + postfix;
+  });
+});
+
+function setValue(id, val) {
+  document.querySelector(id).value = val;
+  document.querySelector(id).parentElement.querySelector('.fdc-slider-value').innerText = val + (document.querySelector(id).getAttribute('postfix') || '');
+}
+
 document.querySelector('#es-fs').oninput = (e) => {
   document.documentElement.style.setProperty('--fd-font-size', e.target.value + 'px');
   universal.send(universal.events.default.config_changed, setToLocalCfg('font-size', e.target.value));
@@ -972,20 +1000,61 @@ document.querySelector('#es-bs').oninput = (e) => {
 
 document.querySelector('#es-fs-reset').onclick = (e) => {
   document.documentElement.style.setProperty('--fd-font-size', '15px');
-  document.querySelector('#es-fs').value = 15;
+  setValue('#es-fs', 15);
   universal.send(universal.events.default.config_changed, setToLocalCfg('font-size', 15));
 }
 
 document.querySelector('#es-bs-reset').onclick = (e) => {
   document.documentElement.style.setProperty('--fd-tile-w', 'var(--fd-btn-w)');
   document.documentElement.style.setProperty('--fd-tile-h', 'var(--fd-btn-h)');
-  document.querySelector('#es-bs').value = 6;
+  setValue('#es-bs', 6);
   universal.send(universal.events.default.config_changed, setToLocalCfg('buttonSize', 6));
 }
+
+document.querySelector('#es-tc-reset').onclick = (e) => {
+  setValue('#es-tc', 12);
+  universal.send(universal.events.default.config_changed, setToLocalCfg('iconCountPerPage', 12));
+  universal.send(universal.events.default.reload);
+};
 
 document.querySelector('#es-scroll').onchange = (e) => {
   universal.send(universal.events.default.config_changed, setToLocalCfg('scroll', e.target.checked));
   universal.send(universal.events.default.reload);
 }
+
+document.querySelector('#es-tc').oninput = (e) => {
+  let prepend = document.querySelector('#keys');
+  let count = document.querySelectorAll('.fdc-placeholder').length;
+  let diff = e.target.value - count;
+  if (diff > 0) {
+    document.querySelector('#keys').innerHTML = '';
+    for (let i = 0; i < diff + 3; i++) {
+      let clone = document.createElement('div');
+      clone.className = 'button builtin unset k-' + (count + i);
+      prepend.appendChild(clone);
+    }
+  } else {
+    for (let i = 0; i < Math.abs(diff); i++) {
+      let last = document.querySelector('.button.k-' + (count - i - 1));
+      last.remove();
+    }
+  }
+}
+
+document.querySelector('#es-tc').onmouseup = (e) => {
+  if(e.target.value == universal.config.iconCountPerPage) {
+    window.location.reload();
+    return;
+  }
+}
+
+document.querySelector('#es-tc').onchange = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('iconCountPerPage', e.target.value));
+  universal.send(universal.events.default.reload);
+}
+
+setValue('#es-fs', universal.loadObj('local-cfg')['font-size']);
+setValue('#es-bs', universal.loadObj('local-cfg')['buttonSize']);
+setValue('#es-tc', universal.loadObj('local-cfg')['iconCountPerPage']);
 
 document.querySelector('#es-scroll').checked = universal.loadObj('local-cfg').scroll;

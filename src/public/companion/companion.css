@@ -503,3 +503,15 @@ body {
 	width: 1.5rem;
 	height: 1.5rem;
 }
+
+.fdc-slider-min {
+	float: left;
+}
+
+.fdc-slider-max {
+	float: right;
+}
+
+.fdc-slider-value {
+	text-align: center;
+}

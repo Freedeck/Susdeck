@@ -328,6 +328,7 @@ const universal = {
           universal.CLU('Boot', 'Received config', universal.config);
           universal.setTheme(universal.config.theme ? universal.config.theme : 'default', false);
           universal.CLU('Boot', 'Set theme');
+          universal.config.iconCountPerPage = universal.loadObj('local-cfg').iconCountPerPage || 12;
           UI.reloadSounds();
           universal.CLU('Boot', 'UI reloaded');
           if (!navigator.mediaDevices?.enumerateDevices) {

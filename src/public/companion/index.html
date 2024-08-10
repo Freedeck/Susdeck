@@ -11,7 +11,7 @@
     <title>Freedeck v6 - Home</title>
 </head>
 
-<body>
+<body style="overflow: hidden;">
     <dialog class="dialog" id="login-dialog">
         <div id="login-div">
             <h1>Freedeck v6</h1>
@@ -166,7 +166,7 @@
                         <label for="es-fs">
                             <h2>Font Size</h2>
                         </label>
-                        <input class="fdc-slider" type="range" min="10" max="25" value="15" step="1" id="es-fs"
+                        <input class="fdc-slider" postfix="px" type="range" min="10" max="25" value="15" step="1" id="es-fs"
                             style="width: 7rem;">
                     </div>
                     <button id="es-fs-reset">Reset</button>
@@ -174,12 +174,22 @@
                 <div class="flex-wrap-r">
                     <div class="alc">
                         <label for="es-bs">
-                            <h2>Button Size</h2>
+                            <h2>Tile Size</h2>
                         </label>
-                        <input class="fdc-slider" type="range" min="6" max="12" value="6" step="1" id="es-bs"
+                        <input class="fdc-slider" postfix="rem" type="range" min="6" max="12" value="6" step="1" id="es-bs"
                             style="width: 7rem;">
                     </div>
                     <button id="es-bs-reset">Reset</button>
+                </div>
+                <div class="flex-wrap-r">
+                    <div class="alc">
+                        <label for="es-tc">
+                            <h2>Tile Count</h2>
+                        </label>
+                        <input class="fdc-slider" postfix=" tiles" type="range" min="12" max="54" value="12" step="1" id="es-tc"
+                            style="width: 7rem;">
+                    </div>
+                    <button id="es-tc-reset">Reset</button>
                 </div>
                 <div class="flex-wrap-r">
                     <div class="flex-wrap-r alc">

@@ -89,18 +89,16 @@ export default function(data, keyObject, raw) {
     }
   }, 500);
 
-  sliderThumb.addEventListener('mousedown', (e) => {
-    if(e.button === 2) return;
-    if(e.target !== sliderThumb) return;
+  const touchDownEvent = (e) => {
+    if (e.target !== sliderThumb) return;
     sliderContainer.dataset.dragging = true;
     isDragging = true;
-  });
-  
-  sliderThumb.addEventListener('touchstart', (e) => {
-    if(e.target !== sliderThumb) return;
-    sliderContainer.dataset.dragging = true;
-    isDragging = true;
-  });
+  };
+
+  sliderThumb.addEventListener('mousedown', touchDownEvent);
+  sliderThumb.addEventListener('touchstart', touchDownEvent);
+  sliderContainer.addEventListener('mousedown', touchDownEvent);
+  sliderContainer.addEventListener('touchstart', touchDownEvent);
   
   document.addEventListener('mousemove', (event) => {
     if (isDragging) {

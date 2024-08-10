@@ -352,8 +352,16 @@ input:disabled {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* pointer-events: none; */
+    transition-duration: 0s;
 }
+
+.slider-title {
+    font-size: var(--fd-font-size);
+    color: white;
+    text-align: center;
+    pointer-events: none;
+}
+
 .slider-thumb {
     width: 100%;
     height: 100%;

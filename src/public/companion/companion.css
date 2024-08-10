@@ -529,14 +529,24 @@ a:hover {
 	text-align: center;
 }
 
+#es-profiles>div button {
+	background-color: rgba(0, 0, 0, 0.25);
+	border-radius: 100%;
+	width: 3rem;
+	height: 3rem;
+	min-width: 3rem;
+	min-height: 3rem;
+}
+
 .ico {
-	--icon-size: 2.75rem;
+	--icon-size: 1.75rem;
 	min-width: var(--icon-size);
 	min-height: var(--icon-size);
 	max-width: var(--icon-size);
 	max-height: var(--icon-size);
 	width: var(--icon-size);
 	height: var(--icon-size);
+	pointer-events: none;
 }
 
 #pl-settings {

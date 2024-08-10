@@ -269,6 +269,7 @@ function editTile(e) {
   const interactionData = JSON.parse(e.srcElement.getAttribute('data-interaction'));
   if (document.querySelector('.toggle-sidebar').style.left != '0px') document.querySelector('.toggle-sidebar button').click();
   if (document.querySelector('.contextMenu')) document.querySelector('.contextMenu').style.display = 'none';
+  document.querySelector('#advanced-view').style.display = 'none';
   document.querySelector('#sidebar').style.right = '-20%';
   document.querySelector('#editor').style.display = 'block';
   document.querySelector('#editor-btn').innerText = e.srcElement.dataset.name;
@@ -491,6 +492,12 @@ document.querySelector('#spiback').onclick = (e) => {
 }
 
 document.querySelector('#spiav').onclick = () => {
+  let interaction = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
+  if(!interaction.data || Object.keys(interaction.data).length==0 || interaction.data == {}) {
+    document.querySelector('#tiledata').style.display = 'none'; 
+  } else {
+    document.querySelector('#tiledata').style.display = 'flex';
+  }
   if (document.querySelector('#advanced-view').style.display == 'block')
     document.querySelector('#advanced-view').style.display = 'none';
   else document.querySelector('#advanced-view').style.display = 'block';
@@ -544,6 +551,8 @@ universal._tyc.keys().forEach((type) => {
     document.querySelector('#editor-btn').setAttribute('data-interaction', JSON.stringify(interaction));
     document.querySelector('#type').value = type;
     document.querySelector('#plugin').value = plugin;
+    loadData(interaction.data);
+    loadSettings(interaction.plugin);
   }
   spiContainer.appendChild(element);
 })
@@ -936,13 +945,10 @@ profileTxt.innerHTML = 'Profile:&nbsp<i>' + universal.config.profile + '</i>';
 
 const profileSelect = document.createElement('select');
 const profileAdd = document.querySelector('#pf-add');
-profileAdd.innerText = 'New Profile';
 
 const profileImport = document.querySelector('#pf-imp');
-profileImport.innerText = 'Import Profile';
 
 const profileExport = document.querySelector('#pf-exp');
-profileExport.innerText = 'Export Profile';
 
 profileExport.onclick = () => {
   const profile = universal.config.profiles[universal.config.profile];
@@ -1011,7 +1017,6 @@ profileSelect.onchange = () => {
 document.querySelector('#es-profiles').appendChild(profileSelect);
 
 const profileDupe = document.querySelector('#pf-dupe');
-profileDupe.innerText = 'Duplicate Profile';
 
 profileDupe.onclick = () => {
   showEditModal('Duplicate Profile', 'Enter a name for the new profile', (modal, value, feedback, title, button, input, content) => {

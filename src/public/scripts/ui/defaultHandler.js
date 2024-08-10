@@ -8,16 +8,20 @@ export default function (snd, keyObject, raw) {
   const k = Object.keys(raw)[0];
   keyObject.innerHTML = '<div class="button-text"><p>' + sanitizeXSS(k) + '</div></p>';
   if (snd.data.longPress) {
+    let countdownTime = parseInt(universal.loadObj('local-cfg').longPressTime ? universal.loadObj('local-cfg').longPressTime : 3);
     const startHolding = (e) => {
       keyObject.dataset.time = 0;
       keyObject.dataset.holding = true;
       keyObject.style.backgroundColor = 'rgba(0, 0, 0, 0)';
       keyObject.style.transform = `scale(0.75)`;
+      keyObject.style.fontSize = '2rem';
+      keyObject.innerText = countdownTime;
       keyObject.interval = setInterval(() => {
-        keyObject.dataset.time = parseInt(keyObject.dataset.time) + 1;  
+        keyObject.dataset.time = parseInt(keyObject.dataset.time) + 1;
         keyObject.style.backgroundColor = `rgba(0, 0, 0, ${(parseInt(keyObject.dataset.time) * 0.1) + 0.1})`;
         keyObject.style.transform = `scale(${0.75 + parseInt(keyObject.dataset.time) * 0.05})`;
-        if(parseInt(keyObject.dataset.time) >= universal.loadObj('local-cfg').longPressTime || 3){
+        keyObject.innerText = countdownTime - parseInt(keyObject.dataset.time);
+        if (parseInt(keyObject.dataset.time) >= countdownTime) {
           stopHolding(e);
           clearInterval(keyObject.interval);
         }
@@ -28,8 +32,10 @@ export default function (snd, keyObject, raw) {
       keyObject.dataset.holding = false;
       keyObject.style.backgroundColor = snd.data.color ? snd.data.color : '';
       keyObject.style.transform = ``;
+      keyObject.style.fontSize = '';
+      keyObject.innerText = sanitizeXSS(k);
       clearInterval(keyObject.interval);
-      if(parseInt(keyObject.dataset.time) >= universal.loadObj('local-cfg').longPressTime || 3){
+      if (parseInt(keyObject.dataset.time) >= countdownTime) {
         send(e);
       }
       keyObject.dataset.time = 0;

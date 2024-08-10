@@ -378,6 +378,9 @@ function editTile(e) {
     const itm = interactionData.data;
     loadData(itm);
   }
+  document.querySelector('#lp').checked = interactionData.data.longPress;
+  document.querySelector('#lp').style.display = interactionData.renderType == 'slider' ? 'none' : 'block';
+  document.querySelector('label[for="lp"]').style.display = interactionData.renderType == 'slider' ? 'none' : 'block';
   // make it fade in
   document.querySelector('#editor').style.opacity = '0';
   document.querySelector('.toggle-sidebar button').style.display = 'none';
@@ -1245,9 +1248,24 @@ document.querySelector('#es-tc').onchange = (e) => {
 setValue('#es-fs', universal.loadObj('local-cfg')['font-size']);
 setValue('#es-bs', universal.loadObj('local-cfg')['buttonSize']);
 setValue('#es-tc', universal.loadObj('local-cfg')['iconCountPerPage']);
+setValue('#es-lp', universal.loadObj('local-cfg')['longPressTime']);
 
 document.querySelector('#es-fill').onchange = (e) => {
   universal.send(universal.events.default.config_changed, setToLocalCfg('fill', e.target.checked));
+  universal.send(universal.events.default.reload);
+}
+
+document.querySelector('#es-lp').oninput = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('longPressTime', e.target.value));
+}
+
+document.querySelector('#es-lp').onmouseup = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('longPressTime', e.target.value));
+  universal.send(universal.events.default.reload);
+}
+
+document.querySelector('#es-lp-reset').onclick = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('longPressTime', 3));
   universal.send(universal.events.default.reload);
 }
 

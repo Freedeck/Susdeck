@@ -446,7 +446,7 @@ const loadSettings = (plugin) => {
       let i = 0;
       value.forEach((val) => {
         const item = document.createElement('input');
-        item.type = 'text';
+        item.type = key != 'password' || key != 'token' ? 'text' : 'password';
         item.id = key;
         item.dataset.index = i;
         item.value = val;

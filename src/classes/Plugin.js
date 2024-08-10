@@ -217,6 +217,20 @@ module.exports = class Plugin {
   }
 
   /**
+   * Remove a type from Companion
+   * @param {String} type The identifier for the button type
+   * @return {Boolean} If the type was removed successfully
+   */
+  deregisterType(type) {
+    if (types.types().has(type)) {
+      types.types().delete(type);
+      this.types = this.types.filter((t) => t.type != type);
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * Code to run when the plugin is initialized.
    * @return {Boolean} If the plugin initialized successfully
    */

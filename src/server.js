@@ -48,7 +48,7 @@ io.on('connection', (socket) => {
       }
       return;
     }
-    io.emit(eventNames.default.notif, JSON.stringify(notification));
+    socket.emit(eventNames.default.notif, JSON.stringify(notification));
     NotificationManager.once('newNotification', sendNotification);
   }
 

@@ -261,7 +261,14 @@ function editTile(e) {
   document.querySelector('#editor-btn').setAttribute('data-pre-edit', e.srcElement.dataset.name);
   document.querySelector('#editor-btn').setAttribute('data-interaction', e.srcElement.getAttribute('data-interaction'));
   document.querySelector('#type').value = interactionData.type;
-  document.querySelector('#plugin').value = interactionData.plugin || 'Freedeck';
+  if(interactionData.plugin == 'Freedeck' || !interactionData.plugin) {
+    document.querySelector('#plugin').style.display = 'none';
+    document.querySelector('label[for="plugin"]').style.display = 'none';
+  } else {
+    document.querySelector('label[for="plugin"]').style.display = 'block';
+    document.querySelector('#plugin').style.display = 'block';
+    document.querySelector('#plugin').value = interactionData.plugin || 'Freedeck';
+  }
   document.querySelector('#audio-only').style.display = 'none';
   document.querySelector('#plugins-only').style.display = 'none';
   document.querySelector('#system-only').style.display = 'none';
@@ -321,7 +328,10 @@ function editTile(e) {
     if (interactionData.type == 'fd.none') {
       openViewCloseAll('none');
     } else if (interactionData.plugin) {
-      document.querySelector('.spi[data-type="' + interactionData.type + '"][data-plugin="' + interactionData.plugin + '"]').classList.add('spi-active')
+      if(document.querySelector('.spi[data-type="' + interactionData.type + '"][data-plugin="' + interactionData.plugin + '"]'))
+        document.querySelector('.spi[data-type="' + interactionData.type + '"][data-plugin="' + interactionData.plugin + '"]').classList.add('spi-active')
+      document.querySelector('.spi-active')?
+        document.querySelector('.spi-active').classList.remove('spi-active'):false;
     }
   }
   if (interactionData.data) {
@@ -471,6 +481,8 @@ document.querySelector('#none-system').onclick = (e) => {
 }
 
 document.querySelector('#none-plugin').onclick = (e) => {
+  document.querySelector('label[for="plugin"]').style.display = 'block';
+  document.querySelector('#plugin').style.display = 'block';
   let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
   int.type = 'fd.select';
   int.data = {};

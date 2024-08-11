@@ -7,6 +7,7 @@ const tsm = require('../managers/temporarySettings');
 const pc = require('../utils/picocolors');
 const path = require('path');
 const zlib = require('zlib');
+const { readFileSync } = require('fs');
 
 const serverVersion = 'Freedeck OS-' + require(path.resolve('package.json')).version + 's';
 
@@ -78,6 +79,7 @@ module.exports = {
         NotificationManager,
         mobileConnected: isMobileConnected || false,
         tempLoginID: socket.tempLoginID,
+        style: JSON.parse(readFileSync(path.resolve('./src/configs/style.json'))),
         plugins: pl,
         plSettings: plset,
         disabled: plugins._disabled,

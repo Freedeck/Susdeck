@@ -13,6 +13,10 @@ const sc = {
     return sc._cache;
   },
   update: () => {
+    if(!fs.existsSync(path.resolve('./src/configs/style.json'))) {
+      let def = JSON.stringify({ scroll: false, fill:false, 'font-size': 15, buttonSize: 6, iconCountPerPage:12, longPressTime: 3, tileRows: 5 })
+      fs.writeFileSync(path.resolve('./src/configs/style.json'), def);
+    }
     delete require.cache[require.resolve(path.resolve('./src/configs/config.fd.js'))];
     sc._cache = require(path.resolve('./src/configs/config.fd.js'));
   },

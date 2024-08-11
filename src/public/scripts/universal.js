@@ -24,6 +24,9 @@ const universal = {
     universal._socket.connect();
     universal._ca.push(universal.lastRetry);
   },
+  lclCfg() {
+    return universal._information.style;
+  },
   _information: {},
   _init: false,
   _authStatus: false,
@@ -279,7 +282,7 @@ const universal = {
           universal.CLU('Boot', 'Received config', universal.config);
           universal.setTheme(universal.config.theme ? universal.config.theme : 'default', false);
           universal.CLU('Boot', 'Set theme');
-          universal.config.iconCountPerPage = universal.loadObj('local-cfg').iconCountPerPage || 12;
+          universal.config.iconCountPerPage = universal.lclCfg().iconCountPerPage || 12;
           UI.reloadSounds();
           universal.CLU('Boot', 'UI reloaded');
           if (!navigator.mediaDevices?.enumerateDevices) {
@@ -296,7 +299,7 @@ const universal = {
               universal.CLU('Boot', 'Created monitor potential devices');
             });
           }
-          if (universal.loadObj('local-cfg').fill) {
+          if (universal.lclCfg().fill) {
             let style = document.createElement('style');
             style.type = 'text/css';
             let styles = `

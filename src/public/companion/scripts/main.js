@@ -1154,7 +1154,7 @@ const playbackModeSetting = await universal.embedded_settings.createSelect(
 embeddedSettingsClient.appendChild(playbackModeSetting);
 
 const setToLocalCfg = (key, value) => {
-  const cfg = universal.loadObj('local-cfg');
+  const cfg = universal.lclCfg();
   cfg[key] = value;
   universal.save('local-cfg', JSON.stringify(cfg));
   return JSON.stringify(cfg);
@@ -1254,12 +1254,12 @@ document.querySelector('#es-tc').onchange = (e) => {
   universal.send(universal.events.default.reload);
 }
 
-setValue('#es-fs', universal.loadObj('local-cfg')['font-size']);
-setValue('#es-bs', universal.loadObj('local-cfg')['buttonSize']);
-setValue('#es-tc', universal.loadObj('local-cfg')['iconCountPerPage']);
-setValue('#es-lp', universal.loadObj('local-cfg')['longPressTime']);
-setValue('#es-tr', universal.loadObj('local-cfg')['tileRows']);
-let lcfg = universal.loadObj('local-cfg');
+setValue('#es-fs', universal.lclCfg()['font-size']);
+setValue('#es-bs', universal.lclCfg()['buttonSize']);
+setValue('#es-tc', universal.lclCfg()['iconCountPerPage']);
+setValue('#es-lp', universal.lclCfg()['longPressTime']);
+setValue('#es-tr', universal.lclCfg()['tileRows']);
+let lcfg = universal.lclCfg();
 
 document.querySelector('#es-tr').oninput = (e) => {
   universal.send(universal.events.default.config_changed, setToLocalCfg('tileRows', e.target.value));
@@ -1295,5 +1295,5 @@ document.querySelector('#es-tr-reset').onclick = (e) => {
   universal.send(universal.events.default.config_changed, setToLocalCfg('tileRows', 5));
 }
 
-document.querySelector('#es-scroll').checked = universal.loadObj('local-cfg').scroll;
-document.querySelector('#es-fill').checked = universal.loadObj('local-cfg').fill;
+document.querySelector('#es-scroll').checked = universal.lclCfg().scroll;
+document.querySelector('#es-fill').checked = universal.lclCfg().fill;

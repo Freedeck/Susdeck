@@ -29,7 +29,6 @@ export default function dataHandler(universal, user) {
       universal.default('theme', 'default');
       universal.default('profile', 'Default');
       universal.default('repos.community', JSON.stringify([]));
-      universal.default('local-cfg', JSON.stringify({ scroll: false, fill:false, 'font-size': 15, buttonSize: 6, iconCountPerPage:12, longPressTime: 3, tileRows: 5 }));
   
       if (!universal.load('welcomed')) {
         universal.sendToast('Welcome to Freedeck.');
@@ -65,8 +64,8 @@ export default function dataHandler(universal, user) {
         handler();
       }
   
-      if (universal.loadObj('local-cfg').fontSize != 15) {
-        document.documentElement.style.setProperty('--fd-font-size', universal.loadObj('local-cfg').fontSize + 'px');
+      if (universal.lclCfg()['font-size'] != 15) {
+        document.documentElement.style.setProperty('--fd-font-size', universal.lclCfg()['font-size'] + 'px');
       }
   
       generic();

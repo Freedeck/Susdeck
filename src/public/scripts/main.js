@@ -79,7 +79,7 @@ universal.on(universal.events.default.config_changed, (e) => {
   document.documentElement.style.setProperty('--fd-template-columns', tc);
 })
 
-let lcfg = universal.loadObj('local-cfg');
+let lcfg = universal.lclCfg();
 document.documentElement.style.setProperty('--fd-font-size', lcfg['font-size'] + 'px');
 document.documentElement.style.setProperty('--fd-tile-w', lcfg.buttonSize + 'rem');
 document.documentElement.style.setProperty('--fd-tile-h', lcfg.buttonSize + 'rem');

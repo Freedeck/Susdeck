@@ -8,7 +8,7 @@ export default function (snd, keyObject, raw) {
   const k = Object.keys(raw)[0];
   keyObject.innerHTML = '<div class="button-text"><p>' + sanitizeXSS(k) + '</div></p>';
   if (snd.data.longPress == 'true') {
-    let countdownTime = parseInt(universal.loadObj('local-cfg').longPressTime ? universal.loadObj('local-cfg').longPressTime : 3);
+    let countdownTime = parseInt(universal.lclCfg().longPressTime ? universal.lclCfg().longPressTime : 3);
     const startHolding = (e) => {
       keyObject.dataset.time = 0;
       keyObject.dataset.holding = true;
@@ -68,7 +68,7 @@ export default function (snd, keyObject, raw) {
     };
   }
   // check if text is bigger than 2 lines (by font size)
-  if (universal.loadObj('local-cfg').scroll) {
+  if (universal.lclCfg().scroll) {
     let txth = keyObject.querySelector('p');
     let size = txth.clientHeight;
     if (size > 40) {

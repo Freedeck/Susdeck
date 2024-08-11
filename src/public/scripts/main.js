@@ -69,7 +69,6 @@ if(universal.config.profile != universal.load('profile')) {
 }
 
 universal.on(universal.events.default.config_changed, (e) => {
-  universal.save('local-cfg', e);
   e = JSON.parse(e);
   document.documentElement.style.setProperty('--fd-font-size', e['font-size'] + 'px');
   document.documentElement.style.setProperty('--fd-tile-w', e.buttonSize + 'rem');

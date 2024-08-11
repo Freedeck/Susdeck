@@ -1156,7 +1156,6 @@ embeddedSettingsClient.appendChild(playbackModeSetting);
 const setToLocalCfg = (key, value) => {
   const cfg = universal.lclCfg();
   cfg[key] = value;
-  universal.save('local-cfg', JSON.stringify(cfg));
   return JSON.stringify(cfg);
 }
 

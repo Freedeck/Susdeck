@@ -48,8 +48,9 @@
 	const ios = document.querySelector('#c0');
 	const android = document.querySelector('#c1');
 	const localIp = document.querySelectorAll('.local-ip');
-
+	window.top.universal.uiSounds.playSound('step_1')
 	connectButton.onclick = () => {
+		window.top.universal.uiSounds.playSound('step_2')
 		modalContent.style.display = 'none';
 		if (userSelect.value === '0') {
 			ios.style.display = 'block';
@@ -59,20 +60,23 @@
 			android.style.display = 'block';
 		}
 	}
-
+	userSelect.oninput = () => {
+		window.top.universal.uiSounds.playSound('fdc_slider')
+	}
 	laterButton.onclick = () => {
+		window.top.universal.uiSounds.playSound('step_1')
 		window.parent.document.querySelector('.rem-mobd').remove();
 		window.parent.document.querySelector('.prompt').remove();
 		modal.style.display = 'none';
 	}
-	console.log(window.top.universal._information.hostname)
 
 	fetch('/connect/local-ip').then(res => res.json()).then(data => {
 		const ip = data.ip[Object.keys(data.ip)[0]][0];
-		const code = Math.random().toString().substring(2,4) * 100;
-		fetch('http://localhost:8000/api.php?code=' + code +'&name=' + window.top.universal._information.hostname +'&local_ip=' + ip, {
-			mode: 'no-cors'
+		let code = Math.random().toString(36).toUpperCase().split('.')[1].substring(0,5);
+		fetch('https://my.freedeck.app/api.php?code=' + code +'&name=' + window.top.universal._information.hostname +'&local_ip=' + ip, {
+			// mode: 'no-cors'
 		}).then((res)=>res.text()).then((res) => {
+			if(res.includes('EXISTS@')) code = res.split('EXISTS@')[1].split('@')[0]
 			document.querySelectorAll('.mfa-code').forEach(e => e.innerText = code);
 		})
 	});
@@ -89,6 +93,7 @@
 				if(document.querySelector('.modal-content').style.display =='none') {
 					clearInterval(poll);
 				setTimeout(() => {
+					window.top.universal.uiSounds.playSound('step_3');
 					document.querySelector('#later-button').click();
 				}, 1500);
 				}

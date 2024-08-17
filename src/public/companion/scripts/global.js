@@ -46,7 +46,7 @@ sidebar.forEach((itm) => {
   }
   const ele = document.createElement('li');
   ele.setAttribute('hovereffect', 'yes');
-  ele.setHTML(`<a onclick="universal.vopen('${page}')">CTXL:${name}</a>`);
+  ele.setHTML(`<a onclick="universal.vopen('${page}')">${name}</a>`);
   sidebarUl.appendChild(ele);
 });
 

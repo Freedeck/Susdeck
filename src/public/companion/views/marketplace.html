@@ -143,15 +143,6 @@
         dialog.innerHTML += `<p>Downloaded successfully. Give Freedeck a second to update it's plugin index.</p>`;
     });
 
-    universal.on(universal.events.default.plugins_updated, () => {
-        if (!dialog.open) dialog.showModal();
-        dialog.innerHTML = `<p>Plugins reloaded.</p><button id="close">Refresh</button>`;
-        document.querySelector('#close').onclick = () => {
-            universal.uiSounds.playSound('click');
-            window.location.reload();
-        };
-    });
-
     function addRepo() {
         universal.uiSounds.playSound('int_prompt');
         if (document.querySelector('#repo-dialog')) document.querySelector('#repo-dialog').remove();

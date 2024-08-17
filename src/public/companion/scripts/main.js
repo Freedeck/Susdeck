@@ -1323,3 +1323,7 @@ document.querySelector('#es-tr-reset').onclick = (e) => {
 document.querySelector('#es-scroll').checked = universal.lclCfg().scroll;
 document.querySelector('#es-fill').checked = universal.lclCfg().fill;
 document.querySelector('#es-center').checked = universal.lclCfg().center;
+
+window.onclick = () => {
+  universal.uiSounds.playSound('click');
+}

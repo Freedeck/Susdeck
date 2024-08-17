@@ -393,7 +393,7 @@ function editTile(e) {
     const itm = interactionData.data;
     loadData(itm);
   }
-  document.querySelector('#lp').checked = interactionData.data.longPress;
+  document.querySelector('#lp').checked = interactionData.data.longPress == 'true' ? true : false;
   document.querySelector('#lp').style.display = interactionData.renderType == 'slider' ? 'none' : 'block';
   document.querySelector('label[for="lp"]').style.display = interactionData.renderType == 'slider' ? 'none' : 'block';
   // make it fade in

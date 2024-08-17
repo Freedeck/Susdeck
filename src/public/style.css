@@ -512,13 +512,9 @@ input:disabled {
 }
 
 #qa-container {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.5);
     border-radius: 100%;
-    width: var(--fd-ril-w);
-    height: var(--fd-btn-h);
+    width: var(--fd-tile-w);
+    height: var(--fd-tile-h);
 }
 
 .qa {
@@ -526,8 +522,21 @@ input:disabled {
     padding: 5px;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
+    opacity: 0;
+    transition-duration: .25s;
+    position: relative;
+}
+@keyframes active {
+    0% {
+        height: 100%;
+    }
+    100% {
+        height: var(--fd-tile-h);
+    }
 }
 
-#qa-1 {
-    position: absolute;
+.qa:hover {
+    opacity: 1;
+    animation: active;
+    height: var(--fd-tile-h);
 }

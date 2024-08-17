@@ -77,6 +77,7 @@ module.exports = {
       const serverInfo = {
         id: socket._id,
         NotificationManager,
+        hostname: require('os').hostname(),
         mobileConnected: isMobileConnected || false,
         tempLoginID: socket.tempLoginID,
         style: JSON.parse(readFileSync(path.resolve('./src/configs/style.json'))),

@@ -108,3 +108,10 @@ document.addEventListener('touchend', (e) => {
 if (document.querySelector('#version')) {
   document.querySelector('#version').innerText = 'Freedeck Server: ' + universal._information.server + '\nFreedeck SocketHandler: ' + universal._information.version;
 }
+
+let downEvent= (ev) => {
+
+}
+
+document.querySelector('#fd-settings-button').onmousedown = downEvent;
+document.querySelector('#fd-settings-button').ontouchstart = downEvent;

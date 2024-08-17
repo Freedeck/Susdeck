@@ -272,8 +272,8 @@ const universal = {
       universal.CLU('Boot', 'Init promise created');
       try {
         universal.CLU('Boot', 'Importing Pako');
-        if (!universal.imported_scripts.includes('https://cdn.jsdelivr.net/npm/pako@1.0.11/dist/pako.min.js')) {
-          universal.import('https://cdn.jsdelivr.net/npm/pako@1.0.11/dist/pako.min.js');
+        if (!universal.imported_scripts.includes('/scripts/pako.js')) {
+          universal.import('/scripts/pako.js');
           universal.CLU('Boot', 'Imported Pako');
         }
         universal.CLU('Boot', 'Pre-init');
@@ -367,7 +367,7 @@ const universal = {
     },
   },
   uiSounds: {
-    enabled: false,
+    enabled: true,
     soundPack: 'default_wip.soundpack',
     info: {},
     sounds: {},
@@ -428,9 +428,44 @@ const universal = {
       tempDiv.onclick = key.onclick;
       if(key.name == 'Settings') {
         tempDiv.innerText = '';
+        tempDiv.id = 'fd-settings-button';
         tempDiv.style.backgroundImage = 'url(/companion/icons/fd.png)';
         tempDiv.style.border = 'none';
         tempDiv.style.backgroundColor = 'transparent';
+        
+        let quickAction = document.createElement('div');
+        let qa1 = document.createElement('div');
+        let qa2 = document.createElement('div');
+        let qa3 = document.createElement('div');
+        quickAction.id = 'qa-container';
+        qa1.className = 'qa';
+        qa2.className = 'qa';
+        qa3.className = 'qa';
+        qa1.id = 'qa-1';
+        qa2.id = 'qa-2';
+        qa3.id = 'qa-3';
+        qa1.innerText = 'Themes';
+        qa2.innerText = 'Reload All';
+        qa3.innerText = 'Settings';
+        quickAction.appendChild(qa1);
+        quickAction.appendChild(qa2);
+        quickAction.appendChild(qa3);
+        let handlerDown = (ev) => {
+          document.querySelectorAll('.qa').forEach((qa) => {
+            qa.style.opacity = '1';
+          });
+        }
+        let handlerUp = (ev) => {
+          document.querySelectorAll('.qa').forEach((qa) => {
+            qa.style.opacity = '0';
+          });
+        }
+        quickAction.onmousedown = handlerDown;
+        quickAction.onmouseup = handlerUp;
+        quickAction.ontouchstart = handlerDown;
+        quickAction.ontouchend = handlerUp;
+        quickAction.ontouchcancel = handlerUp;
+        tempDiv.appendChild(quickAction);
       }
       if(key.handlers) {
         key.handlers.forEach((h) => {
@@ -476,8 +511,8 @@ const universal = {
            */
   decompressGzipBlob(blob, callback) {
     blob = new Uint8Array(blob);
-    if (!pako || !universal.imported_scripts.includes('https://cdn.jsdelivr.net/npm/pako@1.0.11/dist/pako.min.js')) {
-      universal.import('https://cdn.jsdelivr.net/npm/pako@1.0.11/dist/pako.min.js');
+    if (!pako || !universal.imported_scripts.includes('/scripts/pako.js')) {
+      universal.import('/scripts/pako.js');
     }
     const data = pako.inflate(blob, { to: 'string' });
     callback(null, data);

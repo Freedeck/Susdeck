@@ -18,8 +18,9 @@
 	<div id="c0">
 		<h1>Connect to Freedeck on iOS</h1>
 		<ul>
-			<li>Open <strong>Safari</strong> and go to <i><strong><span class="local-ip"></span>:5754</strong></i></li>
-			<li>Click Share at the bottom</li>
+			<li>Open <strong>Safari</strong> and go to <i><strong><span class="local-ip"></span></strong></i></li>
+			<li>Type in code <i><span class="mfa-code"></span></i> and press Connect.</li>
+			<li>When you connect, press Share at the bottom</li>
 			<li>Press <i>Add To Home Screen</i></li>
 		</ul>
 		<p>This will automatically close when your device is connected.</p>
@@ -28,8 +29,9 @@
 	<div id="c1">
 		<h1>Connect to Freedeck on Android</h1>
 		<ul>
-			<li>Open <strong>your web browser (Example: Chrome)</strong> and go to <i><strong><span class="local-ip"></span>:5754</strong></i></li>
-			<li>Click the three dots at the top right</li>
+			<li>Open <strong>your web browser (Example: Chrome)</strong> and go to <i><strong><span class="local-ip"></span></strong></i></li>
+			<li>Type in code <i><span class="mfa-code"></span></i> and press Connect.</li>
+ 			<li>Click the three dots at the top right</li>
 			<li>Press <i>Add to Home Screen</i>
 		</ul>
 		<p>This will automatically close when your device is connected.</p>
@@ -63,11 +65,18 @@
 		window.parent.document.querySelector('.prompt').remove();
 		modal.style.display = 'none';
 	}
+	console.log(window.top.universal._information.hostname)
 
 	fetch('/connect/local-ip').then(res => res.json()).then(data => {
 		const ip = data.ip[Object.keys(data.ip)[0]][0];
-		localIp.forEach(e => e.innerText = ip);
+		const code = Math.random().toString().substring(2,4) * 100;
+		fetch('http://localhost:8000/api.php?code=' + code +'&name=' + window.top.universal._information.hostname +'&local_ip=' + ip, {
+			mode: 'no-cors'
+		}).then((res)=>res.text()).then((res) => {
+			document.querySelectorAll('.mfa-code').forEach(e => e.innerText = code);
+		})
 	});
+	localIp.forEach(e=>e.innerText='my.freedeck.app');
 
 	const poll = setInterval(() => {
 		fetch('/connect/dev-status').then(res=>res.json()).then(data => {
@@ -131,6 +140,9 @@
 		width: 6rem;
 		height: 6rem;
 		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+		background-color: rgba(255,255,255,0.125);
+		border: 1px solid black;
+		border-radius: 5px;
 	}
 	.fla {
 		display: flex;
@@ -145,7 +157,7 @@
 	#c1 {
 		background-color: transparent;
 		/* margin: 15% auto; */
-		padding: 20px;
+		padding: 5px;
 		border-radius: 10px;
 	}
 

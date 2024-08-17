@@ -10,6 +10,7 @@ module.exports = (_page='./src/fdconnect.html', _showTitlebar=true, width=800, h
       nodeIntegration: false,
       contextIsolation: true,
     },
+    // skipTaskbar: true,
   });
   console.log('Here we go!');
   if (!isUrl) mainWindow.loadFile(path.resolve(_page));

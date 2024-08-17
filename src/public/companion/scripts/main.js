@@ -7,8 +7,20 @@ import {
 } from '../../scripts/ui.js';
 import './global.js';
 import './authfulPage.js'; // Only for authenticated pages
+import contextual from './ctxl.js';
 
 await universal.init('Companion');
+
+contextual.addView('marketplace')
+contextual.addView('plugins')
+contextual.addView('settings')
+
+universal.ctx = contextual;
+universal.connectionTest = true;
+universal.doCtxlLoadAnim = () => {
+  document.querySelector('#ctxl-view-cont > html').style.transition = 'opacity 0.5s';
+  document.querySelector('#ctxl-view-cont').style.display = 'block';
+}
 
 new Sortable(document.querySelector('#keys'), {
   onUpdate: (d) => {
@@ -32,7 +44,7 @@ new Sortable(document.querySelector('#keys'), {
 
 document.querySelector('.toggle-sidebar button').onclick = (ev) => {
   if (document.querySelector('.sidebar').style.display == 'flex') {
-    universal.uiSounds.playSound('slide_close');
+    if (!ev.target.dataset.nosound) universal.uiSounds.playSound('slide_close');
     document.querySelector('.sidebar').style.animation = 'sidebar-slide-out 0.5s';
     document.querySelector('.sidebar').style.animationFillMode = 'forward';
     document.querySelector('.toggle-sidebar button').style.transform = 'rotate(0deg)';
@@ -41,7 +53,7 @@ document.querySelector('.toggle-sidebar button').onclick = (ev) => {
       document.querySelector('.sidebar').style.display = 'none';
     }, 500);
   } else {
-    universal.uiSounds.playSound('slide_open');
+    if (!ev.target.dataset.nosound) universal.uiSounds.playSound('slide_open');
     document.querySelector('.sidebar').style.display = 'flex';
     document.querySelector('.sidebar').style.animation = 'sidebar-slide-in 0.5s';
     document.querySelector('.toggle-sidebar button').style.transform = 'rotate(180deg)';
@@ -267,6 +279,7 @@ const openViewCloseAll = (view) => {
 function editTile(e) {
   universal.uiSounds.playSound('editor_open');
   const interactionData = JSON.parse(e.srcElement.getAttribute('data-interaction'));
+  if (document.querySelector('.toggle-sidebar').style.left != '0px') document.querySelector('.toggle-sidebar button').dataset.nosound = 'true';
   if (document.querySelector('.toggle-sidebar').style.left != '0px') document.querySelector('.toggle-sidebar button').click();
   if (document.querySelector('.contextMenu')) document.querySelector('.contextMenu').style.display = 'none';
   document.querySelector('#advanced-view').style.display = 'none';
@@ -1188,23 +1201,27 @@ function setValue(id, val) {
 }
 
 document.querySelector('#es-fs').oninput = (e) => {
+  universal.uiSounds.playSound('fdc_slider');
   document.documentElement.style.setProperty('--fd-font-size', e.target.value + 'px');
   universal.send(universal.events.default.config_changed, setToLocalCfg('font-size', e.target.value));
 }
 
 document.querySelector('#es-bs').oninput = (e) => {
+  universal.uiSounds.playSound('fdc_slider');
   document.documentElement.style.setProperty('--fd-tile-w', e.target.value + 'rem');
   document.documentElement.style.setProperty('--fd-tile-h', e.target.value + 'rem');
   universal.send(universal.events.default.config_changed, setToLocalCfg('buttonSize', e.target.value));
 }
 
 document.querySelector('#es-fs-reset').onclick = (e) => {
+  universal.uiSounds.playSound('fdc_slider');
   document.documentElement.style.setProperty('--fd-font-size', '15px');
   setValue('#es-fs', 15);
   universal.send(universal.events.default.config_changed, setToLocalCfg('font-size', 15));
 }
 
 document.querySelector('#es-bs-reset').onclick = (e) => {
+  universal.uiSounds.playSound('fdc_slider');
   document.documentElement.style.setProperty('--fd-tile-w', 'var(--fd-btn-w)');
   document.documentElement.style.setProperty('--fd-tile-h', 'var(--fd-btn-h)');
   setValue('#es-bs', 6);
@@ -1223,6 +1240,7 @@ document.querySelector('#es-scroll').onchange = (e) => {
 }
 
 document.querySelector('#es-tc').oninput = (e) => {
+  universal.uiSounds.playSound('fdc_slider');
   let prepend = document.querySelector('#keys');
   let count = document.querySelectorAll('.fdc-placeholder').length;
   let diff = e.target.value - count;
@@ -1261,6 +1279,7 @@ setValue('#es-tr', universal.lclCfg()['tileRows']);
 let lcfg = universal.lclCfg();
 
 document.querySelector('#es-tr').oninput = (e) => {
+  universal.uiSounds.playSound('fdc_slider');
   universal.send(universal.events.default.config_changed, setToLocalCfg('tileRows', e.target.value));
   let tc = 'repeat(5, 2fr)';
   if (lcfg.tileRows) tc = tc.replace('5', e.target.value);
@@ -1274,8 +1293,13 @@ document.querySelector('#es-fill').onchange = (e) => {
   universal.send(universal.events.default.config_changed, setToLocalCfg('fill', e.target.checked));
   universal.send(universal.events.default.reload);
 }
+document.querySelector('#es-center').onchange = (e) => {
+  universal.send(universal.events.default.config_changed, setToLocalCfg('center', e.target.checked));
+  universal.send(universal.events.default.reload);
+}
 
-document.querySelector('#es-lp').oninput = (e) => {
+document.querySelector('#es-lp').oninput = (e) => { 
+  universal.uiSounds.playSound('fdc_slider');
   universal.send(universal.events.default.config_changed, setToLocalCfg('longPressTime', e.target.value));
 }
 
@@ -1285,14 +1309,17 @@ document.querySelector('#es-lp').onmouseup = (e) => {
 }
 
 document.querySelector('#es-lp-reset').onclick = (e) => {
+  universal.uiSounds.playSound('fdc_slider');
   universal.send(universal.events.default.config_changed, setToLocalCfg('longPressTime', 3));
   universal.send(universal.events.default.reload);
 }
 
 document.querySelector('#es-tr-reset').onclick = (e) => {
+  universal.uiSounds.playSound('fdc_slider');
   setValue('#es-tr', 5);
   universal.send(universal.events.default.config_changed, setToLocalCfg('tileRows', 5));
 }
 
 document.querySelector('#es-scroll').checked = universal.lclCfg().scroll;
 document.querySelector('#es-fill').checked = universal.lclCfg().fill;
+document.querySelector('#es-center').checked = universal.lclCfg().center;

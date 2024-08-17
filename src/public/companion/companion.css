@@ -97,7 +97,7 @@ input {
 	align-items: end;
 	font-size: 1.75em;
 	color: white;
-	z-index: 100;
+	z-index: 101;
 	transition-duration: .25s;
 }
 
@@ -316,7 +316,7 @@ a:hover {
 	top: 50%;
 	left: 11.5%;
 	width: 2rem;
-	z-index: 999;
+	z-index: 99;
 	transform: translate(0, -50%);
 }
 
@@ -555,3 +555,22 @@ a:hover {
 	gap: 1rem;
 }
 
+
+
+#ctxl-view-cont {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 100;
+}
+
+@keyframes opacity {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}

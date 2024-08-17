@@ -32,7 +32,7 @@
             <button onclick="window.location.href = '/companion'">To Companion View</button>
         <button onclick="document.querySelector('.settings-menu').style.display = 'none';">Close</button>
     </div>
-    <dialog class="dialog" id="login-dialog">
+    <dialog style="display:none;" class="dialog" id="login-dialog">
         <div id="login-div">
             <h1 id="login-msg">Welcome to your Freedeck.</h1>
             <p>Enter the password to connect to the server</p>
@@ -43,6 +43,11 @@
     </dialog>
     <div id="client-key-container">
         <div id="keys"></div>
+    </div>
+    <div id="qa-container" style="display: none;">
+        <div id="qa-1" class="qa">Themes</div>
+        <div id="qa-2" class="qa">Reload All</div>
+        <div id="qa-3" class="qa">Settings</div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="companion/dist/clientMain.js" type="module"></script>

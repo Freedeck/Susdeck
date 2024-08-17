@@ -16,14 +16,15 @@ universal.listenFor('init', () => {
       if (document.querySelector('#login-msg')) document.querySelector('#login-msg').setHTML('Freedeck v6');
     };
     // while (!document.querySelector('#sidebar > ul')) {}
-    document.querySelector('#login-dialog').style.display = 'block';
     document.querySelector('#sidebar > ul').appendChild(login);
   }
   
   if (universal.load('fd.passwd')) {
     universal.login(universal.load('fd.passwd'));
+    document.querySelector('#login-dialog').style.display = 'none';
   } else {
     document.querySelector('#login-dialog').style.display = 'block';
+    document.querySelector('#login-div').style.opacity = '1';
   }
   
   universal.on(universal.events.login.login, (dat) => {

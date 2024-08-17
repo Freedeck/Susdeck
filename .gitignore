@@ -12,6 +12,6 @@ src/public/us-icons/*
 src/public/hooks/*
 src/public/companion/dist/*
 
-src/public/companion/sounds/default
+src/public/companion/sounds/default*
 
 FreedeckCore.log

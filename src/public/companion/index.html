@@ -12,12 +12,13 @@
 </head>
 
 <body style="overflow: hidden;">
-    <dialog class="dialog" id="login-dialog">
+    <dialog style="display:none;" class="dialog" id="login-dialog">
         <div id="login-div">
-            <h1>Freedeck v6</h1>
+            <h1 id="login-msg">Companion</h1>
             <p>Enter the password to connect to the server</p>
             <input type="password" id="password">
             <button onclick="universal.login(document.getElementById('password').value)">Login</button>
+            <button onclick="window.location.reload();">Reload</button>
         </div>
     </dialog>
     <dialog id="editor">
@@ -213,6 +214,14 @@
                             <h2>Scroll Long Text</h2>
                         </label>
                         <input class="fdc-checkbox" type="checkbox" id="es-scroll">
+                    </div>
+                </div>
+                <div class="flex-wrap-r">
+                    <div class="flex-wrap-r alc">
+                        <label for="es-center">
+                            <h2>Center Tiles</h2>
+                        </label>
+                        <input class="fdc-checkbox" type="checkbox" id="es-center">
                     </div>
                 </div>
                 <div class="flex-wrap-r">

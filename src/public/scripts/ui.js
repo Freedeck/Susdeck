@@ -3,6 +3,14 @@ const Pages = {};
 import otherHandler from './ui/otherHandler.js';
 
 /**
+ * @name quickActions
+ * @param {*} e The event that was triggered
+ */
+function quickActions(e) {
+  
+}
+
+/**
  * @name reloadProfile
  * @description Reload the current profile
  */
@@ -60,6 +68,11 @@ function reloadSounds() {
     }
     try {
       if (snd.pos >= universal.config.iconCountPerPage * (universal.page + 1)) return;
+      if(universal.lclCfg().center && !keyObject.classList.contains('center')) {
+        keyObject.classList.add('tiles-center');
+      } else {
+        keyObject.classList.remove('tiles-center');
+      }
       keyObject.setAttribute('data-interaction', JSON.stringify(snd));
       keyObject.setAttribute('data-name', k);
       keyObject.className = keyObject.className.replace('unset', '');
@@ -112,5 +125,6 @@ function reloadSounds() {
 export const UI = {
   reloadSounds,
   reloadProfile,
+  quickActions,
   Pages,
 };

@@ -9,7 +9,7 @@ universal.listenFor('init', () => {
   login.style.display = 'block';
   document.querySelector('#sidebar > ul').appendChild(login);
 
-  universal.uiSounds.playSound('page_enter');
+  if(window.location.href.includes('sound=true')) universal.uiSounds.playSound('page_enter');
 });
 
 document.onkeydown = (ev) => universal.uiSounds.playSound('int_type');
@@ -23,6 +23,12 @@ const sidebar = [
   // {'Webpack Recompile': '+universal.send(universal.events.default.recompile)'}
 ];
 
+const pages = [
+  'plugins',
+  'marketplace',
+  'settings',
+]
+
 const sidebarEle = document.createElement('div');
 sidebarEle.id = 'sidebar';
 const sidebarUl = document.createElement('ul');
@@ -31,6 +37,7 @@ sidebarUl.setHTML('<li style="font-size: .65em; background: none; margin: 0 auto
 sidebar.forEach((itm) => {
   const name = Object.keys(itm)[0];
   const val = itm[name];
+  const page = pages.find((p) => val.includes(p)) || val;
   if (val.startsWith('+')) {
     const ele = document.createElement('li');
     ele.setHTML(`<a onclick="${val.substring(1)}">${name}</a>`);
@@ -39,9 +46,25 @@ sidebar.forEach((itm) => {
   }
   const ele = document.createElement('li');
   ele.setAttribute('hovereffect', 'yes');
-  ele.setHTML(`<a href="${val}">${name}</a>`);
+  ele.setHTML(`<a onclick="universal.vopen('${page}')">CTXL:${name}</a>`);
   sidebarUl.appendChild(ele);
 });
+
+universal.vopen = (v) => {
+  universal.uiSounds.playSound('sidebar');
+  if(!pages.includes(v)) {
+    if(document.querySelector(universal.ctx.view_container))
+      document.querySelector(universal.ctx.view_container).style.display = 'none';
+    if(v.startsWith('/')) {
+      window.location.href = v;
+    }
+    return;
+  }
+  if(document.querySelector(universal.ctx.view_container))
+    document.querySelector(universal.ctx.view_container).style.display = 'block';
+  universal.ctx.destructiveView(v);
+  universal.doCtxlLoadAnim();
+}
 
 document.body.appendChild(sidebarEle);
 

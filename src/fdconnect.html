@@ -52,7 +52,7 @@
             localStorage.removeItem(btoa('fd.BfCon'));
             window.location.href = atob(localStorage.getItem(btoa('fd.BfCon')));
           }
-          window.location.replace(url.value + '/companion?fdc=true');
+          window.location.replace(url.value + '/companion?fdc=true&sound=true');
         }).catch(failure => {
           er.style.display = 'block';
           er.innerText = failure.toString();

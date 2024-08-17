@@ -368,7 +368,7 @@ const universal = {
   },
   uiSounds: {
     enabled: false,
-    soundPack: 'fdsp-beta.soundpack',
+    soundPack: 'default_wip.soundpack',
     info: {},
     sounds: {},
     playing: [],
@@ -413,9 +413,11 @@ const universal = {
       },
       {
         name: 'Settings',
-        onclick: (ev) => {
-          settingsMenu();
-        },
+        onclick: (ev) => {},
+        handlers: [
+          'onmousedown',
+        ],
+        onmousedown: UI.quickActions,
       },
     ];
 
@@ -424,6 +426,17 @@ const universal = {
       tempDiv.className = 'button builtin k';
       tempDiv.innerText = key.name;
       tempDiv.onclick = key.onclick;
+      if(key.name == 'Settings') {
+        tempDiv.innerText = '';
+        tempDiv.style.backgroundImage = 'url(/companion/icons/fd.png)';
+        tempDiv.style.border = 'none';
+        tempDiv.style.backgroundColor = 'transparent';
+      }
+      if(key.handlers) {
+        key.handlers.forEach((h) => {
+          tempDiv[h] = key[h];
+        })
+      }
       universal.keys.appendChild(tempDiv);
     });
   },

@@ -368,17 +368,24 @@ const universal = {
   },
   uiSounds: {
     enabled: false,
-    soundPack: 'futuristic_alt.soundpack',
+    soundPack: 'futuristic.soundpack',
     info: {},
     sounds: {},
     playing: [],
     reload: () => {
       universal.uiSounds.enabled = universal.load('uiSounds') == 'true' ? true : false;
-      universal.uiSounds.soundPack = universal.load('soundpack') || 'futuristic_alt.soundpack';
-      universal.uiSounds.load();
+      universal.uiSounds.soundPack = universal.load('soundpack') || 'futuristic.soundpack';
+      universal.uiSounds.load().then(() => {
+        universal.uiSounds.playSound('page_enter');
+      });
     },
     load: async () => {
-      const res = await fetch('/companion/sounds/' + universal.uiSounds.soundPack + '/manifest.fdsp.json');
+      const res = await fetch('/companion/sounds/' + universal.uiSounds.soundPack + '/manifest.fdsp.json').catch((err) => {
+        console.error(err);
+        universal.sendToast('Failed to load soundpack. Defaulting to futuristic.');
+        universal.uiSounds.soundPack = 'futuristic.soundpack';
+        universal.uiSounds.reload(); 
+      });
       const data = await res.json();
       universal.uiSounds.sounds = data.sounds;
       universal.uiSounds.info = data.info;
@@ -574,6 +581,11 @@ const universal = {
       HTMLElement.prototype.setHTML = function (html) {
         this.innerHTML = html;
       };
+    }
+    if(!document.querySelector('#snackbar')) {
+      const snackbar = document.createElement('div');
+      snackbar.id = 'snackbar';
+      document.body.appendChild(snackbar);
     }
     const s = document.createElement('div');
     s.id = 'toast';

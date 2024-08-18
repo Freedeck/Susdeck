@@ -28,8 +28,8 @@ function reloadProfile() {
     const k = Object.keys(sound)[0];
     const snd = sound[k];
     if (snd.pos >= max * universal.config.iconCountPerPage) {
-      max++;
       Pages[max] = true;
+      max++;
     }
   }
 }

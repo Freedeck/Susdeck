@@ -368,15 +368,20 @@ const universal = {
   },
   uiSounds: {
     enabled: true,
-    soundPack: 'default_wip.soundpack',
+    soundPack: 'futuristic.soundpack',
     info: {},
     sounds: {},
     playing: [],
+    reload: () => {
+      universal.uiSounds.soundPack = universal.load('soundpack') || 'futuristic.soundpack';
+      universal.uiSounds.load();
+    },
     load: async () => {
       const res = await fetch('/companion/sounds/' + universal.uiSounds.soundPack + '/manifest.fdsp.json');
       const data = await res.json();
       universal.uiSounds.sounds = data.sounds;
       universal.uiSounds.info = data.info;
+      return true;
     },
     playSound: (name) => {
       if (!universal.uiSounds.enabled) return;

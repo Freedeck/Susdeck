@@ -2,21 +2,26 @@
 <div class="themelist"></div>
 
 <div class="soundpack">
-        <br />
-        <h1>UI Sounds</h1>
-        <p>Sound Pack: <span id="soundpack-title">Soundpack</span> (<span id="soundpack-id"></span>) v<span id="soundpack-version">0.0.0</span> by <span
-                id="soundpack-author">somebody</span></p>
-        <ul class="uisounds"></ul>
-    </div>
+    <br />
+    <h1>UI Sounds</h1>
+    <h2>Soundpacks</h2>
+    <ul class="soundpacks"></ul>
+    <h2>Current Soundpack</h2>
+    <p>Sound Pack: <span id="soundpack-title">Soundpack</span> (<span id="soundpack-id"></span>) v<span
+            id="soundpack-version">0.0.0</span> by <span id="soundpack-author">somebody</span></p>
+    <ul class="uisounds"></ul>
+</div>
 <h1>Developer Tools</h1>
 <style>
-    .uisounds {
+    .uisounds,
+    .soundpacks {
         display: flex;
         flex-wrap: wrap;
         gap: 5px;
     }
 
-    .uisounds li {
+    .uisounds li,
+    .soundpacks li {
         display: flex;
         gap: 5px;
         background: var(--fdm-background);
@@ -31,7 +36,7 @@
 <div class="settings"></div>
 <script type="module">
     import '/companion/scripts/settingsThemes.js';
-    st_ldt(); 
+    st_ldt();
 
     createSettingCategory('Danger Zone $(DANGEROUS)', 'dz');
 
@@ -369,15 +374,52 @@
     document.querySelector('#soundpack-author').innerText = universal.uiSounds.info.author;
 
 
-    const uis = document.querySelector('.uisounds');
-    const uisounds = universal.uiSounds.sounds;
-    Object.keys(uisounds).forEach((sound) => {
+    function loadSounds() {
+        const uis = document.querySelector('.uisounds');
+        uis.innerHTML = '';
+        const uisounds = universal.uiSounds.sounds;
+        Object.keys(uisounds).forEach((sound) => {
+            const li = document.createElement('li');
+            li.innerText = sound;
+            li.onclick = () => {
+                universal.uiSounds.playSound(sound);
+            };
+            uis.appendChild(li);
+        });
+    }
+
+    universal._information.soundpacks.forEach((soundpack) => {
         const li = document.createElement('li');
-        li.innerText = sound;
-        li.onclick = () => {
-            universal.uiSounds.playSound(sound);
+        li.innerText = soundpack;
+        li.classList.add('soundpack');
+        li.onclick = async () => {
+            document.querySelector('#soundpack-id').innerText = 'LOADING';
+            document.querySelector('#soundpack-title').innerText = 'LOADING';
+            document.querySelector('#soundpack-version').innerText = 'LOADING';
+            document.querySelector('#soundpack-author').innerText = 'LOADING';
+            document.querySelectorAll('.soundpack').forEach((el) => {
+                el.disabled = true;
+            });
+            const res = await fetch('/companion/sounds/' + soundpack + '/manifest.fdsp.json');
+            const data = await res.json();
+            const info = data.info;
+            universal.save('soundpack', info.id);
+            universal.uiSounds.reload();
+            universal.uiSounds.soundPack = info.id;
+            universal.uiSounds.load().then(() => {
+                loadSounds();
+            })
+            document.querySelector('#soundpack-id').innerText = info.id;
+            document.querySelector('#soundpack-title').innerText = info.name;
+            document.querySelector('#soundpack-version').innerText = info.version;
+            document.querySelector('#soundpack-author').innerText = info.author;
+            document.querySelectorAll('.soundpack').forEach((el) => {
+                el.disabled = false;
+            });
         };
-        uis.appendChild(li);
-    });
+        document.querySelector('.soundpacks').appendChild(li);
+    })
+
+    loadSounds();
 
 </script>

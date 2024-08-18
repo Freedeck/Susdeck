@@ -83,6 +83,7 @@ window.oncontextmenu = function (e) {
   custMenu.style.left = e.clientX - window.scrollX + 'px';
   custMenu.style.position = 'absolute';
   e.srcElement.dataset.name == undefined ? e.srcElement.dataset.name = '' : '';
+  if(e.srcElement.dataset.name == '') e.srcElement.dataset.name = 'None';
 
   const custMenuTitle = document.createElement('div');
   custMenuTitle.innerText = 'Editing ' + (e.srcElement.dataset.name != '' ? e.srcElement.dataset.name : 'nothing!');

@@ -34,6 +34,7 @@ const eventNames = {
     plugins_updated: 'dPU',
     update_plugins: 'dUP',
     config_changed: 'dCC',
+    slider_update: 'sU',
   },
   
   companion: {

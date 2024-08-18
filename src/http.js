@@ -129,6 +129,10 @@ app.get('/native/*', (req,res) => {
   })
 })
 
+app.get('/slider-value-change/:sTU/:sV', (req, res) => {
+  notifMan.add('handoff-api', 'nb-slider-' + req.params.sTU+"-"+req.params.sV);
+});
+
 app.get('/connect/plugins', (req,res) => {
   let idList = [];
   let pl = plugins._plc.keys();

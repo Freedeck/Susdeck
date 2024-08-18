@@ -46,6 +46,11 @@ io.on('connection', (socket) => {
           io.emit(eventNames.default.plugins_updated);
           break;
       }
+      if(notification.data.startsWith('nb-slider-')) {
+        let slider = notification.data.split('-')[2];
+        let value = notification.data.split('-')[3];
+        io.emit(eventNames.default.slider_update, {slider, value});
+      }
       return;
     }
     socket.emit(eventNames.default.notif, JSON.stringify(notification));

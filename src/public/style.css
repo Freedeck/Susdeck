@@ -518,25 +518,29 @@ input:disabled {
 }
 
 .qa {
-    border-radius: 100%;
     padding: 5px;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
-    opacity: 0;
+    opacity: 1;
     transition-duration: .25s;
-    position: relative;
-}
-@keyframes active {
-    0% {
-        height: 100%;
-    }
-    100% {
-        height: var(--fd-tile-h);
-    }
 }
 
-.qa:hover {
-    opacity: 1;
-    animation: active;
+#qa-1 {
+    position: fixed;
+    bottom: calc(var(--fd-tile-h) * 1.25);
     height: var(--fd-tile-h);
+    left: 100%;
+    width: var(--fd-tile-w);
+}
+
+#qa-2 {
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+#qa-3 {
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }

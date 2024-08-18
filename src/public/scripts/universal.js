@@ -373,6 +373,7 @@ const universal = {
     sounds: {},
     playing: [],
     reload: () => {
+      universal.uiSounds.enabled = universal.load('uiSounds') == 'true' ? true : false;
       universal.uiSounds.soundPack = universal.load('soundpack') || 'futuristic_alt.soundpack';
       universal.uiSounds.load();
     },

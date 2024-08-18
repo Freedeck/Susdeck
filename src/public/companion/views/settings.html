@@ -1,9 +1,11 @@
 <h1>Themes</h1>
 <div class="themelist"></div>
 
+<h1>UI Sounds</h1>
+<label for="uis">Enable UI Sounds? (Beta!)</label>
+<input type="checkbox" id="uis">
 <div class="soundpack">
     <br />
-    <h1>UI Sounds</h1>
     <h2>Soundpacks</h2>
     <ul class="soundpacks"></ul>
     <h2>Current Soundpack</h2>
@@ -366,6 +368,13 @@
                 break;
         }
     }
+
+    document.querySelector('#uis').checked = universal.uiSounds.enabled;
+    document.querySelector('#uis').onchange = () => {
+        universal.uiSounds.enabled = document.querySelector('#uis').checked;
+        universal.save('uiSounds', universal.uiSounds.enabled);
+        document.querySelector('.soundpack').style.display = universal.uiSounds.enabled ? 'block' : 'none';
+    };
 
     document.querySelector('.soundpack').style.display = universal.uiSounds.enabled ? 'block' : 'none';
     document.querySelector('#soundpack-id').innerText = universal.uiSounds.info.id;

@@ -1,5 +1,9 @@
 
 universal.listenFor('loadHooks', () => {
+  ldt();
+})
+
+window.st_ldt = () => {
   Object.keys(universal.themes).forEach((id) => {
     const theme = universal.themes[id];
     const element = document.createElement('div');
@@ -26,4 +30,4 @@ universal.listenFor('loadHooks', () => {
     element.appendChild(apply);
     document.querySelector('.themelist').appendChild(element);
   });
-})
+}

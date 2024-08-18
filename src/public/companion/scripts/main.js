@@ -561,7 +561,7 @@ universal._tyc.keys().forEach((type) => {
     interaction.type = type;
     interaction.plugin = plugin;
     interaction.renderType = renderType;
-    interaction.data = templateData;
+    interaction.data = {...templateData, ...interaction.data};
     document.querySelector('.spi[data-type="' + type + '"][data-plugin="' + plugin + '"]').classList.add('spi-active')
     document.querySelector('#editor-btn').setAttribute('data-interaction', JSON.stringify(interaction));
     document.querySelector('#type').value = type;

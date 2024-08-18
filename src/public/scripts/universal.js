@@ -367,13 +367,13 @@ const universal = {
     },
   },
   uiSounds: {
-    enabled: true,
-    soundPack: 'futuristic.soundpack',
+    enabled: false,
+    soundPack: 'futuristic_alt.soundpack',
     info: {},
     sounds: {},
     playing: [],
     reload: () => {
-      universal.uiSounds.soundPack = universal.load('soundpack') || 'futuristic.soundpack';
+      universal.uiSounds.soundPack = universal.load('soundpack') || 'futuristic_alt.soundpack';
       universal.uiSounds.load();
     },
     load: async () => {
@@ -543,7 +543,7 @@ const universal = {
     return new Promise((resolve, reject) => {
       try {
         window['universal'] = universal;
-        universal.uiSounds.load();
+        universal.uiSounds.reload();
         universal._socket = io();
         universal._socket.on('connect', () => {
           universal.connected = true;

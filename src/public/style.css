@@ -510,37 +510,3 @@ input:disabled {
     left: 50%;
     transform: translate(-50%, -50%);
 }
-
-#qa-container {
-    border-radius: 100%;
-    width: var(--fd-tile-w);
-    height: var(--fd-tile-h);
-}
-
-.qa {
-    padding: 5px;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    opacity: 1;
-    transition-duration: .25s;
-}
-
-#qa-1 {
-    position: fixed;
-    bottom: calc(var(--fd-tile-h) * 1.25);
-    height: var(--fd-tile-h);
-    left: 100%;
-    width: var(--fd-tile-w);
-}
-
-#qa-2 {
-    position: fixed;
-    top: 0;
-    right: 0;
-}
-
-#qa-3 {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-}

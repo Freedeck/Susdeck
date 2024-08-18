@@ -83,10 +83,13 @@ window.oncontextmenu = function (e) {
   custMenu.style.left = e.clientX - window.scrollX + 'px';
   custMenu.style.position = 'absolute';
   e.srcElement.dataset.name == undefined ? e.srcElement.dataset.name = '' : '';
-  if(e.srcElement.dataset.name == '') e.srcElement.dataset.name = 'None';
+
+  let title = (e.srcElement.dataset.name != '' ? e.srcElement.dataset.name : 'nothing!');
+  if (e.srcElement.dataset.name == '' && e.srcElement.dataset.interaction) title = 'a tile with no name!';
+  let specialFlag = e.srcElement.classList.contains('unset');
 
   const custMenuTitle = document.createElement('div');
-  custMenuTitle.innerText = 'Editing ' + (e.srcElement.dataset.name != '' ? e.srcElement.dataset.name : 'nothing!');
+  custMenuTitle.innerText = 'Editing ' + title;
   custMenuTitle.style.fontWeight = 'bold';
   custMenuTitle.style.marginBottom = '5px';
   custMenu.appendChild(custMenuTitle);
@@ -94,7 +97,7 @@ window.oncontextmenu = function (e) {
   let custMenuItems = [
     'New Tile',
   ];
-  if (e.srcElement.dataset.name != '') {
+  if (title != '' && !specialFlag) {
     custMenuItems = ['Edit Tile'].concat(custMenuItems);
     custMenuItems.push('Remove Tile');
   } else {

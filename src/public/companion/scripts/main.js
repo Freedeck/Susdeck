@@ -1056,7 +1056,10 @@ if (universal._information.mobileConnected) document.querySelector('.mobd').styl
 if (universal.load('pitch')) document.querySelector('#pitch').value = universal.load('pitch');
 
 if (universal.load('has_setup') == 'false') {
-  window.location.href = '/companion/settings.html?err=ns0f';
+  universal.ctx.destructiveView('settings');
+  setTimeout(() => {
+    window.st_run_setup();
+  }, 250);
 }
 
 // get url params

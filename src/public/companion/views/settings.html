@@ -239,6 +239,8 @@
         });
     };
 
+    window.st_run_setup = setupWizard;
+
     /**
      * Create a list picker modal.
      * @param {String} title The title of the modal
@@ -356,18 +358,6 @@
     window.createSelectSetting = createSelectSetting;
     window.createInputSetting = createInputSetting;
     window.createSettingCategory = createSettingCategory;
-
-    // get url params
-    const urlParams = new URLSearchParams(window.location.search);
-    const err = urlParams.get('err');
-    if (err) {
-        switch (err) {
-            case 'ns0f':
-                universal.sendToast('Initiating setup wizard...');
-                setupWizard();
-                break;
-        }
-    }
 
     document.querySelector('#uis').checked = universal.uiSounds.enabled;
     document.querySelector('#uis').onchange = () => {

@@ -908,6 +908,7 @@ window.onclick = function (e) {
   if (e.srcElement.className != 'contextMenu') {
     if (document.querySelector('.contextMenu')) document.querySelector('.contextMenu').remove();
   }
+  universal.uiSounds.playSound('click');
 };
 
 
@@ -1208,8 +1209,6 @@ document.querySelector('#es-fs').oninput = (e) => {
 
 document.querySelector('#es-bs').oninput = (e) => {
   universal.uiSounds.playSound('fdc_slider');
-  document.documentElement.style.setProperty('--fd-tile-w', e.target.value + 'rem');
-  document.documentElement.style.setProperty('--fd-tile-h', e.target.value + 'rem');
   universal.send(universal.events.default.config_changed, setToLocalCfg('buttonSize', e.target.value));
 }
 
@@ -1222,8 +1221,6 @@ document.querySelector('#es-fs-reset').onclick = (e) => {
 
 document.querySelector('#es-bs-reset').onclick = (e) => {
   universal.uiSounds.playSound('fdc_slider');
-  document.documentElement.style.setProperty('--fd-tile-w', 'var(--fd-btn-w)');
-  document.documentElement.style.setProperty('--fd-tile-h', 'var(--fd-btn-h)');
   setValue('#es-bs', 6);
   universal.send(universal.events.default.config_changed, setToLocalCfg('buttonSize', 6));
 }
@@ -1324,6 +1321,9 @@ document.querySelector('#es-scroll').checked = universal.lclCfg().scroll;
 document.querySelector('#es-fill').checked = universal.lclCfg().fill;
 document.querySelector('#es-center').checked = universal.lclCfg().center;
 
-window.onclick = () => {
-  universal.uiSounds.playSound('click');
-}
+universal.on(universal.events.default.plugins_updated, () => {
+  const dialog = document.querySelector('dialog');
+  if (!dialog.open) dialog.showModal();
+  universal.uiSounds.playSound('int_prompt')
+  window.location.reload();
+});

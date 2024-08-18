@@ -1,6 +1,6 @@
 
 universal.listenFor('loadHooks', () => {
-  ldt();
+  st_ldt();
 })
 
 window.st_ldt = () => {

@@ -37,7 +37,7 @@ new Sortable(document.querySelector('#keys'), {
       }));
     universal.page = 0;
   },
-  filter: '.unset',
+  filter: '.unset .builtin',
   preventOnFilter: true,
 });
 
@@ -342,14 +342,12 @@ function editTile(e) {
         let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
 
         const select = document.querySelector('#system-select');
-        data.push({
-          name: '_fd.System',
-          friendly: 'System',
-        })
+        select.innerHTML = '';
+
         data.forEach((app) => {
           const option = document.createElement('option');
           let friendly = app.friendly != '' ? app.friendly + ' (' + app.name + ')' : app.name;
-          if (app.name == '_fd.System') friendly = 'System';
+          if (app.name == '_fd.System') friendly = 'System Volume';
           option.innerText = friendly;
           option.value = app.name;
           if (int.data && int.data.app && int.data.app == app.name) option.selected = true;
@@ -627,11 +625,12 @@ document.querySelector('#none-system').onclick = (e) => {
     }
     let int = JSON.parse(document.querySelector('#editor-btn[data-interaction]').getAttribute('data-interaction'));
     const select = document.querySelector('#system-select');
+    select.innerHTML = '';
 
     data.forEach((app) => {
       const option = document.createElement('option');
       let friendly = app.friendly != '' ? app.friendly + ' (' + app.name + ')' : app.name;
-      if (app.name == '_fd.System') friendly = 'System';
+      if (app.name == '_fd.System') friendly = 'System Volume';
       option.innerText = friendly;
       option.value = app.name;
       if (int.data && int.data.app && int.data.app == app.name) option.selected = true;

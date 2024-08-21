@@ -56,9 +56,6 @@ const eventNames = {
   },
 
   rpc: {
-    _crcv: {
-      authorize: 'crpc0'
-    },
     authorize: 'RPC.Authorize',
     
   }

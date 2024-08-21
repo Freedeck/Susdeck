@@ -57,6 +57,8 @@ io.on('connection', (socket) => {
     NotificationManager.once('newNotification', sendNotification);
   }
 
+  socket.sendNotif = sendNotification;
+
   NotificationManager.once('newNotification', sendNotification);
 
   socket.on = (event, callback) => {

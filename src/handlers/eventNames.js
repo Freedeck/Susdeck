@@ -55,6 +55,14 @@ const eventNames = {
     native_keypress: 'nkP',
   },
 
+  rpc: {
+    _crcv: {
+      authorize: 'crpc0'
+    },
+    authorize: 'RPC.Authorize',
+    
+  }
+
 };
 
 if ('exports' in module) module.exports = eventNames;

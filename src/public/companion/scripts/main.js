@@ -1071,6 +1071,7 @@ if (err) {
     case 'last-step':
       universal.sendToast('Initiating connection help wizard');
       universal.connHelpWizard();
+      window.history.replaceState({}, document.title, window.location.pathname);
       break;
   }
 }

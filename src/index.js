@@ -5,24 +5,6 @@ const debug = require('./utils/debug');
 
 let DOES_RUN_SERVER = true;
 const DOES_SETTINGS_EXIST_YET = fs.existsSync(path.join(__dirname, 'configs/config.fd.js'));
-
-if (!DOES_SETTINGS_EXIST_YET) {
-  const {app} = require('electron');
-  app.on('ready', () => {
-    require(path.resolve('./src/private/setup.js'))().then(() => {
-      console.log(picocolors.bgGreen('Setup complete!'));
-      app.quit();
-    });
-  });
-  return;
-}
-
-const settings = require('./managers/settings');
-
-fs.writeFileSync(path.resolve('./FreedeckCore.log'), `A{${Date.now()}} Cleared. Launching autoupdater.\n`);
-const appSettings = settings.settings();
-debug.writeLogs = appSettings.writeLogs;
-
 let DO_COMPANION = true;
 
 if (process.argv.includes('--server-only')) {
@@ -34,6 +16,27 @@ if (process.argv.includes('--server-only')) {
     DOES_RUN_SERVER = false;
   }
 }
+if (!DOES_SETTINGS_EXIST_YET && !DOES_RUN_SERVER) {
+  const {app} = require('electron');
+  app.on('ready', () => {
+    require(path.resolve('./src/private/setup.js'))().then(() => {
+      console.log(picocolors.bgGreen('Setup complete!'));
+      app.quit();
+    });
+  });
+  return;
+}
+
+if(!DOES_SETTINGS_EXIST_YET && DOES_RUN_SERVER) {
+  return;
+}
+const settings = require('./managers/settings');
+
+fs.writeFileSync(path.resolve('./FreedeckCore.log'), `A{${Date.now()}} Cleared. Launching autoupdater.\n`);
+const appSettings = settings.settings();
+debug.writeLogs = appSettings.writeLogs;
+
+
 
 if (!DO_COMPANION && DOES_RUN_SERVER) require('./server');
 if (DO_COMPANION) {

@@ -369,6 +369,7 @@ a:hover {
 
 .fdc-slider {
 	-webkit-appearance: none;
+	appearance: none;
 	width: 100%;
 	height: 2px;
 	background-color: rgba(221, 221, 221, 0.5);

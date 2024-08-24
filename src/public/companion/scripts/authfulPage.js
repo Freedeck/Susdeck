@@ -13,7 +13,7 @@ universal.listenFor("init", () => {
 		login.setHTML('<a href="#">Login</a>');
 		login.onclick = () => {
 			if (document.querySelector("#login-msg"))
-				document.querySelector("#login-msg").setHTML("Freedeck v6");
+				document.querySelector("#login-msg").setHTML("Login to Freedeck");
 		};
 		// while (!document.querySelector('#sidebar > ul')) {}
 		document.querySelector("#sidebar > ul").appendChild(login);

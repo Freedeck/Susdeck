@@ -1,4 +1,4 @@
-# Freedeck v6
+# Freedeck 
 
 <center>
 <img src="./assets/logo_big.png" width="120" height="120">

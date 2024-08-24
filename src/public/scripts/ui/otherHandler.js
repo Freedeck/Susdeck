@@ -1,6 +1,6 @@
-import defaultHandler from './defaultHandler.js';
-import sliderHandler from './slider.js';
-import textHandler from './textHandler.js';
+import defaultHandler from "./defaultHandler.js";
+import sliderHandler from "./slider.js";
+import textHandler from "./textHandler.js";
 
 /**
  * Other Button type handler
@@ -9,24 +9,24 @@ import textHandler from './textHandler.js';
  * @param {*} snd The sound object
  * @param {*} rawDat The raw data
  */
-export default function(sndType, keyObject, snd, rawDat) {
-  if (sndType == 'fd.sound') defaultHandler(snd, keyObject, rawDat);
-  else if(sndType == 'fd.none') textHandler(snd, keyObject, rawDat, true);
-  else if(sndType == 'fd.select') textHandler(snd, keyObject, rawDat, true);
-  else {
-    switch (snd.renderType) {
-      default:
-        defaultHandler(snd, keyObject, rawDat);
-        break;
-      case 'button':
-        defaultHandler(snd, keyObject, rawDat);
-        break
-      case 'slider':
-        sliderHandler(snd, keyObject, rawDat);
-        break;
-      case 'text':
-        textHandler(snd, keyObject, rawDat);
-        break
-    }
-  }
-};
+export default function (sndType, keyObject, snd, rawDat) {
+	if (sndType === "fd.sound") defaultHandler(snd, keyObject, rawDat);
+	else if (sndType === "fd.none") textHandler(snd, keyObject, rawDat, true);
+	else if (sndType === "fd.select") textHandler(snd, keyObject, rawDat, true);
+	else {
+		switch (snd.renderType) {
+			case "button":
+				defaultHandler(snd, keyObject, rawDat);
+				break;
+			case "slider":
+				sliderHandler(snd, keyObject, rawDat);
+				break;
+			case "text":
+				textHandler(snd, keyObject, rawDat);
+				break;
+			default:
+				defaultHandler(snd, keyObject, rawDat);
+				break;
+		}
+	}
+}

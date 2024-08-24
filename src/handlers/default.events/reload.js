@@ -1,5 +1,5 @@
-const eventNames = require('../eventNames');
+const eventNames = require("../eventNames");
 
-module.exports = ({io}) => {
-  io.emit(eventNames.default.reload);
+module.exports = ({ io }) => {
+	io.emit(eventNames.default.reload);
 };

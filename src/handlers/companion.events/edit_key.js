@@ -7,7 +7,7 @@ module.exports = ({ io, data }) => {
 	const profiles = settings.profiles[settings.profile];
 
 	for (const snd of profiles) {
-		const key = snd[Object.keys(snd)[0]];
+		const key = Object.keys(snd)[0];
 		if (snd[key].uuid === interaction.uuid) {
 			if (name !== key) {
 				delete snd[key];

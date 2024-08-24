@@ -562,6 +562,7 @@ const generateProfileSelect = () => {
 		document
 			.querySelector("#editor-btn")
 			.setAttribute("data-interaction", JSON.stringify(int));
+		loadData(int.data);
 	};
 };
 

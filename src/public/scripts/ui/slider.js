@@ -73,6 +73,13 @@ export default function (data, keyObject, raw) {
 
 		const rounded = Number.parseFloat(value).toFixed(1);
 		sliderPercentage.innerText = `${rounded}${data.data.format ? data.data.format : "%"}`;
+	
+		universal.send(universal.events.keypress, {
+			isSlider: true,
+			sliderValue: data.data.value,
+			event: event,
+			btn: data,
+		});
 	};
 
 	setInterval(() => {
@@ -96,16 +103,18 @@ export default function (data, keyObject, raw) {
 	}, 500);
 
 	const touchDownEvent = (e) => {
-		if (e.target !== sliderThumb) return;
 		sliderContainer.dataset.dragging = true;
 		isDragging = true;
+	};
+	const touchUpEvent = (e) => {
+		sliderContainer.dataset.dragging = false;
+		isDragging = false;
 	};
 
 	sliderThumb.addEventListener("mousedown", touchDownEvent);
 	sliderThumb.addEventListener("touchstart", touchDownEvent);
-	sliderContainer.addEventListener("mousedown", touchDownEvent);
-	sliderContainer.addEventListener("touchstart", touchDownEvent);
-
+	sliderThumb.addEventListener("mouseup", touchUpEvent);
+	sliderThumb.addEventListener("touchend", touchUpEvent);
 	document.addEventListener("mousemove", (event) => {
 		if (isDragging) {
 			updateSlider(event);
@@ -118,15 +127,6 @@ export default function (data, keyObject, raw) {
 		}
 	});
 
-	document.addEventListener("mouseup", () => {
-		isDragging = false;
-		sliderContainer.dataset.dragging = false;
-	});
-
-	document.addEventListener("touchend", () => {
-		isDragging = false;
-		sliderContainer.dataset.dragging = false;
-	});
 
 	const percent =
 		((data.data.value - data.data.min) / (data.data.max - data.data.min)) * 100;
@@ -134,13 +134,4 @@ export default function (data, keyObject, raw) {
 	if (data.data.direction === "vertical") {
 		sliderContainer.style.background = `linear-gradient(to top, var(--fd-slider-background) ${percent}%, var(--fd-slider-foreground) ${percent}%)`;
 	}
-
-	keyObject.onclick = (ev) => {
-		universal.send(universal.events.keypress, {
-			isSlider: true,
-			sliderValue: data.data.value,
-			event: ev,
-			btn: data,
-		});
-	};
 }

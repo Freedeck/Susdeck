@@ -34,7 +34,7 @@ export function generic() {
 	});
 	setInterval(() => {
 		grabAndHandle();
-	}, 1000);
+	}, 250);
 }
 
 const sendVolume = (padded, app = "") => {

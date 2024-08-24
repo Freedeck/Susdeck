@@ -62,9 +62,9 @@ function reloadSounds() {
 		const snd = sound[k];
 		let keyObject = document.querySelector(`.k-${snd.pos}`);
 
-		if (snd.pos < universal.config.iconCountPerPage * universal.page) return;
+		if (snd.pos < universal.config.iconCountPerPage * universal.page) continue;
 		if (!keyObject) {
-			if (universal.page === 0) return;
+			if (universal.page === 0) continue;
 			const newPos =
 				snd.pos - universal.config.iconCountPerPage * universal.page;
 			snd.pos = newPos;
@@ -73,7 +73,7 @@ function reloadSounds() {
 		}
 		try {
 			if (snd.pos >= universal.config.iconCountPerPage * (universal.page + 1))
-				return;
+				continue;
 			if (
 				universal.lclCfg().center &&
 				!keyObject.classList.contains("center")
@@ -99,7 +99,7 @@ function reloadSounds() {
 					const indicator = document.createElement("div");
 					indicator.className = "plugin-missing";
 					keyObject.appendChild(indicator);
-					return;
+					continue;
 				}
 				let typeExists = false;
 				for (const tyc of universal._tyc.keys()) {

@@ -18,6 +18,6 @@ module.exports = ({ io, data }) => {
 			}),
 		);
 	}
-	fs.writeFileSync(path.resolve("./src/configs/style.json"), data);
+	fs.writeFileSync(path.resolve("./src/configs/style.json"), JSON.stringify(data));
 	io.emit(eventNames.default.config_changed, data);
 };

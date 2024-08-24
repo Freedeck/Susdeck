@@ -25,8 +25,7 @@ export default function eventsHandler(universal, user) {
 			universal.sendEvent("new-info");
 		});
 
-		universal.on(universal.events.keypress, (interactionData) => {
-			const interaction = JSON.parse(interactionData);
+		universal.on(universal.events.keypress, (interaction) => {
 			if (!user.includes("Companion")) return;
 			if ("sound" in interaction && interaction.sound.name === "Stop All") {
 				universal.audioClient.stopAll();
@@ -63,12 +62,10 @@ export default function eventsHandler(universal, user) {
 		});
 
 		universal.on(universal.events.default.log, (data) => {
-			data = JSON.parse(data);
 			console.log(`${data.sender}: ${data.data}`);
 		});
 
 		universal.on(universal.events.default.notif, (data) => {
-			data = JSON.parse(data);
 			if (data.incoming) return;
 			if (!data.isCon) {
 				universal.sendToast(`[${data.sender}] ${data.data}`);

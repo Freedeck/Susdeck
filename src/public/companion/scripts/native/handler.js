@@ -50,7 +50,6 @@ const sendVolume = (padded, app = "") => {
 
 export function handler() {
 	universal.on(universal.events.companion.native_keypress, (data) => {
-		data = JSON.parse(data);
 		if (data.type === "fd.sys.volume") {
 			const padded =
 				data.data.value.length === 1
@@ -85,7 +84,6 @@ export function handler() {
 	});
 
 	universal.on(universal.events.keypress, (data) => {
-		data = JSON.parse(data);
 		if (data.type === "fd.profile") {
 			universal.page = 0;
 			universal.save("page", universal.page);

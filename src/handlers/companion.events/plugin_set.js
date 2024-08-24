@@ -4,7 +4,6 @@ const eventNames = require("../eventNames");
 const path = require("node:path");
 
 module.exports = ({ io, data }) => {
-	data = JSON.parse(data);
 	const plugin = plugins._settings.get(data.plugin);
 	plugin[data.setting] = data.value;
 	fs.writeFile(

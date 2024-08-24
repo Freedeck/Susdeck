@@ -68,7 +68,6 @@ if (universal.config.profile !== universal.load("profile")) {
 }
 
 universal.on(universal.events.default.config_changed, (e) => {
-	e = JSON.parse(e);
 	document.documentElement.style.setProperty(
 		"--fd-font-size",
 		`${e["font-size"]}px`,

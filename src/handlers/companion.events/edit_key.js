@@ -2,7 +2,6 @@ const config = require("../../managers/settings");
 const eventNames = require("../eventNames");
 
 module.exports = ({ io, data }) => {
-	data = JSON.parse(data);
 	const { name, interaction } = data;
 	const settings = config.settings();
 	const profiles = settings.profiles[settings.profile];

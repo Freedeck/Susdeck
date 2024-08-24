@@ -53,23 +53,17 @@ export default function (snd, keyObject, raw) {
 		keyObject.ontouchend = stopHolding;
 		keyObject.ontouchcancel = stopHolding;
 		const send = (e) => {
-			universal.send(
-				universal.events.keypress,
-				JSON.stringify({
-					event: e,
-					btn: snd,
-				}),
-			);
+			universal.send(universal.events.keypress, {
+				event: e,
+				btn: snd,
+			});
 		};
 	} else {
 		keyObject.onclick = (ev) => {
-			universal.send(
-				universal.events.keypress,
-				JSON.stringify({
-					event: ev,
-					btn: snd,
-				}),
-			);
+			universal.send(universal.events.keypress, {
+				event: ev,
+				btn: snd,
+			});
 		};
 	}
 	// check if text is bigger than 2 lines (by font size)

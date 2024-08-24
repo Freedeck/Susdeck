@@ -21,15 +21,12 @@ new Sortable(document.querySelector("#keys"), {
 			d.oldDraggableIndex + universal.page * universal.config.iconCountPerPage;
 
 		const ev = universal.page < 0 ? 1 : 0;
-		universal.send(
-			universal.events.companion.move_key,
-			JSON.stringify({
-				name: d.item.getAttribute("data-name"),
-				item: d.item.getAttribute("data-interaction"),
-				newIndex: d.newDraggableIndex + ev,
-				oldIndex: d.oldDraggableIndex + ev,
-			}),
-		);
+		universal.send(universal.events.companion.move_key, {
+			name: d.item.getAttribute("data-name"),
+			item: d.item.getAttribute("data-interaction"),
+			newIndex: d.newDraggableIndex + ev,
+			oldIndex: d.oldDraggableIndex + ev,
+		});
 		universal.page = 0;
 	},
 	filter: ".unset .builtin",
@@ -166,28 +163,22 @@ window.oncontextmenu = (e) => {
 					const uuid = `fdc.${Math.random() * 10000000}`;
 					UI.reloadProfile();
 					universal.save("now-editing", uuid);
-					universal.send(
-						universal.events.companion.new_key,
-						JSON.stringify({
-							"New Tile": {
-								type: "fd.none",
-								pos,
-								uuid,
-								data: {},
-							},
-						}),
-					);
+					universal.send(universal.events.companion.new_key, {
+						"New Tile": {
+							type: "fd.none",
+							pos,
+							uuid,
+							data: {},
+						},
+					});
 					break;
 				}
 				case "Remove Tile":
 					UI.reloadProfile();
-					universal.send(
-						universal.events.companion.del_key,
-						JSON.stringify({
-							name: e.srcElement.dataset.name,
-							item: e.srcElement.getAttribute("data-interaction"),
-						}),
-					);
+					universal.send(universal.events.companion.del_key, {
+						name: e.srcElement.dataset.name,
+						item: e.srcElement.getAttribute("data-interaction"),
+					});
 					break;
 				case "Copy Tile Here":
 					showReplaceGUI(e.srcElement);
@@ -500,13 +491,10 @@ document.querySelector("#change-pl-settings").onclick = () => {
 			settings[key] = el.querySelector("input").value;
 		}
 	}
-	universal.send(
-		universal.events.companion.plugin_set_all,
-		JSON.stringify({
-			plugin,
-			settings,
-		}),
-	);
+	universal.send(universal.events.companion.plugin_set_all, {
+		plugin,
+		settings,
+	});
 };
 
 const loadSettings = (plugin) => {
@@ -921,16 +909,13 @@ document.querySelector("#editor-save").onclick = () => {
 	for (const input of document.querySelectorAll(".editor-data")) {
 		interaction.data[input.id] = input.value;
 	}
-	universal.send(
-		universal.events.companion.edit_key,
-		JSON.stringify({
-			name: name,
-			oldName: document
-				.querySelector("#editor-btn[data-interaction]")
-				.getAttribute("data-pre-edit"),
-			interaction: interaction,
-		}),
-	);
+	universal.send(universal.events.companion.edit_key, {
+		name: name,
+		oldName: document
+			.querySelector("#editor-btn[data-interaction]")
+			.getAttribute("data-pre-edit"),
+		interaction: interaction,
+	});
 
 	document.querySelector("#editor").style.opacity = "0";
 	setTimeout(() => {
@@ -1393,7 +1378,7 @@ embeddedSettingsClient.appendChild(playbackModeSetting);
 const setToLocalCfg = (key, value) => {
 	const cfg = universal.lclCfg();
 	cfg[key] = value;
-	return JSON.stringify(cfg);
+	return cfg;
 };
 
 for (const slider of document.querySelectorAll(".fdc-slider")) {
@@ -1600,8 +1585,6 @@ universal.on(universal.events.default.plugins_updated, () => {
 });
 
 universal.on(universal.events.default.notif, (dat) => {
-	dat = JSON.parse(dat);
-	console.log(dat);
 	if (!dat.incoming) return;
 	if (dat.data === "Authorize") {
 		showPick(

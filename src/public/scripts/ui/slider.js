@@ -136,14 +136,11 @@ export default function (data, keyObject, raw) {
 	}
 
 	keyObject.onclick = (ev) => {
-		universal.send(
-			universal.events.keypress,
-			JSON.stringify({
-				isSlider: true,
-				sliderValue: data.data.value,
-				event: ev,
-				btn: data,
-			}),
-		);
+		universal.send(universal.events.keypress, {
+			isSlider: true,
+			sliderValue: data.data.value,
+			event: ev,
+			btn: data,
+		});
 	};
 }

@@ -4,10 +4,10 @@ module.exports = {
 	name: "Companion",
 	id: "fd.handlers.companion",
 	exec: ({ socket, io }) => {
-		Object.keys(eventNames.companion).forEach((event) => {
+		for (const event of Object.keys(eventNames.companion)) {
 			socket.on(eventNames.companion[event], (data) => {
 				require(`./companion.events/${event}`)({ io, socket, data });
 			});
-		});
+		}
 	},
 };

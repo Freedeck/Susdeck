@@ -3,14 +3,17 @@ import { generic, handler } from "../../companion/scripts/native/handler";
 export default function dataHandler(universal, user) {
 	universal.CLU("Boot:Handler:Data", "Taking over for now.");
 	return new Promise((ress, rejj) => {
-		universal.CLU("Boot:Handler:Data", "Created promise, listening for Identify event.");
-		universal.on("I", async (data) => {
+		universal.CLU(
+			"Boot:Handler:Data",
+			"Created promise, listening for Identify event.",
+		);
+		universal.on("I", async (gzipped) => {
 			universal.CLU("Boot:Handler:Data", "Caught Identify event.");
 			universal.connected = true;
 			window.universal = universal;
 			universal.CLU("Boot:Handler:Data", "Re-copied Universal to window.");
-			
-			data = await universal.asyncDecompressGzipBlob(data);
+
+			const data = await universal.asyncDecompressGzipBlob(gzipped);
 			universal.CLU("Boot:Handler:Data", "Decompressed data.");
 			const parsed = JSON.parse(data);
 			universal.CLU("Boot:Handler:Data", "Parsed data.");
@@ -59,24 +62,30 @@ export default function dataHandler(universal, user) {
 				universal.CLU("Boot:Handler:Data", "Appending/Creating keys to body.");
 				document.body.appendChild(universal.keys);
 			}
-			
+
 			universal.notibar.id = "snackbar";
 			universal.CLU("Boot:Handler:Data", "Forcefully setting notibar ID.");
 			if (!document.querySelector("#snackbar")) {
-				universal.CLU("Boot:Handler:Data", "Appending/Creating notibar to body.");
+				universal.CLU(
+					"Boot:Handler:Data",
+					"Appending/Creating notibar to body.",
+				);
 				document.body.appendChild(universal.notibar);
 			}
 
 			universal.send(universal.events.information, { apiVersion: "2" });
-			universal.CLU("Boot:Handler:Data", "Identified ourselves as Companion APIv2.");
-			
+			universal.CLU(
+				"Boot:Handler:Data",
+				"Identified ourselves as Companion APIv2.",
+			);
+
 			universal.keySet();
 			universal.CLU("Boot:Handler:Data/UI", "Created keyset.");
 
 			universal.repositoryManager.unofficial =
 				universal.loadObj("repos.community") || [];
 			universal.CLU("Boot:Handler:Data", "Setup unofficial repositories.");
-			
+
 			universal.CLU("Boot:Handler:Data", "Setting up plugins for Tile Editor.");
 			for (const plugin of Object.keys(universal.plugins)) {
 				const plug = universal.plugins[plugin];
@@ -90,7 +99,7 @@ export default function dataHandler(universal, user) {
 				handler();
 				universal.CLU("Boot:Handler:Data", "Native handler created.");
 			}
-			
+
 			if (universal.lclCfg()["font-size"] !== 15) {
 				document.documentElement.style.setProperty(
 					"--fd-font-size",
@@ -98,9 +107,12 @@ export default function dataHandler(universal, user) {
 				);
 			}
 			universal.CLU("Boot:Handler:Data", "Set font size.");
-			
+
 			generic();
-			universal.CLU("Boot:Handler:Data", "Generic native handler created. Resolving as we're finished here.");
+			universal.CLU(
+				"Boot:Handler:Data",
+				"Generic native handler created. Resolving as we're finished here.",
+			);
 			ress(true);
 		});
 	});

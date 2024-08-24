@@ -14,13 +14,14 @@ const handlers = new Map();
 const pl = require(path.resolve("./src/managers/plugins"));
 const plugins = pl.plugins();
 
-fs.readdirSync(path.resolve("./src/handlers")).forEach((file) => {
-	if (fs.lstatSync(path.resolve(`./src/handlers/${file}`)).isDirectory())
-		return;
+for (const file of fs.readdirSync(path.resolve("./src/handlers"))) {
+	if (fs.lstatSync(path.resolve(`./src/handlers/${file}`)).isDirectory()) {
+		continue;
+	}
 	const handler = require(`./handlers/${file}`);
-	if (!handler.exec) return;
+	if (!handler.exec) continue;
 	handlers.set(handler.name, handler);
-});
+}
 
 if (!fs.existsSync("plugins")) {
 	fs.mkdirSync("plugins");
@@ -56,7 +57,8 @@ io.on("connection", (socket) => {
 			}
 			return;
 		}
-		socket.emit(eventNames.default.notif, JSON.stringify(notification));
+		console.log("Sending notification to client");
+		socket.emit(eventNames.default.notif, notification);
 		NotificationManager.once("newNotification", sendNotification);
 	}
 
@@ -93,7 +95,7 @@ io.on("connection", (socket) => {
 	});
 
 	try {
-		handlers.forEach((handler) => {
+		for (const handler of handlers.values()) {
 			try {
 				handler.exec({ socket, types, plugins, io, clients });
 			} catch (e) {
@@ -103,7 +105,7 @@ io.on("connection", (socket) => {
 				`${picocolors.cyan(`Added new handler ${handler.name}`)}- for ${socket._id}\n`,
 				"SAPI",
 			);
-		});
+		}
 	} catch (e) {
 		debug.log(picocolors.red(e));
 	}

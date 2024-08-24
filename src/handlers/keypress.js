@@ -13,8 +13,6 @@ module.exports = {
 				return;
 			}
 			try {
-				console.log(ev);
-				ev = JSON.parse(ev);
 				if (ev.isSlider) {
 					callPlugin(types, plugins, ev);
 					// set the slider value
@@ -28,26 +26,22 @@ module.exports = {
 						}
 					}
 					if (ev.btn.type.startsWith("fd.sys.")) {
-						io.emit(
-							eventNames.companion.native_keypress,
-							JSON.stringify(ev.btn),
-						);
+						io.emit(eventNames.companion.native_keypress, ev.btn);
 					}
 					return;
 				}
 				if (ev.builtIn) {
 					if (ev.data === "stop-all")
-						io.emit(
-							eventNames.keypress,
-							JSON.stringify({ sound: { name: "Stop All", type: "fd.sound" } }),
-						);
+						io.emit(eventNames.keypress, {
+							sound: { name: "Stop All", type: "fd.sound" },
+						});
 					return;
 				}
 				if (!ev.event.isTrusted) {
 					socket.emit(eventNames.default.not_trusted);
 					return;
 				}
-				io.emit(eventNames.keypress, JSON.stringify(ev.btn));
+				io.emit(eventNames.keypress, ev.btn);
 				callPlugin(types, plugins, ev);
 			} catch (e) {
 				debug.log(e);

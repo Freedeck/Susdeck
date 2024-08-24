@@ -22,12 +22,9 @@ module.exports = ({ io, socket, data }) => {
 			io.rpcClients.splice(index, 1);
 		}
 	});
-	io.emit(
-		evt.default.notif,
-		JSON.stringify({
-			sender: "RPC",
-			data: "Authorize",
-			incoming: data,
-		}),
-	);
+	io.emit(evt.default.notif, {
+		sender: "RPC",
+		data: "Authorize",
+		incoming: data,
+	});
 };

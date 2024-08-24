@@ -21,7 +21,9 @@ const ctxl = {
 		view_html.innerHTML = "<p>Loading...</p>";
 		fetch(`./views/${view}.${ctxl.as}`)
 			.then((response) => response.text())
-			.then((data) => {view_html.innerHTML = data})
+			.then((data) => {
+				view_html.innerHTML = data;
+			})
 			.then(() => {
 				const scripts = view_html.getElementsByTagName("script");
 				for (let i = 0; i < scripts.length; i++) {

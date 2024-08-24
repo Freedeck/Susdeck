@@ -27,7 +27,6 @@ const eventNames = {
 		reload: "dR",
 		recompile: "dC",
 
-		download_plugin: "dDP",
 		plugin_downloaded: "dPD",
 		disable_plugin: "dBP",
 		enable_plugin: "dEP",

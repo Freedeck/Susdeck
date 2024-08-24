@@ -399,7 +399,7 @@ const universal = {
 		playing: [],
 		reload: () => {
 			universal.uiSounds.enabled = universal.load("uiSounds") === "true";
-			if(!universal.uiSounds.enabled) return;
+			if (!universal.uiSounds.enabled) return;
 			universal.uiSounds.soundPack =
 				universal.load("soundpack") || "futuristic.soundpack";
 			universal.uiSounds.load().then(() => {
@@ -445,10 +445,10 @@ const universal = {
 			{
 				name: "Stop All",
 				onclick: (ev) => {
-					universal.send(
-						universal.events.keypress,
-						JSON.stringify({ builtIn: true, data: "stop-all" }),
-					);
+					universal.send(universal.events.keypress, {
+						builtIn: true,
+						data: "stop-all",
+					});
 				},
 			},
 			{
@@ -554,8 +554,7 @@ const universal = {
 	 * @param {*} callback A callback function
 	 */
 	decompressGzipBlob(blob, callback) {
-		blob = new Uint8Array(blob);
-		const data = Pako.inflate(blob, { to: "string" });
+		const data = Pako.inflate(new Uint8Array(blob), { to: "string" });
 		callback(null, data);
 	},
 	/**
@@ -661,10 +660,7 @@ const universal = {
 		universal._socket.once(event, callback);
 	},
 	log: (data, sender = "Universal") => {
-		universal.send(
-			universal.events.default.log,
-			JSON.stringify({ sender, data }),
-		);
+		universal.send(universal.events.default.log, { sender, data });
 		console.log(`[${sender}] ${data}`);
 	},
 };

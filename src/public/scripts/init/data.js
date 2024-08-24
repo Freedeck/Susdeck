@@ -33,7 +33,6 @@ export default function dataHandler(universal, user) {
 			universal.CLU("Boot:Handler:Data:Setup", "_init: Completed.");
 
 			// default setup
-			universal.CLU("Boot", data, parsed, universal, universal.events);
 			universal.CLU("Boot:Handler:Data", "Creating defaults.");
 
 			universal.default("notification_log", "");
@@ -90,7 +89,7 @@ export default function dataHandler(universal, user) {
 			for (const plugin of Object.keys(universal.plugins)) {
 				const plug = universal.plugins[plugin];
 				for (const type of plug.types) {
-					universal.CLU("Boot:Handler:Data", `Type: ${type} -> ${plug.name}`);
+					universal.CLU("Boot:Handler:Data", `Type: ${type.name} -> ${plug.name}`);
 					universal._tyc.set(type, plug);
 				}
 			}

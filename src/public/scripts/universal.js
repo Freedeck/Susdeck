@@ -286,7 +286,12 @@ const universal = {
 		document.body.appendChild(scriptElement);
 	},
 	CL: true,
-	CLU: (s, ...m) => (universal.CL ? console.log(`${s}:`, ...m) : false),
+	CLU: (s, ...m) => {
+		universal.CL ? console.log(`${s}:`, ...m) : null;
+		const elem = document.createElement("code");
+		elem.innerText = `${s}: ${m}\n`;
+		document.querySelector('#boot-log-div').appendChild(elem)
+	},
 	init: (user) =>
 		new Promise((resolve, reject) => {
 			universal.CLU("Boot", "Init promise created");
@@ -342,6 +347,7 @@ const universal = {
 					else universal.audioClient._player.monitorSink = "default";
 					universal.CLU("Boot", "Loaded monitor.sink");
 					universal.CLU("Boot", "Init complete");
+					document.querySelector('#boot-log-div').style.display = 'none'
 					resolve(true);
 				});
 			} catch (e) {

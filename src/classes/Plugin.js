@@ -215,7 +215,7 @@ module.exports = class Plugin {
 	 */
 	pushNotification(value, options = null) {
 		if (!options) NotificationManager.add(this.name, `<br>${value}`);
-		if (Object.keys(options).length > 0 && options != null) {
+		if (options != null && Object.keys(options).length > 0) {
 			if (options.image) {
 				NotificationManager.add(
 					this.name,

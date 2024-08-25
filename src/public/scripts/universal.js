@@ -480,42 +480,8 @@ const universal = {
 				tempDiv.innerText = "";
 				tempDiv.id = "fd-settings-button";
 				tempDiv.style.backgroundImage = "url(/companion/icons/fd.png)";
-				tempDiv.style.border = "none";
+				tempDiv.style.border = "none";				
 				tempDiv.style.backgroundColor = "transparent";
-
-				const quickAction = document.createElement("div");
-				const qa1 = document.createElement("div");
-				const qa2 = document.createElement("div");
-				const qa3 = document.createElement("div");
-				quickAction.id = "qa-container";
-				qa1.className = "qa";
-				qa2.className = "qa";
-				qa3.className = "qa";
-				qa1.id = "qa-1";
-				qa2.id = "qa-2";
-				qa3.id = "qa-3";
-				qa1.innerText = "Themes";
-				qa2.innerText = "Reload All";
-				qa3.innerText = "Settings";
-				quickAction.appendChild(qa1);
-				quickAction.appendChild(qa2);
-				quickAction.appendChild(qa3);
-				const handlerDown = (ev) => {
-					for (const qa of document.querySelectorAll(".qa")) {
-						qa.style.opacity = "1";
-					}
-				};
-				const handlerUp = (ev) => {
-					for (const qa of document.querySelectorAll(".qa")) {
-						qa.style.opacity = "0";
-					}
-				};
-				quickAction.onmousedown = handlerDown;
-				quickAction.onmouseup = handlerUp;
-				quickAction.ontouchstart = handlerDown;
-				quickAction.ontouchend = handlerUp;
-				quickAction.ontouchcancel = handlerUp;
-				tempDiv.appendChild(quickAction);
 			}
 			if (key.handlers) {
 				for (const h of key.handlers) {

@@ -73,7 +73,7 @@ export default function (data, keyObject, raw) {
 
 		const rounded = Number.parseFloat(value).toFixed(1);
 		sliderPercentage.innerText = `${rounded}${data.data.format ? data.data.format : "%"}`;
-	
+
 		universal.send(universal.events.keypress, {
 			isSlider: true,
 			sliderValue: data.data.value,
@@ -126,7 +126,6 @@ export default function (data, keyObject, raw) {
 			updateSlider(event.touches[0]);
 		}
 	});
-
 
 	const percent =
 		((data.data.value - data.data.min) / (data.data.max - data.data.min)) * 100;

@@ -89,7 +89,10 @@ export default function dataHandler(universal, user) {
 			for (const plugin of Object.keys(universal.plugins)) {
 				const plug = universal.plugins[plugin];
 				for (const type of plug.types) {
-					universal.CLU("Boot:Handler:Data", `Type: ${type.name} -> ${plug.name}`);
+					universal.CLU(
+						"Boot:Handler:Data",
+						`Type: ${type.name} -> ${plug.name}`,
+					);
 					universal._tyc.set(type, plug);
 				}
 			}

@@ -8,7 +8,7 @@
 		"companion": "electron . --companion-only",
 		"server": "node src/index.js --server-only",
 		"debug-server": "node src/index.js --server-only --debug",
-		"lint": "eslint ** --fix  --ignore-pattern *.css --ignore-pattern *.afphoto --ignore-pattern LICENSE --ignore-pattern autoupdate --ignore-pattern *.png --ignore-pattern *.ico --ignore-pattern src/public/companion/dist/* --ignore-pattern src/public/hooks/*  --ignore-pattern *.mp*  --ignore-pattern *.wav --ignore-pattern *.bat --ignore-pattern *.html --ignore-pattern *.min* --ignore-pattern *.fd.js --ignore-pattern *.Freedeck --ignore-pattern *.json --ignore-pattern *.md --ignore-pattern *.webm",
+		"lint": "biome format --write ./src",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],
@@ -18,13 +18,13 @@
 		"asar-bundle-runner": "^1.6.0",
 		"babel-loader": "^9.1.3",
 		"electron": "^27.0.0",
-		"express": "^4.18.2",
+		"express": "^4.19.2",
 		"formidable": "^3.5.1",
 		"pako": "^2.1.0",
 		"readline": "^1.3.0",
-		"socket.io": "^4.7.2",
+		"socket.io": "^4.7.5",
 		"sortablejs": "^1.15.2",
-		"webpack": "^5.90.3"
+		"webpack": "^5.94.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.8.3",

@@ -290,7 +290,7 @@ const universal = {
 		universal.CL ? console.log(`${s}:`, ...m) : null;
 		const elem = document.createElement("code");
 		elem.innerText = `${s}: ${m}\n`;
-		document.querySelector('#boot-log-div').appendChild(elem)
+		document.querySelector("#boot-log-div").appendChild(elem);
 	},
 	init: (user) =>
 		new Promise((resolve, reject) => {
@@ -347,7 +347,7 @@ const universal = {
 					else universal.audioClient._player.monitorSink = "default";
 					universal.CLU("Boot", "Loaded monitor.sink");
 					universal.CLU("Boot", "Init complete");
-					document.querySelector('#boot-log-div').style.display = 'none'
+					document.querySelector("#boot-log-div").style.display = "none";
 					resolve(true);
 				});
 			} catch (e) {
@@ -480,7 +480,7 @@ const universal = {
 				tempDiv.innerText = "";
 				tempDiv.id = "fd-settings-button";
 				tempDiv.style.backgroundImage = "url(/companion/icons/fd.png)";
-				tempDiv.style.border = "none";				
+				tempDiv.style.border = "none";
 				tempDiv.style.backgroundColor = "transparent";
 			}
 			if (key.handlers) {

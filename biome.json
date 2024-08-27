@@ -1,11 +1,6 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
-    "ignore": [
-      "src/public/companion/dist/*",
-      "src/public/hooks/*",
-      "tmp/*",
-      "plugins/*"
-    ]
+    "ignore": ["webui/app/*", "webui/hooks/*", "tmp/*", "plugins/*"]
   }
 }

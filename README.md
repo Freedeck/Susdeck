@@ -7,7 +7,9 @@
 </center>
 <br />
 
-## Getting Started with Freedeck
+## Installation
+
+<img src="https://raw.githubusercontent.com/Freedeck/media-kit/main/sections/slice8.png" width="512">
 
 ### Instructions (Easier Than Easy)
 
@@ -46,6 +48,15 @@ For those who want the simplicity of the Installer, but need the complexity of t
   - `cd C:\Users\You\Documents\Freedeck\freedeck` (You need the last "freedeck"! That's the actual repo!)
 - Kaboom! You can now open Freedeck in VSCode, NeoVim, or any other editor/IDE!
 
-The moment you start Freedeck, a setup wizard will launch. Follow those instructions. Next, when Companion launches, you'll see another setup wizard. Follow those instructions.
+## Usage
+
+<img src="https://raw.githubusercontent.com/Freedeck/media-kit/main/sections/slice7.png" width="512">
+
+The moment you start Freedeck:
+
+- a setup wizard will launch.  
+  - Follow the on-screen instructions.  
+- when the setup wizard closes, you'll see Companion.
+  - It's like Step 2, you just pick your audio devices and then you're ready!
 
 From there, Freedeck is ready to use.

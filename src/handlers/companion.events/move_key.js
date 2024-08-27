@@ -1,8 +1,11 @@
 const config = require("../../managers/settings");
 const eventNames = require("../eventNames");
 
-module.exports = ({ io, data }) => {
+module.exports = ({ socket, data, clients }) => {
 	const item = JSON.parse(data.item);
+
+	if(item === null) return;
+
 	const settings = config.settings();
 	const profile = settings.profiles[settings.profile];
 	let flag = false;
@@ -26,5 +29,10 @@ module.exports = ({ io, data }) => {
 	}
 
 	config.save();
-	io.emit(eventNames.default.reload);
+	for(const client of clients) {
+		if (client.user !== socket.user) {
+			console.log("Reloading client: " + client.name);
+			client.emit(eventNames.default.reload);
+		} 
+	}
 };

@@ -5,13 +5,16 @@ tmp/
 
 *.fd.js
 
+# User data
 src/configs/*
-src/public/sounds/*
-src/public/us-icons/*
+user-data/sounds/*
+user-data/icons/*
+user-data/hooks/*
 
-src/public/hooks/*
-src/public/companion/dist/*
+# WebUI Webpacked resources
+webui/app/*
 
-src/public/companion/sounds/default*
+# Not sure why this is here.
+webui/common/sounds/default*
 
 FreedeckCore.log

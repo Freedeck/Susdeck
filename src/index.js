@@ -126,7 +126,7 @@ function setupTerm() {
       // call your async task here and then call process.exit() after async task is done
       if (fs.existsSync(path.resolve("./webui/hooks"))) {
         for (const file of fs.readdirSync(path.resolve("./webui/hooks"))) {
-          fs.rmSync(path.resolve("./src/public/hooks", file), {
+          fs.rmSync(path.resolve("./webui/hooks", file), {
             recursive: true,
           });
           console.log("- Unloaded " + file);

@@ -48,7 +48,7 @@ if (
 ) {
   const { app } = require("electron");
   app.on("ready", () => {
-    require(path.resolve("./src/private/setup.js"))().then(() => {
+    require(path.resolve("setupApp/setup.js"))().then(() => {
       console.log(picocolors.bgGreen("Setup complete!"));
       app.quit();
     });

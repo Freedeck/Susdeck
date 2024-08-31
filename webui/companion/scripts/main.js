@@ -120,12 +120,12 @@ window.oncontextmenu = (e) => {
   custMenuTitle.style.marginBottom = "5px";
   custMenu.appendChild(custMenuTitle);
 
-  let custMenuItems = ["New Tile"];
+  let custMenuItems = [];
   if (title !== "" && !specialFlag) {
     custMenuItems = ["Edit Tile"].concat(custMenuItems);
     custMenuItems.push("Remove Tile");
   } else {
-    custMenuItems = ["Copy Tile Here"].concat(custMenuItems);
+    custMenuItems = ["New Tile", "Copy Tile Here"].concat(custMenuItems);
   }
 
   custMenuItems = custMenuItems.concat([

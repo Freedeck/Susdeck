@@ -1,4 +1,5 @@
 const express = require("express");
+const notifMan = require("./managers/notifications");
 const router = express.Router();
 
 const handoffData = {

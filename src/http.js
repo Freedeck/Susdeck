@@ -1,12 +1,9 @@
 const express = require("express");
 const http = require("node:http");
-const fs = require("node:fs");
-const path = require("node:path");
 const picocolors = require("./utils/picocolors");
 
 const app = express();
 const server = http.createServer(app);
-const formidable = require("formidable");
 const config = require("./managers/settings");
 const notifMan = require("./managers/notifications");
 const { compileWebpack } = require("./webpack");

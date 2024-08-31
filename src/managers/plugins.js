@@ -18,11 +18,11 @@ const pl = {
 	reload: async () => {
 		const plList = pl.plugins();
 		for (const plugin of plList) {
-			if(plugin.instance.stop) plugin.instance.stop();
+			if(plugin.instance?.stop) plugin.instance.stop();
 			plList.delete(plugin.id);
 		}
 		for (const type of pl.types()) {
-			type.instance.stop();
+			if(type.instance?.stop) type.instance.stop();
 			pl._tyc.delete(type.id);
 		}
 		for (const key in require.cache) {

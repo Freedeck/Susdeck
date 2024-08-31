@@ -967,30 +967,25 @@ function showEditModal(title, content, callback) {
 
   const modalClose = document.createElement("button");
   modalClose.innerText = "Close";
+  modalClose.classList.add("modalClose");
   modalClose.onclick = () => {
     modal.remove();
   };
-  modalClose.style.position = "absolute";
-  modalClose.style.top = "0";
-  modalClose.style.right = "0";
-  modalClose.style.margin = "20px";
   modalContent.appendChild(modalClose);
 
   const modalTitle = document.createElement("h2");
   modalTitle.innerText = title;
-  modalTitle.style.marginBottom = "20px";
+  modalTitle.classList.add('modalTitle');
   modalContent.appendChild(modalTitle);
 
   const modalFeedback = document.createElement("div");
-  modalFeedback.className = "modalFeedback";
-  modalFeedback.style.color = "red";
-  modalFeedback.style.marginBottom = "20px";
+  modalFeedback.classList.add("modalFeedback");
   modalContent.appendChild(modalFeedback);
 
   const modalInput = document.createElement("input");
   modalInput.type = "text";
   modalInput.placeholder = content;
-  modalInput.style.marginBottom = "20px";
+  modalInput.classList.add("modalInput_text");
   modalContent.appendChild(modalInput);
 
   const modalButton = document.createElement("button");
@@ -1015,6 +1010,43 @@ function showEditModal(title, content, callback) {
   document.body.appendChild(modal);
 }
 
+function showText(title, content, callback) {
+  const modal = document.createElement("div");
+  modal.className = "modal";
+
+  const modalContent = document.createElement("div");
+  modalContent.classList.add("modalContent");
+
+  const modalClose = document.createElement("button");
+  modalClose.innerText = "Close";
+  modalClose.classList.add("modalClose");
+  modalClose.onclick = () => {
+    modal.remove();
+  };
+  modalContent.appendChild(modalClose);
+
+  const modalTitle = document.createElement("h2");
+  modalTitle.innerText = title;
+  modalTitle.classList.add("modalTitle");
+  modalContent.appendChild(modalTitle);
+
+  const modalTextContent = document.createElement("div");
+  modalTextContent.innerText = content;
+  modalTextContent.classList.add("modalTextContent");
+  modalContent.appendChild(modalTextContent);
+
+  const modalButton = document.createElement("button");
+  modalButton.innerText = "Next";
+  modalButton.onclick = () => {
+    modal.remove();
+    callback();
+  };
+  modalContent.appendChild(modalButton);
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
+  return modal;
+};
+
 /**
  * Create a list picker modal.
  * @param {String} title The title of the modal
@@ -1026,28 +1058,23 @@ function showPick(title, listContent, callback) {
   modal.className = "modal";
 
   const modalContent = document.createElement("div");
-  modalContent.className = "modalContent";
+  modalContent.classList.add("modalContent");
 
   const modalClose = document.createElement("button");
   modalClose.innerText = "Close";
   modalClose.onclick = () => {
     modal.remove();
   };
-  modalClose.style.position = "absolute";
-  modalClose.style.top = "0";
-  modalClose.style.right = "0";
-  modalClose.style.margin = "20px";
+  modalClose.classList.add("modalClose");
   modalContent.appendChild(modalClose);
 
   const modalTitle = document.createElement("h2");
   modalTitle.innerText = title;
-  modalTitle.style.marginBottom = "20px";
+  modalTitle.classList.add("modalTitle");
   modalContent.appendChild(modalTitle);
 
   const modalFeedback = document.createElement("div");
-  modalFeedback.className = "modalFeedback";
-  modalFeedback.style.color = "red";
-  modalFeedback.style.marginBottom = "20px";
+  modalFeedback.classList.add("modalFeedback");
   modalContent.appendChild(modalFeedback);
 
   // const modalList = document.createElement('select');
@@ -1065,14 +1092,8 @@ function showPick(title, listContent, callback) {
 
   let selectedItem = null;
   const itemContainer = document.createElement("div");
-  itemContainer.className = "modalList";
-  itemContainer.style.display = "flex";
-  itemContainer.style.flexWrap = "wrap";
-  itemContainer.style.overflowY = "auto";
-  itemContainer.style.gap = "15px";
-  itemContainer.style.padding = "15px";
+  itemContainer.classList.add('modalList_btns');
 
-  itemContainer.style.marginBottom = "20px";
   modalContent.appendChild(itemContainer);
   for (const item of listContent) {
     const modalItem = document.createElement("button");
@@ -1322,6 +1343,82 @@ if (editing) {
     universal.remove("now-editing");
   }, 250);
 }
+
+const setupWizard = () => {
+  const sinks = {};
+  const sources = {};
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+      navigator.mediaDevices.enumerateDevices().then((devices) => {
+          devices.forEach((device) => {
+              if (device.kind == "audiooutput") {
+                  if (!device.label.includes("Input"))
+                      sinks[device.deviceId] = device.label;
+                  if (device.label.includes("Input"))
+                      sources[device.deviceId] = device.label;
+              }
+          });
+          showText(
+              "Setup Wizard",
+              "Welcome to the Freedeck setup wizard! This will help you set up Freedeck for the first time.",
+              () => {
+                  showPick(
+                      "Select a monitor device (where you will hear the sounds)",
+                      Object.keys(sinks).map((data) => {
+                          return {
+                              sink: data,
+                              name: sinks[data],
+                          };
+                      }),
+                      (modal, data, feedback, title, button, content) => {
+                          console.log("User selected " + data.name);
+                          universal.save("monitor.sink", data.sink);
+                          showPick(
+                              "Select your VB-Cable device (where you will play the sounds through)",
+                              Object.keys(sources).map((data) => {
+                                  return {
+                                      sink: data,
+                                      name: sources[data],
+                                  };
+                              }),
+                              (
+                                  modal,
+                                  data,
+                                  feedback,
+                                  title,
+                                  button,
+                                  content,
+                              ) => {
+                                  console.log(
+                                      "User selected " + data.name,
+                                  );
+                                  universal.save("vb.sink", data.sink);
+                                  universal.save("pitch", 1);
+                                  universal.save("vol", 1);
+                                  showText(
+                                      "All done!",
+                                      "You're all set up! You can now use Freedeck.",
+                                      () => {
+                                          universal.sendToast(
+                                              "All done, reloading...",
+                                          );
+                                          universal.save(
+                                              "has_setup",
+                                              true,
+                                          );
+                                          window.location.href =
+                                              "/companion/index.html?err=last-step";
+                                      },
+                                  );
+                              },
+                          );
+                      },
+                  );
+              },
+          );
+      });
+  });
+};
+window.setupsetupWizard = setupWizard;
 
 /**
  * @name getAudioOutputDevices

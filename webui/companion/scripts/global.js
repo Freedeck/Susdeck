@@ -12,8 +12,6 @@ HTMLElement.prototype.setHTML = function (html) {
 universal.listenFor("init", () => {
 	const login = document.createElement("li");
 	login.id = "constat";
-	login.style.fontSize = ".75em";
-	login.style.display = "block";
 	document.querySelector("#sidebar > ul").appendChild(login);
 
 	if (window.location.href.includes("sound=true"))

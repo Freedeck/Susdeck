@@ -459,6 +459,7 @@ a:hover {
 	transition-duration: .25s;
 	display: flex;
 	flex-direction: column;
+	font-family: 'Rubik', sans-serif;
 }
 
 

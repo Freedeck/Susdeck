@@ -4,10 +4,11 @@ const path = require("node:path");
 const debug = require("./utils/debug");
 
 let DOES_RUN_SERVER = true;
+let DO_COMPANION = true;
+
 const DOES_SETTINGS_EXIST_YET = fs.existsSync(
   path.join(__dirname, "configs/config.fd.js"),
 );
-let DO_COMPANION = true;
 
 if (process.argv.includes("--server-only")) {
   console.log(picocolors.blue("Server only mode."));
@@ -17,29 +18,6 @@ if (process.argv.includes("--server-only")) {
     console.log(picocolors.blue("Companion only mode."));
     DOES_RUN_SERVER = false;
   }
-}
-
-if (
-  fs.existsSync("src/public/us-icons") ||
-  fs.existsSync("src/public/sounds")
-) {
-  console.log(
-    "There is a new file structure! Freedeck will now migrate your folders over.",
-  );
-  if (!fs.existsSync("user-data")) {
-    fs.mkdirSync("user-data");
-  }
-  if (fs.existsSync("src/public/us-icons")) {
-    fs.renameSync("src/public/us-icons", "user-data/icons");
-  }
-  if (fs.existsSync("src/public/sounds")) {
-    fs.renameSync("src/public/sounds", "user-data/sounds");
-  }
-}
-
-if (!fs.existsSync("user-data/hooks")) {
-  if (!fs.existsSync("user-data")) fs.mkdirSync("user-data");
-  fs.mkdirSync("user-data/hooks");
 }
 
 if (
@@ -66,6 +44,9 @@ if (!DOES_SETTINGS_EXIST_YET && DOES_RUN_SERVER) {
   );
   process.exit(1);
 }
+
+require("./checkForDirectories");
+
 const settings = require("./managers/settings");
 
 fs.writeFileSync(
@@ -79,13 +60,8 @@ if (!DO_COMPANION && DOES_RUN_SERVER) require("./server");
 if (DO_COMPANION) {
   const { app } = require("electron");
   app.whenReady().then(() => {
-    require("./companionInit")("./src/fdconnect.html", true, 1145, 750, false);
+    require("./makeWindow")("./src/fdconnect.html", true, 1145, 750, false);
     if (DOES_RUN_SERVER) require("./server");
-    // const splash = createSplashWindow();
-    // autoupd().then(() => {
-    //   splash.hide();
-    //   splash.close();
-    // });
   });
 }
 

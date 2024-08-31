@@ -13,7 +13,7 @@ module.exports = () => {
 
     app.use(express.static(path.resolve("setupApp/public")));
 
-    require(path.resolve("src/companionInit.js"))(
+    require(path.resolve("src/makeWindow.js"))(
       `http://localhost:5756/?a=${authToken}`,
       false,
       850,

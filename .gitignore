@@ -13,6 +13,7 @@ user-data/hooks/*
 
 # WebUI Webpacked resources
 webui/app/*
+webui/hooks/*
 
 # Not sure why this is here.
 webui/common/sounds/default*

@@ -1,5 +1,6 @@
 const express = require("express");
 const http = require("node:http");
+
 const picocolors = require("./utils/picocolors");
 
 const app = express();
@@ -17,7 +18,6 @@ const uploadRouter = require("./routers/uploads");
 const settings = config.settings();
 const PORT = settings.port || 5754;
 
-const plugins = require("./managers/plugins");
 const networkAddresses = require("./managers/networkAddresses");
 
 module.exports = {

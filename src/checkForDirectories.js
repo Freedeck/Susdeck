@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("node:fs");
 
 if (!fs.existsSync("plugins")) {
   console.log("Creating plugins directory...");

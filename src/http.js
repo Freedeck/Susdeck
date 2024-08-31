@@ -13,7 +13,7 @@ const { compileWebpack } = require("./webpack");
 
 /** ROUTERS */
 const handoffRouter = require("./routers/handoff");
-const connectRouter = require("./routers/connect");
+const connectRouter = require("./routers/connect").router;
 const staticRouter = require("./routers/static");
 const uploadRouter = require("./routers/uploads");
 

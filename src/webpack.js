@@ -1,8 +1,8 @@
 const { webpack } = require("webpack");
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 const webpackConfig = require("../webpack.config");
-let hasWebpackCompiled = 0;
+const setWsStateHttp = require(path.resolve("src/routers/connect.js")).webpackState;
 let compileTime = 0;
 
 /**
@@ -38,10 +38,11 @@ function runWebpack(webpackInstance) {
  * @return {Promise<void>}
  */
 async function compileWebpack() {
-  hasWebpackCompiled = 0;
+  setWsStateHttp(0);
   const webpackInstance = webpack(webpackConfig);
   await runWebpack(webpackInstance);
-  hasWebpackCompiled += 1;
+  setWsStateHttp(1);
+  console.log("Webpack bundles compiled.");
 }
 
 module.exports = {

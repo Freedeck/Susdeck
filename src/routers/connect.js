@@ -2,8 +2,13 @@ const express = require("express");
 const plugins = require("../managers/plugins");
 const tsm = require("../managers/temporarySettings");
 const networkAddresses = require("../managers/networkAddresses");
-const { hasWebpackCompiled } = require("../webpack");
 const router = express.Router();
+
+let iwebpackState = 0;
+
+const webpackState = (i) => {
+  iwebpackState = i;
+}
 
 router.get("/plugins", (req, res) => {
   const idList = [];
@@ -17,7 +22,7 @@ router.get("/plugins", (req, res) => {
 router.get("/status", (req, res) => res.sendStatus(200));
 
 router.get("/webpack", (req, res) => {
-  res.send({ compiled: hasWebpackCompiled });
+  res.send({ compiled: iwebpackState });
 });
 
 router.get("/local-ip", (req, res) => {
@@ -33,4 +38,4 @@ router.get("/dev-status", (req, res) => {
   });
 });
 
-module.exports = router;
+module.exports = {router, webpackState};

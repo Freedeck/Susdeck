@@ -47,7 +47,17 @@ module.exports = {
 
     for (const event of Object.keys(eventNames.default)) {
       socket.on(eventNames.default[event], (data) => {
-        require(`./default.events/${event}`)({ io, socket, data, clients });
+        const eventHandler = require(`./default.events/${event}`);
+        if(typeof eventHandler !== "function") {
+          // its a new event handler
+          const flags = eventHandler.flags || [];
+          if(flags.includes("AUTH")) {
+            console.log(socket.auth)
+          }
+          return;
+        }
+        // unmigrated
+        eventHandler({ io, socket, data, clients });
       });
     }
     debug.log(

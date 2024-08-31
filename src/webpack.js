@@ -47,6 +47,5 @@ async function compileWebpack() {
 
 module.exports = {
   compileWebpack,
-  hasWebpackCompiled,
   compileTime,
 };

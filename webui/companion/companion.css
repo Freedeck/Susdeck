@@ -105,7 +105,7 @@ input {
 /* find first item in ul*/
 #sidebar ul li:first-child {
 	margin-top: 2rem;
-	text-align: crenter;
+	text-align: center;
 }
 
 #sidebar ul {

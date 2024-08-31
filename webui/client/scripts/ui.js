@@ -39,6 +39,22 @@ function reloadProfile() {
  * @description Reload all of the sounds in the client's DOM.
  */
 function reloadSounds() {
+	if (universal.lclCfg().fill) {
+		const style = document.createElement("style");
+		style.type = "text/css";
+		style.id = "fill";
+		const styles = `
+				#keys .button {
+				width: unset; height: unset;
+				}
+		`;
+		if (style.styleSheet) style.styleSheet.cssText = styles;
+		else style.appendChild(document.createTextNode(styles));
+		document.head.appendChild(style);
+	} else {
+		const style = document.getElementById("fill");
+		if (style) style.remove();
+	}
 	universal.page =
 		universal.load("page") !== "\x9Eée"
 			? Number.parseInt(universal.load("page"))

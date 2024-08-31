@@ -83,6 +83,14 @@ universal.on(universal.events.default.config_changed, (e) => {
   let tc = "repeat(5, 2fr)";
   if (e.tileRows) tc = tc.replace("5", e.tileRows);
   document.documentElement.style.setProperty("--fd-template-columns", tc);
+  e.iconCountPerPage = Number.parseInt(e.iconCountPerPage);
+  console.log(e.iconCountPerPage)
+  universal.lclCfg().iconCountPerPage = e.iconCountPerPage;
+  universal.config.iconCountPerPage = e.iconCountPerPage;
+  universal.lclCfg().center = e.center;
+  universal.lclCfg().fill = e.fill;
+  universal.lclCfg().scroll = e.scroll;
+  UI.reloadSounds();
 });
 
 const lcfg = universal.lclCfg();

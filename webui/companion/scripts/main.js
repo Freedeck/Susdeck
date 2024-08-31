@@ -1486,7 +1486,6 @@ document.querySelector("#es-tc-reset").onclick = (e) => {
     universal.events.default.config_changed,
     setToLocalCfg("iconCountPerPage", 12),
   );
-  universal.send(universal.events.default.reload);
 };
 
 document.querySelector("#es-scroll").onchange = (e) => {
@@ -1494,42 +1493,27 @@ document.querySelector("#es-scroll").onchange = (e) => {
     universal.events.default.config_changed,
     setToLocalCfg("scroll", e.target.checked),
   );
-  universal.send(universal.events.default.reload);
 };
 
 document.querySelector("#es-tc").oninput = (e) => {
   universal.uiSounds.playSound("fdc_slider");
-  const prepend = document.querySelector("#keys");
   const count = document.querySelectorAll(".fdc-placeholder").length;
   const diff = e.target.value - count;
-  if (diff > 0) {
-    document.querySelector("#keys").innerHTML = "";
-    for (let i = 0; i < diff + 3; i++) {
-      const clone = document.createElement("div");
-      clone.className = `button builtin unset k-${count + i}`;
-      prepend.appendChild(clone);
-    }
+  if (diff > 0) { 
+    universal.lclCfg().iconCountPerPage = e.target.value;
+    universal.config.iconCountPerPage = e.target.value;
+    UI.reloadSounds();
+  
+    universal.send(
+      universal.events.default.config_changed,
+      setToLocalCfg("iconCountPerPage", universal.lclCfg().iconCountPerPage),
+    );
   } else {
     for (let i = 0; i < Math.abs(diff); i++) {
       const last = document.querySelector(`.button.k-${count - i - 1}`);
       last.remove();
     }
-  }
-};
-
-document.querySelector("#es-tc").onmouseup = (e) => {
-  if (e.target.value === universal.config.iconCountPerPage) {
-    window.location.reload();
-    return;
-  }
-};
-
-document.querySelector("#es-tc").onchange = (e) => {
-  universal.send(
-    universal.events.default.config_changed,
-    setToLocalCfg("iconCountPerPage", e.target.value),
-  );
-  universal.send(universal.events.default.reload);
+  }  
 };
 
 setValue("#es-fs", universal.lclCfg()["font-size"]);
@@ -1558,14 +1542,15 @@ document.querySelector("#es-fill").onchange = (e) => {
     universal.events.default.config_changed,
     setToLocalCfg("fill", e.target.checked),
   );
-  universal.send(universal.events.default.reload);
+  UI.reloadSounds();
 };
 document.querySelector("#es-center").onchange = (e) => {
   universal.send(
     universal.events.default.config_changed,
     setToLocalCfg("center", e.target.checked),
   );
-  universal.send(universal.events.default.reload);
+  universal.lclCfg().center = e.target.checked;
+  UI.reloadSounds();
 };
 
 document.querySelector("#es-lp").oninput = (e) => {
@@ -1581,7 +1566,6 @@ document.querySelector("#es-lp").onmouseup = (e) => {
     universal.events.default.config_changed,
     setToLocalCfg("longPressTime", e.target.value),
   );
-  universal.send(universal.events.default.reload);
 };
 
 document.querySelector("#es-lp-reset").onclick = (e) => {
@@ -1590,7 +1574,6 @@ document.querySelector("#es-lp-reset").onclick = (e) => {
     universal.events.default.config_changed,
     setToLocalCfg("longPressTime", 3),
   );
-  universal.send(universal.events.default.reload);
 };
 
 document.querySelector("#es-tr-reset").onclick = (e) => {

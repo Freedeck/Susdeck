@@ -362,18 +362,6 @@ const universal = {
               universal.CLU("Boot", "Created monitor potential devices");
             }
           }
-          if (universal.lclCfg().fill) {
-            const style = document.createElement("style");
-            style.type = "text/css";
-            const styles = `
-                #keys .button {
-                width: unset; height: unset;
-                }
-            `;
-            if (style.styleSheet) style.styleSheet.cssText = styles;
-            else style.appendChild(document.createTextNode(styles));
-            document.head.appendChild(style);
-          }
           if (universal.load("vb.sink"))
             universal.audioClient._player.sink = universal.load("vb.sink");
           universal.CLU("Boot", "Loaded vb.sink");

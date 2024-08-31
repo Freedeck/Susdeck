@@ -18,7 +18,7 @@ const pl = {
 	reload: async () => {
 		const plList = pl.plugins();
 		for (const plugin of plList) {
-			plugin.instance.stop();
+			if(plugin.instance.stop) plugin.instance.stop();
 			plList.delete(plugin.id);
 		}
 		for (const type of pl.types()) {

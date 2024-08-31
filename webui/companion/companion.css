@@ -322,6 +322,13 @@ a:hover {
 
 #keys {
 	gap: 1rem;
+	grid-template-columns: var(--fd-template-columns);
+	gap: 2px 7px;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.25);
+	border-radius: 1.5rem;
+
 }
 
 .center {

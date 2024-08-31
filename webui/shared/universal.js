@@ -25,9 +25,7 @@ const universal = {
     universal._socket.connect();
     universal._ca.push(universal.lastRetry);
   },
-  lclCfg() {
-    return universal._information.style;
-  },
+  lclCfg: () => universal._information.style,
   _information: {},
   _init: false,
   _authStatus: false,
@@ -480,11 +478,15 @@ const universal = {
   /*  */
   _cb: [],
   keySet: () => {
+    let isCentered = false;
+    if(universal.lclCfg() != null)
+      isCentered = universal.lclCfg().center;
     for (let i = 0; i < universal.config.iconCountPerPage; i++) {
       const tempDiv = document.createElement("div");
-      tempDiv.className = `button k-${i} unset k`;
+      tempDiv.className = `button k-${i} unset k ${isCentered ? "tiles-center" : ""}`;
       universal.keys.appendChild(tempDiv);
     }
+
     const builtInKeys = [
       {
         name: "Stop All",
@@ -511,7 +513,7 @@ const universal = {
 
     for (const key of builtInKeys) {
       const tempDiv = document.createElement("div");
-      tempDiv.className = "button builtin k";
+      const cn = `button builtin k ${isCentered ? "tiles-center" : ""}`;
       tempDiv.innerText = key.name;
       tempDiv.onclick = key.onclick;
       if (key.name === "Settings") {
@@ -526,6 +528,7 @@ const universal = {
           tempDiv[h] = key[h];
         }
       }
+      tempDiv.className = cn;
       universal.keys.appendChild(tempDiv);
     }
   },
@@ -590,8 +593,6 @@ const universal = {
         universal.CLU("Boot:InitFN", "Starting init function");
         window.universal = universal;
         universal.CLU("Boot:InitFN", "Copied universal to window");
-        universal.keySet();
-        universal.CLU("Boot:InitFN", "Key Set");
         universal.uiSounds.reload();
         universal.CLU("Boot:InitFN", "Reloaded UI sounds");
         universal._socket = io();

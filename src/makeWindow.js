@@ -1,7 +1,7 @@
 const path = require("node:path");
 const { BrowserWindow } = require("electron");
 module.exports = (
-	_page = "./src/fdconnect.html",
+	_page = "webui/client/fdconnect.html",
 	_showTitlebar = true,
 	width = 800,
 	height = 600,

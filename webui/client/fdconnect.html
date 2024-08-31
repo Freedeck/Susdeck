@@ -64,6 +64,7 @@
             transform: translateY(-50%);
             right: 5px;
             border-radius: 1.5rem;
+            width: 11%;
             height: 90%;
             background-color: rgba(0, 0, 0, 0.5);
             display: flex;
@@ -279,6 +280,13 @@
         const urls = new URLSearchParams(window.location.search);
         const serverUrl = window.location.href.split("/fdconnect.html")[0];
         url.value = serverUrl;
+        if(urls.has("sloc")) {
+            url.value = urls.get("sloc");
+        }
+        if(url.value.includes('file:')) {
+            url.value = "http://localhost:5754";
+            urls.set("id", "Companion");
+        }
         document.querySelector('.url').innerText = serverUrl;
         
         const sendToast = (msg) => {

@@ -1,15 +1,15 @@
-<h1>Your Plugins</h1>
-<p>Here you can view every plugin connected to Freedeck and it's related button and key type!</p>
-<button id="upd">Reload All Plugins</button>
+<center>
+    <h1>Your Plugins</h1>
+    <p>Here you can view every plugin connected to Freedeck and it's related button and key type!</p>
+    <button id="upd">Reload All Plugins</button>
 
-<h2>Active</h2>
-<ul id="actl" class="btnlist"></ul>
-<div class="btns"></div>
-<h2 id="disbl">Disabled</h2>
-<div id="disbl-list" class="row"></div>
+    <ul id="actl" class="btnlist"></ul>
+    <h3>Tile Types</h3>
+    <div class="btns"></div>
 
-<h2>System Options</h2>
-<div class="disabledable"></div>
+    <h2>Disabled Plugins</h2>
+    <div id="disbl-list" class="row"></div>
+</center>
 <style>
     .disabledable,
     #disbl-list {
@@ -19,7 +19,41 @@
     .btns {
         display: flex;
         gap: 0.5rem;
+        width: 100%;
         flex-wrap: wrap;
+    }
+    center ul {
+        list-style-type: none;
+        padding: 0;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .btnlist {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+
+    center ul li {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        color: black;
+        border: 1px solid #000;
+        border-radius: 5px;
+        margin: 0.5rem 0;
+        gap: 0.25rem;
+        width: 200px;
+        height: max-content;
+        text-overflow: ellipsis;
+
+        background: var(--fdm-background);
+        background-size: var(--fdm-background-size);
+        animation: var(--fdm-bg-anim);
     }
 </style>
 
@@ -33,15 +67,25 @@
         li.style.cursor = 'default';
         if (seen[req.name]) return;
         seen[req.name] = true;
-        li.innerText = `${req.name}${req.version ? ' v' + req.version : ''}` + ' - ' + req.id + ' by ' + req.author;
+
+        const nameEle = document.createElement('h3');
+        nameEle.innerText = req.name;
+        li.appendChild(nameEle);
+        const versionEle = document.createElement('p');
+        versionEle.innerText = req.version ? 'v' + req.version : '';
+        li.appendChild(versionEle);
+        const authorEle = document.createElement('p');
+        authorEle.innerText = 'by ' + req.author;
+        li.appendChild(authorEle);
+
         const a = document.createElement('button');
-        a.innerText = 'Disable ' + req.name;
+        a.innerText = 'Disable';
         a.onclick = () => {
             universal.send(universal.events.default.disable_plugin, req.id);
         };
+        li.appendChild(a);
         document.querySelector('#actl').appendChild(li);
 
-        document.querySelector('.disabledable').appendChild(a);
         const types = req.types;
         types.forEach((dataObj) => {
             const tmpBtn = document.createElement('button');

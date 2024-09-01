@@ -64,11 +64,19 @@ universal.vopen = (v) => {
 		if (v.startsWith("/")) {
 			window.location.href = v;
 		}
+		if(document.querySelector('.sidebar').style.display === 'none') {
+			document.querySelector('.toggle-sidebar button').click();
+		}
+		document.querySelector('.toggle-sidebar button').style.display = 'block';
 		return;
 	}
 	if (document.querySelector(universal.ctx.view_container))
 		document.querySelector(universal.ctx.view_container).style.display =
 			"block";
+	if(document.querySelector('.sidebar').style.display === 'flex') {
+		document.querySelector('.toggle-sidebar button').click();
+	}
+	document.querySelector('.toggle-sidebar button').style.display = 'none';
 	universal.ctx.destructiveView(v);
 	universal.doCtxlLoadAnim();
 };

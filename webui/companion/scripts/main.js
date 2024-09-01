@@ -81,7 +81,7 @@ gridItemDrag.listenForDrop((event, origIndex, targIndex) => {
 		oldIndex: originalIndex + ev,
 	});
 	changed.pos = targetIndex;
-  changed.setAttribute("data-interaction", JSON.stringify(targetInter));
+	changed.setAttribute("data-interaction", JSON.stringify(targetInter));
 });
 
 document.querySelector(".toggle-sidebar button").onclick = (ev) => {
@@ -195,14 +195,6 @@ window.oncontextmenu = (e) => {
 					editTile(e);
 					break;
 				case "New Tile": {
-					// showPick('New Tile', window['button-types'], (modal, value, feedback, title, button, content) => {
-					//   const pos = parseInt(
-					//       e.srcElement.className.split(' ')[1].split('-')[1]) +
-					//     (universal.page < 0 ? 1 : 0) +
-					//     ((universal.page > 0 ? (universal.config.iconCountPerPage * universal.page) : 0));
-					//   if (value.type == 'sound') createSound(pos);
-					//   if (value.type == 'plugin') createPlugin(pos);
-					// });
 					const pos =
 						Number.parseInt(
 							e.srcElement.className.split(" ")[1].split("-")[1],
@@ -213,13 +205,27 @@ window.oncontextmenu = (e) => {
 							: 0);
 					const uuid = `fdc.${Math.random() * 10000000}`;
 					UI.reloadProfile();
-					universal.save("now-editing", uuid);
-					universal.send(universal.events.companion.new_key, {
-						"New Tile": {
-							type: "fd.none",
-							pos,
-							uuid,
-							data: {},
+					const interaction = {
+						type: "fd.none",
+						pos,
+						uuid,
+						data: {},
+					};
+          universal.send(universal.events.companion.new_key, {
+						"New Tile": interaction,
+					});
+					editTile({
+						srcElement: {
+							getAttribute: (attr) => {
+								return JSON.stringify(interaction);
+							},
+							dataset: {
+								name: "New Tile",
+								interaction: JSON.stringify(
+									interaction,
+								),
+							},
+							className: "button k-0",
 						},
 					});
 					break;
@@ -267,15 +273,17 @@ function showReplaceGUI(srcElement) {
 				return k === value.name;
 			})[0][value.name];
 			const pos =
-				Number.parseInt(srcElement.className.split(" ")[1].split("-")[1]) +
-				(universal.page <= 0 ? 1 : 0) +
-				(universal.page > 0
-					? universal.config.iconCountPerPage * universal.page
-					: 0);
+						Number.parseInt(
+							srcElement.className.split(" ")[1].split("-")[1],
+						) +
+						(universal.page < 0 ? 1 : 0) +
+						(universal.page > 0
+							? universal.config.iconCountPerPage * universal.page
+							: 0);
 			// we need to clone value, and change the pos, and uuid, then make a new key.
 			universal.send(
 				universal.events.companion.new_key,
-				JSON.stringify({
+				{
 					[value.name]: {
 						type: valueToo.type,
 						plugin: valueToo.plugin || "Freedeck",
@@ -283,7 +291,7 @@ function showReplaceGUI(srcElement) {
 						uuid: `fdc.${Math.random() * 10000000}`,
 						data: valueToo.data,
 					},
-				}),
+				},
 			);
 			return true;
 		},
@@ -364,10 +372,12 @@ function editTile(e) {
 	document.querySelector("#sidebar").style.right = "-20%";
 	document.querySelector("#editor").style.display = "block";
 	document.querySelector("#editor-btn").innerText = e.srcElement.dataset.name;
-	document.querySelector("#editor-btn").style.backgroundImage =
-		`url("${interactionData.data.icon}")`;
-	document.querySelector("#editor-btn").style.backgroundColor =
-		interactionData.data.color;
+	if (interactionData.data.icon)
+		document.querySelector("#editor-btn").style.backgroundImage =
+			`url("${interactionData.data.icon}")`;
+	if (interactionData.data.color)
+		document.querySelector("#editor-btn").style.backgroundColor =
+			interactionData.data.color;
 	document.querySelector("#color").value = interactionData.data.color;
 	document.querySelector("#name").value = e.srcElement.dataset.name;
 	document
@@ -969,10 +979,7 @@ document.querySelector("#editor-save").onclick = () => {
 		interaction: interaction,
 	});
 
-	document.querySelector("#editor").style.opacity = "0";
-	setTimeout(() => {
-		document.querySelector("#editor").style.display = "none";
-	}, 500);
+	document.querySelector("#editor-close").click();
 };
 
 /**

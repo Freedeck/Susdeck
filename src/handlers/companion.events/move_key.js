@@ -1,7 +1,7 @@
 const config = require("../../managers/settings");
 const eventNames = require("../eventNames");
 
-module.exports = ({ socket, data, clients }) => {
+module.exports = ({ io, data, clients }) => {
 	const item = JSON.parse(data.item);
 
 	if(item === null) return;
@@ -29,7 +29,5 @@ module.exports = ({ socket, data, clients }) => {
 	}
 
 	config.save();
-	for(const client of clients) {
-		client.emit(eventNames.default.reload_sounds, settings.profiles[settings.profile]);
-	}
+	io.emit(eventNames.default.reload_sounds, settings.profiles[settings.profile]);
 };

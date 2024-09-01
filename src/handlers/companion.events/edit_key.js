@@ -18,5 +18,5 @@ module.exports = ({ io, data }) => {
 	}
 
 	config.save();
-	io.emit(eventNames.default.reload);
+	io.emit(eventNames.default.reload_sounds, settings.profiles[settings.profile]);
 };

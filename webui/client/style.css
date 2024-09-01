@@ -523,3 +523,21 @@ input:disabled {
         box-shadow: 0 0 40px rgba(0, 255, 255, 1);
     }
 }
+
+.tooltip {
+    position: absolute;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 5px;
+    border-radius: 1.5rem;
+    z-index: 1000;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+
+.tooltip.show {
+    display: block;
+    opacity: 1;
+    animation: fade-in 0.5s;
+}

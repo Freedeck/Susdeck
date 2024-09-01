@@ -73,6 +73,9 @@ function reloadSounds() {
 			`Page: ${universal.page + 1}/${Object.keys(Pages).length}`;
 	}
 	universal.keySet();
+	for (const el of document.querySelectorAll(".tile-tooltip")) {
+		el.remove();
+	}
 	for (const sound of universal.config.sounds) {
 		const k = Object.keys(sound)[0];
 		const snd = sound[k];
@@ -133,6 +136,38 @@ function reloadSounds() {
 			if (sounds.length > 1) {
 				keyObject.style.background = "yellow";
 			}
+
+			let out = "";
+			out += `<h4>${universal.cleanHTML(k, false)}</h4>`;
+
+			if (snd.plugin) {
+				out += `<p>This tile uses ${universal.cleanHTML(snd.plugin, false)}.</p>`;
+				for (const i of Array.from(universal._tyc.keys())) {
+					if (i.type === snd.type) {
+						out += `<code>${i.name}</code>`;
+						break;
+					}
+				}
+			}
+			if (snd.type === "fd.sound") {
+				out += "<p>Plays sound:</p>";
+				out += `<code>${universal.cleanHTML(snd.data.path, false)}${universal.cleanHTML(snd.data.file, false)}</code>`;
+			}
+			if (snd.type === "fd.profile") {
+				out += "<p>Opens folder:</p>";
+				out += `<code>${universal.cleanHTML(snd.data.profile, false)}</code>`;
+			}
+
+			out += "<p>Right click to edit.</p>";
+			out += `<details><summary>Advanced (press V)</summary><p>Type: ${snd.type}</p><p>Pos: ${snd.pos}</p><p>Data size: ${Object.keys(snd.data).length}</p></details>`;
+
+			const tt = universal.createTooltipFor(keyObject, out);
+			tt.classList.add("tile-tooltip");
+			window.addEventListener("keydown", (e) => {
+				if (e.key === "v") {
+					tt.querySelector("details").open = !tt.querySelector("details").open;
+				}
+			})
 		} catch (e) {
 			console.log(
 				`while rendering sound: ${k}`,

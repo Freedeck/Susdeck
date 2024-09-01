@@ -1,3 +1,5 @@
+import { UI } from "../../client/scripts/ui";
+
 export default function eventsHandler(universal, user) {
 	return new Promise((resolve, reject) => {
 		universal.CLU("Bootd", "Creating event handlers...");
@@ -94,6 +96,11 @@ export default function eventsHandler(universal, user) {
 		universal.on(universal.events.default.reload, () =>
 			window.location.reload(),
 		);
+
+		universal.on(universal.events.default.reload_sounds, (profileData) => {
+			universal.config.profiles[universal.config.profile] = profileData;
+			UI.reloadSounds();
+		})
 
 		universal.on(universal.events.default.login, (auth) => {
 			universal.authStatus = auth;

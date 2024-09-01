@@ -1,5 +1,5 @@
 import Sortable from "sortablejs";
-// import gridItemDrag from "./gridItemDrag.js";
+import gridItemDrag from "./gridItemDrag.js";
 import { UI } from "../../client/scripts/ui.js";
 import { universal } from "../../shared/universal.js";
 import "./global.js";
@@ -14,25 +14,25 @@ universal.doCtxlLoadAnim = () => {
 	document.querySelector("#ctxl-view-cont").style.display = "block";
 };
 
-new Sortable(document.querySelector("#keys"), {
-	onUpdate: (d) => {
-		d.newDraggableIndex =
-			d.newDraggableIndex + universal.page * universal.config.iconCountPerPage;
-		d.oldDraggableIndex =
-			d.oldDraggableIndex + universal.page * universal.config.iconCountPerPage;
+// new Sortable(document.querySelector("#keys"), {
+// 	onUpdate: (d) => {
+// 		d.newDraggableIndex =
+// 			d.newDraggableIndex + universal.page * universal.config.iconCountPerPage;
+// 		d.oldDraggableIndex =
+// 			d.oldDraggableIndex + universal.page * universal.config.iconCountPerPage;
 
-		const ev = universal.page < 0 ? 1 : 0;
-		universal.send(universal.events.companion.move_key, {
-			name: d.item.getAttribute("data-name"),
-			item: d.item.getAttribute("data-interaction"),
-			newIndex: d.newDraggableIndex + ev,
-			oldIndex: d.oldDraggableIndex + ev,
-		});
-		universal.page = 0;
-	},
-	filter: ".unset .builtin",
-	preventOnFilter: true,
-});
+// 		const ev = universal.page < 0 ? 1 : 0;
+// 		universal.send(universal.events.companion.move_key, {
+// 			name: d.item.getAttribute("data-name"),
+// 			item: d.item.getAttribute("data-interaction"),
+// 			newIndex: d.newDraggableIndex + ev,
+// 			oldIndex: d.oldDraggableIndex + ev,
+// 		});
+// 		universal.page = 0;
+// 	},
+// 	filter: ".unset .builtin",
+// 	preventOnFilter: true,
+// });
 
 /* //TODO: LOOK HERE:
 - Make an event for ui updates (like 'ui_update') that will be sent if
@@ -44,22 +44,45 @@ SO, Instead of fully reloading, we'll just fetch the new data and ui.reloadsound
 lose position.
 */
 
-// gridItemDrag.setFilter('#keys .button');
-// gridItemDrag.unmovableClass = '.builtin, .unset';
-// gridItemDrag.setContext(document.querySelector("#keys"));
-// gridItemDrag.listenForDrop((event, origIndex, targIndex) => {
-// 	const originalIndex = Number.parseInt(origIndex) + (universal.page * universal.config.iconCountPerPage);
-// 	const targetIndex = Number.parseInt(targIndex) + (universal.page * universal.config.iconCountPerPage);
-// 	const ev = universal.page < 0 ? 1 : 0;
-// 	const changed = document.querySelector(`#keys .button.k-${origIndex}`);
-// 	universal.send(universal.events.companion.move_key, {
-// 		name: changed.getAttribute("data-name"),
-// 		item: changed.getAttribute("data-interaction"),
-// 		newIndex: targetIndex + ev,
-// 		oldIndex: originalIndex + ev,
-// 	});
-// 	universal.page = 0;
-// });
+gridItemDrag.setFilter("#keys .button");
+gridItemDrag.unmovableClass = ".builtin, .unset";
+gridItemDrag.setContext(document.querySelector("#keys"));
+universal.listenFor("page_change", () => {
+	gridItemDrag.setContext(document.querySelector("#keys"));
+});
+gridItemDrag.listenForDrop((event, origIndex, targIndex) => {
+	const originalIndex =
+		Number.parseInt(origIndex) +
+		universal.page * Number.parseInt(universal.config.iconCountPerPage);
+	const targetIndex =
+		Number.parseInt(targIndex) +
+		universal.page * Number.parseInt(universal.config.iconCountPerPage);
+	const ev = universal.page < 0 ? 1 : 0;
+	const changed = document.querySelector(`#keys .button.k-${origIndex}`);
+	changed.classList.remove(`k-${origIndex}`);
+	changed.classList.add(`k-${targIndex}`);
+	event.target.classList.remove(`k-${targIndex}`);
+	event.target.classList.add(`k-${origIndex}`);
+	console.log(
+		universal.page * universal.config.iconCountPerPage,
+		originalIndex,
+		targetIndex,
+		originalIndex + ev,
+		targetIndex + ev,
+		changed,
+		origIndex,
+		targIndex,
+	);
+	const targetInter = JSON.parse(changed.getAttribute("data-interaction"));
+	universal.send(universal.events.companion.move_key, {
+		name: changed.getAttribute("data-name"),
+		item: changed.getAttribute("data-interaction"),
+		newIndex: targetIndex + ev,
+		oldIndex: originalIndex + ev,
+	});
+	changed.pos = targetIndex;
+  changed.setAttribute("data-interaction", JSON.stringify(targetInter));
+});
 
 document.querySelector(".toggle-sidebar button").onclick = (ev) => {
 	if (document.querySelector(".sidebar").style.display === "flex") {

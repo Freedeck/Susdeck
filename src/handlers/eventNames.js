@@ -25,6 +25,7 @@ const eventNames = {
 		channel_send: "dcO",
 		channel_listening: "dcI",
 		reload: "dR",
+		reload_sounds: "dRS",
 		recompile: "dC",
 
 		plugin_downloaded: "dPD",

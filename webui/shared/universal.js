@@ -469,6 +469,7 @@ const universal = {
     let isCentered = false;
     if(universal.lclCfg() != null)
       isCentered = universal.lclCfg().center;
+    universal.keys.innerHTML = "";
     for (let i = 0; i < universal.config.iconCountPerPage; i++) {
       const tempDiv = document.createElement("div");
       tempDiv.className = `button k-${i} unset k ${isCentered ? "tiles-center" : ""}`;

@@ -30,9 +30,6 @@ module.exports = ({ socket, data, clients }) => {
 
 	config.save();
 	for(const client of clients) {
-		if (client.user !== socket.user) {
-			console.log(`Reloading client: ${client.name}`);
-			client.emit(eventNames.default.reload);
-		} 
+		client.emit(eventNames.default.reload_sounds, settings.profiles[settings.profile]);
 	}
 };

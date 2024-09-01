@@ -17,6 +17,7 @@ const sc = {
 			const def = JSON.stringify({
 				scroll: false,
 				fill: false,
+				center: false,
 				"font-size": 15,
 				buttonSize: 6,
 				iconCountPerPage: 12,

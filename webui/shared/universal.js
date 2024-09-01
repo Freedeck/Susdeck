@@ -126,7 +126,10 @@ const universal = {
       }
       // select the first option if none are selected
       if (select.selectedIndex === -1) select.selectedIndex = 0;
-      select.onchange = eventHandler;
+      select.onchange = (ev) => {
+        universal.uiSounds.playSound("step_2");
+        eventHandler(ev);
+      };
       return container;
     },
   },

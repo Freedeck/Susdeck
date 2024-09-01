@@ -1132,6 +1132,7 @@ function showPick(title, listContent, callback) {
 		modalItem.innerText = item.name;
 		modalItem.onclick = () => {
 			selectedItem = modalItem;
+      universal.uiSounds.playSound("step_1");
 			for (const i of document.querySelectorAll(".modalItem")) {
 				i.style.backgroundColor = "unset";
 			}
@@ -1740,3 +1741,5 @@ universal.on(universal.events.default.notif, (dat) => {
 		return;
 	}
 });
+
+window.showPick = showPick;

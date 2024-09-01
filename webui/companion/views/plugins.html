@@ -1,6 +1,6 @@
 <center>
     <h1>Your Plugins</h1>
-    <p>Here you can view every plugin connected to Freedeck and it's related button and key type!</p>
+    <p>Here you can view every plugin connected to Freedeck and it's related tile type!</p>
     <button id="upd">Reload All Plugins</button>
 
     <ul id="actl" class="btnlist"></ul>
@@ -81,7 +81,13 @@
         const a = document.createElement('button');
         a.innerText = 'Disable';
         a.onclick = () => {
-            universal.send(universal.events.default.disable_plugin, req.id);
+            universal.uiSounds.playSound('int_confirm');
+            window.showPick('Are you sure you want to disable ' + req.name + '?', [{name:'Yes',value:true},{name:'No',value:false}], (m, v) => {
+                if(v.value == true) {
+                    universal.send(universal.events.default.disable_plugin, req.id);
+                }
+            });
+            // universal.send(universal.events.default.disable_plugin, req.id);
         };
         li.appendChild(a);
         document.querySelector('#actl').appendChild(li);

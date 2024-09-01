@@ -17,6 +17,7 @@ function settingsMenu() {
 const universal = {
   _socket: null,
   _ca: [],
+  _Uploads_View: 0,
   lastRetry: -1,
   connected: false,
   reconnect: () => {

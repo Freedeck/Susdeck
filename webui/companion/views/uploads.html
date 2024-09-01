@@ -1,0 +1,65 @@
+<center>
+  <h1><span class="type">Unknown</span> Uploads</h1>
+  <p>Click an item to select it.</p>
+</center>
+
+<div class="uploads">
+
+</div>
+
+<button id="close-ctxl">Close</button>
+
+<style>
+  #close-ctxl {
+    position: fixed;
+    top: 0;
+    right: 0;
+  }
+
+  .uploads {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .upload {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: black;
+    border: 1px solid #000;
+    border-radius: 5px;
+    gap: 0.25rem;
+    width: max-content;
+    height: max-content;
+    text-overflow: ellipsis;
+
+    background: var(--fdm-background);
+    background-size: var(--fdm-background-size);
+    animation: var(--fdm-bg-anim);
+  }
+
+  .upload img {
+    width: 25%;
+    height: 25%;
+  }
+</style>
+
+<script>
+  const viewType = universal._Uploads_View
+  const vtxt = document.querySelector('h1 span.type')
+  vtxt.innerText = viewType == 0 ? "Sound" : "Icon";
+  fetch("/user-report").then((res) => res.json()).then((data) => {
+    for(const i of data.report[viewType]) {
+      const upload = document.createElement('div');
+      upload.className = 'upload';
+      upload.innerHTML = `<p>${i}</p><img src="/${viewType == 0 ? "sounds" : "icons"}/${i}" />`;
+      document.querySelector('.uploads').appendChild(upload);
+    }
+  })
+  document.getElementById('close-ctxl').onclick = () => {
+    document.querySelector(universal.ctx.view_container).style.display = 'none';
+  };
+</script>

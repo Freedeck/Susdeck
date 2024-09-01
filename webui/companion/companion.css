@@ -588,7 +588,7 @@ a:hover {
 	width: 75%;
 	height: 90%;
 	background-color: var(--fd-studio-color);
-	z-index: 100;
+	z-index: 1001;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	border-radius: 0.5rem;

@@ -884,28 +884,54 @@ document.querySelector("#none-plugin").onclick = (e) => {
 };
 
 document.querySelector("#upload-icon").onclick = (e) => {
-	upload(
-		"image/*",
-		(data) => {
-			UI.reloadProfile();
-			const previousInteractionData = JSON.parse(
-				document
-					.querySelector("#editor-btn[data-interaction]")
-					.getAttribute("data-interaction"),
-			);
-			previousInteractionData.data.icon = `/icons/${data.newName}`;
-			document
-				.querySelector("#editor-btn[data-interaction]")
-				.setAttribute(
-					"data-interaction",
-					JSON.stringify(previousInteractionData),
-				);
-			document.querySelector("#editor-btn").style.backgroundImage =
-				`url("${`/icons/${data.newName}`}")`;
-			loadData(previousInteractionData.data);
-		},
-		"icon",
-	);
+  universal.uiSounds.playSound("step_1");
+	showPick(
+    "What would you like to do?",
+    [
+      {
+        name: "See Uploaded Icons",
+        value: "uploads",
+      },
+      {
+        name: "Upload New Icon",
+        value: "icon",
+      },
+    ],
+    (m, v) => {
+      universal.uiSounds.playSound("step_2");
+      if(v.value === "uploads") {
+        if(document.querySelector(universal.ctx.view_container))
+        document.querySelector(universal.ctx.view_container).style.display = "block";
+        universal._Uploads_View = 1;
+        universal.ctx.destructiveView("uploads")
+      }
+      if(v.value === "icon") {
+        upload(
+          "image/*",
+          (data) => {
+            UI.reloadProfile();
+            const previousInteractionData = JSON.parse(
+              document
+                .querySelector("#editor-btn[data-interaction]")
+                .getAttribute("data-interaction"),
+            );
+            previousInteractionData.data.icon = `/icons/${data.newName}`;
+            document
+              .querySelector("#editor-btn[data-interaction]")
+              .setAttribute(
+                "data-interaction",
+                JSON.stringify(previousInteractionData),
+              );
+            document.querySelector("#editor-btn").style.backgroundImage =
+              `url("${`/icons/${data.newName}`}")`;
+            loadData(previousInteractionData.data);
+            universal.uiSounds.playSound("step_3");
+          },
+          "icon",
+        );
+      }
+    }
+  )
 };
 
 const upload = (accept, callback, type = "sound") => {

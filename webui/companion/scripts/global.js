@@ -4,6 +4,7 @@ universal.ctx = contextual;
 contextual.addView("marketplace");
 contextual.addView("plugins");
 contextual.addView("settings");
+contextual.addView("uploads");
 
 HTMLElement.prototype.setHTML = function (html) {
 	this.innerHTML = html;

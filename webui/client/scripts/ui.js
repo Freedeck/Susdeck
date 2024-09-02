@@ -137,6 +137,7 @@ function reloadSounds() {
 				keyObject.style.background = "yellow";
 			}
 
+			if (universal.name !== "Companion") continue;
 			let out = "";
 			out += `<h4>${universal.cleanHTML(k, false)}</h4>`;
 

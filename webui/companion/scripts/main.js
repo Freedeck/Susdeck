@@ -211,7 +211,7 @@ window.oncontextmenu = (e) => {
 						uuid,
 						data: {},
 					};
-          universal.send(universal.events.companion.new_key, {
+					universal.send(universal.events.companion.new_key, {
 						"New Tile": interaction,
 					});
 					editTile({
@@ -221,9 +221,7 @@ window.oncontextmenu = (e) => {
 							},
 							dataset: {
 								name: "New Tile",
-								interaction: JSON.stringify(
-									interaction,
-								),
+								interaction: JSON.stringify(interaction),
 							},
 							className: "button k-0",
 						},
@@ -273,26 +271,21 @@ function showReplaceGUI(srcElement) {
 				return k === value.name;
 			})[0][value.name];
 			const pos =
-						Number.parseInt(
-							srcElement.className.split(" ")[1].split("-")[1],
-						) +
-						(universal.page < 0 ? 1 : 0) +
-						(universal.page > 0
-							? universal.config.iconCountPerPage * universal.page
-							: 0);
+				Number.parseInt(srcElement.className.split(" ")[1].split("-")[1]) +
+				(universal.page < 0 ? 1 : 0) +
+				(universal.page > 0
+					? universal.config.iconCountPerPage * universal.page
+					: 0);
 			// we need to clone value, and change the pos, and uuid, then make a new key.
-			universal.send(
-				universal.events.companion.new_key,
-				{
-					[value.name]: {
-						type: valueToo.type,
-						plugin: valueToo.plugin || "Freedeck",
-						pos,
-						uuid: `fdc.${Math.random() * 10000000}`,
-						data: valueToo.data,
-					},
+			universal.send(universal.events.companion.new_key, {
+				[value.name]: {
+					type: valueToo.type,
+					plugin: valueToo.plugin || "Freedeck",
+					pos,
+					uuid: `fdc.${Math.random() * 10000000}`,
+					data: valueToo.data,
 				},
-			);
+			});
 			return true;
 		},
 	);
@@ -372,6 +365,7 @@ function editTile(e) {
 	document.querySelector("#sidebar").style.right = "-20%";
 	document.querySelector("#editor").style.display = "block";
 	document.querySelector("#editor-btn").innerText = e.srcElement.dataset.name;
+	document.querySelector("#editor-btn").style.backgroundImage = "";
 	if (interactionData.data.icon)
 		document.querySelector("#editor-btn").style.backgroundImage =
 			`url("${interactionData.data.icon}")`;
@@ -884,54 +878,57 @@ document.querySelector("#none-plugin").onclick = (e) => {
 };
 
 document.querySelector("#upload-icon").onclick = (e) => {
-  universal.uiSounds.playSound("step_1");
-	showPick(
-    "What would you like to do?",
-    [
-      {
-        name: "See Uploaded Icons",
-        value: "uploads",
-      },
-      {
-        name: "Upload New Icon",
-        value: "icon",
-      },
-    ],
-    (m, v) => {
-      universal.uiSounds.playSound("step_2");
-      if(v.value === "uploads") {
-        if(document.querySelector(universal.ctx.view_container))
-        document.querySelector(universal.ctx.view_container).style.display = "block";
-        universal._Uploads_View = 1;
-        universal.ctx.destructiveView("uploads")
-      }
-      if(v.value === "icon") {
-        upload(
-          "image/*",
-          (data) => {
-            UI.reloadProfile();
-            const previousInteractionData = JSON.parse(
-              document
-                .querySelector("#editor-btn[data-interaction]")
-                .getAttribute("data-interaction"),
-            );
-            previousInteractionData.data.icon = `/icons/${data.newName}`;
-            document
-              .querySelector("#editor-btn[data-interaction]")
-              .setAttribute(
-                "data-interaction",
-                JSON.stringify(previousInteractionData),
-              );
-            document.querySelector("#editor-btn").style.backgroundImage =
-              `url("${`/icons/${data.newName}`}")`;
-            loadData(previousInteractionData.data);
-            universal.uiSounds.playSound("step_3");
-          },
-          "icon",
-        );
-      }
-    }
-  )
+	universal.uiSounds.playSound("int_confirm");
+	if (document.querySelector(universal.ctx.view_container))
+		document.querySelector(universal.ctx.view_container).style.display =
+			"block";
+	universal._Uploads_View = 1;
+	universal.ctx.destructiveView("uploads");
+	universal._Uploads_New = () => {
+		upload(
+			"image/*",
+			(data) => {
+				UI.reloadProfile();
+				const previousInteractionData = JSON.parse(
+					document
+						.querySelector("#editor-btn[data-interaction]")
+						.getAttribute("data-interaction"),
+				);
+				previousInteractionData.data.icon = `/icons/${data.newName}`;
+				document
+					.querySelector("#editor-btn[data-interaction]")
+					.setAttribute(
+						"data-interaction",
+						JSON.stringify(previousInteractionData),
+					);
+				document.querySelector("#editor-btn").style.backgroundImage =
+					`url("${`/icons/${data.newName}`}")`;
+				loadData(previousInteractionData.data);
+				universal.uiSounds.playSound("int_yes");
+				universal.ctx.destructiveView("uploads");
+				universal._UPS_ONLOAD(() => {
+					universal._UPS_new(data.newName);
+				});
+			},
+			"icon",
+		);
+	};
+	universal._Uploads_Select = () => {
+		const interaction = JSON.parse(
+			document
+				.querySelector("#editor-btn[data-interaction]")
+				.getAttribute("data-interaction"),
+		);
+		interaction.data.icon = `/icons/${universal._Uploads_Selected}`;
+		document
+			.querySelector("#editor-btn[data-interaction]")
+			.setAttribute("data-interaction", JSON.stringify(interaction));
+		document.querySelector("#editor-btn").style.backgroundImage =
+			`url("${`/icons/${universal._Uploads_Selected}`}")`;
+		loadData(interaction.data);
+		document.querySelector(universal.ctx.view_container).style.display = "none";
+		universal.uiSounds.playSound("int_yes");
+	};
 };
 
 const upload = (accept, callback, type = "sound") => {
@@ -1158,7 +1155,7 @@ function showPick(title, listContent, callback) {
 		modalItem.innerText = item.name;
 		modalItem.onclick = () => {
 			selectedItem = modalItem;
-      universal.uiSounds.playSound("step_1");
+			universal.uiSounds.playSound("step_1");
 			for (const i of document.querySelectorAll(".modalItem")) {
 				i.style.backgroundColor = "unset";
 			}

@@ -27,3 +27,13 @@ if (!fs.existsSync("user-data/hooks")) {
   if (!fs.existsSync("user-data")) fs.mkdirSync("user-data");
   fs.mkdirSync("user-data/hooks");
 }
+
+if (!fs.existsSync("user-data/sounds")) {
+  if (!fs.existsSync("user-data")) fs.mkdirSync("user-data");
+  fs.mkdirSync("user-data/sounds");
+}
+
+if (!fs.existsSync("user-data/icons")) {
+  if (!fs.existsSync("user-data")) fs.mkdirSync("user-data");
+  fs.mkdirSync("user-data/icons");
+}

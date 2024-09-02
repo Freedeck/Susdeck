@@ -3,6 +3,7 @@ universal.listenFor("loadHooks", () => {
 });
 
 window.st_ldt = () => {
+	document.querySelector(".themelist").innerHTML = "";
 	for (const id of Object.keys(universal.themes)) {
 		const theme = universal.themes[id];
 		const element = document.createElement("div");
@@ -17,7 +18,10 @@ window.st_ldt = () => {
 		apply.onclick = () => {
 			universal.save("theme", id);
 			universal.send(universal.events.companion.set_theme, id);
-			window.location.reload();
+			universal.setTheme(
+				id, true
+			);
+			st_ldt();
 		};
 		if (universal.load("theme") === id) {
 			title.innerText += " (Active)";

@@ -14,36 +14,6 @@ universal.doCtxlLoadAnim = () => {
 	document.querySelector("#ctxl-view-cont").style.display = "block";
 };
 
-// new Sortable(document.querySelector("#keys"), {
-// 	onUpdate: (d) => {
-// 		d.newDraggableIndex =
-// 			d.newDraggableIndex + universal.page * universal.config.iconCountPerPage;
-// 		d.oldDraggableIndex =
-// 			d.oldDraggableIndex + universal.page * universal.config.iconCountPerPage;
-
-// 		const ev = universal.page < 0 ? 1 : 0;
-// 		universal.send(universal.events.companion.move_key, {
-// 			name: d.item.getAttribute("data-name"),
-// 			item: d.item.getAttribute("data-interaction"),
-// 			newIndex: d.newDraggableIndex + ev,
-// 			oldIndex: d.oldDraggableIndex + ev,
-// 		});
-// 		universal.page = 0;
-// 	},
-// 	filter: ".unset .builtin",
-// 	preventOnFilter: true,
-// });
-
-/* //TODO: LOOK HERE:
-- Make an event for ui updates (like 'ui_update') that will be sent if
-the user edits a tile, and the tile is updated on the server.
-
-SO, Instead of fully reloading, we'll just fetch the new data and ui.reloadsounds();
-
-- ALSO, I'm not sure that this will fix the issue where if you drag and drop, companion k-* elements
-lose position.
-*/
-
 gridItemDrag.setFilter("#keys .button");
 gridItemDrag.unmovableClass = ".builtin, .unset";
 gridItemDrag.setContext(document.querySelector("#keys"));
@@ -1175,44 +1145,45 @@ function showPick(title, listContent, callback) {
 	modalFeedback.classList.add("modalFeedback");
 	modalContent.appendChild(modalFeedback);
 
-	// const modalList = document.createElement('select');
-	// modalList.className = 'modalList';
-	// modalList.style.marginBottom = '20px';
-	// modalContent.appendChild(modalList);
+	const modalList = document.createElement('select');
+	modalList.className = 'modalList';
+	modalList.style.marginBottom = '20px';
+	modalContent.appendChild(modalList);
 
-	// listContent.forEach((item) => {
-	//   const modalItem = document.createElement('option');
-	//   modalItem.className = 'modalItem';
-	//   modalItem.setAttribute('value', JSON.stringify(item));
-	//   modalItem.innerText = item.name;
-	//   modalList.appendChild(modalItem);
-	// });
+	// const selectedItem = null;
 
-	let selectedItem = null;
-	const itemContainer = document.createElement("div");
-	itemContainer.classList.add("modalList_btns");
+	for(const item of listContent) {
+	  const modalItem = document.createElement('option');
+	  modalItem.className = 'modalItem';
+	  modalItem.setAttribute('value', JSON.stringify(item));
+	  modalItem.innerText = item.name;
+	  modalList.appendChild(modalItem);
+	};
 
-	modalContent.appendChild(itemContainer);
-	for (const item of listContent) {
-		const modalItem = document.createElement("button");
-		modalItem.className = "modalItem";
-		modalItem.setAttribute("value", JSON.stringify(item));
-		modalItem.innerText = item.name;
-		modalItem.onclick = () => {
-			selectedItem = modalItem;
-			universal.uiSounds.playSound("step_1");
-			for (const i of document.querySelectorAll(".modalItem")) {
-				i.style.backgroundColor = "unset";
-			}
-			modalItem.style.backgroundColor = "var(--fd-btn-background)";
-		};
-		itemContainer.appendChild(modalItem);
-	}
+	// const itemContainer = document.createElement("div");
+	// itemContainer.classList.add("modalList_btns");
+
+	// modalContent.appendChild(itemContainer);
+	// for (const item of listContent) {
+	// 	const modalItem = document.createElement("button");
+	// 	modalItem.className = "modalItem";
+	// 	modalItem.setAttribute("value", JSON.stringify(item));
+	// 	modalItem.innerText = item.name;
+	// 	modalItem.onclick = () => {
+	// 		selectedItem = modalItem;
+	// 		universal.uiSounds.playSound("step_1");
+	// 		for (const i of document.querySelectorAll(".modalItem")) {
+	// 			i.style.backgroundColor = "unset";
+	// 		}
+	// 		modalItem.style.backgroundColor = "var(--fd-btn-background)";
+	// 	};
+	// 	itemContainer.appendChild(modalItem);
+	// }
 
 	const modalButton = document.createElement("button");
 	modalButton.innerText = "Save";
 	modalButton.onclick = () => {
-		// const selectedItem = modalList.options[modalList.selectedIndex];
+		const selectedItem = modalList.options[modalList.selectedIndex];
 		const returned = callback(
 			modal,
 			JSON.parse(selectedItem.getAttribute("value")),
@@ -1386,37 +1357,13 @@ profileDupe.onclick = () => {
 	);
 };
 
-universal.on(universal.events.user_mobile_conn, (isConn) => {
-	if (isConn) document.querySelector(".mobd").style.display = "none";
-	else document.querySelector(".mobd").style.display = "flex";
-});
-
-if (universal._information.mobileConnected)
-	document.querySelector(".mobd").style.display = "none";
-
 if (universal.load("pitch"))
 	document.querySelector("#pitch").value = universal.load("pitch");
 
-if (universal.load("has_setup") === "false") {
-	universal.ctx.destructiveView("settings");
-	setTimeout(() => {
-		window.st_run_setup();
-	}, 250);
-}
 
 // get url params
-const urlParams = new URLSearchParams(window.location.search);
-const err = urlParams.get("err");
 const editing = universal.load("now-editing");
-if (err) {
-	switch (err) {
-		case "last-step":
-			universal.sendToast("Initiating connection help wizard");
-			universal.connHelpWizard();
-			window.history.replaceState({}, document.title, window.location.pathname);
-			break;
-	}
-}
+
 if (editing) {
 	setTimeout(() => {
 		const interaction = universal.config.sounds.filter((sound) => {
@@ -1487,13 +1434,12 @@ const setupWizard = () => {
 									universal.save("pitch", 1);
 									universal.save("vol", 1);
 									showText(
-										"All done!",
-										"You're all set up! You can now use Freedeck.",
+										"Setup Wizard",
+										"Audio setup is complete! Let's move on to connecting your device.",
 										() => {
-											universal.sendToast("All done, reloading...");
 											universal.save("has_setup", true);
-											window.location.href =
-												"/companion/index.html?err=last-step";
+											if (!universal._information.mobileConnected)
+												universal.connHelpWizard();
 										},
 									);
 								},
@@ -1505,7 +1451,19 @@ const setupWizard = () => {
 		});
 	});
 };
-window.setupsetupWizard = setupWizard;
+
+if (universal.load("has_setup") === "false") {
+	setupWizard();
+}
+
+universal.on(universal.events.user_mobile_conn, (isConn) => {
+	if(universal.load("has_setup") === "false") return;
+	if (isConn) document.querySelector(".mobd").style.display = "none";
+	else document.querySelector(".mobd").style.display = "flex";
+});
+
+if (universal._information.mobileConnected)
+	document.querySelector(".mobd").style.display = "none";
 
 /**
  * @name getAudioOutputDevices

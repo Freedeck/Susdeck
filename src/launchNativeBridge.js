@@ -23,7 +23,15 @@ const runningLoop = setInterval(() => {
   });
 }, 500);
 
+const killAll = () => {
+  try {
+    child.execSync("taskkill /im nbui.exe /f");
+  } catch(e) {}
+}
+
 const run = () => {
+  killAll();
+
   const sp = child.spawn(path.resolve(`${os.homedir}`, 'Documents/Freedeck/nbui.exe'), {
 
   });
@@ -38,6 +46,7 @@ const run = () => {
   sp.on("exit", (code) => {
     if (state) {
       console.log("NativeBridge has been closed.");
+      killAll();
       run();
     }
   });
@@ -46,5 +55,5 @@ const run = () => {
 run();
 
 process.on("exit", () => {
-  child.execSync("taskkill /im nbui.exe /f");
+  killAll();
 });

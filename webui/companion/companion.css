@@ -169,7 +169,7 @@ a:hover {
 	color: white;
 	border-radius: 0.5rem;
 	padding: 0.5rem;
-	z-index: 1000;
+	z-index: 1021;
 	transition-duration: .25s;
 	cursor: default;
 }

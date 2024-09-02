@@ -5,6 +5,7 @@ contextual.addView("marketplace");
 contextual.addView("plugins");
 contextual.addView("settings");
 contextual.addView("uploads");
+contextual.addView("library");
 
 HTMLElement.prototype.setHTML = function (html) {
 	this.innerHTML = html;
@@ -23,6 +24,7 @@ document.onkeydown = (ev) => universal.uiSounds.playSound("int_type");
 
 const sidebar = [
 	{ Home: "index.html" },
+	{ Library: "library.html" },
 	{ Plugins: "plugins.html" },
 	{ Marketplace: "marketplace.html" },
 	{ Settings: "settings.html" },
@@ -30,7 +32,7 @@ const sidebar = [
 	// {'Webpack Recompile': '+universal.send(universal.events.default.recompile)'}
 ];
 
-const pages = ["plugins", "marketplace", "settings"];
+const pages = ["library", "plugins", "marketplace", "settings"];
 
 const sidebarEle = document.createElement("div");
 sidebarEle.id = "sidebar";

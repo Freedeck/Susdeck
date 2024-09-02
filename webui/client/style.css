@@ -531,7 +531,7 @@ input:disabled {
     color: white;
     padding: 5px;
     border-radius: 1.5rem;
-    z-index: 1000;
+    z-index: 1020;
     pointer-events: none;
     transition: opacity 0.2s;
 }

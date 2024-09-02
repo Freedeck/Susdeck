@@ -65,7 +65,7 @@
                     universal.repositoryManager.unofficial = universal.repositoryManager.unofficial.filter((r) => r.link != repo.link);
                     universal.save('repos.community', JSON.stringify(universal.repositoryManager.unofficial));
                     document.querySelector('.repositories').removeChild(li);
-                    window.location.reload();
+                    loadRepos();
                 };
             }
             plugins.forEach((plugin) => {
@@ -135,13 +135,18 @@
 
     document.body.appendChild(dialog);
 
-    universal.repositoryManager.official.forEach((repo) => {
-        loadRepo(repo);
-    });
+    const loadRepos = () => {
+        document.querySelector('.repositories').innerHTML = '';
+        document.querySelector('.marketplace').innerHTML = '';
+        universal.repositoryManager.official.forEach((repo) => {
+            loadRepo(repo);
+        });
 
-    universal.repositoryManager.unofficial.forEach((repo) => {
-        loadRepo(repo, true);
-    });
+        universal.repositoryManager.unofficial.forEach((repo) => {
+            loadRepo(repo, true);
+        });
+    };
+    loadRepos();
 
     universal.on(universal.events.default.plugin_downloaded, () => {
         dialog.innerHTML += `<p>Downloaded successfully. Give Freedeck a second to update it's plugin index.</p>`;
@@ -153,6 +158,7 @@
         const modal = document.createElement('dialog');
         modal.className = 'dialog';
         modal.id = 'repo-dialog';
+        modal.style.zIndex = '1021';
         modal.innerHTML = `
             <div id="login-div">
                 <h1>Freedeck 6 - Companion</h1>
@@ -163,7 +169,6 @@
                 <button onclick="universal.uiSounds.playSound('int_no'); document.querySelector('#repo-dialog').style.display='none';">Cancel</button>
             </div>
         `;
-        console.log(modal)
 
         document.body.appendChild(modal)
         modal.style.display = 'block'
@@ -181,7 +186,8 @@
                 curr.push({ title, who: desc, link: url })
                 universal.save('repos.community', JSON.stringify(curr))
                 modal.remove()
-                window.location.reload();
+                universal.repositoryManager.unofficial = curr;
+                loadRepos();
             })
         }
     }

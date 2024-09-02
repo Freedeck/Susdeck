@@ -200,10 +200,20 @@ window.oncontextmenu = (e) => {
 				}
 				case "Remove Tile":
 					UI.reloadProfile();
-					universal.send(universal.events.companion.del_key, {
-						name: e.srcElement.dataset.name,
-						item: e.srcElement.getAttribute("data-interaction"),
-					});
+					showPick(
+						`Are you sure you want to remove ${universal.cleanHTML(e.srcElement.dataset.name)}?`,
+						[
+							{ name: "Yes", value: true },
+							{ name: "No", value: false },
+						],
+						(m, v) => {
+							if (v.value !== true) return;
+							universal.send(universal.events.companion.del_key, {
+								name: e.srcElement.dataset.name,
+								item: e.srcElement.getAttribute("data-interaction"),
+							});
+						},
+					);
 					break;
 				case "Copy Tile Here":
 					showReplaceGUI(e.srcElement);
@@ -693,26 +703,76 @@ document.querySelector("#upload-sound").onclick = () => {
 	document.querySelector("#audio-file").innerText = "Uploading...";
 	document.querySelector("#audio-path").innerText = "Uploading...";
 	document.querySelector("#upload-sound").disabled = true;
-	upload("audio/*,video/*", (data) => {
-		UI.reloadProfile();
-		const previousInteractionData = JSON.parse(
+	universal.uiSounds.playSound("int_confirm");
+	if (document.querySelector(universal.ctx.view_container))
+		document.querySelector(universal.ctx.view_container).style.display =
+			"block";
+	universal._Uploads_View = 0;
+	universal.ctx.destructiveView("library");
+	universal._libraryOnload = () => {
+		setupLibraryFor("sound");
+	};
+	universal._libraryOnpaint = () => {
+		for (const el of document.querySelectorAll(".uploads-0 .upload")) {
+			el.onclick = () => {
+				for (const el of document.querySelectorAll(".upload")) {
+					el.classList.remove("glow");
+				}
+				el.classList.add("glow");
+				universal._Uploads_Select(el.dataset.name);
+			};
+		}
+		document.querySelector(".save-changes").onclick = () => {
+			universal._libraryOnload = () => {
+				setupLibraryFor("");
+			};
+			universal._libraryOnpaint = undefined;
+			universal.vopen("index.html");
+		};
+	};
+	universal._Uploads_New = () => {
+		upload("audio/*,video/*", (data) => {
+			UI.reloadProfile();
+			const previousInteractionData = JSON.parse(
+				document
+					.querySelector("#editor-btn[data-interaction]")
+					.getAttribute("data-interaction"),
+			);
+			previousInteractionData.data.file = data.newName;
+			document
+				.querySelector("#editor-btn[data-interaction]")
+				.setAttribute(
+					"data-interaction",
+					JSON.stringify(previousInteractionData),
+				);
+			document.querySelector("#file.editor-data").value = data.newName;
+			document.querySelector("#path.editor-data").value = "/sounds/";
+			document.querySelector("#audio-file").innerText = data.newName;
+			document.querySelector("#audio-path").innerText = "/sounds/";
+			loadData(previousInteractionData.data);
+			universal.uiSounds.playSound("int_yes");
+			universal.ctx.destructiveView("library");
+		});
+	};
+	universal._Uploads_Select = (itm) => {
+		const interaction = JSON.parse(
 			document
 				.querySelector("#editor-btn[data-interaction]")
 				.getAttribute("data-interaction"),
 		);
-		previousInteractionData.data.file = data.newName;
+		interaction.data.file = itm;
+		interaction.data.path = "/sounds/";
 		document
 			.querySelector("#editor-btn[data-interaction]")
-			.setAttribute(
-				"data-interaction",
-				JSON.stringify(previousInteractionData),
-			);
-		document.querySelector("#file.editor-data").value = data.newName;
+			.setAttribute("data-interaction", JSON.stringify(interaction));
+		loadData(interaction.data);
+		document.querySelector("#file.editor-data").value = itm;
 		document.querySelector("#path.editor-data").value = "/sounds/";
-		document.querySelector("#audio-file").innerText = data.newName;
+		document.querySelector("#audio-file").innerText = itm;
 		document.querySelector("#audio-path").innerText = "/sounds/";
-		document.querySelector("#upload-sound").disabled = false;
-	});
+
+		universal.uiSounds.playSound("int_yes");
+	};
 };
 
 document.querySelector("#none-audio").onclick = (e) => {
@@ -848,32 +908,38 @@ document.querySelector("#none-plugin").onclick = (e) => {
 };
 
 const setupLibraryFor = (type) => {
-	if (type === "icon")  {
-		document.querySelector('.uploads-0').style.display = 'none';
-		document.querySelector('#uploads-0-title').style.display = 'none';
-		document.querySelector('.uploads-1').style.display = 'flex';
-		document.querySelector('#uploads-1-title').style.display = 'block';
-		document.querySelector('#library > body > center > p').textContent = 'Select an icon to use, or upload a new one!';
-		document.querySelector('#library > body > center > h1').textContent = 'Available Icons';
-		document.querySelector('.save-changes').style.display = 'block';
+	if (type === "icon") {
+		document.querySelector(".uploads-0").style.display = "none";
+		document.querySelector("#uploads-0-title").style.display = "none";
+		document.querySelector(".uploads-1").style.display = "flex";
+		document.querySelector("#uploads-1-title").style.display = "block";
+		document.querySelector("#library > body > center > p").textContent =
+			"Select an icon to use, or upload a new one!";
+		document.querySelector("#library > body > center > h1").textContent =
+			"Available Icons";
+		document.querySelector(".save-changes").style.display = "block";
 	} else if (type === "sound") {
-		document.querySelector('.uploads-0').style.display = 'flex';
-		document.querySelector('#uploads-0-title').style.display = 'block';
-		document.querySelector('.uploads-1').style.display = 'none';
-		document.querySelector('#uploads-1-title').style.display = 'none';
-		document.querySelector('#library > body > center > p').textContent = 'Select an icon to use, or upload a new one!';
-		document.querySelector('#library > body > center > h1').textContent = 'Available Icons';
-		document.querySelector('.save-changes').style.display = 'block';
+		document.querySelector(".uploads-0").style.display = "flex";
+		document.querySelector("#uploads-0-title").style.display = "block";
+		document.querySelector(".uploads-1").style.display = "none";
+		document.querySelector("#uploads-1-title").style.display = "none";
+		document.querySelector("#library > body > center > p").textContent =
+			"Select an icon to use, or upload a new one!";
+		document.querySelector("#library > body > center > h1").textContent =
+			"Available Icons";
+		document.querySelector(".save-changes").style.display = "block";
 	} else {
-		document.querySelector('.uploads-0').style.display = 'flex';
-		document.querySelector('#uploads-0-title').style.display = 'block';
-		document.querySelector('.uploads-1').style.display = 'flex';
-		document.querySelector('#uploads-1-title').style.display = 'block';
-		document.querySelector('#library > body > center > p').textContent = 'Here you will find every sound or icon you\'ve uploaded.';
-		document.querySelector('#library > body > center > h1').textContent = 'Library';
-		document.querySelector('.save-changes').style.display = 'none';
+		document.querySelector(".uploads-0").style.display = "flex";
+		document.querySelector("#uploads-0-title").style.display = "block";
+		document.querySelector(".uploads-1").style.display = "flex";
+		document.querySelector("#uploads-1-title").style.display = "block";
+		document.querySelector("#library > body > center > p").textContent =
+			"Here you will find every sound or icon you've uploaded.";
+		document.querySelector("#library > body > center > h1").textContent =
+			"Library";
+		document.querySelector(".save-changes").style.display = "none";
 	}
-}
+};
 
 document.querySelector("#upload-icon").onclick = (e) => {
 	universal.uiSounds.playSound("int_confirm");
@@ -884,25 +950,25 @@ document.querySelector("#upload-icon").onclick = (e) => {
 	universal.ctx.destructiveView("library");
 	universal._libraryOnload = () => {
 		setupLibraryFor("icon");
-	}
+	};
 	universal._libraryOnpaint = () => {
-		for(const el of document.querySelectorAll(".uploads-1 .upload")) {
+		for (const el of document.querySelectorAll(".uploads-1 .upload")) {
 			el.onclick = () => {
-				for(const el of document.querySelectorAll(".upload")) {
+				for (const el of document.querySelectorAll(".upload")) {
 					el.classList.remove("glow");
 				}
 				el.classList.add("glow");
 				universal._Uploads_Select(el.dataset.name);
-			}
+			};
 		}
 		document.querySelector(".save-changes").onclick = () => {
 			universal._libraryOnload = () => {
 				setupLibraryFor("");
-			}
+			};
 			universal._libraryOnpaint = undefined;
 			universal.vopen("index.html");
-		}
-	}
+		};
+	};
 	universal._Uploads_New = () => {
 		upload(
 			"image/*",
@@ -1145,20 +1211,20 @@ function showPick(title, listContent, callback) {
 	modalFeedback.classList.add("modalFeedback");
 	modalContent.appendChild(modalFeedback);
 
-	const modalList = document.createElement('select');
-	modalList.className = 'modalList';
-	modalList.style.marginBottom = '20px';
+	const modalList = document.createElement("select");
+	modalList.className = "modalList";
+	modalList.style.marginBottom = "20px";
 	modalContent.appendChild(modalList);
 
 	// const selectedItem = null;
 
-	for(const item of listContent) {
-	  const modalItem = document.createElement('option');
-	  modalItem.className = 'modalItem';
-	  modalItem.setAttribute('value', JSON.stringify(item));
-	  modalItem.innerText = item.name;
-	  modalList.appendChild(modalItem);
-	};
+	for (const item of listContent) {
+		const modalItem = document.createElement("option");
+		modalItem.className = "modalItem";
+		modalItem.setAttribute("value", JSON.stringify(item));
+		modalItem.innerText = item.name;
+		modalList.appendChild(modalItem);
+	}
 
 	// const itemContainer = document.createElement("div");
 	// itemContainer.classList.add("modalList_btns");
@@ -1360,7 +1426,6 @@ profileDupe.onclick = () => {
 if (universal.load("pitch"))
 	document.querySelector("#pitch").value = universal.load("pitch");
 
-
 // get url params
 const editing = universal.load("now-editing");
 
@@ -1457,7 +1522,7 @@ if (universal.load("has_setup") === "false") {
 }
 
 universal.on(universal.events.user_mobile_conn, (isConn) => {
-	if(universal.load("has_setup") === "false") return;
+	if (universal.load("has_setup") === "false") return;
 	if (isConn) document.querySelector(".mobd").style.display = "none";
 	else document.querySelector(".mobd").style.display = "flex";
 });

@@ -6,6 +6,7 @@
 	"scripts": {
 		"start": "electron .",
 		"companion": "electron . --companion-only",
+		"native-bridge": "node src/index.js --native-bridge-only",
 		"server": "node src/index.js --server-only",
 		"debug-server": "node src/index.js --server-only --debug",
 		"lint": "biome format --write ./src",

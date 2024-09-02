@@ -19,6 +19,12 @@ if (process.argv.includes("--server-only")) {
     DOES_RUN_SERVER = false;
   }
 }
+if (process.argv.includes("--native-bridge-only")) {
+  console.log(picocolors.blue("Launching NativeBridge."));
+  DO_COMPANION = false;
+  DOES_RUN_SERVER = false;
+  require(path.resolve("src/launchNativeBridge.js"));
+}
 
 if (
   (!DOES_SETTINGS_EXIST_YET && !DOES_RUN_SERVER) ||
@@ -65,7 +71,7 @@ if (DO_COMPANION) {
   });
 }
 
-setupTerm();
+if(DOES_RUN_SERVER)setupTerm();
 
 /**
  * Setup the terminal

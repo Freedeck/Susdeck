@@ -60,7 +60,17 @@ export function handler() {
 			fetch(`/native/volume/app/${padded}/${data.data.app}`)
 				.then((res) => res.json())
 				.then((a) => {
-					console.log(a);
+					for(const button of document.querySelectorAll('.button')) {
+						if (button.getAttribute('data-interaction')) {
+							let dat = button.getAttribute('data-interaction');
+							dat = JSON.parse(dat);
+							if (dat.data?.app === data.data.app) {
+								dat.data.value = a.Volume;
+								button.setAttribute("data-interaction", JSON.stringify(dat));
+								button.querySelector(".slider-container").dataset.value = a.Volume;
+							}
+						}
+					};
 				})
 				.catch((err) => {
 					console.log("Error while fetching app volume", err);
@@ -75,7 +85,17 @@ export function handler() {
 			fetch(`/native/volume/sys/${padded}`)
 				.then((res) => res.json())
 				.then((a) => {
-					console.log(a);
+					for(const button of document.querySelectorAll('.button')) {
+						if (button.getAttribute('data-interaction')) {
+							let dat = button.getAttribute('data-interaction');
+							dat = JSON.parse(dat);
+							if (dat.data?.app === data.data.app) {
+								dat.data.value = a.Volume;
+								button.setAttribute("data-interaction", JSON.stringify(dat));
+								button.querySelector(".slider-container").dataset.value = a.Volume;
+							}
+						}
+					};
 				})
 				.catch((err) => {
 					console.log("Error while fetching system volume", err);

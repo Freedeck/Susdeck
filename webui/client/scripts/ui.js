@@ -141,6 +141,10 @@ function reloadSounds() {
 			let out = "";
 			out += `<h4>${universal.cleanHTML(k, false)}</h4>`;
 
+			if (snd.data.longPress === "true") {
+				out += "<p>Long press to activate.</p>";
+			}
+			
 			if (snd.plugin) {
 				out += `<p>This tile uses ${universal.cleanHTML(snd.plugin, false)}.</p>`;
 				for (const i of Array.from(universal._tyc.keys())) {

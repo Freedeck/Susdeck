@@ -511,19 +511,6 @@ input:disabled {
     transform: translate(-50%, -50%);
 }
 
-.glow {
-    animation: glow 1s infinite alternate;
-}
-
-@keyframes glow {
-    0% {
-        box-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
-    }
-    100% {
-        box-shadow: 0 0 40px rgba(0, 255, 255, 1);
-    }
-}
-
 .tooltip {
     position: absolute;
     display: none;
@@ -540,4 +527,17 @@ input:disabled {
     display: block;
     opacity: 1;
     animation: fade-in 0.5s;
+}
+
+.glow {
+    animation: glow 1s infinite alternate;
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 40px rgba(0, 255, 255, 1);
+    }
 }

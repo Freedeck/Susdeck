@@ -1,19 +1,27 @@
 <center>
   <h1>Library</h1>
   <p>Here you will find every sound or icon you've uploaded.</p>
+  <button class="save-changes">Save Changes</button>
 </center>
 
-<h1>Sounds<button onclick="universal._Uploads_New(0)">
+<h1 id="uploads-0-title">Sounds<button onclick="universal._Uploads_New(0)">
     Upload Sound
   </button></h1>
 <div class="uploads uploads-0"></div>
 
-<h1>Icons <button onclick="universal._Uploads_New(1)">
+<h1 id="uploads-1-title">Icons <button onclick="universal._Uploads_New(1)">
     Upload Icon
   </button></h1>
 <div class="uploads uploads-1"></div>
 
 <style>
+  .save-changes {
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: none;
+  }
+
   .uploads {
     display: flex;
     flex-direction: row;
@@ -51,6 +59,21 @@
     left: 0;
     z-index: 1;
   }
+
+  .glow {
+    animation: glow 1s infinite alternate;
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 40px rgba(255, 0, 255, 0.5);
+        transform: scale(1);
+    }
+    100% {
+        box-shadow: 0 0 40px rgba(0, 255, 255, 1);
+        transform: scale(1.1);
+      }
+}
 </style>
 
 <script>
@@ -61,6 +84,7 @@
         const upload = document.createElement('div');
         upload.className = 'upload';
         upload.id = `upload-${cc}`;
+        upload.dataset.name = j;
         if (cc == 1) {
           upload.innerHTML += `<img src="/icons/${j}" />`;
           universal.createTooltipFor(upload, j);
@@ -72,5 +96,7 @@
       }
       cc++;
     }
+    if(universal._libraryOnpaint) universal._libraryOnpaint();
   })
+  if(universal._libraryOnload) universal._libraryOnload();
 </script>

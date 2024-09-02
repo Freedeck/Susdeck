@@ -877,13 +877,59 @@ document.querySelector("#none-plugin").onclick = (e) => {
 	document.querySelector("#none-only").style.display = "none";
 };
 
+const setupLibraryFor = (type) => {
+	if (type === "icon")  {
+		document.querySelector('.uploads-0').style.display = 'none';
+		document.querySelector('#uploads-0-title').style.display = 'none';
+		document.querySelector('.uploads-1').style.display = 'flex';
+		document.querySelector('#uploads-1-title').style.display = 'block';
+		document.querySelector('#library > body > center > p').textContent = 'Select an icon to use, or upload a new one!';
+		document.querySelector('#library > body > center > h1').textContent = 'Available Icons';
+		document.querySelector('.save-changes').style.display = 'block';
+	} else if (type === "sound") {
+		document.querySelector('.uploads-0').style.display = 'flex';
+		document.querySelector('#uploads-0-title').style.display = 'block';
+		document.querySelector('.uploads-1').style.display = 'none';
+		document.querySelector('#uploads-1-title').style.display = 'none';
+		document.querySelector('#library > body > center > p').textContent = 'Select an icon to use, or upload a new one!';
+		document.querySelector('#library > body > center > h1').textContent = 'Available Icons';
+		document.querySelector('.save-changes').style.display = 'block';
+	} else {
+		document.querySelector('.uploads-0').style.display = 'flex';
+		document.querySelector('#uploads-0-title').style.display = 'block';
+		document.querySelector('.uploads-1').style.display = 'flex';
+		document.querySelector('#uploads-1-title').style.display = 'block';
+		document.querySelector('#library > body > center > p').textContent = 'Here you will find every sound or icon you\'ve uploaded.';
+		document.querySelector('#library > body > center > h1').textContent = 'Library';
+		document.querySelector('.save-changes').style.display = 'none';
+	}
+}
+
 document.querySelector("#upload-icon").onclick = (e) => {
 	universal.uiSounds.playSound("int_confirm");
 	if (document.querySelector(universal.ctx.view_container))
 		document.querySelector(universal.ctx.view_container).style.display =
 			"block";
 	universal._Uploads_View = 1;
-	universal.ctx.destructiveView("uploads");
+	universal.ctx.destructiveView("library");
+	universal._libraryOnload = () => {
+		setupLibraryFor("icon");
+	}
+	universal._libraryOnpaint = () => {
+		for(const el of document.querySelectorAll(".uploads-1 .upload")) {
+			el.onclick = () => {
+				for(const el of document.querySelectorAll(".upload")) {
+					el.classList.remove("glow");
+				}
+				el.classList.add("glow");
+				console.log(el)
+				universal._Uploads_Select(el.dataset.name);
+			}
+		}
+		document.querySelector(".save-changes").onclick = () => {
+			universal.vopen("index.html");
+		}
+	}
 	universal._Uploads_New = () => {
 		upload(
 			"image/*",
@@ -905,28 +951,24 @@ document.querySelector("#upload-icon").onclick = (e) => {
 					`url("${`/icons/${data.newName}`}")`;
 				loadData(previousInteractionData.data);
 				universal.uiSounds.playSound("int_yes");
-				universal.ctx.destructiveView("uploads");
-				universal._UPS_ONLOAD(() => {
-					universal._UPS_new(data.newName);
-				});
+				universal.ctx.destructiveView("library");
 			},
 			"icon",
 		);
 	};
-	universal._Uploads_Select = () => {
+	universal._Uploads_Select = (itm) => {
 		const interaction = JSON.parse(
 			document
 				.querySelector("#editor-btn[data-interaction]")
 				.getAttribute("data-interaction"),
 		);
-		interaction.data.icon = `/icons/${universal._Uploads_Selected}`;
+		interaction.data.icon = `/icons/${itm}`;
 		document
 			.querySelector("#editor-btn[data-interaction]")
 			.setAttribute("data-interaction", JSON.stringify(interaction));
 		document.querySelector("#editor-btn").style.backgroundImage =
-			`url("${`/icons/${universal._Uploads_Selected}`}")`;
+			`url("${`/icons/${itm}`}")`;
 		loadData(interaction.data);
-		document.querySelector(universal.ctx.view_container).style.display = "none";
 		universal.uiSounds.playSound("int_yes");
 	};
 };

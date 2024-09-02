@@ -134,7 +134,7 @@ function reloadSounds() {
 				);
 			});
 			if (sounds.length > 1) {
-				keyObject.style.background = "yellow";
+				keyObject.classList.add("duplicate");
 			}
 
 			if (universal.name !== "Companion") continue;

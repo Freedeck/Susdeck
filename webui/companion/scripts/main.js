@@ -922,11 +922,14 @@ document.querySelector("#upload-icon").onclick = (e) => {
 					el.classList.remove("glow");
 				}
 				el.classList.add("glow");
-				console.log(el)
 				universal._Uploads_Select(el.dataset.name);
 			}
 		}
 		document.querySelector(".save-changes").onclick = () => {
+			universal._libraryOnload = () => {
+				setupLibraryFor("");
+			}
+			universal._libraryOnpaint = undefined;
 			universal.vopen("index.html");
 		}
 	}

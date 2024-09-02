@@ -541,3 +541,9 @@ input:disabled {
         box-shadow: 0 0 40px rgba(0, 255, 255, 1);
     }
 }
+
+.duplicate {
+    background-color: yellow;
+    color: black;
+    border: 3px solid yellow;
+}

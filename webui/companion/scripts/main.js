@@ -700,8 +700,6 @@ for (const type of universal._tyc.keys()) {
 generateProfileSelect();
 
 document.querySelector("#upload-sound").onclick = () => {
-	document.querySelector("#audio-file").innerText = "Uploading...";
-	document.querySelector("#audio-path").innerText = "Uploading...";
 	document.querySelector("#upload-sound").disabled = true;
 	universal.uiSounds.playSound("int_confirm");
 	if (document.querySelector(universal.ctx.view_container))

@@ -57,9 +57,10 @@ const gridItemDrag = {
   },
   _onDrop: (e) => {
     e.preventDefault();
+    if(e.target === gridItemDrag._ctx) return;
     const draggedItem = gridItemDrag._draggedItem;
 
-    if (gridItemDrag._targetIndex !== null) {
+    if (gridItemDrag._targetIndex !== null && gridItemDrag._targetIndex !== gridItemDrag._originalIndex) {
       const target = gridItemDrag._ctx.children[gridItemDrag._targetIndex];
 
       const draggedItemSibling = draggedItem.nextElementSibling === target ? draggedItem : draggedItem.nextElementSibling;

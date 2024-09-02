@@ -20,7 +20,10 @@ gridItemDrag.setContext(document.querySelector("#keys"));
 universal.listenFor("page_change", () => {
 	gridItemDrag.setContext(document.querySelector("#keys"));
 });
-gridItemDrag.listenForDrop((event, origIndex, targIndex) => {
+gridItemDrag.on("drop", (event, origIndex, targIndex) => {
+	document.querySelector(".mt-next-page").style.display = "none";
+	document.querySelector(".mt-prev-page").style.display = "none";
+
 	const originalIndex =
 		Number.parseInt(origIndex) +
 		universal.page * Number.parseInt(universal.config.iconCountPerPage);
@@ -28,21 +31,13 @@ gridItemDrag.listenForDrop((event, origIndex, targIndex) => {
 		Number.parseInt(targIndex) +
 		universal.page * Number.parseInt(universal.config.iconCountPerPage);
 	const ev = universal.page < 0 ? 1 : 0;
+
 	const changed = document.querySelector(`#keys .button.k-${origIndex}`);
 	changed.classList.remove(`k-${origIndex}`);
 	changed.classList.add(`k-${targIndex}`);
 	event.target.classList.remove(`k-${targIndex}`);
 	event.target.classList.add(`k-${origIndex}`);
-	console.log(
-		universal.page * universal.config.iconCountPerPage,
-		originalIndex,
-		targetIndex,
-		originalIndex + ev,
-		targetIndex + ev,
-		changed,
-		origIndex,
-		targIndex,
-	);
+
 	const targetInter = JSON.parse(changed.getAttribute("data-interaction"));
 	universal.send(universal.events.companion.move_key, {
 		name: changed.getAttribute("data-name"),
@@ -53,6 +48,16 @@ gridItemDrag.listenForDrop((event, origIndex, targIndex) => {
 	changed.pos = targetIndex;
 	changed.setAttribute("data-interaction", JSON.stringify(targetInter));
 });
+
+gridItemDrag.on("dragging", (e) => {
+	document.querySelector("#keys").appendChild(document.querySelector(".mt-next-page").cloneNode(true));
+	document.querySelector("#keys").appendChild(document.querySelector(".mt-prev-page").cloneNode(true));
+	// copy the next and prev buttons to the keys container
+	
+	document.querySelector(".mt-next-page").style.display = "block";
+	document.querySelector(".mt-prev-page").style.display = "block";
+
+})
 
 document.querySelector(".toggle-sidebar button").onclick = (ev) => {
 	if (document.querySelector(".sidebar").style.display === "flex") {

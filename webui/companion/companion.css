@@ -647,3 +647,31 @@ a:hover {
 	padding: 5px;
 	margin-bottom: 20px;
 }
+
+.mt-next-page {
+	/* should be near #keys*/
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 40%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: white;
+	padding: 1rem;
+	transform: translate(100%);
+	display: none;
+}
+
+.mt-prev-page {
+	/* should be near #keys*/
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 40%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: white;
+	padding: 1rem;
+	transform: translate(-100%);
+	display: none;
+}

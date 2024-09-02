@@ -9,6 +9,7 @@ const gridItemDrag = {
   unmovableClass: 'unmovable',
   selectedGlowClass: 'glow',
   movingElementClass: 'moving',
+  secondaryAllow: ".sal",
   setFilter: (filter) => {
     gridItemDrag._filter = filter;
   },
@@ -28,6 +29,10 @@ const gridItemDrag = {
       gridItemDrag._draggedItem = e.target;
       gridItemDrag._originalIndex = Array.from(gridItemDrag._ctx.children).indexOf(gridItemDrag._draggedItem);
       gridItemDrag._draggedItem.classList.add(gridItemDrag.movingElementClass);
+      for(const listener of gridItemDrag._eventListeners) {
+        if(listener.event !== "dragging") continue;
+        listener.callback(e);
+      };
     }
   },
   _onDragEnd: (e) => {
@@ -40,7 +45,7 @@ const gridItemDrag = {
     e.preventDefault();
   },
   _onDragEnter: (e) => {
-    if (gridItemDrag.dragging && e.target.matches(gridItemDrag._filter) && !e.target.matches(gridItemDrag.no)) {
+    if (gridItemDrag.dragging && ((e.target.matches(gridItemDrag._filter) && !e.target.matches(gridItemDrag.no)) || e.target.matches(gridItemDrag.secondaryAllow))) {
       const target = e.target;
       const targetIndex = Array.from(gridItemDrag._ctx.children).indexOf(target);
 
@@ -77,6 +82,7 @@ const gridItemDrag = {
     if(gridItemDrag._targetIndex == null) gridItemDrag._targetIndex = gridItemDrag._originalIndex;
 
     for(const listener of gridItemDrag._eventListeners) {
+      if(listener.event !== "drop") continue;
       listener.callback(e, gridItemDrag._originalIndex, gridItemDrag._targetIndex);
     };
 
@@ -93,8 +99,8 @@ const gridItemDrag = {
   },
 
   _eventListeners: [],
-  listenForDrop: (callback) => {
-    gridItemDrag._eventListeners.push({ callback });
+  on: (ev, callback) => {
+    gridItemDrag._eventListeners.push({ event:ev, callback });
   }
 };
 

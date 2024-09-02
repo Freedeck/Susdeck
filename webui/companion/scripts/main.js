@@ -260,7 +260,7 @@ function showReplaceGUI(srcElement) {
 			universal.send(universal.events.companion.new_key, {
 				[value.name]: {
 					type: valueToo.type,
-					plugin: valueToo.plugin || "Freedeck",
+					plugin: valueToo.plugin,
 					pos,
 					uuid: `fdc.${Math.random() * 10000000}`,
 					data: valueToo.data,

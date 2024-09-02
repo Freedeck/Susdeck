@@ -410,8 +410,14 @@ function editTile(e) {
 				.then((data) => {
 					if (data._msg) {
 						universal.sendToast(
-							"NativeBridge is not running. Please start it to use this feature.",
+							"NativeBridge is not running. Freedeck may be trying to start it.",
 						);
+						universal.sendToast(
+							"If this message persists, please restart Freedeck or",
+						)
+						universal.sendToast(
+							"run 'nbui.exe' in your Documents/Freedeck folder."
+						)
 					}
 					const int = JSON.parse(
 						document
@@ -818,8 +824,14 @@ document.querySelector("#none-system").onclick = (e) => {
 		.then((data) => {
 			if (data._msg) {
 				universal.sendToast(
-					"NativeBridge is not running. Please start it to use this feature.",
+					"NativeBridge is not running. Freedeck may be trying to start it.",
 				);
+				universal.sendToast(
+					"If this message persists, please restart Freedeck or",
+				)
+				universal.sendToast(
+					"run 'nbui.exe' in your Documents/Freedeck folder."
+				)
 				return;
 			}
 			const int = JSON.parse(

@@ -71,6 +71,8 @@ const gridItemDrag = {
     }
     draggedItem.classList.remove(gridItemDrag.movingElementClass);
 
+    if(gridItemDrag._targetIndex == null) gridItemDrag._targetIndex = gridItemDrag._originalIndex;
+
     for(const listener of gridItemDrag._eventListeners) {
       listener.callback(e, gridItemDrag._originalIndex, gridItemDrag._targetIndex);
     };

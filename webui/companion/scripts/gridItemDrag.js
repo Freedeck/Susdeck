@@ -5,6 +5,7 @@ const gridItemDrag = {
   _draggedItem: null,
   _originalIndex: null,
   _targetIndex: null,
+  no: '.builtin',
   unmovableClass: 'unmovable',
   selectedGlowClass: 'glow',
   movingElementClass: 'moving',
@@ -39,7 +40,7 @@ const gridItemDrag = {
     e.preventDefault();
   },
   _onDragEnter: (e) => {
-    if (gridItemDrag.dragging && e.target.matches(gridItemDrag._filter)) {
+    if (gridItemDrag.dragging && e.target.matches(gridItemDrag._filter) && !e.target.matches(gridItemDrag.no)) {
       const target = e.target;
       const targetIndex = Array.from(gridItemDrag._ctx.children).indexOf(target);
 
@@ -58,6 +59,7 @@ const gridItemDrag = {
   _onDrop: (e) => {
     e.preventDefault();
     if(e.target === gridItemDrag._ctx) return;
+    if(e.target.matches(gridItemDrag.no)) return;
     const draggedItem = gridItemDrag._draggedItem;
 
     if (gridItemDrag._targetIndex !== null && gridItemDrag._targetIndex !== gridItemDrag._originalIndex) {

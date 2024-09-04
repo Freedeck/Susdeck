@@ -432,6 +432,8 @@ input:disabled {
     position: relative;
     min-height: var(--fd-tile-h);
     min-width: var(--fd-tile-w);
+    width: var(--fd-tile-w);
+    height: var(--fd-tile-h);
 }
 
 .plugin-missing {

@@ -660,6 +660,8 @@ a:hover {
 	padding: 1rem;
 	transform: translate(100%);
 	display: none;
+	align-items: center;
+	justify-content: center;
 }
 
 .mt-prev-page {
@@ -674,4 +676,6 @@ a:hover {
 	padding: 1rem;
 	transform: translate(-100%);
 	display: none;
+	align-items: center;
+	justify-content: center;
 }

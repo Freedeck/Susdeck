@@ -109,5 +109,18 @@ export function handler() {
 			universal.save("page", universal.page);
 			universal.send(universal.events.companion.set_profile, data.data.profile);
 		}
+		if(data.type === "fd.fullscreen") {
+			// request fullscreen
+			const elem = document.documentElement; // This can be any element
+			if (elem.requestFullscreen) {
+				elem.requestFullscreen();
+			} else if (elem.mozRequestFullScreen) { // Firefox
+				elem.mozRequestFullScreen();
+			} else if (elem.webkitRequestFullscreen) { // Chrome, Safari, Opera
+				elem.webkitRequestFullscreen();
+			} else if (elem.msRequestFullscreen) { // IE/Edge
+				elem.msRequestFullscreen();
+			}
+		}
 	});
 }

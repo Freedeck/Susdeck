@@ -1,5 +1,4 @@
 const path = require("node:path");
-const { EsbuildPlugin } = require('esbuild-loader')
 
 const cfg = {
   mode: "development",

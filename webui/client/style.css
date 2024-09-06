@@ -536,11 +536,13 @@ input:disabled {
 }
 
 @keyframes glow {
-    0% {
-        box-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
+    0%{
+        box-shadow: 0 0 20px rgba(255, 0, 89, 1);
+        transform: scale(1);
     }
     100% {
-        box-shadow: 0 0 40px rgba(0, 255, 255, 1);
+        box-shadow: 0 0 20px rgba(0, 179, 255,1);
+        transform: scale(1.25);
     }
 }
 

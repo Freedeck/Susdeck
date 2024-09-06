@@ -1,4 +1,5 @@
 const path = require("node:path");
+const { EsbuildPlugin } = require('esbuild-loader')
 
 const cfg = {
   mode: "development",
@@ -11,7 +12,6 @@ const cfg = {
     path: path.resolve("webui/app"),
     filename: "[name].js",
   },
-  devtool: "source-map",
   module: {
     rules: [
       {
@@ -24,7 +24,6 @@ const cfg = {
     ],
   },
   externals: {
-    Sortable: "Sortable",
     Pako: "Pako",
     settingsHelpers: "settingsHelpers",
   },

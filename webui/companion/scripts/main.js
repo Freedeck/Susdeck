@@ -1,9 +1,8 @@
-import Sortable from "sortablejs";
-import gridItemDrag from "./gridItemDrag.js";
+import gridItemDrag from "./lib/gridItemDrag.js";
 import { UI } from "../../client/scripts/ui.js";
 import { universal } from "../../shared/universal.js";
-import "./global.js";
-import "./authfulPage.js"; // Only for authenticated pages
+import "./sidebar.js";
+import "../../shared/useAuthentication.js"; // Only for authenticated pages
 
 await universal.init("Companion");
 
@@ -1892,6 +1891,20 @@ universal.on(universal.events.default.notif, (dat) => {
 		);
 		return;
 	}
+});
+
+universal.listenFor("now-playing", (data) => {
+	const { name, isMonitor } = data;
+	if(isMonitor) return;
+	const newEle = document.createElement("div");
+	const filname = name.replace(/[^a-zA-Z0-9]/g, "");
+	newEle.className = `np s-${filname}`;
+ 	newEle.innerText = name;
+	document.querySelector("#np-sb").appendChild(newEle);
+})
+
+universal.listenFor("audio-end", (data) => {
+	if(document.querySelector(`s-${data.name}`)) document.querySelector(`s-${data.name}`).remove();
 });
 
 window.showPick = showPick;

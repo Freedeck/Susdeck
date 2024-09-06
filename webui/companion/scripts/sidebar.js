@@ -1,4 +1,4 @@
-import contextual from "./ctxl.js";
+import contextual from "./lib/ctxl.js";
 universal.ctx = contextual;
 
 contextual.addView("marketplace");
@@ -85,5 +85,3 @@ universal.vopen = (v) => {
 };
 
 document.body.appendChild(sidebarEle);
-
-import "./HookLoader.js";

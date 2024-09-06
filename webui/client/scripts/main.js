@@ -1,9 +1,9 @@
 import { universal } from "../../shared/universal.js";
-import "./HookLoader.js";
 import { UI } from "./ui.js";
-import "../../companion/scripts/authfulPage.js";
+import "../../shared/useAuthentication.js";
 
 await universal.init("Main");
+
 
 window.onscroll = () => {
   window.scrollTo(0, 0);

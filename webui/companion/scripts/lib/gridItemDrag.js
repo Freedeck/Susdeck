@@ -58,6 +58,8 @@ const gridItemDrag = {
         target.ondragend = () => {
           target.classList.remove(gridItemDrag.selectedGlowClass);
         }
+      } else {
+        gridItemDrag._targetIndex = null;
       }
     }
   },

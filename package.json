@@ -10,6 +10,7 @@
 		"server": "node src/index.js --server-only",
 		"debug-server": "node src/index.js --server-only --debug",
 		"lint": "biome format --write ./src",
+		"build": "esbuild  --bundle --outfile=out.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],
@@ -18,13 +19,11 @@
 	"dependencies": {
 		"asar-bundle-runner": "^1.6.0",
 		"babel-loader": "^9.1.3",
-		"electron": "^27.0.0",
+		"electron": "^32.0.2",
 		"express": "^4.19.2",
 		"formidable": "^3.5.1",
 		"pako": "^2.1.0",
-		"readline": "^1.3.0",
 		"socket.io": "^4.7.5",
-		"sortablejs": "^1.15.2",
 		"webpack": "^5.94.0"
 	},
 	"devDependencies": {

@@ -236,9 +236,11 @@ const universal = {
 
 			audioInstance.onended = (ev) => {
 				universal.audioClient._end(ev);
+				universal.sendEvent("audio-end", { audioInstance, name, isMonitor });
 			};
 
 			universal.audioClient._nowPlaying.push(audioInstance);
+			universal.sendEvent("now-playing", {audioInstance, name, isMonitor});
 			universal.updatePlaying();
 			return audioInstance;
 		},

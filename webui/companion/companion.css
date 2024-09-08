@@ -251,7 +251,7 @@ a:hover {
 	overflow-y: scroll;
 	overflow-x: hidden;
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	gap: 1rem;
 }
 

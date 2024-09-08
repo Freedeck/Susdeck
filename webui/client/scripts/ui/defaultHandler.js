@@ -63,6 +63,7 @@ export default function (snd, keyObject, raw) {
 		};
 	} else {
 		keyObject.onpointerdown = (ev) => {
+			if (ev.which !== 1 && universal.name === "Companion") return;
 			universal.send(universal.events.keypress, {
 				event: ev,
 				btn: snd,

@@ -6,21 +6,20 @@
     --fd-background: black;
     --fd-rotation-degrees: 2deg;
     --fd-btn-background: rgba(0, 0, 0, 0.5);
-    --fd-modal-color: rgb(15, 140, 194);
     --fd-btn-w: 6rem;
     --fd-btn-h: 6rem;
-
+    
     --fd-btn-rad: 1rem;
-
-    --fd-modal-bg: white;
-
+    
+    
     --fd-col: white;
     --fd-txt-col: white;
-
+    
     --fd-font-size: 15px;
     --fd-icon-tip-fs: 1.5rem;
-
-    --fd-studio-color: #1a1a1a;
+    
+    --fd-modal-bg: #1a1a1a;
+    --fd-modal-color: white;
     --fd-input-bg: #1a1a1a;
 
     --fd-logo-size: 75px;

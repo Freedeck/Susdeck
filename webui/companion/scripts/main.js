@@ -1819,7 +1819,8 @@ universal.listenFor("now-playing", (data) => {
 })
 
 universal.listenFor("audio-end", (data) => {
-	if(document.querySelector(`s-${data.name}`)) document.querySelector(`s-${data.name}`).remove();
+	const filname = data.name.replace(/[^a-zA-Z0-9]/g, "");
+	if(document.querySelector(`.s-${filname}`)) document.querySelector(`.s-${filname}`).remove();
 });
 
 window.showPick = showPick;

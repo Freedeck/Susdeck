@@ -33,55 +33,50 @@
             <div id="editor-div">
                 <div class="x" id="editor-close">Close</div>
                 <div class="editor-section">
-                    <h2>Info</h2>
                     <div class="button" id="editor-btn">Not Loaded</div>
-                    <div class="flex-wrap-r">
-                        <div class="flex-wrap">
-                            <div class="flex-wrap-r alc">
-                                <label for="name">Name</label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    onkeyup="document.querySelector('#editor-btn').innerText = this.value;"
-                                    value="Not Loaded"
-                                />
-                            </div>
-                            <div class="flex-wrap-r alc">
-                                <label for="color">Color</label>
-                                <input
-                                    type="color"
-                                    id="color"
-                                    data-has_set="false"
-                                    value="#000"
-                                />
-                            </div>
-                            <div class="flex-wrap-r alc">
-                                <label for="lp">Long Press</label>
-                                <input
-                                    class="fdc-checkbox"
-                                    type="checkbox"
-                                    id="lp"
-                                />
-                            </div>
-                            <div class="flex-wrap-r alc">
-                                <label for="type">Type</label>
-                                <input
-                                    type="text"
-                                    id="type"
-                                    value="fd.sound"
-                                    disabled
-                                />
-                            </div>
-                            <div class="flex-wrap-r alc">
-                                <label for="plugin">Plugin</label>
-                                <input
-                                    type="text"
-                                    id="plugin"
-                                    value="Freedeck"
-                                    disabled
-                                />
-                            </div>
-                        </div>
+                    <div class="flex-wrap-r alc">
+                        <label for="name">Name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            onkeyup="document.querySelector('#editor-btn').innerText = this.value;"
+                            value="Not Loaded"
+                        />
+                    </div>
+                    <div class="flex-wrap-r alc">
+                        <label for="color">Color</label>
+                        <input
+                            type="color"
+                            id="color"
+                            data-has_set="false"
+                            value="#000"
+                        />
+                    </div>
+                    <div class="flex-wrap-r alc">
+                        <label for="lp">Long Press</label>
+                        <input
+                            class="fdc-checkbox"
+                            type="checkbox"
+                            id="lp"
+                        />
+                    </div>
+                    <div class="flex-wrap-r alc" style="display:none;">
+                        <label for="type">Type</label>
+                        <input
+                            type="text"
+                            id="type"
+                            value="fd.sound"
+                            disabled
+                        />
+                    </div>
+                    <div class="flex-wrap-r alc" style="display:none;">
+                        <label for="plugin">Plugin</label>
+                        <input
+                            type="text"
+                            id="plugin"
+                            value="Freedeck"
+                            disabled
+                        />
                     </div>
                     <br />
                     <div class="flex-wrap-r">
@@ -202,7 +197,7 @@
                 <div class="button" id="editor-save">Save</div>
             </div>
         </dialog>
-        <div class="toggle-sidebar">
+        <div class="toggle-sidebar" style="display: none">
             <button>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -244,7 +239,7 @@
                     >
                     <h1>Soundboard</h1>
                 </span>
-                <p id="np-sb">Not playing anything!</p>
+                <span id="np-sb"></span>
                 <div class="flex-wrap-r">
                     <div class="alc">
                         <label for="pitch">
@@ -442,25 +437,25 @@
                 <div class="flex-wrap-r">
                     <button id="pf-add">
                         <object
-                            data="/companion/icons/fnew.svg"
+                            data="/common/icons/fnew.svg"
                             class="ico"
                         ></object>
                     </button>
                     <button id="pf-dupe">
                         <object
-                            data="/companion/icons/fdupe.svg"
+                            data="/common/icons/fdupe.svg"
                             class="ico"
                         ></object>
                     </button>
                     <button id="pf-imp">
                         <object
-                            data="/companion/icons/fimport.svg"
+                            data="/common/icons/fimport.svg"
                             class="ico"
                         ></object>
                     </button>
                     <button id="pf-exp">
                         <object
-                            data="/companion/icons/fexport.svg"
+                            data="/common/icons/fexport.svg"
                             class="ico"
                         ></object>
                     </button>

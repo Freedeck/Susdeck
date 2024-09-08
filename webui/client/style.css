@@ -16,7 +16,6 @@
 
     --fd-btn-rad: 1rem;
 
-    --fd-modal-bg: rgba(0,0,0,0.25);
 
     --fd-col: white;
     --fd-txt-col: black;
@@ -25,10 +24,11 @@
     --fd-icon-tip-fs: 1.5rem;
 
     --fd-input-bg: #FFFFFF;
+    --fd-input-col: black;
 
     --fd-logo-size: 75px;
 
-    --fd-studio-color: #45475a;
+    --fd-modal-bg: #45475a;
 
     --fdc-plugin-updatable: #1a1a1a;
     --fdc-plugin-uptodate: #1a1a1a;
@@ -56,7 +56,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: var(--fd-modal-bg);
+	background-color: var(--fd-modal-bg);
+	color: var(--fd-modal-color);
     padding: 1rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     margin: 0 auto;
@@ -170,7 +171,7 @@ select {
     padding: 5px;
     font-size: var(--fd-font-size);
     font-family: var(--fd-font-family);
-    color: var(--fd-txt-col);
+    color: var(--fd-input-col);
     outline: none;
     width: 100%;
     margin: 5px 0;
@@ -178,12 +179,12 @@ select {
 
 input {
     background-color: var(--fd-input-bg);
-    border: 1px solid black;
+    border: 0;
     border-radius: 5px;
     padding: 5px;
     font-size: var(--fd-font-size);
     font-family: var(--fd-font-family);
-    color: var(--fd-txt-col);
+    color: var(--fd-input-col);
     outline: none;
     width: 100%;
     margin: 5px 0;
@@ -297,7 +298,8 @@ input:disabled {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: var(--fd-modal-bg);
+	background-color: var(--fd-modal-bg);
+	color: var(--fd-modal-color);
     padding: 1rem;
     /* border-radius: 1rem; */
     border: 0;

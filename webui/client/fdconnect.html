@@ -37,7 +37,7 @@
             right: 50%;
             transform: translate(50%, -50%);
             overflow: hidden;
-            background-color: rgba(0, 0, 0, 0.5);
+            /* background-color: rgba(0, 0, 0, 0.5); */
             padding: 1.125rem;
             border-radius: 1.5rem;
             text-align: center;
@@ -197,11 +197,12 @@
         if(urls.has("sloc")) {
             url.value = urls.get("sloc");
         }
+        document.querySelector('#url').value = serverUrl;
         if(url.value.includes('file:')) {
             url.value = "http://localhost:5754";
             urls.set("id", "Companion");
+            document.querySelector('#url').value = "http://localhost:5754";
         }
-        document.querySelector('#url').value = serverUrl;
         
         const sendToast = (msg) => {
             const toast = document.createElement('div');

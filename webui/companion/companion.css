@@ -84,12 +84,13 @@ input {
 
 #sidebar {
 	position: fixed;
-	top: 50%;
-	transform: translateY(-50%);
-	right: 5px;
-	border-radius: 1.5rem;
+	top: 0;
+	right: 0;
+	border-top-left-radius: 1.5rem;
+	border-bottom-left-radius: 1.5rem;
+	/* border-radius: 1.5rem; */
 	/* width: 15%; */
-	height: 90%;
+	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5);
 	display: flex;
 	flex-direction: column;
@@ -97,7 +98,7 @@ input {
 	align-items: end;
 	font-size: 1.75em;
 	color: white;
-	z-index: 101;
+	z-index: 1002;
 	transition-duration: .25s;
 }
 
@@ -146,12 +147,11 @@ a:hover {
 	justify-content: space-between;
 	gap: 1rem;
 	position: fixed;
-	/* top: 50%; */
-	bottom: 0;
-	left: 5px;
+	top: 0;
+	left: 0;
 	width: 20%;
-	max-height: 90%;
-	border-radius: 1.5rem;
+	max-height: 100%;
+	border-top-right-radius: 1.5rem;
 	/* transform: translateY(-50%); */
 	padding: 5px;
 	background-color: rgba(0, 0, 0, 0.5);
@@ -293,13 +293,13 @@ a:hover {
 		left: -20%;
 	}
 	100% {
-		left: 5px;
+		left: 0;
 	}
 }
 
 @keyframes sidebar-slide-out {
 	0% {
-		left: 5px;
+		left: 0;
 	}
 	100% {
 		left: -21%;
@@ -451,7 +451,6 @@ a:hover {
 	background-color: rgba(0, 0, 0, 0.5);
 	color: white;
 	border-radius: 0.5rem;
-	padding: 0 0.25rem 1rem 0.25rem;
 	transition-duration: .25s;
 	display: flex;
 	flex-direction: column;
@@ -583,17 +582,24 @@ a:hover {
 
 #ctxl-view-cont {
 	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 75%;
-	height: 90%;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 	background-color: var(--fd-studio-color);
 	z-index: 1001;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	border-radius: 0.5rem;
+	/* margin-right: 10rem; */
 	padding: 1.25rem;
+}
+
+#ctxl-view-cont html {
+	background: none;
+	width: 90%;
+	height: 100%;
+	color:white;
+	position: absolute;
 }
 
 #ctxl-view-cont html body {
@@ -601,8 +607,11 @@ a:hover {
 	width: 100%;
 	height: 100%;
 	color:white;
+  scrollbar-width: none;  /* Firefox */
 	position: absolute;
-	margin-right: 4px;
+}
+#ctxl-view-cont html body::-webkit-scrollbar {
+  display: none;
 }
 
 @keyframes opacity {

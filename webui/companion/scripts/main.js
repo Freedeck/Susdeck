@@ -3,6 +3,7 @@ import { UI } from "../../client/scripts/ui.js";
 import { universal } from "../../shared/universal.js";
 import "./sidebar.js";
 import "../../shared/useAuthentication.js"; // Only for authenticated pages
+import "./uploadsHandler.js";
 
 await universal.init("Companion");
 
@@ -342,6 +343,8 @@ function loadData(itm) {
 		document.querySelector("#editor-data").appendChild(label);
 	}
 }
+
+universal.loadEditorData = loadData;
 
 function setEditorData(key, value, int) {
 	if (document.querySelector(`.editor-data#${key}`)) {
@@ -784,30 +787,6 @@ document.querySelector("#upload-sound").onclick = () => {
 			universal.vopen("index.html");
 		};
 	};
-	universal._Uploads_New = () => {
-		upload("audio/*,video/*", (data) => {
-			UI.reloadProfile();
-			const previousInteractionData = JSON.parse(
-				document
-					.querySelector("#editor-btn[data-interaction]")
-					.getAttribute("data-interaction"),
-			);
-			previousInteractionData.data.file = data.newName;
-			document
-				.querySelector("#editor-btn[data-interaction]")
-				.setAttribute(
-					"data-interaction",
-					JSON.stringify(previousInteractionData),
-				);
-			document.querySelector("#file.editor-data").value = data.newName;
-			document.querySelector("#path.editor-data").value = "/sounds/";
-			document.querySelector("#audio-file").innerText = data.newName;
-			document.querySelector("#audio-path").innerText = "/sounds/";
-			loadData(previousInteractionData.data);
-			universal.uiSounds.playSound("int_yes");
-			universal.ctx.destructiveView("library");
-		});
-	};
 	universal._Uploads_Select = (itm) => {
 		const interaction = JSON.parse(
 			document
@@ -1029,32 +1008,6 @@ document.querySelector("#upload-icon").onclick = (e) => {
 			universal.vopen("index.html");
 		};
 	};
-	universal._Uploads_New = () => {
-		upload(
-			"image/*",
-			(data) => {
-				UI.reloadProfile();
-				const previousInteractionData = JSON.parse(
-					document
-						.querySelector("#editor-btn[data-interaction]")
-						.getAttribute("data-interaction"),
-				);
-				previousInteractionData.data.icon = `/icons/${data.newName}`;
-				document
-					.querySelector("#editor-btn[data-interaction]")
-					.setAttribute(
-						"data-interaction",
-						JSON.stringify(previousInteractionData),
-					);
-				document.querySelector("#editor-btn").style.backgroundImage =
-					`url("${`/icons/${data.newName}`}")`;
-				loadData(previousInteractionData.data);
-				universal.uiSounds.playSound("int_yes");
-				universal.ctx.destructiveView("library");
-			},
-			"icon",
-		);
-	};
 	universal._Uploads_Select = (itm) => {
 		const interaction = JSON.parse(
 			document
@@ -1072,48 +1025,10 @@ document.querySelector("#upload-icon").onclick = (e) => {
 	};
 };
 
-const upload = (accept, callback, type = "sound") => {
-	// <iframe name="dummyFrame" id="dummyFrame" style="display: none;"></iframe>
-	const dummyFrame = document.createElement("iframe");
-	dummyFrame.style.display = "none";
-	dummyFrame.id = "dummyFrame";
-	dummyFrame.name = "dummyFrame";
-	const form = document.createElement("form");
-	form.method = "post";
-	form.enctype = "multipart/form-data";
-	form.action = `/fd/api/upload/${type}`;
-	form.target = "dummyFrame";
-	form.style.display = "none";
-	const fileUpload = document.createElement("input");
-	fileUpload.type = "file";
-	fileUpload.name = "file";
-	fileUpload.accept = accept;
-	fileUpload.style.display = "none";
-	form.appendChild(fileUpload);
-	fileUpload.click();
-	fileUpload.onchange = () => {
-		form.submit();
-		setTimeout(() => {
-			// Form parse wait
-			const content = dummyFrame.contentDocument;
-			const data = JSON.parse(content.querySelector("pre").innerText);
-			callback(data);
-			form.remove();
-			fileUpload.remove();
-			setTimeout(() => {
-				// Let data process
-				dummyFrame.remove();
-			}, 500);
-		}, 250);
-	};
-	document.body.append(form);
-	document.body.appendChild(dummyFrame);
-};
-
 document.querySelector("#editor-close").onclick = () => {
 	universal.uiSounds.playSound("int_no");
 	document.querySelector("#editor").style.opacity = "0";
-	document.querySelector("#sidebar").style.right = "5px";
+	document.querySelector("#sidebar").style.right = "0";
 	document.querySelector(".toggle-sidebar button").style.display = "block";
 	if (document.querySelector(".toggle-sidebar").style.left === "0px")
 		document.querySelector(".toggle-sidebar button").click();

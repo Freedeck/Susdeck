@@ -52,6 +52,9 @@ export default function (snd, keyObject, raw) {
 		keyObject.ontouchstart = startHolding;
 		keyObject.ontouchend = stopHolding;
 		keyObject.ontouchcancel = stopHolding;
+		keyObject.ontouchleave = stopHolding;
+		keyObject.onpointerdown = startHolding;
+		keyObject.onpointerup = stopHolding;
 		const send = (e) => {
 			universal.send(universal.events.keypress, {
 				event: e,
@@ -59,7 +62,7 @@ export default function (snd, keyObject, raw) {
 			});
 		};
 	} else {
-		keyObject.onclick = (ev) => {
+		keyObject.onpointerdown = (ev) => {
 			universal.send(universal.events.keypress, {
 				event: ev,
 				btn: snd,

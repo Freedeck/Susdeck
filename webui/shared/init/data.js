@@ -107,6 +107,11 @@ export default function dataHandler(universal, user) {
       }
       universal.CLU("Boot:Handler:Data", "Set font size.");
 
+      if(universal.lclCfg().compact) {
+        universal.keys.style.width = "unset";
+      }
+      universal.CLU("Boot:Handler:Data", "Set compact mode.");
+
       generic();
       universal.CLU(
         "Boot:Handler:Data",

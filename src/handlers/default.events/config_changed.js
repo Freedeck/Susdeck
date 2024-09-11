@@ -15,6 +15,7 @@ module.exports = ({ io, data }) => {
 				iconCountPerPage: 12,
 				longPressTime: 3,
 				tileRows: 5,
+				compact: false,
 			}),
 		);
 	}

@@ -1251,25 +1251,6 @@ window.onclick = (e) => {
 	universal.uiSounds.playSound("click");
 };
 
-document.querySelector("#pg-left").addEventListener("click", () => {
-	if (UI.Pages[universal.page - 1]) {
-		universal.page--;
-		universal.save("page", universal.page);
-		universal.uiSounds.playSound("page_down");
-		UI.reloadSounds();
-		universal.sendEvent("page_change");
-	}
-});
-
-document.querySelector("#pg-right").addEventListener("click", () => {
-	if (UI.Pages[universal.page + 1]) {
-		universal.page++;
-		universal.save("page", universal.page);
-		universal.uiSounds.playSound("page_up");
-		UI.reloadSounds();
-		universal.sendEvent("page_change");
-	}
-});
 
 document.addEventListener("keydown", (ev) => {
 	if (ev.key === "ArrowLeft") {
@@ -1398,8 +1379,6 @@ profileDupe.onclick = () => {
 	);
 };
 
-if (universal.load("pitch"))
-	document.querySelector("#pitch").value = universal.load("pitch");
 
 // get url params
 const editing = universal.load("now-editing");
@@ -1592,184 +1571,11 @@ const setToLocalCfg = (key, value) => {
 	return cfg;
 };
 
-for (const slider of document.querySelectorAll(".fdc-slider")) {
-	// create min/max text that floats below the slider
-	const postfix = slider.getAttribute("postfix") || "";
-	const min = document.createElement("div");
-	min.innerText = slider.min;
-	min.className = "fdc-slider-min";
-	slider.parentElement.appendChild(min);
-	const max = document.createElement("div");
-	max.innerText = slider.max;
-	max.className = "fdc-slider-max";
-	slider.parentElement.appendChild(max);
-	const value = document.createElement("div");
-	value.innerText = slider.value + postfix;
-	value.className = "fdc-slider-value";
-	slider.parentElement.appendChild(value);
-	slider.addEventListener("input", (e) => {
-		value.innerText = e.target.value + postfix;
-	});
-	slider.addEventListener("change", (e) => {
-		value.innerText = e.target.value + postfix;
-	});
-}
-
-function setValue(id, val) {
-	document.querySelector(id).value = val;
-	document
-		.querySelector(id)
-		.parentElement.querySelector(".fdc-slider-value").innerText =
-		val + (document.querySelector(id).getAttribute("postfix") || "");
-}
-
-document.querySelector("#es-fs").oninput = (e) => {
-	universal.uiSounds.playSound("fdc_slider");
-	document.documentElement.style.setProperty(
-		"--fd-font-size",
-		`${e.target.value}px`,
-	);
-	universal.send(
-		universal.events.default.config_changed,
-		setToLocalCfg("font-size", e.target.value),
-	);
-};
-
-document.querySelector("#es-bs").oninput = (e) => {
-	universal.uiSounds.playSound("fdc_slider");
-	universal.send(
-		universal.events.default.config_changed,
-		setToLocalCfg("buttonSize", e.target.value),
-	);
-};
-
-document.querySelector("#es-fs-reset").onclick = (e) => {
-	universal.uiSounds.playSound("fdc_slider");
-	document.documentElement.style.setProperty("--fd-font-size", "15px");
-	setValue("#es-fs", 15);
-	universal.send(
-		universal.events.default.config_changed,
-		setToLocalCfg("font-size", 15),
-	);
-};
-
-document.querySelector("#es-bs-reset").onclick = (e) => {
-	universal.uiSounds.playSound("fdc_slider");
-	setValue("#es-bs", 6);
-	universal.send(
-		universal.events.default.config_changed,
-		setToLocalCfg("buttonSize", 6),
-	);
-};
-
-document.querySelector("#es-tc-reset").onclick = (e) => {
-	setValue("#es-tc", 12);
-	universal.send(
-		universal.events.default.config_changed,
-		setToLocalCfg("iconCountPerPage", 12),
-	);
-};
-
-document.querySelector("#es-scroll").onchange = (e) => {
-	universal.send(
-		universal.events.default.config_changed,
-		setToLocalCfg("scroll", e.target.checked),
-	);
-};
-
-document.querySelector("#es-tc").oninput = (e) => {
-	universal.uiSounds.playSound("fdc_slider");
-	const count = document.querySelectorAll(".fdc-placeholder").length;
-	const diff = e.target.value - count;
-	if (diff > 0) {
-		universal.lclCfg().iconCountPerPage = e.target.value;
-		universal.config.iconCountPerPage = e.target.value;
-		UI.reloadSounds();
-
-		universal.send(
-			universal.events.default.config_changed,
-			setToLocalCfg("iconCountPerPage", universal.lclCfg().iconCountPerPage),
-		);
-	} else {
-		for (let i = 0; i < Math.abs(diff); i++) {
-			const last = document.querySelector(`.button.k-${count - i - 1}`);
-			last.remove();
-		}
-	}
-};
-
-setValue("#es-fs", universal.lclCfg()["font-size"]);
-setValue("#es-bs", universal.lclCfg().buttonSize);
-setValue("#es-tc", universal.lclCfg().iconCountPerPage);
-setValue("#es-lp", universal.lclCfg().longPressTime);
-setValue("#es-tr", universal.lclCfg().tileRows);
 const lcfg = universal.lclCfg();
-
-document.querySelector("#es-tr").oninput = (e) => {
-	universal.uiSounds.playSound("fdc_slider");
-	universal.send(
-		universal.events.default.config_changed,
-		setToLocalCfg("tileRows", e.target.value),
-	);
-	let tc = "repeat(5, 2fr)";
-	if (lcfg.tileRows) tc = tc.replace("5", e.target.value);
-	document.documentElement.style.setProperty("--fd-template-columns", tc);
-};
 
 let tc = "repeat(5, 2fr)";
 if (lcfg.tileRows) tc = tc.replace("5", lcfg.tileRows);
 document.documentElement.style.setProperty("--fd-template-columns", tc);
-document.querySelector("#es-fill").onchange = (e) => {
-	universal.send(
-		universal.events.default.config_changed,
-		setToLocalCfg("fill", e.target.checked),
-	);
-	UI.reloadSounds();
-};
-document.querySelector("#es-center").onchange = (e) => {
-	universal.send(
-		universal.events.default.config_changed,
-		setToLocalCfg("center", e.target.checked),
-	);
-	universal.lclCfg().center = e.target.checked;
-	UI.reloadSounds();
-};
-
-document.querySelector("#es-lp").oninput = (e) => {
-	universal.uiSounds.playSound("fdc_slider");
-	universal.send(
-		universal.events.default.config_changed,
-		setToLocalCfg("longPressTime", e.target.value),
-	);
-};
-
-document.querySelector("#es-lp").onmouseup = (e) => {
-	universal.send(
-		universal.events.default.config_changed,
-		setToLocalCfg("longPressTime", e.target.value),
-	);
-};
-
-document.querySelector("#es-lp-reset").onclick = (e) => {
-	universal.uiSounds.playSound("fdc_slider");
-	universal.send(
-		universal.events.default.config_changed,
-		setToLocalCfg("longPressTime", 3),
-	);
-};
-
-document.querySelector("#es-tr-reset").onclick = (e) => {
-	universal.uiSounds.playSound("fdc_slider");
-	setValue("#es-tr", 5);
-	universal.send(
-		universal.events.default.config_changed,
-		setToLocalCfg("tileRows", 5),
-	);
-};
-
-document.querySelector("#es-scroll").checked = universal.lclCfg().scroll;
-document.querySelector("#es-fill").checked = universal.lclCfg().fill;
-document.querySelector("#es-center").checked = universal.lclCfg().center;
 
 universal.on(universal.events.default.plugins_updated, () => {
 	const dialog = document.querySelector("dialog");

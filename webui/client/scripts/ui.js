@@ -143,6 +143,8 @@ function reloadSounds() {
 
 			if (snd.data.longPress === "true") {
 				out += "<p>Long press to activate.</p>";
+			} else {
+				out += "<p>Single click to activate.</p>"
 			}
 			
 			if (snd.plugin) {

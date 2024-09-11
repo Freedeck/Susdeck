@@ -185,7 +185,6 @@ const universal = {
 				audio.playbackRate = pitch;
 			}
 			universal.save("pitch", pitch);
-			document.querySelector("#pitch").value = pitch;
 		},
 		setVolume: (vol) => {
 			universal.audioClient._player.normalVol = vol;
@@ -193,7 +192,6 @@ const universal = {
 				audio.volume = vol;
 			}
 			universal.save("vol", vol);
-			document.querySelector("#v").value = vol;
 		},
 		play: async (
 			file,

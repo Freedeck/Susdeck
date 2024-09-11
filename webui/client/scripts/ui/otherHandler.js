@@ -29,4 +29,5 @@ export default function (sndType, keyObject, snd, rawDat) {
 				break;
 		}
 	}
+	universal.sendEvent("keyRendered", {keyObject, snd, sndType, rawDat});
 }

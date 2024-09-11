@@ -17,6 +17,7 @@
     --fd-btn-rad: 1rem;
 
 
+    --ckw-width: 100vw;
     --fd-col: white;
     --fd-txt-col: black;
 
@@ -227,8 +228,8 @@ input:disabled {
 }
 
 #client-key-container {
-    width: 100vw;
-    height: 100vh;
+    width: var(--ckw-width);
+    height: 100vh; 
     display: flex;
     flex-direction: column;
     justify-content: center;

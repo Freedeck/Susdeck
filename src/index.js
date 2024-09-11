@@ -66,7 +66,7 @@ if (!DO_COMPANION && DOES_RUN_SERVER) require("./server");
 if (DO_COMPANION) {
   const { app } = require("electron");
   app.whenReady().then(() => {
-    require("./makeWindow")("webui/client/fdconnect.html", true, 1145, 750, false);
+    require("./makeWindow")("webui/client/fdconnect.html", true, 1400, 850, false);
     if (DOES_RUN_SERVER) require("./server");
   });
 }

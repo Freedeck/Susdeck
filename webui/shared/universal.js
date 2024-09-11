@@ -13,6 +13,7 @@ function settingsMenu() {
 		document.querySelector(".settings-menu").style.display = "flex";
 	}
 }
+window.AppSM = settingsMenu;
 
 const universal = {
 	_socket: null,
@@ -25,6 +26,20 @@ const universal = {
 		universal.lastRetry = new Date();
 		universal._socket.connect();
 		universal._ca.push(universal.lastRetry);
+	},
+	wakeLock: {
+		sentinel: null,
+		request: async () => {
+			if ("wakeLock" in navigator) {
+				try {
+					universal.wakeLock.sentinel = await navigator.wakeLock.request("screen");
+					universal.sendToast("Wake lock acquired. Your screen will now stay on.");
+				} catch (err) {
+					console.error(`${err.name}, ${err.message}`);
+					universal.sendToast("Failed to acquire wake lock.");
+				}
+			}
+		}
 	},
 	lclCfg: () => universal._information.style,
 	_information: {},
@@ -499,7 +514,7 @@ const universal = {
 			},
 			{
 				name: "Settings",
-				onclick: (ev) => {},
+				onclick: (ev) => {window.AppSM()},
 				handlers: ["onmousedown"],
 				onmousedown: UI.quickActions,
 			},
@@ -516,6 +531,7 @@ const universal = {
 				tempDiv.style.backgroundImage = "url(/common/icons/fd.png)";
 				tempDiv.style.border = "none";
 				tempDiv.style.backgroundColor = "transparent";
+				tempDiv.style.boxShadow = "none";
 			}
 			if (key.handlers) {
 				for (const h of key.handlers) {
@@ -614,6 +630,9 @@ const universal = {
 						});
 					});
 				});
+				universal.CLU("Boot:InitFN", "Attempting to grab wake lock.");
+				universal.wakeLock.request();
+				universal.CLU("Boot:InitFN", "Boot completed.");
 			} catch (e) {
 				console.error(e);
 				reject(e);

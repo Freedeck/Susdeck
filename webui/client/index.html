@@ -48,7 +48,7 @@
         <div class="settings-menu">
             <div class="themelist"></div>
             <p id="version">Freedeck v6.0.0-Loading</p>
-            <button
+            <div class="flex-wrap-r"><button
                 onclick="universal.send(universal.events.default.recompile)"
             >
                 Ask server to recompile Webpack bundles
@@ -60,7 +60,7 @@
                 onclick="document.querySelector('.settings-menu').style.display = 'none';"
             >
                 Close
-            </button>
+            </button></div>
         </div>
         <dialog style="display: none" class="dialog" id="login-dialog">
             <div id="login-div">

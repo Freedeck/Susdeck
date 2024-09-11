@@ -35,6 +35,10 @@ export default {
 		name: "Dark",
 		description: "A dark theme for Freedeck",
 	},
+	black: {
+		name: "Black",
+		description: "A dark theme for Freedeck",
+	},
 	fun: {
 		name: "Fun",
 		description: "A fun theme for Freedeck",

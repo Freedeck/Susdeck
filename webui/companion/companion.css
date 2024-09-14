@@ -707,3 +707,12 @@ a:hover {
 	align-items: center;
 	justify-content: center;
 }
+
+audio::-webkit-media-controls-panel {
+	background: var(--fdm-background);
+	background-size: var(--fdm-background-size);
+}
+
+audio::-webkit-media-controls-play-button {
+	color: var(--fd-modal-color);
+}

@@ -283,7 +283,11 @@ const universal = {
 		fetch(`/app/shared/theming/${name}/${fu}.css`)
 			.then((res) => res.text())
 			.then((css) => {
+				if (document.getElementById("theme")) {
+					document.getElementById("theme").remove();
+				}
 				const stylea = document.createElement("style");
+				stylea.id = "theme";
 				stylea.innerText += css;
 				document.body.appendChild(stylea);
 				universal.save("theme", name);

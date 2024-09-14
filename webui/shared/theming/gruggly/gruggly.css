@@ -2,7 +2,22 @@
 	--fd-icon-count:11;
 	--fd-template-columns:repeat(5,1fr);
 	--fd-background-size:400% 400%;
-	--fd-font-family:Rubik, sans-serif;
-	--fd-background:linear-gradient(45deg, #4A412A 0%, #4A412A 33%, #4A412A 66%, #4A412A 100%);
-	--fd-modal-color:rgba(255, 190, 106, 1);
+	--fd-background: #4A412A;
+	--fd-modal-bg: #4A412A;
+	--fd-modal-color:white;
+	--fd-input-bg: rgba(255, 215, 59, 0.25);
+	--fdm-background: #5c4f30;
+
+	--fd-btn-background:#4A412A;
+	--fd-btn-border: 2px solid rgba(0,0,0,0.125);
+
+
+	--companion-left-sidebar-bg: #5c5137;
+	--companion-right-sidebar-bg: #5c5137;
+
+	--companion-left-sidebar-color: white;
+	--companion-right-sidebar-color: white;
+
+	--companion-sidebar-item-bg: #4A412A;
+	--companion-sidebar-item-color: white;
 }

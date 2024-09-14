@@ -6,13 +6,13 @@
     --fd-background: linear-gradient(105deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
     --fd-rotation-degrees: 2deg;
     --fd-btn-background: rgba(0, 0, 0, 0.5);
-    --fd-modal-color: rgb(15, 140, 194);
     --fd-btn-w: 6rem;
     --fd-btn-h: 6rem;
-
+    
     --fd-btn-rad: 1rem;
-
-    --fd-modal-bg: white;
+    
+    --fd-modal-bg: #1e1e1e;
+    --fd-modal-color: white;
 
     --fd-col: white;
     --fd-txt-col: black;
@@ -33,6 +33,16 @@
     --fdm-background: linear-gradient(105deg,rgba(0, 179, 255, 1) 0%, rgba(0, 135, 255, 1) 50%, rgba(0, 179, 255, 1) 100%);
     --fdm-background-size: 400% 400%;
     --fdm-bg-anim: abc 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+    --fdm-text: white;
+
+    --companion-left-sidebar-bg: rgba(0,0,0,0.5);
+    --companion-right-sidebar-bg: rgba(0,0,0,0.5);
+
+    --companion-left-sidebar-color: white;
+    --companion-right-sidebar-color: white;
+
+    --companion-sidebar-item-bg: rgba(0,0,0,0.5);
+    --companion-sidebar-item-color: white;
 }
 
 @keyframes abc {

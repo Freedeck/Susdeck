@@ -7,6 +7,7 @@
     --fd-background: linear-gradient(105deg, rgba(255, 0, 89, 1) 0%, rgb(0, 179, 255) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
     --fd-rotation-degrees: 2deg;
     --fd-btn-background: rgba(0, 0, 0, 0.5);
+    --fd-btn-border: 2px solid #f8f9fa;
     --fd-modal-color: rgb(15, 140, 194);
     --fd-btn-w: 6rem;
     --fd-btn-h: 6rem;
@@ -41,6 +42,19 @@
     --fd-input-bg: #FFFFFF;
 
     --fd-logo-size: 75px;
+
+    --companion-left-sidebar-bg: rgba(0, 0, 0, 0.5);
+    --companion-right-sidebar-bg: rgba(0, 0, 0, 0.5);
+    --companion-left-sidebar-color: white;
+    --companion-right-sidebar-color: white;
+
+    --companion-sidebar-item-bg: rgba(0, 0, 0, 0.5);
+    --companion-sidebar-item-color: white;
+
+    --fdm-background: linear-gradient(105deg,rgba(0, 179, 255, 1) 0%, rgba(0, 135, 255, 1) 50%, rgba(0, 179, 255, 1) 100%);
+    --fdm-background-size: 400% 400%;
+    --fdm-bg-anim: abc 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+    --fdm-text: white;
 }
 
 @keyframes error-bg {
@@ -103,6 +117,7 @@ body {
     background-size: var(--fd-background-size);
     animation: error-bg 5s linear infinite;
     font-family: var(--fd-font-family);
+    color: var(--fd-txt-col);
     height: 100vh;
     width: 100vw;
     padding: 0;
@@ -205,7 +220,7 @@ input:disabled {
     padding: 5px;
     font-size: var(--fd-font-size);
     font-family: var(--fd-font-family);
-    color: var(--fd-col);
+    color: var(--fd-txt-col);
     outline: none;
     width: 100%;
     margin: 5px 0;
@@ -254,7 +269,7 @@ input:disabled {
     border-radius: var(--fd-btn-rad);
     background-color: var(--fd-btn-background);
     text-align: center;
-    border: 2px solid #f8f9fa; /* Add a border */
+    border: var(--fd-btn-border); /* Add a border */
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     color: white;

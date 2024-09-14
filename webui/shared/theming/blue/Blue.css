@@ -1,8 +1,24 @@
 :root {
 	--fd-icon-count:11;
 	--fd-template-columns:repeat(5,2fr);
-	--fd-background:linear-gradient(45deg, rgba(0, 183, 255, 1) 0%, rgba(33, 192, 255, 1) 33%, rgba(0, 183, 255, 1) 66%, rgba(33, 192, 255, 1) 100%);
+	--fd-background:linear-gradient(45deg, rgba(0, 183, 255, 1) 0%, rgb(34, 178, 235) 33%, rgba(0, 183, 255, 1) 66%, rgb(34, 178, 235) 100%);
 	--fd-background-size:400% 400%;
-	--fd-font-family:Roboto, sans-serif;
-	--fd-modal-color:rgba(33, 192, 255, 1);
+	/* --fd-font-family:Roboto, sans-serif; */
+	--fd-modal-bg:rgba(33, 192, 255, 1);
+	--fd-modal-color:black;
+
+	--fdm-background:linear-gradient(45deg, rgba(0, 183, 255, 1) 0%, rgb(34, 178, 235) 33%, rgba(0, 183, 255, 1) 66%, rgb(34, 178, 235) 100%);
+
+	--fd-input-bg:rgba(33, 192, 255, 1);
+	--fdm-text: black;
+
+	--companion-left-sidebar-bg: rgb(31, 139, 182);
+	--companion-right-sidebar-bg: rgb(25, 152, 202);
+
+	--companion-left-sidebar-color: white;
+	--companion-right-sidebar-color: white;
+
+	--companion-sidebar-item-bg: rgba(30, 111, 143, 0.37);
+	--companion-sidebar-item-color: white;
+
 }

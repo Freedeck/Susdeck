@@ -19,9 +19,9 @@ export default {
 		name: "Green",
 		description: "A green theme for Freedeck",
 	},
-	yellow: {
-		name: "Yellow",
-		description: "A yellow theme for Freedeck",
+	gold: {
+		name: "Gold",
+		description: "A golden theme for Freedeck",
 	},
 	gruggly: {
 		name: "Gruggly",

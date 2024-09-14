@@ -68,6 +68,18 @@ const makeThanks = () => {
 
   content.appendChild(knownDetails);
 
+  const linebrak1 = document.createElement("br");
+  content.appendChild(linebrak1);
+
+  const discord = document.createElement("a");
+  discord.href = "https://discord.gg/7gWrgyt7Aa";
+  discord.innerText = "Join our Discord!";
+
+  content.appendChild(discord);
+
+  const linebrak2 = document.createElement("br");
+  content.appendChild(linebrak2);
+
   content.appendChild(close);
   container.appendChild(content);
   document.body.appendChild(container);

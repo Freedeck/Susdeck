@@ -1,5 +1,11 @@
 {
   "major": [
+    "**Welcome to the Library, a brand new way of managing your sounds.**",
+    [
+      "Gone are the days of re-uploading a sound multiple times. Just find it in your library, click it, and save.",
+      "Check it out when setting an icon, adding a sound, or on the right sidebar!",
+      "More features like rename & delete coming soon."
+    ],
     "**There is a brand new drag & drop system for tiles!**",
     "**Hovering over a Tile creates a tooltip!**",
     "**Doing any action no longer causes the entire page to reload. Instead, just the tiles!**",
@@ -10,13 +16,9 @@
     "**Companion load times are significantly faster now!**",
     "**Brand new animations for Connect, and a slight redesign there too!**",
     "**The Yellow theme is now called Gold!**",
-    [
-      "**Welcome to the Library, a brand new way of managing your sounds.**",
-      "Gone are the days of re-uploading a sound multiple times. Just find it in your library, click it, and save.",
-      "Check it out when setting an icon, adding a sound, or on the right sidebar!",
-      "More features like rename & delete coming soon."
-    ],
-    "The editor has also gotten a slight redesign!"
+    "**Added a new theme called Soofle.**",
+    "The editor has also gotten a slight redesign!",
+    "...and so many more performance & efficiency improvements."
   ],
   "other": [
     "The left sidebar is now modular! (Smaller HTML size)",

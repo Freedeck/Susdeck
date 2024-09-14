@@ -3,48 +3,52 @@ export default {
 		name: "Default",
 		description: "The default theme for Freedeck",
 	},
+	soofle: {
+		name: "Soofle",
+		description: "Inspired by RealFakeSoof.",
+	},
 	predefault: {
 		name: "Predefault",
 		description: "Back to ye olde days!",
 	},
 	red: {
 		name: "Red",
-		description: "A red theme for Freedeck",
+		description: "Make your Freedeck red!",
 	},
 	blue: {
 		name: "Blue",
-		description: "A blue theme for Freedeck",
+		description: "This is a very light blue theme for Freedeck! Dark mode users beware!",
 	},
 	green: {
 		name: "Green",
-		description: "A green theme for Freedeck",
+		description: "Grass? Never heard of it. This theme can be bright!",
 	},
 	gold: {
 		name: "Gold",
-		description: "A golden theme for Freedeck",
+		description: "It's like a golden Freedeck! Except it is gold!",
 	},
 	gruggly: {
 		name: "Gruggly",
-		description: "A gruggly theme for Freedeck (pantone 448c)",
+		description: "The most Gruggly-est theme for Freedeck. (Pantone 448c)",
 	},
 	catppuccin_mocha: {
 		name: "Catppuccin Mocha",
-		description: "A soothing pastel theme for Freedeck",
+		description: "The soothing pastel theme for Freedeck.",
 	},
 	dark: {
 		name: "Dark",
-		description: "A dark theme for Freedeck",
+		description: "A dark theme for Freedeck. Not fully black.",
 	},
 	black: {
 		name: "Black",
-		description: "A dark theme for Freedeck",
+		description: "Pure black, nice on the eyes.",
 	},
 	fun: {
 		name: "Fun",
-		description: "A fun theme for Freedeck",
+		description: "This theme is supposed to look bad. You have been warned.",
 	},
 	circular: {
 		name: "Circular",
-		description: "A circular theme for Freedeck",
+		description: "Default color scheme, circular buttons.",
 	},
 };

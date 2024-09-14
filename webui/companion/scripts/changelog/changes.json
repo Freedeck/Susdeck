@@ -1,0 +1,31 @@
+{
+  "major": [
+    "**There is a brand new drag & drop system for tiles!**",
+    "**Doing any action no longer causes the entire page to reload. Instead, just the tiles!**",
+    "**You'll also notice that there's a lot more synchronization between your device & Companion!**",
+    "**Companion load times are significantly faster now!**",
+    "**Brand new animations for Connect, and a slight redesign there too!**",
+    [
+      "**Welcome to the Library, a brand new way of managing your sounds.**",
+      "Gone are the days of re-uploading a sound multiple times. Just find it in your library, click it, and save.",
+      "Check it out when setting an icon, adding a sound, or on the right sidebar!",
+      "More features like rename & delete coming soon."
+    ],
+    "The editor has also gotten a slight redesign!"
+  ],
+  "other": [
+    "The left sidebar is now modular! (Smaller HTML size)",
+    "Your tiles now have a slight background color to make them stand out more.",
+    "Clicking every option on the left sidebar no longer requires a reload, and still syncs instantly!",
+    "Switching folders no longer requires a reload.",
+    "Setting themes no longer requires a reload.",
+    "The bottom right corner now has the Freedeck icon.",
+    "Each right sidebar page now has it's own container & views (further decreasing size of the page)."
+  ],
+  "known": [
+    "Making a tile, then setting it's icon, then setting it's type to Plugin makes the icon disappear.",
+    "Some themes (imported from legacy) override the incorrect properties, causing wrong colors.",
+    "Pressing Upload or Change (Sound) doesn't highlight the proper button. However, this is just visual & the previous option is still selected."
+  ],
+  "note": "Unfortunately, NativeBridge has been postponed until further notice. It's still in the works, though."
+}

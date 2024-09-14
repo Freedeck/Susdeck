@@ -4,6 +4,7 @@ import { universal } from "../../shared/universal.js";
 import "./sidebar.js";
 import "../../shared/useAuthentication.js"; // Only for authenticated pages
 import "./uploadsHandler.js";
+import { makeThanks } from "./changelog/create.js";
 
 await universal.init("Companion");
 
@@ -1533,3 +1534,5 @@ universal.listenFor("audio-end", (data) => {
 });
 
 window.showPick = showPick;
+
+makeThanks();

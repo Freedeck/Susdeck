@@ -74,13 +74,14 @@
             </div>
             <div style="display: none" id="audio-only" class="editor-section editor-section-bottom">
                 <h1>Audio</h1>
-                <p>This tile will play:</p>
-                <div class="plugin-item" id="audio-file">AUDIOFILE.MP3</div>
-                <p>from</p>
-                <div class="plugin-item" id="audio-path">/sounds/</div>
+                <div class="flex-wrap-r">
+                    <h2 id="audio-file">AUDIOFILE.MP3</h2>
+                </div>
                 <br />
-                <div class="button" id="upload-sound">Upload Sound</div>
+                <div class="button" id="upload-sound">Change</div>
             </div>
+            <!-- <p>from</p> -->
+            <!-- <span id="audio-path">/sounds/</span> -->
             <div style="display: none" id="system-only" class="editor-section editor-section-bottom">
                 <h1>App Volume</h1>
                 <div id="sys-actions" class="plugin-items">
@@ -96,21 +97,20 @@
                 <select name="eprofile-select" id="eprofile-select"></select>
             </div>
             <div style="display: none" id="none-only" class="editor-section editor-section-bottom">
-                <h1>Nothing!</h1>
                 <p>
-                    This tile does nothing yet! Select a type to get
+                    This tile does nothing! Select a type to get
                     started.
                 </p>
-                <div class="plugin-item" id="none-audio">Audio</div>
+                <div class="flex-wrap-r">
+                    <button id="none-audio">Audio</button>
                 <br />
-                <div class="plugin-item" id="none-plugin">Plugin</div>
-                <br />
-                <div class="plugin-item" id="none-system" style="display: none;">
+                <button id="none-plugin">Plugin</button>
+                <!-- <br /> -->
+                <button id="none-system" style="display: none;">
                     Application Volume
-                </div>
+                </button>
                 <br />
-                <div class="plugin-item" id="none-profiles">
-                    Switch Folders
+                <button id="none-profiles">Folder Switch</button>
                 </div>
             </div>
             <div id="advanced-view" style="display: none;">

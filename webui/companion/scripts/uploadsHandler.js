@@ -35,7 +35,7 @@ universal._Uploads_New = (uploadsType = UploadsType.ICON) => {
 			onlySetIfExists("#file.editor-data", "innerText", data.newName);
 			onlySetIfExists("#path.editor-data", "innerText", "/sounds/");
 			onlySetIfExists("#audio-file", "innerText", data.newName);
-			onlySetIfExists("#audio-path", "innerText", "/sounds/");
+			// onlySetIfExists("#audio-path", "innerText", "/sounds/");
 			universal.loadEditorData(previousInteractionData.data);
 			universal.uiSounds.playSound("int_yes");
 			universal.ctx.destructiveView("library");

@@ -32,14 +32,17 @@ const universal = {
 		request: async () => {
 			if ("wakeLock" in navigator) {
 				try {
-					universal.wakeLock.sentinel = await navigator.wakeLock.request("screen");
-					universal.sendToast("Wake lock acquired. Your screen will now stay on.");
+					universal.wakeLock.sentinel =
+						await navigator.wakeLock.request("screen");
+					universal.sendToast(
+						"Wake lock acquired. Your screen will now stay on.",
+					);
 				} catch (err) {
 					console.error(`${err.name}, ${err.message}`);
 					universal.sendToast("Failed to acquire wake lock.");
 				}
 			}
-		}
+		},
 	},
 	lclCfg: () => universal._information.style,
 	_information: {},
@@ -253,7 +256,7 @@ const universal = {
 			};
 
 			universal.audioClient._nowPlaying.push(audioInstance);
-			universal.sendEvent("now-playing", {audioInstance, name, isMonitor});
+			universal.sendEvent("now-playing", { audioInstance, name, isMonitor });
 			universal.updatePlaying();
 			return audioInstance;
 		},
@@ -471,7 +474,7 @@ const universal = {
 			universal.uiSounds.info = data.info;
 			return true;
 		},
-		playSound: (name) => {
+		playSound: async (name) => {
 			if (!universal.uiSounds.enabled) return;
 			universal.audioClient.play(
 				`/common/sounds/${universal.uiSounds.info.id}/${universal.uiSounds.sounds[name]}`,
@@ -512,7 +515,9 @@ const universal = {
 			},
 			{
 				name: "Settings",
-				onclick: (ev) => {window.AppSM()},
+				onclick: (ev) => {
+					window.AppSM();
+				},
 				handlers: ["onmousedown"],
 				onmousedown: UI.quickActions,
 			},

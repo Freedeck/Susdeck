@@ -433,7 +433,7 @@ function editTile(e) {
 	document.querySelector("#profile-only").style.display = "none";
 	if (interactionData.type === "fd.sound") {
 		document.querySelector("#audio-file").innerText = interactionData.data.file;
-		document.querySelector("#audio-path").innerText = interactionData.data.path;
+		// document.querySelector("#audio-path").innerText = interactionData.data.path;
 		openViewCloseAll("audio");
 	} else {
 		if (!interactionData.type.startsWith("fd.")) {
@@ -742,7 +742,7 @@ for (const type of universal._tyc.keys()) {
 		interaction.type = type;
 		interaction.plugin = plugin;
 		interaction.renderType = renderType;
-		interaction.data = { ...templateData, ...interaction.data };
+		interaction.data = { ...interaction.data, ...templateData };
 		document
 			.querySelector(`.spi[data-type="${type}"][data-plugin="${plugin}"]`)
 			.classList.add("spi-active");
@@ -802,7 +802,7 @@ document.querySelector("#upload-sound").onclick = () => {
 		document.querySelector("#file.editor-data").value = itm;
 		document.querySelector("#path.editor-data").value = "/sounds/";
 		document.querySelector("#audio-file").innerText = itm;
-		document.querySelector("#audio-path").innerText = "/sounds/";
+		// document.querySelector("#audio-path").innerText = "/sounds/";
 
 		universal.uiSounds.playSound("int_yes");
 	};
@@ -824,7 +824,7 @@ document.querySelector("#none-audio").onclick = (e) => {
 		.setAttribute("data-interaction", JSON.stringify(int));
 	document.querySelector("#audio-file").innerText = "Unset.mp3";
 	document.querySelector("#type").value = "fd.sound";
-	document.querySelector("#audio-path").innerText = "/sounds/";
+	// document.querySelector("#audio-path").innerText = "/sounds/";
 	openViewCloseAll("audio");
 };
 

@@ -31,6 +31,13 @@ export default function eventsHandler(universal, user) {
 			universal.setTheme(theme, false);
 		})
 
+		universal.on(universal.events.companion.set_profile, (data) => {
+			universal.config.profile = data;
+			UI.reloadProfile();
+			UI.reloadSounds();
+			universal.sendEvent("profile", data);
+		})
+
 		universal.on(universal.events.keypress, (interaction) => {
 			if (!user.includes("Companion")) return;
 			if ("sound" in interaction && interaction.sound.name === "Stop All") {

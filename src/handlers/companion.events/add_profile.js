@@ -1,10 +1,10 @@
 const config = require("../../managers/settings");
-const eventNames = require("../eventNames");
+const flags = require("../flags");
 
 module.exports = {
 	flags: [
-		"RELOAD_ALL",
-		"AUTH"
+		flags.reload_all,
+		flags.authenticate
 	],
 	exec: ({ io, data }) => {
 		const settings = config.settings();

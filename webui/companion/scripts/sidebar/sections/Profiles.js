@@ -99,6 +99,11 @@ profileSelect.onchange = () => {
 	universal.send(universal.events.companion.set_profile, profileSelect.value);
 };
 
+universal.listenFor("profile", (data) => {
+	profileTxt.innerHTML = `Current Folder:&nbsp<i>${universal.cleanHTML(data)}</i>`;
+	profileSelect.value = data;
+});
+
 style.children.push({build:()=>profileTxt});
 
 style.children.push({

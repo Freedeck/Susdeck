@@ -54,6 +54,34 @@ export class SidebarButton {
   }
 }
 
+export class SidebarSvgButton {
+  name;
+  onClick;
+  id;
+  icon;
+  constructor(name, onClick, id="", icon="") {
+    this.name = name;
+    this.onClick = onClick;
+    this.id = id;
+    this.icon = icon;
+  }
+  
+  build() {
+    const button = document.createElement("button");
+    // button.classList.add("sidebar-button");
+    button.innerText = this.name;
+    button.id = this.id;
+    button.onclick = this.onClick;
+
+    const obj = document.createElement("object");
+    obj.data = `/common/icons/${this.icon}`;
+    obj.classList.add("ico");
+    button.appendChild(obj);
+    
+    return button;
+  }
+}
+
 export class SidebarCheck {
   name;
   id;

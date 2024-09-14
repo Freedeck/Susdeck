@@ -1,8 +1,8 @@
-import { SidebarSection, SidebarButton } from "../SidebarSection";
+import { SidebarSection, SidebarSvgButton } from "../SidebarSection";
 
 const style = new SidebarSection("Folders", "es-profiles");
 
-style.children.push(new SidebarButton("", ()=>{
+const newBtn = new SidebarSvgButton("", ()=>{
   window.UniversalUI.show.showEditModal(
 		"New Folder",
 		"Enter a name for the new folder",
@@ -17,9 +17,9 @@ style.children.push(new SidebarButton("", ()=>{
 			return true;
 		},
 	);
-}, "pf-add"))
+}, "pf-add", "fnew.svg")
 
-style.children.push(new SidebarButton("", ()=>{
+const dupBtn = new SidebarSvgButton("", ()=>{
   window.UniversalUI.show.showEditModal(
 		"Duplicate Folder",
 		"Enter a name for the new folder",
@@ -32,9 +32,9 @@ style.children.push(new SidebarButton("", ()=>{
 			return true;
 		},
 	);
-}, "pf-dupe"))
+}, "pf-dupe", "fdupe.svg")
 
-style.children.push(new SidebarButton("", ()=>{
+const importBtn = new SidebarSvgButton("", ()=>{
   window.UniversalUI.show.showEditModal(
 		"Import Folder",
 		"Enter the folder data to import",
@@ -62,9 +62,9 @@ style.children.push(new SidebarButton("", ()=>{
 			}
 		},
 	);
-}, "pf-imp"))
+}, "pf-imp", "fimport.svg");
 
-style.children.push(new SidebarButton("", ()=>{
+const exportBtn = new SidebarSvgButton("", ()=>{
   const profile = universal.config.profiles[universal.config.profile];
 	const data = JSON.stringify(profile);
 	const blob = new Blob([data], {
@@ -76,11 +76,9 @@ style.children.push(new SidebarButton("", ()=>{
 	a.download = `${universal.config.profile}.json`;
 	a.click();
 	URL.revokeObjectURL(url);
-}, "pf-exp"))
+}, "pf-exp", "fexport.svg")
 
-
-const profileTxt = document.createElement("h2");
-// document.body.appendChild(profileTxt);
+const profileTxt = document.createElement("span");
 
 const profileSelect = document.createElement("select");
 
@@ -91,7 +89,7 @@ universal.listenFor("loadHooks", () => {
 		option.setAttribute("value", profile);
 		profileSelect.appendChild(option);
 	}
-	profileTxt.innerHTML = `Folder:&nbsp<i>${universal.config.profile}</i>`;
+	profileTxt.innerHTML = `Current Folder:&nbsp<i>${universal.cleanHTML(universal.config.profile)}</i>`;
 	profileSelect.value = universal.config.profile;
 })
 
@@ -102,6 +100,26 @@ profileSelect.onchange = () => {
 };
 
 style.children.push({build:()=>profileTxt});
+
+style.children.push({
+  build: () => {
+    const div = document.createElement("br");
+    return div;
+  }
+});
+
+style.children.push({
+  build: () => {
+    const div = document.createElement("div");
+    div.classList.add("flex-wrap-r");
+    div.appendChild(newBtn.build());
+    div.appendChild(dupBtn.build());
+    div.appendChild(importBtn.build());
+    div.appendChild(exportBtn.build());
+    return div;
+  }
+});
+
 style.children.push({build:()=>profileSelect});
 
 document.querySelector(".sidebar").appendChild(style.build());

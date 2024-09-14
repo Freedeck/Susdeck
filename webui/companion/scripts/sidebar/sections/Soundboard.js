@@ -1,6 +1,6 @@
 import { SidebarSection, SidebarSlider, SidebarButton } from "../SidebarSection";
 
-const style = new SidebarSection("Soundboard");
+const style = new SidebarSection("Soundboard", "es-audio");
 
 style.children.push({build:()=>{
   const d = document.createElement("div");
@@ -14,12 +14,14 @@ style.children.push(new SidebarSlider("Pitch", "pitch", "%", "0.1", "2", "1", (e
   universal.audioClient.setPitch(e.target.value)
 }, () => {
   universal.audioClient.setPitch(1);
+  setValue("#pitch", 1);
 }, 0.1));
 
 style.children.push(new SidebarSlider("Volume", "v", "%", "0", "100", "100", (e) => {
   universal.audioClient.setVolume(e.target.value / 100)
 }, () => {
   universal.audioClient.setVolume(1)
+  setValue("#v", 100);
 }));
 
 document.querySelector(".sidebar").appendChild(style.build());

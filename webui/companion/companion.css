@@ -46,7 +46,7 @@ input {
 	overflow-x: hidden;
 }
 
-#login-div, dialog > div {
+#login-div, dialog > div:not(#editor-div) {
 	background-color: var(--fd-modal-bg);
 	color: var(--fd-modal-color);
 	min-width: 400px;
@@ -245,14 +245,15 @@ a:hover {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	width: 50vw;
+	width: 90vw;
 	max-height: 85vh;
 	min-width: 50vw;
 	min-height: 70vh;
 	transform: translate(-50%, -50%);
 	background-color: var(--fd-modal-bg);
 	color: var(--fd-modal-color);
-	padding: 1.5rem;
+	padding: 1.75rem;
+	border-radius: 2rem;
 	z-index: 1000;
 	overflow-y: scroll;
 	scrollbar-color: rgba(0,0,0,0);

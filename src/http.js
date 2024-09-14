@@ -28,17 +28,17 @@ module.exports = {
 
 compileWebpack().catch((err) => console.error(err));
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 app.use("/", staticRouter);
 
 app.use("/connect", connectRouter);
 app.use("/handoff", handoffRouter);
 
 app.use("/fd/api/upload", uploadRouter);
-
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
-});
 
 app.get("/native/*", (req, res) => {
   fetch(`http://localhost:5756/${req.url.split("/").slice(2).join("/")}`)

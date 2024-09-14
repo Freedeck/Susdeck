@@ -1243,6 +1243,14 @@ function showPick(title, listContent, callback) {
 	document.body.appendChild(modal);
 }
 
+window.UniversalUI = {
+	show: {
+		showEditModal,
+		showPick,
+		showText
+	}
+}
+
 window.onclick = (e) => {
 	if (e.srcElement.className !== "contextMenu") {
 		if (document.querySelector(".contextMenu"))
@@ -1273,112 +1281,7 @@ document.addEventListener("keydown", (ev) => {
 	}
 });
 
-const profileTxt = document.createElement("h2");
-profileTxt.innerHTML = `Profile:&nbsp<i>${universal.config.profile}</i>`;
-// document.body.appendChild(profileTxt);
-
-const profileSelect = document.createElement("select");
-const profileAdd = document.querySelector("#pf-add");
-
-const profileImport = document.querySelector("#pf-imp");
-
-const profileExport = document.querySelector("#pf-exp");
-
-profileExport.onclick = () => {
-	const profile = universal.config.profiles[universal.config.profile];
-	const data = JSON.stringify(profile);
-	const blob = new Blob([data], {
-		type: "application/json",
-	});
-	const url = URL.createObjectURL(blob);
-	const a = document.createElement("a");
-	a.href = url;
-	a.download = `${universal.config.profile}.json`;
-	a.click();
-	URL.revokeObjectURL(url);
-};
-
-for (const profile of Object.keys(universal.config.profiles)) {
-	const option = document.createElement("option");
-	option.innerText = profile;
-	option.setAttribute("value", profile);
-	profileSelect.appendChild(option);
-}
-
-profileImport.onclick = () => {
-	showEditModal(
-		"Import Folder",
-		"Enter the folder data to import",
-		(modal, pfData, feedback, title, button, input, content) => {
-			try {
-				const data = JSON.parse(pfData);
-				showEditModal(
-					"Import Folder",
-					"Enter a name for the new folder",
-					(modal, value, feedback, title, button, input, content) => {
-						if (value.length < 1) {
-							feedback.innerText = "Please enter a name for the folder";
-							return false;
-						}
-						universal.send(universal.events.companion.import_profile, {
-							name: value,
-							data,
-						});
-					},
-				);
-				return true;
-			} catch (e) {
-				feedback.innerText = "Invalid JSON data";
-				return false;
-			}
-		},
-	);
-};
-
-profileAdd.onclick = () => {
-	showEditModal(
-		"New Folder",
-		"Enter a name for the new folder",
-		(modal, value, feedback, title, button, input, content) => {
-			if (value.length < 1) {
-				feedback.innerText = "Please enter a name for the folder";
-				return false;
-			}
-			universal.page = 0;
-			universal.save("page", universal.page);
-			universal.send(universal.events.companion.add_profile, value);
-			return true;
-		},
-	);
-};
-
-profileSelect.value = universal.config.profile;
-
-profileSelect.onchange = () => {
-	universal.page = 0;
-	universal.save("page", universal.page);
-	universal.send(universal.events.companion.set_profile, profileSelect.value);
-};
-
-document.querySelector("#es-profiles").appendChild(profileSelect);
-
-const profileDupe = document.querySelector("#pf-dupe");
-
-profileDupe.onclick = () => {
-	showEditModal(
-		"Duplicate Profile",
-		"Enter a name for the new profile",
-		(modal, value, feedback, title, button, input, content) => {
-			if (value.length < 1) {
-				feedback.innerText = "Please enter a name for the profile";
-				return false;
-			}
-			universal.send(universal.events.companion.dup_profile, value);
-			return true;
-		},
-	);
-};
-
+// document.querySelector("#es-profiles").appendChild(profileSelect);
 
 // get url params
 const editing = universal.load("now-editing");

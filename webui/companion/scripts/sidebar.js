@@ -3,6 +3,7 @@ import "./sidebar/sections/CurrentPage.js";
 import "./sidebar/sections/Client.js";
 import "./sidebar/sections/Soundboard.js";
 import "./sidebar/sections/Style.js";
+import "./sidebar/sections/Profiles.js";
 
 import "./sidebar/sections/Footer.js";
 

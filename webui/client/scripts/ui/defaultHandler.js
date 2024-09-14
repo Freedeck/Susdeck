@@ -53,8 +53,6 @@ export default function (snd, keyObject, raw) {
 		keyObject.ontouchend = stopHolding;
 		keyObject.ontouchcancel = stopHolding;
 		keyObject.ontouchleave = stopHolding;
-		keyObject.onpointerdown = startHolding;
-		keyObject.onpointerup = stopHolding;
 		const send = (e) => {
 			universal.send(universal.events.keypress, {
 				event: e,

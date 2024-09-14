@@ -8,7 +8,7 @@ module.exports = ({ io, data }) => {
 			path.resolve("./src/configs/style.json"),
 			JSON.stringify({
 				scroll: false,
-				center: false,
+				center: true,
 				fill: false,
 				"font-size": 15,
 				buttonSize: 6,

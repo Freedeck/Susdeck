@@ -187,8 +187,6 @@ input {
     font-family: var(--fd-font-family);
     color: var(--fd-input-col);
     outline: none;
-    width: 100%;
-    margin: 5px 0;
 }
 
 #login-dialog {

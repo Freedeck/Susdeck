@@ -36,4 +36,14 @@ style.children.push(
   }
 )
 
+style.children.push(
+  {
+    build: () => {
+      const elem = document.createElement("br");
+      return elem;
+    }
+  }
+)
+
+
 document.querySelector(".sidebar").appendChild(style.build());

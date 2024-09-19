@@ -1163,25 +1163,34 @@ function showText(title, content, callback) {
  * @param {Array} listContent The content of the list
  * @param {void} callback What to do when submitted
  */
-function showPick(title, listContent, callback) {
+function showPick(title, listContent, callback, extraM = null, closable=true) {
 	const modal = document.createElement("div");
 	modal.className = "modal";
 
 	const modalContent = document.createElement("div");
 	modalContent.classList.add("modalContent");
 
-	const modalClose = document.createElement("button");
-	modalClose.innerText = "Close";
-	modalClose.onclick = () => {
-		modal.remove();
-	};
-	modalClose.classList.add("modalClose");
-	modalContent.appendChild(modalClose);
+	if(closable) {
+			const modalClose = document.createElement("button");
+		modalClose.innerText = "Close";
+		modalClose.onclick = () => {
+			modal.remove();
+		};
+		modalClose.classList.add("modalClose");
+		modalContent.appendChild(modalClose);
+	}
 
 	const modalTitle = document.createElement("h2");
 	modalTitle.innerText = title;
 	modalTitle.classList.add("modalTitle");
 	modalContent.appendChild(modalTitle);
+
+	if(extraM != null) {
+		const modalTitlet = document.createElement("p");
+		modalTitlet.innerText = extraM;
+		modalTitlet.classList.add("modalText");
+		modalContent.appendChild(modalTitlet);
+	}
 
 	const modalFeedback = document.createElement("div");
 	modalFeedback.classList.add("modalFeedback");
@@ -1513,6 +1522,8 @@ universal.on(universal.events.default.notif, (dat) => {
 					}),
 				);
 			},
+			dat.incoming.appInformation.authorizationMessage,
+			false
 		);
 		return;
 	}

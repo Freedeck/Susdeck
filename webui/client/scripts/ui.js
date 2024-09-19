@@ -165,6 +165,11 @@ function reloadSounds() {
 				out += "<p>Opens folder:</p>";
 				out += `<code>${universal.cleanHTML(snd.data.profile, false)}</code>`;
 			}
+			if (snd.type === "fd.none") {
+				out += "<p>Does nothing.</p>";
+			} else if(snd.type === "fd.select") {
+				out += "<p>No plugin selected.</p>"
+			}
 
 			out += "<p>Right click to edit.</p>";
 			out += `<details><summary>Advanced (press V)</summary><p>Type: ${snd.type}</p><p>Pos: ${snd.pos}</p><p>Data size: ${Object.keys(snd.data).length}</p></details>`;

@@ -74,7 +74,12 @@ body {
     -webkit-user-select: none; /* disable selection/Copy of UIWebView */
     -webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
 }
-
+h1 {
+    font-family: "Rethink Sans";
+    font-size: 2rem;
+    /* font-weight: normal; */
+    font-weight: 700;
+}
 
 .settings-menu {
     display: none;
@@ -108,6 +113,17 @@ body {
     font-family: var(--font);
     color: var(--text-color);
     animation: error-bg 5s linear infinite;
+}
+
+#boot-log {
+    display: block;
+    width: 94%;
+    height: 90%;
+    overflow-y: scroll;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 1rem;
+    border-radius: 1rem;
 }
 
 .settings-menu details {

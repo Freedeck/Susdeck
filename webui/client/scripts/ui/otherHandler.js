@@ -1,6 +1,7 @@
 import defaultHandler from "./defaultHandler.js";
 import sliderHandler from "./slider.js";
 import textHandler from "./textHandler.js";
+import noneHandler from "./noneHandler.js";
 
 /**
  * Other Button type handler
@@ -10,9 +11,13 @@ import textHandler from "./textHandler.js";
  * @param {*} rawDat The raw data
  */
 export default function (sndType, keyObject, snd, rawDat) {
+	if (snd.data.showBg === "true") {
+		keyObject.classList.add("no-bg");
+	}
+	
 	if (sndType === "fd.sound") defaultHandler(snd, keyObject, rawDat);
-	else if (sndType === "fd.none") textHandler(snd, keyObject, rawDat, true);
-	else if (sndType === "fd.select") textHandler(snd, keyObject, rawDat, true);
+	else if (sndType === "fd.none") noneHandler(snd, keyObject, rawDat, true);
+	else if (sndType === "fd.select") noneHandler(snd, keyObject, rawDat, true);
 	else {
 		switch (snd.renderType) {
 			case "button":

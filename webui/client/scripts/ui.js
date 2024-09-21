@@ -13,7 +13,7 @@ function makeBootLog() {
 	const bootLog = document.createElement("div");
 	bootLog.id = "boot-log-div";
 	bootLog.classList.add("settings-menu")
-	bootLog.innerHTML = "<center><h1>Freedeck</h1></center><div id='boot-log'></div>";
+	bootLog.innerHTML = "<center><h1>Freedeck is booting...</h1></center><div id='boot-log'></div>";
 	document.body.appendChild(bootLog);
 }
 
@@ -176,10 +176,11 @@ function reloadSounds() {
 			let out = "";
 			out += `<h4>${universal.cleanHTML(k, false)}</h4>`;
 			
-			if (snd.data.longPress === "true") {
-				out += "<p>Long press to activate.</p>";
+
+			if(snd.renderType !== "text") {
+				out += (snd.data.longPress === "true" ? "<p>Long press to activate.</p>" : "<p>Short press to activate.</p>")
 			} else {
-				out += "<p>Short press to activate.</p>"
+				out += "<p>Not pressable.</p>";
 			}
 			
 			if (snd.plugin) {

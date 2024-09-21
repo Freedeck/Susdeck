@@ -10,7 +10,7 @@
 	--tile-border:rgba(255,255,255, 0.75);
 	--tile-bg: hsla(354, 70%, 54%, 0.5);
 
-	--fd-input-bg: hsla(354, 70%, 54%, 0.25);
+	--input-bg: hsla(354, 70%, 54%, 0.25);
 	--fd-input-col: rgba(255,255,255);
 
 	--modal-item-bg: rgba(255,255,255,0.125);

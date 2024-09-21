@@ -7,5 +7,5 @@
 	--fd-modal-color:black;
 
 	--modal-item-bg:linear-gradient(45deg, rgba(51,255,119, 1) 0%, rgba(41,250,0, 1) 33%, rgba(51,255,119, 1) 66%, rgba(41,250,0, 1) 100%);
-	--fd-input-bg:rgba(51,255,119, 0.25);
+	--input-bg:rgba(51,255,119, 0.25);
 }

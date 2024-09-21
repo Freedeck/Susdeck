@@ -25,7 +25,7 @@
     --fd-font-size: 15px;
      
 
-    --fd-input-bg: #FFFFFF;
+    --input-bg: #FFFFFF;
     --fd-input-col: black;
 
      
@@ -39,7 +39,7 @@
     --fd-slider-background: #3498db;
     --fd-slider-foreground: transparent;
 
-    --fd-input-bg: #FFFFFF;
+    --input-bg: #FFFFFF;
 
      
 
@@ -181,7 +181,7 @@ body {
 }
 
 select {
-    background-color: var(--fd-input-bg);
+    background-color: var(--input-bg);
     border: 1px solid black;
     border-radius: 5px;
     padding: 5px;
@@ -194,7 +194,7 @@ select {
 }
 
 input {
-    background-color: var(--fd-input-bg);
+    background-color: var(--input-bg);
     border: 0;
     border-radius: 5px;
     padding: 5px;

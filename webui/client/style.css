@@ -163,13 +163,39 @@ body {
     }
 }
 
+@keyframes pull-left {
+    from{
+        width: 0;
+        left: 0;
+    }
+
+    to {
+        width: 100%;
+        left: 0;
+    }
+}
+
+@keyframes pull-right {
+    from{
+        width: 0;
+        right: 0;
+    }
+
+    to {
+        width: 100%;
+        right: 0;
+    }
+}
+
 @keyframes pull-down {
     from{
         height: 0;
+        top: 0;
     }
 
     to {
         height: 100%;
+        top: 0;
     }
 }
 
@@ -196,10 +222,12 @@ body {
 @keyframes pull-up {
     from{
         height: 100%;
+        top: 100%;
     }
 
     to {
         height: 0;
+        top: 0;
     }
 }
 

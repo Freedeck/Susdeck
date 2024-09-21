@@ -25,8 +25,6 @@ gridItemDrag.on("drop", (event, origIndex, targIndex) => {
 	document.querySelector(".mt-next-page").style.display = "none";
 	document.querySelector(".mt-prev-page").style.display = "none";
 
-	console.log(event.target.classList)
-
 	if(event.target.classList.contains("mt-next-page") || event.target.classList.contains("mt-prev-page")) {
 		const wanted = event.target.classList.contains("mt-next-page");
 		// true -> next, false -> prev
@@ -67,6 +65,8 @@ gridItemDrag.on("drop", (event, origIndex, targIndex) => {
 			newIndex: targetIndex,
 			oldIndex: originalIndex,
 		});
+
+		UI.reloadSounds();
 
 		return;
 	}
@@ -544,10 +544,10 @@ function editTile(e) {
 	}
 	document.querySelector("#sbg").checked = interactionData.data.showBg === "true";
 	document.querySelector("#sbg").style.display =
-		interactionData.renderType === "button" ? "none" : 
+		interactionData.renderType === "button" ? "block" : 
 		interactionData.renderType === "slider" ? "none" : "block";
 	document.querySelector('label[for="sbg"]').style.display =
-		interactionData.renderType === "button" ? "none" :
+		interactionData.renderType === "button" ? "block" :
 		interactionData.renderType === "slider" ? "none" : "block";
 
 	document.querySelector("#orl").checked =
@@ -1298,6 +1298,7 @@ document.addEventListener("keydown", (ev) => {
 			universal.uiSounds.playSound("page_down");
 			UI.reloadSounds();
 			universal.sendEvent("page_change");
+			universal.sendEvent("animate_page");
 		}
 	}
 	if (ev.key === "ArrowRight") {
@@ -1307,6 +1308,7 @@ document.addEventListener("keydown", (ev) => {
 			universal.uiSounds.playSound("page_up");
 			UI.reloadSounds();
 			universal.sendEvent("page_change");
+			universal.sendEvent("animate_page");
 		}
 	}
 });

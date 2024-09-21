@@ -193,7 +193,6 @@ function reloadSounds() {
 	universal.sendEvent("page_change");
 	// document.getElementById('keys').style.maxHeight = document.querySelectorAll('.k').length * (10*12)/window.innerWidth + '%';
 }
-
 export const UI = {
 	reloadSounds,
 	reloadProfile,

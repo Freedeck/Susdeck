@@ -845,3 +845,11 @@ window.onerror = (msg, url, linenumber, column, error) => {
 	alert(`Error message: ${msg}\nURL: ${url}\nLine Number: ${linenumber}`);
 	return true;
 };
+
+
+universal.listenFor("animate_page", (type="automated", direction="left") => {
+	const keys = document.getElementById("keys");
+	if(type === "automated") {
+		keys.style.animation = `pull-${direction} 0.5s`;
+	}
+})

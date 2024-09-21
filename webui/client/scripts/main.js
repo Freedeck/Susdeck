@@ -22,6 +22,7 @@ const checkDirection = () => {
       universal.save("page", universal.page);
       UI.reloadSounds();
       universal.sendEvent("page_change");
+      universal.sendEvent("animate_page", "automated", "left");
     } else {
       /* empty */
     }
@@ -33,6 +34,7 @@ const checkDirection = () => {
       universal.save("page", universal.page);
       UI.reloadSounds();
       universal.sendEvent("page_change");
+      universal.sendEvent("animate_page", "automated", "right");
     } else {
       /* empty */
     }
@@ -47,6 +49,7 @@ document.addEventListener("keydown", (ev) => {
       universal.uiSounds.playSound("page_down");
       UI.reloadSounds();
       universal.sendEvent("page_change");
+      universal.sendEvent("animate_page", "automated", "right");
     }
   }
   if (ev.key === "ArrowRight") {
@@ -56,6 +59,7 @@ document.addEventListener("keydown", (ev) => {
       universal.uiSounds.playSound("page_up");
       UI.reloadSounds();
       universal.sendEvent("page_change");
+      universal.sendEvent("animate_page", "automated", "left");
     }
   }
 });

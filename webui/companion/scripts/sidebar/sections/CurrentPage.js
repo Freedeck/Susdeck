@@ -19,7 +19,8 @@ const previousPage = new SidebarButton("Previous Page", (e) => {
 		universal.uiSounds.playSound("page_down");
 		UI.reloadSounds();
 		universal.sendEvent("page_change");
-	}
+    universal.sendEvent("animate_page");
+  }
 });
 
 const nextPage = new SidebarButton("Next Page", (e) => {
@@ -29,6 +30,7 @@ const nextPage = new SidebarButton("Next Page", (e) => {
 		universal.uiSounds.playSound("page_up");
 		UI.reloadSounds();
 		universal.sendEvent("page_change");
+    universal.sendEvent("animate_page");
 	}
 });
 

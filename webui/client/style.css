@@ -56,6 +56,26 @@
     }
 }
 
+body {
+    background: rgba(255, 0, 89, 1);
+    background: var(--main-bg);
+    background-size: var(--main-bg-size);
+    animation: error-bg 5s linear infinite;
+    font-family: var(--font);
+    color: var(--text-color);
+    height: 100vh;
+    width: 100vw;
+    padding: 0;
+    margin: 0;
+    /* padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); */
+    overflow-x: hidden;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none; /* disable selection/Copy of UIWebView */
+    -webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
+}
+
+
 .settings-menu {
     display: none;
     flex-direction: column;
@@ -77,6 +97,17 @@
     animation: pull-down 0.5s;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
+}
+
+#boot-log-div {
+    display: block;
+    animation: none;
+    width: 100%;
+    background: var(--main-bg);
+    background-size: var(--main-bg-size);
+    font-family: var(--font);
+    color: var(--text-color);
+    animation: error-bg 5s linear infinite;
 }
 
 .settings-menu details {
@@ -125,25 +156,6 @@
 
 .theme button {
     width: 4rem;
-}
-
-body {
-    background: rgba(255, 0, 89, 1);
-    background: var(--main-bg);
-    background-size: var(--main-bg-size);
-    animation: error-bg 5s linear infinite;
-    font-family: var(--font);
-    color: var(--text-color);
-    height: 100vh;
-    width: 100vw;
-    padding: 0;
-    margin: 0;
-    /* padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); */
-    overflow-x: hidden;
-    touch-action: none;
-    user-select: none;
-    -webkit-user-select: none; /* disable selection/Copy of UIWebView */
-    -webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
 }
 
 .unset {
@@ -222,12 +234,10 @@ body {
 @keyframes pull-up {
     from{
         height: 100%;
-        top: 100%;
     }
 
     to {
         height: 0;
-        top: 0;
     }
 }
 
@@ -239,6 +249,16 @@ body {
 
     to {
         transform: scale(0.9);
+        opacity: 0;
+    }
+}
+
+@keyframes real-fade-out {
+    from {
+        opacity: 1;
+    }
+
+    to {
         opacity: 0;
     }
 }

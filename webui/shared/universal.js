@@ -4,6 +4,7 @@ import dataHandler from "./init/data";
 import eventsHandler from "./init/events";
 import themeIndex from "./theming/themeIndex";
 import { UI } from "../client/scripts/ui";
+import audioEngine from "./audioEngine";
 
 /**
  * Open the settings menu (on clients only)
@@ -20,13 +21,15 @@ function settingsMenuClose() {
 		// document.querySelector(".settings-menu").style.display = "none";
 		document.querySelector(".settings-menu").style.animationName = "pull-up";
 		document.querySelector(".settings-menu").style.animationDuration = "0.45s";
-		document.querySelector(".settings-menu").style.animationFillMode = "forwards";
+		document.querySelector(".settings-menu").style.animationFillMode =
+			"forwards";
 		document.querySelector("#keys").style.animationName = "pull-down";
 		document.querySelector("#keys").style.animationDuration = "0.5s";
-		
+
 		setTimeout(() => {
 			document.querySelector(".settings-menu").style.display = "none";
-			document.querySelector(".settings-menu").style.animationName = "pull-down";
+			document.querySelector(".settings-menu").style.animationName =
+				"pull-down";
 			document.querySelector("#keys").style.display = "grid";
 		}, 250);
 	}
@@ -171,115 +174,7 @@ const universal = {
 			return container;
 		},
 	},
-	audioClient: {
-		_nowPlaying: [],
-		_end: (event) => {
-			universal.audioClient._nowPlaying.splice(
-				universal.audioClient._nowPlaying.indexOf(event.target),
-				1,
-			);
-			universal.updatePlaying();
-		},
-		_player: {
-			sink: 0,
-			monitorPotential: [],
-			monitorSink: "default",
-			recsink: 0,
-			normalVol: 1,
-			monitorVol: 1,
-			pitch: 1,
-		},
-		stopAll: async () => {
-			for (const audio of universal.audioClient._nowPlaying) {
-				try {
-					await audio.pause();
-					audio.currentTime = audio.duration;
-					await audio.play();
-				} catch (err) {
-					// "waah waah waah noo you cant just abuse audio api" -companion
-					// > i dont care :trole:
-				}
-			}
-		},
-		setPitch: (pitch) => {
-			universal.audioClient._player.pitch = pitch;
-			for (const audio of universal.audioClient._nowPlaying) {
-				audio.playbackRate = pitch;
-			}
-			universal.save("pitch", pitch);
-		},
-		setVolume: (vol) => {
-			universal.audioClient._player.normalVol = vol;
-			for (const audio of universal.audioClient._nowPlaying) {
-				audio.volume = vol;
-			}
-			universal.save("vol", vol);
-		},
-		play: async (
-			file,
-			name,
-			isMonitor = false,
-			stopPrevious = false,
-			volume = universal.load("vol") || 1,
-		) => {
-			const audioInstance = new Audio();
-			audioInstance.src = file;
-			audioInstance.load();
-			if (universal.audioClient._player.sink !== 0) {
-				navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-				await audioInstance.setSinkId(universal.audioClient._player.sink);
-			}
-			audioInstance.setAttribute("data-name", name);
-			audioInstance.setAttribute("data-isMonitor", false);
-
-			if (isMonitor) {
-				navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-				await audioInstance.setSinkId(
-					universal.audioClient._player.monitorSink,
-				);
-				if (universal.load("monitor.sink")) {
-					navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-					await audioInstance.setSinkId(universal.load("monitor.sink"));
-				}
-				audioInstance.volume = universal.audioClient._player.monitorVol;
-			} else {
-				audioInstance.volume = universal.audioClient._player.normalVol;
-			}
-			if (universal.load("pitch")) {
-				audioInstance.playbackRate = universal.load("pitch");
-			}
-			audioInstance.volume = volume;
-			audioInstance.preservesPitch = false;
-			audioInstance.fda = {};
-			audioInstance.fda.name = name;
-			audioInstance.fda.monitoring = isMonitor;
-			if (stopPrevious === "stop_prev") {
-				for (const audio of universal.audioClient._nowPlaying) {
-					try {
-						if (audio.fda.name === audioInstance.fda.name) {
-							await audio.pause();
-							audio.currentTime = audio.duration;
-							await audio.play();
-						}
-					} catch (err) {
-						// "waah waah waah noo you cant just abuse audio api" -companion
-						// > i dont care :trole:
-					}
-				}
-			}
-			await audioInstance.play();
-
-			audioInstance.onended = (ev) => {
-				universal.audioClient._end(ev);
-				universal.sendEvent("audio-end", { audioInstance, name, isMonitor });
-			};
-
-			universal.audioClient._nowPlaying.push(audioInstance);
-			universal.sendEvent("now-playing", { audioInstance, name, isMonitor });
-			universal.updatePlaying();
-			return audioInstance;
-		},
-	},
+	audioClient: audioEngine,
 	login: (passwd) => {
 		universal.send(universal.events.login.login_data, {
 			tlid: universal._information.tempLoginID,
@@ -307,7 +202,7 @@ const universal = {
 		for (const line of metaLines) {
 			if (!line.trim()) continue;
 			const [key, value] = line.trim().split(": ");
-			theme[key.split("--")[1]] = value.split("\";")[0].split("\"")[1];
+			theme[key.split("--")[1]] = value.split('";')[0].split('"')[1];
 		}
 		theme.raw = rawData;
 		universal._data_themes_cache[id] = theme;
@@ -392,53 +287,25 @@ const universal = {
 		const elem = document.createElement("code");
 		elem.innerText = `${s}: ${m}\n`;
 		universal.CLUL.push([elem.innerText, Date.now()]);
-		document.querySelector("#boot-log-div").appendChild(elem);
+		document.querySelector("#boot-log").appendChild(elem);
 	},
 	init: (user) =>
 		new Promise((resolve, reject) => {
-			universal.CLU("Boot", "Init promise created");
+			UI.makeBootLog();
+			universal.CLU("Boot", "(PRE LOG CREATION) Init promise created");
+			universal.CLU("Boot", "Boot log created"); 
 			try {
 				universal.CLU("Boot", "Pre-init");
 				universal._initFn(user).then(async () => {
 					universal.CLU("Boot", "Init complete");
 					universal.CLU("Boot", "Received config", universal.config);
-					universal.setTheme(
-						universal.config.theme ? universal.config.theme : "default",
-						false,
-					);
-					universal.CLU("Boot", "Set theme");
-					universal.config.iconCountPerPage =
-						universal.lclCfg().iconCountPerPage || 12;
-					UI.reloadSounds();
-					universal.CLU("Boot", "UI reloaded");
-					if (!navigator.mediaDevices?.enumerateDevices) {
-						console.log("enumerateDevices() not supported.");
-					} else {
-						const devices = [];
-						navigator.mediaDevices
-							.enumerateDevices()
-							.then((devices) =>
-								devices.filter((device) => device.kind === "audiooutput"),
-							)
-							.catch((err) => {
-								console.error(err);
-							});
-						for (const device of devices) {
-							universal.audioClient._player.monitorPotential.push(device);
-							universal.CLU("Boot", "Created monitor potential devices");
-						}
-					}
-					if (universal.load("vb.sink"))
-						universal.audioClient._player.sink = universal.load("vb.sink");
-					universal.CLU("Boot", "Loaded vb.sink");
-					if (universal.load("monitor.sink"))
-						universal.audioClient._player.monitorSink =
-							universal.load("monitor.sink");
-					else universal.audioClient._player.monitorSink = "default";
-					universal.CLU("Boot", "Loaded monitor.sink");
+					universal.CLU("Boot", "Initializing systems");
+					UI.initialize(); 
+					universal.audioClient.initialize(); 
 					universal.CLU("Boot", "Init complete");
-					document.querySelector("#boot-log-div").style.display = "none";
-					resolve(true);
+					UI.closeBootLog().then(() => {
+						resolve(true);
+					})
 				});
 			} catch (e) {
 				console.error(`${e} | Universal: initialize failed.`);
@@ -520,13 +387,13 @@ const universal = {
 		},
 		playSound: async (name) => {
 			if (!universal.uiSounds.enabled) return;
-			universal.audioClient.play(
-				`/common/sounds/${universal.uiSounds.info.id}/${universal.uiSounds.sounds[name]}`,
+			universal.audioClient.play({
+				file: `/common/sounds/${universal.uiSounds.info.id}/${universal.uiSounds.sounds[name]}`,
 				name,
-				true,
-				false,
-				0.5,
-			);
+				channel: universal.audioClient.channels.ui,
+				stopPrevious: false,
+				volume: 0.5,
+			});
 		},
 	},
 	/*  */
@@ -846,10 +713,12 @@ window.onerror = (msg, url, linenumber, column, error) => {
 	return true;
 };
 
-
-universal.listenFor("animate_page", (type="automated", direction="left") => {
-	const keys = document.getElementById("keys");
-	if(type === "automated") {
-		keys.style.animation = `pull-${direction} 0.5s`;
-	}
-})
+universal.listenFor(
+	"animate_page",
+	(type = "automated", direction = "left") => {
+		const keys = document.getElementById("keys");
+		if (type === "automated") {
+			keys.style.animation = `pull-${direction} 0.5s`;
+		}
+	},
+);

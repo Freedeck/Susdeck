@@ -29,14 +29,14 @@ export default function eventsHandler(universal, user) {
 
 		universal.on(universal.events.companion.set_theme, (theme) => {
 			universal.setTheme(theme, false);
-		})
+		});
 
 		universal.on(universal.events.companion.set_profile, (data) => {
 			universal.config.profile = data;
 			UI.reloadProfile();
 			UI.reloadSounds();
 			universal.sendEvent("profile", data);
-		})
+		});
 
 		universal.on(universal.events.keypress, (interaction) => {
 			if (!user.includes("Companion")) return;
@@ -56,18 +56,18 @@ export default function eventsHandler(universal, user) {
 			if (!universal.load("playback-mode")) {
 				universal.save("playback-mode", "play_over");
 			}
-			universal.audioClient.play(
-				`${interaction.data.path}/${interaction.data.file}`,
-				Object.keys(a)[0],
-				false,
-				universal.load("stopPrevious"),
-			);
-			universal.audioClient.play(
-				`${interaction.data.path}/${interaction.data.file}`,
-				Object.keys(a)[0],
-				true,
-				universal.load("stopPrevious"),
-			);
+			universal.audioClient.play({
+				file: `${interaction.data.path}/${interaction.data.file}`,
+				name: Object.keys(a)[0],
+				channel: universal.audioClient.channels.cable,
+				stopPrevious: universal.load("stopPrevious"),
+			});
+			universal.audioClient.play({
+				file: `${interaction.data.path}/${interaction.data.file}`,
+				name: Object.keys(a)[0],
+				channel: universal.audioClient.channels.monitor,
+				stopPrevious: universal.load("stopPrevious"),
+			});
 		});
 
 		universal.on(universal.events.default.recompile, () => {
@@ -111,7 +111,7 @@ export default function eventsHandler(universal, user) {
 		universal.on(universal.events.default.reload_sounds, (profileData) => {
 			universal.config.profiles[universal.config.profile] = profileData;
 			UI.reloadSounds();
-		})
+		});
 
 		universal.on(universal.events.default.login, (auth) => {
 			universal.authStatus = auth;
@@ -126,7 +126,9 @@ export default function eventsHandler(universal, user) {
 		universal.sendEvent("init");
 		for (const plugin of Object.keys(universal.plugins)) {
 			const data = universal.plugins[plugin];
-			for (const hook of data.hooks.filter((ref) => ref.type === (universal.name === "Main" ? 1 : 0))) {
+			for (const hook of data.hooks.filter(
+				(ref) => ref.type === (universal.name === "Main" ? 1 : 0),
+			)) {
 				const scr = document.createElement("script");
 				scr.src = `/hooks/${hook.name}`;
 				document.body.appendChild(scr);

@@ -8,6 +8,41 @@ import otherHandler from "./ui/otherHandler.js";
  */
 function quickActions(e) {}
 
+
+function makeBootLog() {
+	const bootLog = document.createElement("div");
+	bootLog.id = "boot-log-div";
+	bootLog.classList.add("settings-menu")
+	bootLog.innerHTML = "<center><h1>Freedeck</h1></center><div id='boot-log'></div>";
+	document.body.appendChild(bootLog);
+}
+
+function closeBootLog() {
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			resolve(true);
+			document.querySelector("#boot-log-div").style.animation = "pull-up 0.5s";
+			setTimeout(() => {
+				document.querySelector("#boot-log-div").style.display = "none";
+			}, 499);
+		}, 250); 
+	})
+}
+
+function initialize() {
+	universal.CLU("Boot / UI", "Initializing UI");
+	universal.config.iconCountPerPage = universal.lclCfg().iconCountPerPage || 12;
+	universal.CLU("Boot / UI", "Set icon count");
+	universal.setTheme(
+		universal.config.theme ? universal.config.theme : "default",
+		false,
+	);
+	universal.CLU("Boot / UI", "Set local theme");
+	reloadSounds();
+	universal.CLU("Boot / UI", "Reloaded sounds");
+	universal.CLU("Boot / UI", "UI initialized");
+}
+
 /**
  * @name reloadProfile
  * @description Reload the current profile
@@ -198,4 +233,7 @@ export const UI = {
 	reloadProfile,
 	quickActions,
 	Pages,
+	initialize,
+	makeBootLog,
+	closeBootLog
 };

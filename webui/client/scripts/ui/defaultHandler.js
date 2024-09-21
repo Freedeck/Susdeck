@@ -60,13 +60,31 @@ export default function (snd, keyObject, raw) {
 			});
 		};
 	} else {
-		keyObject.onpointerup = (ev) => {
-			if (ev.which !== 1) return;
-			universal.send(universal.events.keypress, {
-				event: ev,
-				btn: snd,
-			});
-		};
+		if(universal.user === "Companion") {
+			keyObject.onpointerup = (ev) => {
+				if (ev.which !== 1) return;
+				universal.send(universal.events.keypress, {
+					event: ev,
+					btn: snd,
+				});
+			};
+		} else if(snd.data.onRelease === 'true') {
+			keyObject.onpointerup = (ev) => {
+				if (ev.which !== 1) return;
+				universal.send(universal.events.keypress, {
+					event: ev,
+					btn: snd,
+				});
+			};
+		} else {
+			keyObject.onpointerdown = (ev) => {
+				if (ev.which !== 1) return;
+				universal.send(universal.events.keypress, {
+					event: ev,
+					btn: snd,
+				});
+			};
+		}
 	}
 	// check if text is bigger than 2 lines (by font size)
 	if (universal.lclCfg().scroll) {

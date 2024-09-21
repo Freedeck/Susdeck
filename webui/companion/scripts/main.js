@@ -542,6 +542,8 @@ function editTile(e) {
 		const itm = interactionData.data;
 		loadData(itm);
 	}
+	document.querySelector("#orl").checked =
+		interactionData.data.onRelease === "true";
 	document.querySelector("#lp").checked =
 		interactionData.data.longPress === "true";
 	document.querySelector("#lp").style.display =
@@ -555,6 +557,21 @@ function editTile(e) {
 		document.querySelector("#editor").style.opacity = "1";
 	}, 100);
 }
+
+document.querySelector("#orl").onclick = () => {
+	const int = JSON.parse(
+		document
+			.querySelector("#editor-btn[data-interaction]")
+			.getAttribute("data-interaction"),
+	);
+	if (!int.data.onRelease) int.data.onRelease = true;
+	else int.data.onRelease = !int.data.onRelease;
+	document
+		.querySelector("#editor-btn[data-interaction]")
+		.setAttribute("data-interaction", JSON.stringify(int));
+	loadData(int.data);
+	document.querySelector("#orl").checked = int.data.onRelease;
+};
 
 document.querySelector("#lp").onclick = () => {
 	const int = JSON.parse(

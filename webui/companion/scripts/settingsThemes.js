@@ -16,7 +16,7 @@ window.st_ldt = async () => {
 		element.appendChild(title);
 		const desc = document.createElement("p");
 		desc.innerText = theme.description;
-		const apply = document.createElement("p");
+		const apply = document.createElement("i");
 		apply.innerText = "Click to apply.";
 		element.onclick = () => {
 			universal.save("theme", id);
@@ -28,9 +28,8 @@ window.st_ldt = async () => {
 		};
 		if (universal.load("theme") === id) {
 			title.innerText += " (Active)";
-			apply.disabled = true;
-			apply.style.backgroundColor = "rgba(0, 0, 0, 0.125)";
-			apply.innerText = "In Use";
+			element.style.backgroundColor = "rgba(0, 0, 0, 0.725)";
+			apply.innerText = "";
 		}
 		element.appendChild(desc);
 		element.appendChild(apply);

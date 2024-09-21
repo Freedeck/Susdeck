@@ -65,12 +65,6 @@ input {
 	display: none;
 }
 
-.themelist {
-	display: grid;
-	grid-template-columns: repeat(5, 1fr);
-	gap: 1rem;
-}
-
 .theme {
 	padding: 5px;
 	background-color: rgba(0, 0, 0, 0.5);

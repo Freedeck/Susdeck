@@ -11,9 +11,17 @@ import { UI } from "../client/scripts/ui";
 function settingsMenu() {
 	if (universal.name === "Main") {
 		document.querySelector(".settings-menu").style.display = "flex";
+		document.querySelector("#keys").style.display = "none";
+	}
+}
+function settingsMenuClose() {
+	if (universal.name === "Main") {
+		document.querySelector("#keys").style.display = "grid";
+		document.querySelector(".settings-menu").style.display = "none";
 	}
 }
 window.AppSM = settingsMenu;
+window.AppSMClose = settingsMenuClose;
 
 const universal = {
 	_socket: null,

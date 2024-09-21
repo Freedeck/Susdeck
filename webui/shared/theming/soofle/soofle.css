@@ -11,7 +11,7 @@
 	--tile-bg: hsla(354, 70%, 54%, 0.5);
 
 	--input-bg: hsla(354, 70%, 54%, 0.25);
-	--fd-input-col: rgba(255,255,255);
+	--input-color: rgba(255,255,255);
 
 	--modal-item-bg: rgba(255,255,255,0.125);
 	--modal-item-bg-size:400% 400%;

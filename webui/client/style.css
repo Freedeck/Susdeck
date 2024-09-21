@@ -26,7 +26,7 @@
      
 
     --input-bg: #FFFFFF;
-    --fd-input-col: black;
+    --input-color: black;
 
      
 
@@ -187,7 +187,7 @@ select {
     padding: 5px;
     font-size: var(--fd-font-size);
     font-family: var(--fd-font-family);
-    color: var(--fd-input-col);
+    color: var(--input-color);
     outline: none;
     width: 100%;
     margin: 5px 0;
@@ -200,7 +200,7 @@ input {
     padding: 5px;
     font-size: var(--fd-font-size);
     font-family: var(--fd-font-family);
-    color: var(--fd-input-col);
+    color: var(--input-color);
     outline: none;
 }
 

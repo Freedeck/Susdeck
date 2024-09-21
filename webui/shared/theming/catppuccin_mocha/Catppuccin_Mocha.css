@@ -8,7 +8,7 @@
 	--fd-modal-color: #cdd6f4;
 	--modal-bg:#45475a;
 	--input-bg:#313244;
-	--fd-input-col: #cdd6f4;
+	--input-color: #cdd6f4;
 	--modal-item-bg:linear-gradient(45deg, rgba(30, 30, 40, 1) 0%, rgba(49,50,68, 1) 33%, rgba(30, 30, 40, 1) 66%, rgba(49,50,68, 1) 100%);
 	--modal-item-bg-size:400% 400%;
 	--modal-item-bg-anim:backgroundAnimation 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;

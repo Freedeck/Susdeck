@@ -1,6 +1,6 @@
 :root {
 
-    --fd-template-columns: repeat(5, 2fr);
+    --tile-columns: repeat(5, 2fr);
     --fd-font-family: 'Rethink Sans', sans-serif;
     --fd-background-size: 400% 400%;
     --fd-background: black;

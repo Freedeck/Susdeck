@@ -82,7 +82,7 @@ universal.on(universal.events.default.config_changed, (e) => {
   );
   let tc = "repeat(5, 2fr)";
   if (e.tileRows) tc = tc.replace("5", e.tileRows);
-  document.documentElement.style.setProperty("--fd-template-columns", tc);
+  document.documentElement.style.setProperty("--tile-columns", tc);
   e.iconCountPerPage = Number.parseInt(e.iconCountPerPage);
   console.log(e.iconCountPerPage)
   universal.lclCfg().iconCountPerPage = e.iconCountPerPage;
@@ -109,7 +109,7 @@ document.documentElement.style.setProperty(
 
 let tc = "repeat(5, 2fr)";
 if (lcfg.tileRows) tc = tc.replace("5", lcfg.tileRows);
-document.documentElement.style.setProperty("--fd-template-columns", tc);
+document.documentElement.style.setProperty("--tile-columns", tc);
 
 window.addEventListener("touchstart", (e) => {
   touchstartX = e.changedTouches[0].screenX;

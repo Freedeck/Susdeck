@@ -3,7 +3,7 @@
 	--theme-author: "Freedeck";
 	--theme-description: "The red theme for Freedeck.";
 
-    --fd-template-columns: repeat(5, 2fr);
+    --tile-columns: repeat(5, 2fr);
     --fd-font-family: 'Rethink Sans', sans-serif;
     --fd-background-size: 400% 400%;
     --fd-background: linear-gradient(105deg, rgba(140, 0, 89, 1) 0%, rgba(140, 10, 0, 1) 33%, rgba(140, 50, 0, 1) 66%, rgba(140, 0, 89, 1) 100%);

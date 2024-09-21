@@ -1,7 +1,7 @@
 :root {
 	 
 	--text-color:#cdd6f4 ;
-	--fd-template-columns:repeat(5,2fr);
+	--tile-columns:repeat(5,2fr);
 	--fd-background-size:400% 400%;
 	--fd-background:linear-gradient(45deg, rgba(30, 30, 40, 1) 0%, rgba(49,50,68, 1) 33%, rgba(30, 30, 40, 1) 66%, rgba(49,50,68, 1) 100%);
 	--tile-bg:rgba(180, 190, 254, 0.125);

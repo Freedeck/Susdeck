@@ -1468,7 +1468,7 @@ const lcfg = universal.lclCfg();
 
 let tc = "repeat(5, 2fr)";
 if (lcfg.tileRows) tc = tc.replace("5", lcfg.tileRows);
-document.documentElement.style.setProperty("--fd-template-columns", tc);
+document.documentElement.style.setProperty("--tile-columns", tc);
 
 universal.on(universal.events.default.plugins_updated, () => {
 	const dialog = document.querySelector("dialog");

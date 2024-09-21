@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Rethink+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
 :root {
-    --fd-template-columns: repeat(5, 2fr);
+    --tile-columns: repeat(5, 2fr);
     --fd-font-family: 'Rethink Sans', sans-serif;
     --fd-background-size: 400% 400%;
     --fd-background: linear-gradient(105deg, rgba(255, 0, 89, 1) 0%, rgb(0, 179, 255) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
@@ -233,7 +233,7 @@ input:disabled {
 
 #keys {
     display: grid;
-    grid-template-columns: var(--fd-template-columns);
+    grid-template-columns: var(--tile-columns);
     gap: 2px 7px;
     width: 100vw;
     height: 100vh;

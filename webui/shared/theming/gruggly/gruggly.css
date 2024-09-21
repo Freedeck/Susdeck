@@ -1,6 +1,6 @@
 :root {
 	 
-	--fd-template-columns:repeat(5,1fr);
+	--tile-columns:repeat(5,1fr);
 	--fd-background-size:400% 400%;
 	--fd-background: #4A412A;
 	--modal-bg: #4A412A;

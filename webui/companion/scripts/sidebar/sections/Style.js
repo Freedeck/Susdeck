@@ -87,7 +87,7 @@ style.children.push(new SidebarSlider("Rows", "es-tr", " rows", "4", "15", "5", 
 	);
 	let tc = "repeat(5, 2fr)";
 	if (universal.lclCfg().tileRows) tc = tc.replace("5", e.target.value);
-	document.documentElement.style.setProperty("--fd-template-columns", tc);
+	document.documentElement.style.setProperty("--tile-columns", tc);
 }, () => {
   universal.uiSounds.playSound("fdc_slider");
 	setValue("#es-tr", 5);

@@ -1,6 +1,6 @@
 :root {
 	 
-	--fd-template-columns:repeat(5,2fr);
+	--tile-columns:repeat(5,2fr);
 	--fd-background-size: 100% 100%;
 	--tile-radius: 16px;
 	--text-color: white;

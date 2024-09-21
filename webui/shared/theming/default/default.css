@@ -1,7 +1,5 @@
 :root {
-
-    --fd-template-columns: repeat(5, 2fr);
-    /* --fd-template-columns: auto 2fr 2fr 2fr 2fr; */
+    --tile-columns: repeat(5, 2fr);
     --fd-font-family: 'Rethink Sans', sans-serif;
     --fd-background-size: 400% 400%;
     --fd-background: linear-gradient(105deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
@@ -15,18 +13,12 @@
     
     --modal-bg: #38393d;
     --modal-color: white;
-
      
     --text-color: black;
-
     --font-size: 15px;
-     
 
     --input-bg: #38393d;
     --input-color: white;
-
-     
-
 
     --marketplace-plugin-updatable: #1a1a1a;
     --marketplace-plugin-no-updates: #1a1a1a;

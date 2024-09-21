@@ -1,6 +1,6 @@
 :root {
 	 
 	--tile-radius:100%;
-	--fd-template-columns:repeat(5,2fr);
+	--tile-columns:repeat(5,2fr);
 	--fd-background-size:400% 400%;
 }

@@ -140,8 +140,7 @@ function reloadSounds() {
 			if (universal.name !== "Companion") continue;
 			let out = "";
 			out += `<h4>${universal.cleanHTML(k, false)}</h4>`;
-			out += "<p>Middle click to test.</p>"
-
+			
 			if (snd.data.longPress === "true") {
 				out += "<p>Long press to activate.</p>";
 			} else {

@@ -9,7 +9,6 @@ window.st_ldt = async () => {
 		if (!theme) {
 			theme = await universal.themeParse(id);
 		}
-		console.log(theme)
 		const element = document.createElement("div");
 		element.className = "theme";
 		const title = document.createElement("h2");

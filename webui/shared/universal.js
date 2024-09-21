@@ -269,18 +269,35 @@ const universal = {
 	},
 	themeData: {},
 	themes: themeIndex /* Theme list */,
+	_data_themes_cache: {},
+	themeParse: async (id) => {
+		const fetchable = await fetch(`/app/shared/theming/${id}.css`);
+		let theme;
+		if (fetchable.status !== 200) {
+			console.error(`Failed to fetch theme ${id}`);
+			return universal.sendToast(`Failed to fetch theme ${id}`);
+		}
+		const rawData = await fetchable.text();
+		const meta = rawData.match(/:theme-meta {([\s\S]*?)}/);
+		if (!meta) {
+			universal.sendToast(`Failed to parse theme ${id}`);
+			return console.error(`Failed to parse theme ${id}`);
+		}
+		theme = {};
+		const metaLines = meta[1].split("\n");
+		for (const line of metaLines) {
+			if (!line.trim()) continue;
+			const [key, value] = line.trim().split(": ");
+			theme[key.split("--")[1]] = value.split("\";")[0].split("\"")[1];
+		}
+		theme.raw = rawData;
+		universal._data_themes_cache[id] = theme;
+		return theme;
+	},
 	setTheme: (name, global = true) => {
-		let fu = name;
-		fetch(`/app/shared/theming/${name}/manifest.json`)
-			.then((res) => res.json())
-			.then((json) => {
-				fu = json.theme;
-			})
-			.catch(() => {
-				console.log("Theme not found, back to default.");
-				universal.setTheme("default", true);
-			});
-		fetch(`/app/shared/theming/${name}/${fu}.css`)
+		const fu = universal.themes.includes(name) ? name : "default";
+
+		fetch(`/app/shared/theming/${fu}.css`)
 			.then((res) => res.text())
 			.then((css) => {
 				if (document.getElementById("theme")) {
@@ -299,6 +316,10 @@ const universal = {
 				};
 				if (global) universal.send(universal.events.companion.set_theme, name);
 				universal.save("theme", name);
+			})
+			.catch(() => {
+				console.error("Failed to load theme.");
+				universal.sendToast("Failed to load theme.");
 			});
 	},
 	imported_scripts: [],

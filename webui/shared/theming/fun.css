@@ -1,4 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Style+Script&display=swap');
+
+:theme-meta {
+	--name: "Fun";
+	--description: "This theme is supposed to look bad. You have been warned.";
+	--author: "Freedeck";
+	--version: "1.0.0";
+}
+
 :root {
 	--font: "Style Script", cursive, "Comic Sans MS", Rubik, sans-serif;
 	

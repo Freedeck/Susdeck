@@ -1,3 +1,10 @@
+:theme-meta {
+	--name: "Blue";
+	--description: "This is a very light blue theme. Dark mode users beware!";
+	--author: "Freedeck";
+	--version: "1.0.0";
+}
+
 :root {
 	--blue-gradient: linear-gradient(45deg, rgba(0, 183, 255, 1) 0%, rgb(34, 178, 235) 33%, rgba(0, 183, 255, 1) 66%, rgb(34, 178, 235) 100%);
 	

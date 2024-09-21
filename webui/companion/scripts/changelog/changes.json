@@ -17,6 +17,8 @@
     "**Brand new animations for Connect, and a slight redesign there too!**",
     "**The Yellow theme is now called Gold!**",
     "**Added a new theme called Soofle.**",
+    "Themes now use inheritance of the default, so their size is significantly smaller.",
+    "No more external manifest for Themes, they're all in the same file now.",
     "The editor has also gotten a slight redesign!",
     "...and so many more performance & efficiency improvements."
   ],

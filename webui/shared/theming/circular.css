@@ -1,0 +1,9 @@
+:theme-meta {
+	--name: "Circular";
+	--description: "Default color scheme, circular tiles.";
+	--author: "Freedeck";
+	--version: "1.0.0";
+}
+:root {
+	--tile-radius:100%;
+}

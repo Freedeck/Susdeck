@@ -1,3 +1,10 @@
+:theme-meta {
+	--name: "Gold";
+	--description: "It's like a golden Freedeck! Except it is gold!";
+	--author: "Freedeck";
+	--version: "1.0.0";
+}
+
 :root {
 	--main-bg:linear-gradient(45deg, rgba(255, 215, 59, 1) 0%, rgba(209, 173, 33, 1) 33%, rgba(255, 215, 59, 1) 66%, rgba(209, 173, 33, 1) 100%);
 	

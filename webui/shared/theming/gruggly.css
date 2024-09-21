@@ -1,3 +1,10 @@
+:theme-meta {
+	--name: "Gruggly";
+	--description: "The most Gruggly-est theme for Freedeck. (Pantone 448c)";
+	--author: "Freedeck";
+	--version: "1.0.0";
+}
+
 :root {
 	--main-bg: #4A412A;
 	

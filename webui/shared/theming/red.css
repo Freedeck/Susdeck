@@ -1,3 +1,10 @@
+:theme-meta {
+	--name: "Red";
+	--description: "Make your Freedeck. red!";
+	--author: "Freedeck";
+	--version: "1.0.0";
+}
+
 :root {
     --red-gradient: linear-gradient(105deg, rgba(140, 0, 89, 1) 0%, rgba(140, 10, 0, 1) 33%, rgba(140, 50, 0, 1) 66%, rgba(140, 0, 89, 1) 100%);
 

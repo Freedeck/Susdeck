@@ -1,3 +1,10 @@
+:theme-meta {
+	--name: "Soofle";
+	--description: "Inspired by RealFakeSoof.";
+	--author: "Freedeck";
+	--version: "1.0.0";
+}
+
 :root {
 	--main-bg: url(https://i.imgur.com/Zs7EmHy.gif);
 	--main-bg-size: 100% 100%;

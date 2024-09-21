@@ -1,3 +1,10 @@
+:theme-meta {
+	--name: "Green";
+	--description: "Grass? Never heard of it. This theme can be bright!";
+	--author: "Freedeck";
+	--version: "1.0.0";
+}
+
 :root {
 	--green-gradient: linear-gradient(45deg, rgba(51,255,119, 1) 0%, rgba(41,250,0, 1) 33%, rgba(51,255,119, 1) 66%, rgba(41,250,0, 1) 100%);
 	--main-bg: var(--green-gradient);

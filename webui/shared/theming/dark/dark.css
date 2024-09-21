@@ -2,7 +2,7 @@
 	--fd-icon-count:11;
 	--fd-template-columns:repeat(5,2fr);
 	--fd-background-size:400% 400%;
-	--fd-txt-col: white;
+	--text-color: white;
 	--fd-background: #000000f2;
 	--modal-bg:rgba(15,15,15);
 	--fd-modal-color:white;

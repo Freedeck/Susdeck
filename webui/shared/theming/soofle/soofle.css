@@ -3,7 +3,7 @@
 	--fd-template-columns:repeat(5,2fr);
 	--fd-background-size: 100% 100%;
 	--tile-radius: 16px;
-	--fd-txt-col: white;
+	--text-color: white;
 	--fd-background: url(https://i.imgur.com/Zs7EmHy.gif);
 	--modal-bg: hsla(354, 70%, 54%, 1);
 	--fd-modal-color:white;

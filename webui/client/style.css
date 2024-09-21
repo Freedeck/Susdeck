@@ -20,7 +20,7 @@
 
     --app-tile-container-width: 100vw;
      
-    --fd-txt-col: black;
+    --text-color: black;
 
     --fd-font-size: 15px;
      
@@ -117,7 +117,7 @@ body {
     background-size: var(--fd-background-size);
     animation: error-bg 5s linear infinite;
     font-family: var(--fd-font-family);
-    color: var(--fd-txt-col);
+    color: var(--text-color);
     height: 100vh;
     width: 100vw;
     padding: 0;
@@ -220,7 +220,7 @@ input:disabled {
     padding: 5px;
     font-size: var(--fd-font-size);
     font-family: var(--fd-font-family);
-    color: var(--fd-txt-col);
+    color: var(--text-color);
     outline: none;
     width: 100%;
     margin: 5px 0;

@@ -1,8 +1,8 @@
 :root {
 	 
 	--tile-columns:repeat(5,1fr);
-	--fd-background-size:400% 400%;
-	--fd-background: #4A412A;
+	--main-bg-size:400% 400%;
+	--main-bg: #4A412A;
 	--modal-bg: #4A412A;
 	--modal-color:white;
 	--input-bg: rgba(255, 215, 59, 0.25);

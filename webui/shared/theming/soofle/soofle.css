@@ -1,10 +1,10 @@
 :root {
 	 
 	--tile-columns:repeat(5,2fr);
-	--fd-background-size: 100% 100%;
+	--main-bg-size: 100% 100%;
 	--tile-radius: 16px;
 	--text-color: white;
-	--fd-background: url(https://i.imgur.com/Zs7EmHy.gif);
+	--main-bg: url(https://i.imgur.com/Zs7EmHy.gif);
 	--modal-bg: hsla(354, 70%, 54%, 1);
 	--modal-color:white;
 	--tile-border:rgba(255,255,255, 0.75);
@@ -40,7 +40,7 @@ body::before {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: var(--fd-background);
-	background-size: var(--fd-background-size);
+	background: var(--main-bg);
+	background-size: var(--main-bg-size);
 	z-index: -1;
 }

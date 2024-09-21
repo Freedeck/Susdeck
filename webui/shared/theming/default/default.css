@@ -1,8 +1,8 @@
 :root {
     --tile-columns: repeat(5, 2fr);
     --font: 'Rethink Sans', sans-serif;
-    --fd-background-size: 400% 400%;
-    --fd-background: linear-gradient(105deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
+    --main-bg-size: 400% 400%;
+    --main-bg: linear-gradient(105deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
     
     --button-width: 6rem;
     --button-height: 6rem;

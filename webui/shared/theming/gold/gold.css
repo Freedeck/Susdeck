@@ -1,8 +1,8 @@
 :root {
 	 
 	--tile-columns:repeat(5,1fr);
-	--fd-background-size:400% 400%;
-	--fd-background:linear-gradient(45deg, rgba(255, 215, 59, 1) 0%, rgba(209, 173, 33, 1) 33%, rgba(255, 215, 59, 1) 66%, rgba(209, 173, 33, 1) 100%);
+	--main-bg-size:400% 400%;
+	--main-bg:linear-gradient(45deg, rgba(255, 215, 59, 1) 0%, rgba(209, 173, 33, 1) 33%, rgba(255, 215, 59, 1) 66%, rgba(209, 173, 33, 1) 100%);
 	--modal-bg:rgba(255, 190, 106, 1);
 	--modal-color:black;
 

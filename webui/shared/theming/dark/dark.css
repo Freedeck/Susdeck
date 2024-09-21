@@ -1,9 +1,9 @@
 :root {
 	 
 	--tile-columns:repeat(5,2fr);
-	--fd-background-size:400% 400%;
+	--main-bg-size:400% 400%;
 	--text-color: white;
-	--fd-background: #000000f2;
+	--main-bg: #000000f2;
 	--modal-bg:rgba(15,15,15);
 	--modal-color:white;
 	--tile-border:rgba(255,255,255, 0.25);

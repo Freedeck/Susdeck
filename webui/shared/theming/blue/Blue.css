@@ -1,5 +1,5 @@
 :root {
-	--fd-icon-count:11;
+	 
 	--fd-template-columns:repeat(5,2fr);
 	--fd-background:linear-gradient(45deg, rgba(0, 183, 255, 1) 0%, rgb(34, 178, 235) 33%, rgba(0, 183, 255, 1) 66%, rgb(34, 178, 235) 100%);
 	--fd-background-size:400% 400%;

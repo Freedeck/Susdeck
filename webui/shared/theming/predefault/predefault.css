@@ -1,8 +1,4 @@
 :root {
-
-    --tile-columns: repeat(5, 2fr);
-    --font: 'Rethink Sans', sans-serif;
-    --main-bg-size: 400% 400%;
     --main-bg: linear-gradient(105deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
     
     --tile-bg: rgba(0, 0, 0, 0.5);
@@ -21,10 +17,6 @@
      
 
     --input-bg: #FFFFFF;
-
-     
-
-    --fd-studio-color: #45475a;
 
     --marketplace-plugin-updatable: #1a1a1a;
     --marketplace-plugin-no-updates: #1a1a1a;

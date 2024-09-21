@@ -1,12 +1,13 @@
 :root {
-	 
-	--tile-columns:repeat(5,2fr);
+	--main-bg: url(https://i.imgur.com/Zs7EmHy.gif);
 	--main-bg-size: 100% 100%;
+	
 	--tile-radius: 16px;
 	--text-color: white;
-	--main-bg: url(https://i.imgur.com/Zs7EmHy.gif);
+
 	--modal-bg: hsla(354, 70%, 54%, 1);
 	--modal-color:white;
+
 	--tile-border:rgba(255,255,255, 0.75);
 	--tile-bg: hsla(354, 70%, 54%, 0.5);
 
@@ -20,12 +21,12 @@
 
 	--companion-left-sidebar-bg: rgba(0,0,0,0.4);
 	--companion-right-sidebar-bg: hsla(354, 70%, 54%, 0.25);
+
 	--companion-left-sidebar-color:white;
 	--companion-right-sidebar-color:white;
 
 	--companion-sidebar-item-bg: hsla(354, 70%, 54%, 0.25);
 	--companion-sidebar-item-color:white;
-
 }
 
 body {

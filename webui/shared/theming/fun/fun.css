@@ -1,10 +1,7 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Style+Script&display=swap');
 :root {
-	--fd-icon-count:3;
-	--tile-columns:repeat(6,3fr);
-	--main-bg-size:400% 100%;
 	--font: "Style Script", cursive, "Comic Sans MS", Rubik, sans-serif;
+	
 	--main-bg:linear-gradient(45deg, rgba(245, 75, 66, 1) 0%, rgba(245, 162, 29, 1) 33%, rgba(195, 245, 29, 1) 66%, rgba(0, 179, 255, 1) 100%);
 
 	--companion-right-sidebar-bg: blue;
@@ -16,5 +13,4 @@
 
 	--modal-bg: rgba(0,0,255,0.84);
 	--modal-color: green;
-
 }

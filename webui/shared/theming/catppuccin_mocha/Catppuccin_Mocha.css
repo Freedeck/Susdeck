@@ -1,31 +1,27 @@
 :root {
-	 
-	--text-color:#cdd6f4 ;
-	--tile-columns:repeat(5,2fr);
-	--main-bg-size:400% 400%;
-	--main-bg:linear-gradient(45deg, rgba(30, 30, 40, 1) 0%, rgba(49,50,68, 1) 33%, rgba(30, 30, 40, 1) 66%, rgba(49,50,68, 1) 100%);
-	--tile-bg:rgba(180, 190, 254, 0.125);
+	--main-bg: linear-gradient(45deg, rgba(30, 30, 40, 1) 0%, rgba(49, 50, 68, 1) 33%, rgba(30, 30, 40, 1) 66%, rgba(49, 50, 68, 1) 100%);
+	
+	--tile-bg: rgba(180, 190, 254, 0.125);
+	
+	--text-color: #cdd6f4;
+	
 	--modal-color: #cdd6f4;
-	--modal-bg:#45475a;
-	--input-bg:#313244;
-	--input-color: #cdd6f4;
-	--modal-item-bg:linear-gradient(45deg, rgba(30, 30, 40, 1) 0%, rgba(49,50,68, 1) 33%, rgba(30, 30, 40, 1) 66%, rgba(49,50,68, 1) 100%);
-	--modal-item-bg-size:400% 400%;
-	--modal-item-bg-anim:backgroundAnimation 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
-	--modal-item-text:#cdd6f4;
-	--companion-left-sidebar-bg:rgba(30, 30, 40, 0.5);
-	--companion-right-sidebar-bg:rgba(30, 30, 40, 0.5);
-	--companion-left-sidebar-color:#cdd6f4;
-	--companion-right-sidebar-color:#cdd6f4;
-	--companion-sidebar-item-bg:#45475a;
-	--companion-sidebar-item-color:#cdd6f4;
-}
+	--modal-bg: #45475a;
 
-@keyframes backgroundAnimation {
-	0%, 100% {
-		background-position: 0 0;
-	}
-	50% {
-		background-position: 100% 100%;
-	}
+	--input-bg: #313244;
+	--input-color: #cdd6f4;
+
+	--modal-item-bg: linear-gradient(45deg, rgba(30, 30, 40, 1) 0%, rgba(49, 50, 68, 1) 33%, rgba(30, 30, 40, 1) 66%, rgba(49, 50, 68, 1) 100%);
+	--modal-item-bg-size: 400% 400%;
+	--modal-item-bg-anim: backgroundAnimation 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+	--modal-item-text: #cdd6f4;
+
+	--companion-left-sidebar-bg: rgba(30, 30, 40, 0.5);
+	--companion-right-sidebar-bg: rgba(30, 30, 40, 0.5);
+
+	--companion-left-sidebar-color: #cdd6f4;
+	--companion-right-sidebar-color: #cdd6f4;
+
+	--companion-sidebar-item-bg: #45475a;
+	--companion-sidebar-item-color: #cdd6f4;
 }

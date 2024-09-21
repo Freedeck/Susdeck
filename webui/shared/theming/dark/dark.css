@@ -1,11 +1,11 @@
 :root {
-	 
-	--tile-columns:repeat(5,2fr);
-	--main-bg-size:400% 400%;
-	--text-color: white;
 	--main-bg: #000000f2;
+	
+	--text-color: white;
+
 	--modal-bg:rgba(15,15,15);
 	--modal-color:white;
+
 	--tile-border:rgba(255,255,255, 0.25);
 	--tile-bg:rgba(255,255,255, 0.025);
 
@@ -19,59 +19,10 @@
 
 	--companion-left-sidebar-bg:rgba(0,0,0,0.5);
 	--companion-right-sidebar-bg:rgba(0,0,0,0.5);
+
 	--companion-left-sidebar-color:white;
 	--companion-right-sidebar-color:white;
 
 	--companion-sidebar-item-bg:rgba(0,0,0,0.5);
 	--companion-sidebar-item-color:white;
-
 }
-
-root {
-	--app-bg: url(https://i.imgur.com/Zs7EmHy.gif);
-	--app-blur: 6px;
-	--app-margin: 24px;
-	--app-radius: 8px; /*-*/
-	
-	--accent-hue: 354;
-	--accent-saturation: 70%;
-	--accent-lightness: 54%;
-	--accent-opacity: 1;
-	--accent-text-color: #000; /*-*/
-	
-	--sidebar-color: rgba(0,0,0,0.4);
-	--main-content-color: rgba(0,0,0,0.2); /*-*/
-	
-	--message-color: rgba(0,0,0,0.4);
-	--message-radius: 8px;
-	--message-padding-top: 8px;
-	--message-padding-side: 8px; /*-*/
-	
-	--reply-hue: 226;
-	--reply-saturation: 77.4%;
-	--reply-lightness: 61.8%;
-	--reply-opacity: 1; /*-*/
-	
-	--textarea-color: 255,255,255;
-	--textarea-alpha: 0.1;
-	--textarea-alpha-focus: 0.15;
-	--textarea-text-color: #fff;
-	--textarea-radius: 22px;  /*-*/
-	
-	--card-color: rgba(0,0,0,0.4);
-	--card-color-hover: rgba(0,0,0,0.5);
-	--card-color-select: rgba(0,0,0,0.7); /*-*/
-	
-	--button-height: 32px;
-	--button-padding: 0 16px;
-	--button-action-color: #000;
-	--button-radius: 16px; /*-*/
-	
-	--interactive-normal: #aaa;
-	--interactive-hover: #ddd;
-	--interactive-active: #fff;
-	--interactive-muted: #777; /*-*/
-	
-	--background-modifier-hover: rgba(255,255,255,0.075);
-	--background-modifier-selected: rgba(255,255,255,0.125);
-	}

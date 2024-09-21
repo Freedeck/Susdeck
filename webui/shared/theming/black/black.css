@@ -1,55 +1,18 @@
 :root {
-
-    --tile-columns: repeat(5, 2fr);
-    --font: 'Rethink Sans', sans-serif;
-    --main-bg-size: 400% 400%;
     --main-bg: black;
     
     --tile-bg: rgba(0, 0, 0, 0.5);
     --tile-border: 1px solid rgba(255, 255, 255, 0.5);
-    --button-width: 6rem;
-    --button-height: 6rem;
-    
-    --tile-radius: 1.5rem;
-    
-    
      
     --text-color: white;
     
-    --font-size: 15px;
-     
-    
-    --modal-bg: #1a1a1a;
+    --modal-bg: #080808;
     --modal-color: white;
+    
     --input-bg: #1a1a1a;
-
-     
-
-    --marketplace-plugin-updatable: #1a1a1a;
-    --marketplace-plugin-no-updates: #1a1a1a;
-    --marketplace-plugin-installed: #1a1a1a;
 
     --modal-item-bg: linear-gradient(105deg,rgba(0, 0, 0, 1) 0%, rgba(0, 25, 25, 1) 50%, rgba(0, 0, 0, 1) 100%);
     --modal-item-bg-size: 400% 400%;
     --modal-item-bg-anim: backgroundAnimation 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
     --modal-item-text: white;
-
-    --companion-left-sidebar-bg: rgba(0,0,0,0.5);
-    --companion-right-sidebar-bg: rgba(0,0,0,0.5);
-
-    --companion-left-sidebar-color: white;
-    --companion-right-sidebar-color: white;
-
-    --companion-sidebar-item-bg: #080808;
-    --companion-sidebar-item-color: white;
-
-}
-
-@keyframes backgroundAnimation {
-    0%, 100% {
-        background-position: 0 0;
-    }
-    50% {
-        background-position: 100% 100%;
-    }
 }

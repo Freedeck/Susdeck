@@ -1,16 +1,14 @@
 :root {
+	--blue-gradient: linear-gradient(45deg, rgba(0, 183, 255, 1) 0%, rgb(34, 178, 235) 33%, rgba(0, 183, 255, 1) 66%, rgb(34, 178, 235) 100%);
+	
+	--main-bg: var(--blue-gradient);
+	--modal-bg: rgba(33, 192, 255, 1);
+	--modal-color: black;
 	 
-	--tile-columns:repeat(5,2fr);
-	--main-bg:linear-gradient(45deg, rgba(0, 183, 255, 1) 0%, rgb(34, 178, 235) 33%, rgba(0, 183, 255, 1) 66%, rgb(34, 178, 235) 100%);
-	--main-bg-size:400% 400%;
-	/* --font:Roboto, sans-serif; */
-	--modal-bg:rgba(33, 192, 255, 1);
-	--modal-color:black;
-
-	--modal-item-bg:linear-gradient(45deg, rgba(0, 183, 255, 1) 0%, rgb(34, 178, 235) 33%, rgba(0, 183, 255, 1) 66%, rgb(34, 178, 235) 100%);
-
-	--input-bg:rgba(33, 192, 255, 1);
+	--modal-item-bg: var(--blue-gradient);
 	--modal-item-text: black;
+
+	--input-bg: rgba(33, 192, 255, 1);
 
 	--companion-left-sidebar-bg: rgb(31, 139, 182);
 	--companion-right-sidebar-bg: rgb(25, 152, 202);
@@ -20,5 +18,4 @@
 
 	--companion-sidebar-item-bg: rgba(30, 111, 143, 0.37);
 	--companion-sidebar-item-color: white;
-
 }

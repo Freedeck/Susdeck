@@ -1,0 +1,7 @@
+{
+	"name": "Default",
+	"author": "Freedeck",
+	"version": "1.0",
+	"description": "The new default theme of Freedeck",
+	"theme": "default.css"
+}

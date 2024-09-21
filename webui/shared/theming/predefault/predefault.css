@@ -5,13 +5,13 @@
     --fd-background-size: 400% 400%;
     --fd-background: linear-gradient(105deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
     --fd-rotation-degrees: 2deg;
-    --fd-btn-background: rgba(0, 0, 0, 0.5);
-    --fd-btn-w: 6rem;
-    --fd-btn-h: 6rem;
+    --tile-bg: rgba(0, 0, 0, 0.5);
+    --button-width: 6rem;
+    --button-height: 6rem;
     
-    --fd-btn-rad: 1rem;
+    --tile-radius: 1.5rem;
     
-    --fd-modal-bg: #1e1e1e;
+    --modal-bg: #1e1e1e;
     --fd-modal-color: white;
 
     --fd-col: white;

@@ -9,12 +9,12 @@
 
 	--companion-right-sidebar-bg: blue;
 
-	--fd-btn-background: rgba(255,0,0,0.6675);
-	--fd-btn-border: 5px solid #f8f9fa;
+	--tile-bg: rgba(255,0,0,0.6675);
+	--tile-border: 5px solid #f8f9fa;
 
 	--fdm-background:linear-gradient(45deg, rgba(245, 75, 66, 1) 0%, rgba(245, 162, 29, 1) 33%, rgba(195, 245, 29, 1) 66%, rgba(0, 179, 255, 1) 100%);
 
-	--fd-modal-bg: rgba(0,0,255,0.84);
+	--modal-bg: rgba(0,0,255,0.84);
 	--fd-modal-color: green;
 
 }

@@ -73,11 +73,11 @@ universal.on(universal.events.default.config_changed, (e) => {
     `${e["font-size"]}px`,
   );
   document.documentElement.style.setProperty(
-    "--fd-tile-w",
+    "--tile-width",
     `${e.buttonSize}rem`,
   );
   document.documentElement.style.setProperty(
-    "--fd-tile-h",
+    "--tile-height",
     `${e.buttonSize}rem`,
   );
   let tc = "repeat(5, 2fr)";
@@ -99,11 +99,11 @@ document.documentElement.style.setProperty(
   `${lcfg["font-size"]}px`,
 );
 document.documentElement.style.setProperty(
-  "--fd-tile-w",
+  "--tile-width",
   `${lcfg.buttonSize}rem`,
 );
 document.documentElement.style.setProperty(
-  "--fd-tile-h",
+  "--tile-height",
   `${lcfg.buttonSize}rem`,
 );
 

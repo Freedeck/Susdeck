@@ -11,7 +11,7 @@ window.st_ldt = () => {
 		const title = document.createElement("h2");
 		title.innerText = theme.name;
 		element.appendChild(title);
-		const desc = document.createElement("h3");
+		const desc = document.createElement("p");
 		desc.innerText = theme.description;
 		const apply = document.createElement("button");
 		apply.innerText = "Apply";

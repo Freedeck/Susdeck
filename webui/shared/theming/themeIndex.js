@@ -7,6 +7,10 @@ export default {
 		name: "Soofle",
 		description: "Inspired by RealFakeSoof.",
 	},
+	johnamerica: {
+		name: "John America",
+		description: "Inspired by John America. Warning: True patriotism.",
+	},
 	predefault: {
 		name: "Predefault",
 		description: "Back to ye olde days!",

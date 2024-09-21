@@ -6,19 +6,19 @@
     --fd-background-size: 400% 400%;
     --fd-background: linear-gradient(105deg, rgba(255, 0, 89, 1) 0%, rgb(0, 179, 255) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
     --fd-rotation-degrees: 2deg;
-    --fd-btn-background: rgba(0, 0, 0, 0.5);
-    --fd-btn-border: 2px solid #f8f9fa;
+    --tile-bg: rgba(0, 0, 0, 0.5);
+    --tile-border: 2px solid #f8f9fa;
     --fd-modal-color: rgb(15, 140, 194);
-    --fd-btn-w: 6rem;
-    --fd-btn-h: 6rem;
+    --button-width: 6rem;
+    --button-height: 6rem;
 
-    --fd-tile-w: var(--fd-btn-w);
-    --fd-tile-h: var(--fd-btn-h);
+    --tile-width: var(--button-width);
+    --tile-height: var(--button-height);
 
-    --fd-btn-rad: 1rem;
+    --tile-radius: 1.5rem;
 
 
-    --ckw-width: 100vw;
+    --app-tile-container-width: 100vw;
     --fd-col: white;
     --fd-txt-col: black;
 
@@ -30,7 +30,7 @@
 
     --fd-logo-size: 75px;
 
-    --fd-modal-bg: #45475a;
+    --modal-bg: #45475a;
 
     --fdc-plugin-updatable: #1a1a1a;
     --fdc-plugin-uptodate: #1a1a1a;
@@ -71,7 +71,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-	background-color: var(--fd-modal-bg);
+	background: var(--modal-bg);
 	color: var(--fd-modal-color);
     padding: 1rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -241,7 +241,7 @@ input:disabled {
 }
 
 #client-key-container {
-    width: var(--ckw-width);
+    width: var(--app-tile-container-width);
     height: 100vh; 
     display: flex;
     flex-direction: column;
@@ -256,20 +256,20 @@ input:disabled {
 }
 
 #keys button {
-    width: var(--fd-tile-w);
-    height: var(--fd-tile-h);
+    width: var(--tile-width);
+    height: var(--tile-height);
 }
 
 .button, button {
-    width: var(--fd-btn-w);
-    height: var(--fd-btn-h);
+    width: var(--button-width);
+    height: var(--button-height);
     overflow: hidden;
-    min-width: var(--fd-btn-w);
-    min-height: var(--fd-btn-h);
-    border-radius: var(--fd-btn-rad);
-    background-color: var(--fd-btn-background);
+    min-width: var(--button-width);
+    min-height: var(--button-height);
+    border-radius: var(--tile-radius);
+    background: var(--tile-bg);
     text-align: center;
-    border: var(--fd-btn-border); /* Add a border */
+    border: var(--tile-border); /* Add a border */
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     color: white;
@@ -312,7 +312,7 @@ input:disabled {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-	background-color: var(--fd-modal-bg);
+	background: var(--modal-bg);
 	color: var(--fd-modal-color);
     padding: 1rem;
     /* border-radius: 1rem; */
@@ -373,12 +373,12 @@ input:disabled {
 }
 
 .slider-container {
-    min-width: var(--fd-btn-w);
-    min-height: var(--fd-btn-h);
+    min-width: var(--button-width);
+    min-height: var(--button-height);
     width: 100%;
     height: 100%;
-    background-color: var(--fd-btn-background);
-    border-radius: var(--fd-btn-rad);
+    background: var(--tile-bg);
+    border-radius: var(--tile-radius);
     position: relative;
     display: flex;
     align-items: center;
@@ -446,10 +446,10 @@ input:disabled {
 
 #keys .button {
     position: relative;
-    min-height: var(--fd-tile-h);
-    min-width: var(--fd-tile-w);
-    width: var(--fd-tile-w);
-    height: var(--fd-tile-h);
+    min-height: var(--tile-height);
+    min-width: var(--tile-width);
+    width: var(--tile-width);
+    height: var(--tile-height);
 }
 
 .plugin-missing {

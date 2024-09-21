@@ -2,13 +2,13 @@
 	--fd-icon-count:11;
 	--fd-template-columns:repeat(5,2fr);
 	--fd-background-size: 100% 100%;
-	--fd-btn-rad: 16px;
+	--tile-radius: 16px;
 	--fd-txt-col: white;
 	--fd-background: url(https://i.imgur.com/Zs7EmHy.gif);
-	--fd-modal-bg: hsla(354, 70%, 54%, 1);
+	--modal-bg: hsla(354, 70%, 54%, 1);
 	--fd-modal-color:white;
-	--fd-btn-border:rgba(255,255,255, 0.75);
-	--fd-btn-background: hsla(354, 70%, 54%, 0.5);
+	--tile-border:rgba(255,255,255, 0.75);
+	--tile-bg: hsla(354, 70%, 54%, 0.5);
 
 	--fd-input-bg: hsla(354, 70%, 54%, 0.25);
 	--fd-input-col: rgba(255,255,255);

@@ -3,13 +3,13 @@
 	--fd-template-columns:repeat(5,1fr);
 	--fd-background-size:400% 400%;
 	--fd-background: #4A412A;
-	--fd-modal-bg: #4A412A;
+	--modal-bg: #4A412A;
 	--fd-modal-color:white;
 	--fd-input-bg: rgba(255, 215, 59, 0.25);
 	--fdm-background: #5c4f30;
 
-	--fd-btn-background:#4A412A;
-	--fd-btn-border: 2px solid rgba(0,0,0,0.125);
+	--tile-bg:#4A412A;
+	--tile-border: 2px solid rgba(0,0,0,0.125);
 
 
 	--companion-left-sidebar-bg: #5c5137;

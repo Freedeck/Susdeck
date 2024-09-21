@@ -1211,26 +1211,6 @@ function showPick(title, listContent, callback, extraM = null, closable=true) {
 		modalList.appendChild(modalItem);
 	}
 
-	// const itemContainer = document.createElement("div");
-	// itemContainer.classList.add("modalList_btns");
-
-	// modalContent.appendChild(itemContainer);
-	// for (const item of listContent) {
-	// 	const modalItem = document.createElement("button");
-	// 	modalItem.className = "modalItem";
-	// 	modalItem.setAttribute("value", JSON.stringify(item));
-	// 	modalItem.innerText = item.name;
-	// 	modalItem.onclick = () => {
-	// 		selectedItem = modalItem;
-	// 		universal.uiSounds.playSound("step_1");
-	// 		for (const i of document.querySelectorAll(".modalItem")) {
-	// 			i.style.backgroundColor = "unset";
-	// 		}
-	// 		modalItem.style.backgroundColor = "var(--fd-btn-background)";
-	// 	};
-	// 	itemContainer.appendChild(modalItem);
-	// }
-
 	const modalButton = document.createElement("button");
 	modalButton.innerText = "Save";
 	modalButton.onclick = () => {

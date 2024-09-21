@@ -4,10 +4,10 @@
 	--fd-background-size:400% 400%;
 	--fd-txt-col: white;
 	--fd-background: #000000f2;
-	--fd-modal-bg:rgba(15,15,15);
+	--modal-bg:rgba(15,15,15);
 	--fd-modal-color:white;
-	--fdd-btn-border:rgba(255,255,255, 0.25);
-	--fdd-btn-background:rgba(255,255,255, 0.025);
+	--tile-border:rgba(255,255,255, 0.25);
+	--tile-bg:rgba(255,255,255, 0.025);
 
 	--fd-input-bg:rgba(255,255,255, 0.25);
 	--fd-input-col: rgba(255,255,255);
@@ -25,12 +25,6 @@
 	--companion-sidebar-item-bg:rgba(0,0,0,0.5);
 	--companion-sidebar-item-color:white;
 
-}
-
-#keys .button {
-	background-color: var(--fdd-btn-background);
-	border: 1px solid var(--fdd-btn-border);
-	color: var(--fd-txt-col);
 }
 
 root {

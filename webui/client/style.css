@@ -305,9 +305,9 @@ input:disabled {
     align-items: center;
     margin: 0;
     position: absolute;
-    top: 50%;
+    top: calc(50% + env(safe-area-inset-top));
     left: calc(50% + env(safe-area-inset-left));
-    transform: translate(calc(-50% - env(safe-area-inset-left)), -50%);
+    transform: translate(-50%, -50%);
     padding: 0;
 }
 

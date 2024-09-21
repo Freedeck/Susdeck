@@ -15,7 +15,7 @@
 
 	--fdm-background: rgba(255,255,255,0.125);
 	--fdm-background-size:400% 400%;
-	--fdm-bg-anim:abc 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+	--fdm-bg-anim:backgroundAnimation 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
 	--fdm-text:white;
 
 	--companion-left-sidebar-bg: rgba(0,0,0,0.4);

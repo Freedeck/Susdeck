@@ -31,7 +31,7 @@
 
     --fdm-background: linear-gradient(105deg,rgba(0, 0, 0, 1) 0%, rgba(0, 25, 25, 1) 50%, rgba(0, 0, 0, 1) 100%);
     --fdm-background-size: 400% 400%;
-    --fdm-bg-anim: abc 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+    --fdm-bg-anim: backgroundAnimation 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
     --fdm-text: white;
 
     --companion-left-sidebar-bg: rgba(0,0,0,0.5);
@@ -45,7 +45,7 @@
 
 }
 
-@keyframes abc {
+@keyframes backgroundAnimation {
     0%, 100% {
         background-position: 0 0;
     }

@@ -37,7 +37,7 @@ input {
 	width: 50%;
 	height: 50%;
 	background: var(--modal-bg);
-	color: var(--fd-modal-color);
+	color: var(--modal-color);
 	border-radius: 0.5rem;
 	padding: 1.5rem;
 	z-index: 1000;
@@ -48,7 +48,7 @@ input {
 
 #login-div, dialog > div:not(#editor-div) {
 	background: var(--modal-bg);
-	color: var(--fd-modal-color);
+	color: var(--modal-color);
 	min-width: 400px;
 	min-height: 300px;
 	position: absolute;
@@ -259,7 +259,7 @@ a:hover {
 	min-height: 70vh;
 	transform: translate(-50%, -50%);
 	background: var(--modal-bg);
-	color: var(--fd-modal-color);
+	color: var(--modal-color);
 	padding: 1.75rem;
 	border-radius: 2rem;
 	z-index: 1000;
@@ -478,7 +478,7 @@ a:hover {
 
 .modalContent {
 	background: var(--modal-bg);
-	color: var(--fd-modal-color);
+	color: var(--modal-color);
 	padding: 20px;
 	border-radius: 5px;
 	width: 50vw;
@@ -605,7 +605,7 @@ a:hover {
 	width: 100%;
 	height: 100%;
 	background: var(--modal-bg);
-	color: var(--fd-modal-color);
+	color: var(--modal-color);
 	scrollbar-width: none;  /* Firefox */
 	overflow-y: scroll;
 	overflow-x: hidden;
@@ -622,7 +622,7 @@ a:hover {
 	background: none;
 	background-image: none;
 	width:100%;
-	color:var(--fd-modal-color);
+	color:var(--modal-color);
 	padding-left: 1.25rem;
 }
 #ctxl-view-cont html body::-webkit-scrollbar {
@@ -711,5 +711,5 @@ audio::-webkit-media-controls-panel {
 }
 
 audio::-webkit-media-controls-play-button {
-	color: var(--fd-modal-color);
+	color: var(--modal-color);
 }

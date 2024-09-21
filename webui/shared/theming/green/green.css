@@ -4,7 +4,7 @@
 	--fd-background-size:400% 400%;
 	--fd-background:linear-gradient(45deg, rgba(51,255,119, 1) 0%, rgba(41,250,0, 1) 33%, rgba(51,255,119, 1) 66%, rgba(41,250,0, 1) 100%);
 	--modal-bg: rgba(51,255,119, 1);
-	--fd-modal-color:black;
+	--modal-color:black;
 
 	--modal-item-bg:linear-gradient(45deg, rgba(51,255,119, 1) 0%, rgba(41,250,0, 1) 33%, rgba(51,255,119, 1) 66%, rgba(41,250,0, 1) 100%);
 	--input-bg:rgba(51,255,119, 0.25);

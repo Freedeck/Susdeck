@@ -5,7 +5,7 @@
 	--fd-background-size:400% 400%;
 	/* --fd-font-family:Roboto, sans-serif; */
 	--modal-bg:rgba(33, 192, 255, 1);
-	--fd-modal-color:black;
+	--modal-color:black;
 
 	--modal-item-bg:linear-gradient(45deg, rgba(0, 183, 255, 1) 0%, rgb(34, 178, 235) 33%, rgba(0, 183, 255, 1) 66%, rgb(34, 178, 235) 100%);
 

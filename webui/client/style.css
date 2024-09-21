@@ -8,7 +8,7 @@
     
     --tile-bg: rgba(0, 0, 0, 0.5);
     --tile-border: 2px solid #f8f9fa;
-    --fd-modal-color: rgb(15, 140, 194);
+    --modal-color: rgb(15, 140, 194);
     --button-width: 6rem;
     --button-height: 6rem;
 
@@ -72,7 +72,7 @@
     justify-content: center;
     align-items: center;
 	background: var(--modal-bg);
-	color: var(--fd-modal-color);
+	color: var(--modal-color);
     padding: 1rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     margin: 0 auto;
@@ -313,7 +313,7 @@ input:disabled {
     justify-content: center;
     align-items: center;
 	background: var(--modal-bg);
-	color: var(--fd-modal-color);
+	color: var(--modal-color);
     padding: 1rem;
     /* border-radius: 1rem; */
     border: 0;

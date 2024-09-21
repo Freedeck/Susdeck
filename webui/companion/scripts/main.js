@@ -1467,7 +1467,7 @@ const setToLocalCfg = (key, value) => {
 const lcfg = universal.lclCfg();
 
 let tc = "repeat(5, 2fr)";
-if (lcfg.tileRows) tc = tc.replace("5", lcfg.tileRows);
+if (lcfg.tileCols) tc = tc.replace("5", lcfg.tileCols);
 document.documentElement.style.setProperty("--tile-columns", tc);
 
 universal.on(universal.events.default.plugins_updated, () => {

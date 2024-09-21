@@ -26,44 +26,46 @@
 </div>
 
 <body>
-    <div id="sidebar">
-        <ul></ul>
-    </div>
-
-    <div class="settings-menu">
-        <br>
-        <h1>On-Deck</h1>
-        <details>
-            <summary>Themes</summary>
-            <div class="themelist"></div>
-        </details>
-        <div class="flex-wrap-r">
-            <button onclick="universal.send(universal.events.default.recompile)">
-                Ask server to recompile Webpack bundles
-            </button>
-            <button onclick="window.location.href = '/companion'">
-                To Companion View
-            </button>
-            <button onclick="window.AppSMClose()">
-                Close
-            </button>
+    <div class="everything">
+        <div id="sidebar">
+            <ul></ul>
         </div>
-        <p id="version">Freedeck v6.0.0-Loading</p>
-        <img src="/common/icons/fd.png" width="150" height="150" />
-    </div>
-    <dialog style="display: none" class="dialog" id="login-dialog">
-        <div id="login-div">
-            <h1 id="login-msg">Welcome to your Freedeck.</h1>
-            <p>Enter the password to connect to the server</p>
-            <input type="password" id="password" />
-            <button onclick="universal.login(document.getElementById('password').value)">
-                Login
-            </button>
-            <button onclick="window.location.reload();">Reload</button>
+    
+        <div class="settings-menu">
+            <br>
+            <h1>On-Deck</h1>
+            <details>
+                <summary>Themes</summary>
+                <div class="themelist"></div>
+            </details>
+            <div class="flex-wrap-r">
+                <button onclick="universal.send(universal.events.default.recompile)">
+                    Ask server to recompile Webpack bundles
+                </button>
+                <button onclick="window.location.href = '/companion'">
+                    To Companion View
+                </button>
+                <button onclick="window.AppSMClose()">
+                    Close
+                </button>
+            </div>
+            <p id="version">Freedeck v6.0.0-Loading</p>
+            <img src="/common/icons/fd.png" width="150" height="150" />
         </div>
-    </dialog>
-    <div id="client-key-container">
-        <div id="keys"></div>
+        <dialog style="display: none" class="dialog" id="login-dialog">
+            <div id="login-div">
+                <h1 id="login-msg">Welcome to your Freedeck.</h1>
+                <p>Enter the password to connect to the server</p>
+                <input type="password" id="password" />
+                <button onclick="universal.login(document.getElementById('password').value)">
+                    Login
+                </button>
+                <button onclick="window.location.reload();">Reload</button>
+            </div>
+        </dialog>
+        <div id="client-key-container">
+            <div id="keys"></div>
+        </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/app/clientMain.js" type="module"></script>

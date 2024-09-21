@@ -6,6 +6,7 @@
       "Check it out when setting an icon, adding a sound, or on the right sidebar!",
       "More features like rename & delete coming soon."
     ],
+    "**The settings menu has been renamed to On-Deck and has some cool new animations.**",
     "**There is a brand new drag & drop system for tiles!**",
     "**Hovering over a Tile creates a tooltip!**",
     "**Doing any action no longer causes the entire page to reload. Instead, just the tiles!**",
@@ -23,6 +24,7 @@
     "...and so many more performance & efficiency improvements."
   ],
   "other": [
+    "Bug Fix: Tiles no longer clip through the top of the screen.",
     "The left sidebar is now modular! (Smaller HTML size)",
     "Your tiles now have a slight background color to make them stand out more.",
     "Clicking every option on the left sidebar no longer requires a reload, and still syncs instantly!",

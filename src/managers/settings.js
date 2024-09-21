@@ -22,7 +22,7 @@ const sc = {
 				buttonSize: 6,
 				iconCountPerPage: 12,
 				longPressTime: 3,
-				tileRows: 5,
+				tileCols: 5,
 			});
 			fs.writeFileSync(path.resolve("./src/configs/style.json"), def);
 		}

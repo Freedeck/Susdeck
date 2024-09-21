@@ -79,21 +79,21 @@ style.children.push(new SidebarSlider("Tile Count", "es-tc", " tiles", "12", "54
 	);
 }));
 
-style.children.push(new SidebarSlider("Rows", "es-tr", " rows", "4", "15", "5", (e) => {
+style.children.push(new SidebarSlider("Columns", "es-tr", " cols", "4", "15", "5", (e) => {
   universal.uiSounds.playSound("fdc_slider");
 	universal.send(
 		universal.events.default.config_changed,
-		setToLocalCfg("tileRows", e.target.value),
+		setToLocalCfg("tileCols", e.target.value),
 	);
 	let tc = "repeat(5, 2fr)";
-	if (universal.lclCfg().tileRows) tc = tc.replace("5", e.target.value);
+	if (universal.lclCfg().tileCols) tc = tc.replace("5", e.target.value);
 	document.documentElement.style.setProperty("--tile-columns", tc);
 }, () => {
   universal.uiSounds.playSound("fdc_slider");
 	setValue("#es-tr", 5);
 	universal.send(
 		universal.events.default.config_changed,
-		setToLocalCfg("tileRows", 5),
+		setToLocalCfg("tileCols", 5),
 	);
 }));
 
@@ -121,7 +121,7 @@ universal.listenFor("loadHooks", () => {
   setValue("#es-fs", universal.lclCfg()["font-size"]);
   setValue("#es-bs", universal.lclCfg().buttonSize);
   setValue("#es-tc", universal.lclCfg().iconCountPerPage);
-  setValue("#es-tr", universal.lclCfg().tileRows);
+  setValue("#es-tr", universal.lclCfg().tileCols);
   setValue("#es-lp", universal.lclCfg().longPressTime);
 })
 

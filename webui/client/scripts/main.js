@@ -81,7 +81,7 @@ universal.on(universal.events.default.config_changed, (e) => {
     `${e.buttonSize}rem`,
   );
   let tc = "repeat(5, 2fr)";
-  if (e.tileRows) tc = tc.replace("5", e.tileRows);
+  if (e.tileCols) tc = tc.replace("5", e.tileCols);
   document.documentElement.style.setProperty("--tile-columns", tc);
   e.iconCountPerPage = Number.parseInt(e.iconCountPerPage);
   console.log(e.iconCountPerPage)
@@ -108,7 +108,7 @@ document.documentElement.style.setProperty(
 );
 
 let tc = "repeat(5, 2fr)";
-if (lcfg.tileRows) tc = tc.replace("5", lcfg.tileRows);
+if (lcfg.tileCols) tc = tc.replace("5", lcfg.tileCols);
 document.documentElement.style.setProperty("--tile-columns", tc);
 
 window.addEventListener("touchstart", (e) => {

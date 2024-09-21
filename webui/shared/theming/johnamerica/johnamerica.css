@@ -2,7 +2,7 @@
 
     --tile-columns: repeat(5, 2fr);
     /* --tile-columns: auto 2fr 2fr 2fr 2fr; */
-    --fd-font-family: 'Rethink Sans', sans-serif;
+    --font: 'Rethink Sans', sans-serif;
     --fd-background-size: 20%;
     /* --fd-background: linear-gradient(105deg, rgba(255, 0, 89, 1) 0%, rgba(0, 179, 255, 1) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%); */
     --fd-background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV0t-oDO7NMFPUNZwFVcSBBBzXyLzmFXM4FQ&s");

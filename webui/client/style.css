@@ -2,35 +2,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
 :root {
     --tile-columns: repeat(5, 2fr);
-    --fd-font-family: 'Rethink Sans', sans-serif;
+    --font: 'Rethink Sans', sans-serif;
     --fd-background-size: 400% 400%;
     --fd-background: linear-gradient(105deg, rgba(255, 0, 89, 1) 0%, rgb(0, 179, 255) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
     
-    --tile-bg: rgba(0, 0, 0, 0.5);
-    --tile-border: 2px solid #f8f9fa;
+    --modal-bg: #45475a;
     --modal-color: rgb(15, 140, 194);
+
     --button-width: 6rem;
     --button-height: 6rem;
-
+    
+    --tile-bg: rgba(0, 0, 0, 0.5);
+    --tile-border: 2px solid #f8f9fa;
     --tile-width: var(--button-width);
     --tile-height: var(--button-height);
-
     --tile-radius: 1.5rem;
-
-
+    
     --app-tile-container-width: 100vw;
-     
+    
     --text-color: black;
-
     --font-size: 15px;
-     
 
     --input-bg: #FFFFFF;
     --input-color: black;
-
-     
-
-    --modal-bg: #45475a;
 
     --marketplace-plugin-updatable: #1a1a1a;
     --marketplace-plugin-no-updates: #1a1a1a;
@@ -38,10 +32,6 @@
 
     --fd-slider-background: #3498db;
     --fd-slider-foreground: transparent;
-
-    --input-bg: #FFFFFF;
-
-     
 
     --companion-left-sidebar-bg: rgba(0, 0, 0, 0.5);
     --companion-right-sidebar-bg: rgba(0, 0, 0, 0.5);
@@ -116,7 +106,7 @@ body {
     background: var(--fd-background);
     background-size: var(--fd-background-size);
     animation: error-bg 5s linear infinite;
-    font-family: var(--fd-font-family);
+    font-family: var(--font);
     color: var(--text-color);
     height: 100vh;
     width: 100vw;
@@ -186,7 +176,7 @@ select {
     border-radius: 5px;
     padding: 5px;
     font-size: var(--font-size);
-    font-family: var(--fd-font-family);
+    font-family: var(--font);
     color: var(--input-color);
     outline: none;
     width: 100%;
@@ -199,7 +189,7 @@ input {
     border-radius: 5px;
     padding: 5px;
     font-size: var(--font-size);
-    font-family: var(--fd-font-family);
+    font-family: var(--font);
     color: var(--input-color);
     outline: none;
 }
@@ -219,7 +209,7 @@ input:disabled {
     border-radius: 5px;
     padding: 5px;
     font-size: var(--font-size);
-    font-family: var(--fd-font-family);
+    font-family: var(--font);
     color: var(--text-color);
     outline: none;
     width: 100%;

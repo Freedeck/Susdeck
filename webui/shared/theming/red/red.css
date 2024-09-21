@@ -30,14 +30,14 @@
 
     --fd-studio-color: #45475a;
 
-    --fdc-plugin-updatable: #1a1a1a;
-    --fdc-plugin-uptodate: #1a1a1a;
-    --fdc-plugin-installed: #1a1a1a;
+    --marketplace-plugin-updatable: #1a1a1a;
+    --marketplace-plugin-no-updates: #1a1a1a;
+    --marketplace-plugin-installed: #1a1a1a;
 
-    --fdm-background: linear-gradient(0deg, rgba(140, 0, 89, 1) 0%, rgba(140, 10, 0, 1) 33%, rgba(140, 50, 0, 1) 66%, rgba(140, 0, 89, 1) 100%);
-    --fdm-background-size: 400% 400%;
-    --fdm-bg-anim: backgroundAnimation 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
-    --fdm-text: white;
+    --modal-item-bg: linear-gradient(0deg, rgba(140, 0, 89, 1) 0%, rgba(140, 10, 0, 1) 33%, rgba(140, 50, 0, 1) 66%, rgba(140, 0, 89, 1) 100%);
+    --modal-item-bg-size: 400% 400%;
+    --modal-item-bg-anim: backgroundAnimation 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+    --modal-item-text: white;
 
     --companion-left-sidebar-bg: rgba(120,25,25,0.5);
     --companion-right-sidebar-bg: rgba(120,25,25,0.5);

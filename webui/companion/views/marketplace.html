@@ -23,7 +23,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 1rem;
-        color: var(--fdm-text);
+        color: var(--modal-item-text);
         border: 1px solid #000;
         border-radius: 5px;
         margin: 0.5rem 0;
@@ -31,9 +31,9 @@
         width: 200px;
         text-overflow: ellipsis;
 
-        background: var(--fdm-background);
-        background-size: var(--fdm-background-size);
-        animation: var(--fdm-bg-anim);
+        background: var(--modal-item-bg);
+        background-size: var(--modal-item-bg-size);
+        animation: var(--modal-item-bg-anim);
     }
 
     .marketplace {
@@ -113,15 +113,15 @@
                 file.innerText = 'Download';
                 if (universal.plugins[req.id]) {
                     file.innerText = 'Installed';
-                    file.style.backgroundColor = 'var(--fdc-plugin-installed)';
+                    file.style.backgroundColor = 'var(--marketplace-plugin-installed)';
                     if (!universal.plugins[req.id].version) universal.plugins[req.id].version = '1.0.0';
                     if (universal.plugins[req.id].version != req.version) {
                         file.innerText = 'Update';
-                        file.style.backgroundColor = 'var(--fdc-plugin-updatable)';
+                        file.style.backgroundColor = 'var(--marketplace-plugin-updatable)';
                     } else
                         if (universal.plugins[req.id].version == req.version) {
                             file.innerText = 'Up to date';
-                            file.style.backgroundColor = 'var(--fdc-plugin-uptodate)';
+                            file.style.backgroundColor = 'var(--marketplace-plugin-no-updates)';
                             file.onclick = () => { };
                         } else {
                             file.onclick = () => { };

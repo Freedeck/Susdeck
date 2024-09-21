@@ -32,9 +32,9 @@
 
     --modal-bg: #45475a;
 
-    --fdc-plugin-updatable: #1a1a1a;
-    --fdc-plugin-uptodate: #1a1a1a;
-    --fdc-plugin-installed: #1a1a1a;
+    --marketplace-plugin-updatable: #1a1a1a;
+    --marketplace-plugin-no-updates: #1a1a1a;
+    --marketplace-plugin-installed: #1a1a1a;
 
     --fd-slider-background: #3498db;
     --fd-slider-foreground: transparent;
@@ -51,10 +51,10 @@
     --companion-sidebar-item-bg: rgba(0, 0, 0, 0.5);
     --companion-sidebar-item-color: white;
 
-    --fdm-background: linear-gradient(105deg,rgba(0, 179, 255, 1) 0%, rgba(0, 135, 255, 1) 50%, rgba(0, 179, 255, 1) 100%);
-    --fdm-background-size: 400% 400%;
-    --fdm-bg-anim: backgroundAnimation 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
-    --fdm-text: white;
+    --modal-item-bg: linear-gradient(105deg,rgba(0, 179, 255, 1) 0%, rgba(0, 135, 255, 1) 50%, rgba(0, 179, 255, 1) 100%);
+    --modal-item-bg-size: 400% 400%;
+    --modal-item-bg-anim: backgroundAnimation 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+    --modal-item-text: white;
 }
 
 @keyframes error-bg {

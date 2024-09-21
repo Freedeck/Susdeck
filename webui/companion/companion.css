@@ -706,8 +706,8 @@ a:hover {
 }
 
 audio::-webkit-media-controls-panel {
-	background: var(--fdm-background);
-	background-size: var(--fdm-background-size);
+	background: var(--modal-item-bg);
+	background-size: var(--modal-item-bg-size);
 }
 
 audio::-webkit-media-controls-play-button {

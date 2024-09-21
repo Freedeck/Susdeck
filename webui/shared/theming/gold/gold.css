@@ -6,7 +6,7 @@
 	--modal-bg:rgba(255, 190, 106, 1);
 	--fd-modal-color:black;
 
-	--fdm-background:linear-gradient(45deg, rgba(255, 215, 59, 1) 0%, rgba(209, 173, 33, 1) 33%, rgba(255, 215, 59, 1) 66%, rgba(209, 173, 33, 1) 100%);
+	--modal-item-bg:linear-gradient(45deg, rgba(255, 215, 59, 1) 0%, rgba(209, 173, 33, 1) 33%, rgba(255, 215, 59, 1) 66%, rgba(209, 173, 33, 1) 100%);
 	--fd-input-bg:rgba(255, 215, 59, 0.25);
 
 	--companion-left-sidebar-bg: rgb(139, 118, 33);

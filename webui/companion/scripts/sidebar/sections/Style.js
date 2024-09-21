@@ -20,7 +20,7 @@ style.children.push(new SidebarCheck("Fill Tiles", "es-fill", (e) => handleCheck
 style.children.push(new SidebarSlider("Font Size", "es-fs", "px", "10", "25", "15", (e) => {
   universal.uiSounds.playSound("fdc_slider");
 	document.documentElement.style.setProperty(
-		"--fd-font-size",
+		"--font-size",
 		`${e.target.value}px`,
 	);
 	universal.send(
@@ -29,7 +29,7 @@ style.children.push(new SidebarSlider("Font Size", "es-fs", "px", "10", "25", "1
 	);
 }, () => {
   universal.uiSounds.playSound("fdc_slider");
-	document.documentElement.style.setProperty("--fd-font-size", "15px");
+	document.documentElement.style.setProperty("--font-size", "15px");
 	setValue("#es-fs", 15);
 	universal.send(
 		universal.events.default.config_changed,

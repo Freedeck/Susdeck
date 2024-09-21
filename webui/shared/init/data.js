@@ -101,7 +101,7 @@ export default function dataHandler(universal, user) {
 
       if (universal.lclCfg()["font-size"] !== 15) {
         document.documentElement.style.setProperty(
-          "--fd-font-size",
+          "--font-size",
           `${universal.lclCfg()["font-size"]}px`,
         );
       }

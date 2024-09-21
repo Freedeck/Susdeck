@@ -69,7 +69,7 @@ if (universal.config.profile !== universal.load("profile")) {
 
 universal.on(universal.events.default.config_changed, (e) => {
   document.documentElement.style.setProperty(
-    "--fd-font-size",
+    "--font-size",
     `${e["font-size"]}px`,
   );
   document.documentElement.style.setProperty(
@@ -95,7 +95,7 @@ universal.on(universal.events.default.config_changed, (e) => {
 
 const lcfg = universal.lclCfg();
 document.documentElement.style.setProperty(
-  "--fd-font-size",
+  "--font-size",
   `${lcfg["font-size"]}px`,
 );
 document.documentElement.style.setProperty(

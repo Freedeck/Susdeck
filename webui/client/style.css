@@ -22,7 +22,7 @@
      
     --text-color: black;
 
-    --fd-font-size: 15px;
+    --font-size: 15px;
      
 
     --input-bg: #FFFFFF;
@@ -185,7 +185,7 @@ select {
     border: 1px solid black;
     border-radius: 5px;
     padding: 5px;
-    font-size: var(--fd-font-size);
+    font-size: var(--font-size);
     font-family: var(--fd-font-family);
     color: var(--input-color);
     outline: none;
@@ -198,7 +198,7 @@ input {
     border: 0;
     border-radius: 5px;
     padding: 5px;
-    font-size: var(--fd-font-size);
+    font-size: var(--font-size);
     font-family: var(--fd-font-family);
     color: var(--input-color);
     outline: none;
@@ -218,7 +218,7 @@ input:disabled {
     border: 1px solid black;
     border-radius: 5px;
     padding: 5px;
-    font-size: var(--fd-font-size);
+    font-size: var(--font-size);
     font-family: var(--fd-font-family);
     color: var(--text-color);
     outline: none;
@@ -387,7 +387,7 @@ input:disabled {
 }
 
 .slider-title {
-    font-size: var(--fd-font-size);
+    font-size: var(--font-size);
     color: white;
     text-align: center;
     pointer-events: none;
@@ -421,7 +421,7 @@ input:disabled {
 }
 
 .too-big {
-    font-size: calc(var(--fd-font-size) * 1.5);
+    font-size: calc(var(--font-size) * 1.5);
     flex: 0 1 auto;
     animation: marquee 5s linear infinite;
     white-space: nowrap;
@@ -430,7 +430,7 @@ input:disabled {
 }
 
 .button-text {
-    font-size: var(--fd-font-size);
+    font-size: var(--font-size);
     width: calc(min-content + 1rem);
     color: white;
     text-align: center;

@@ -542,6 +542,14 @@ function editTile(e) {
 		const itm = interactionData.data;
 		loadData(itm);
 	}
+	document.querySelector("#sbg").checked = interactionData.data.showBg === "true";
+	document.querySelector("#sbg").style.display =
+		interactionData.renderType === "button" ? "none" : 
+		interactionData.renderType === "slider" ? "none" : "block";
+	document.querySelector('label[for="sbg"]').style.display =
+		interactionData.renderType === "button" ? "none" :
+		interactionData.renderType === "slider" ? "none" : "block";
+
 	document.querySelector("#orl").checked =
 		interactionData.data.onRelease === "true";
 	document.querySelector("#lp").checked =
@@ -557,6 +565,21 @@ function editTile(e) {
 		document.querySelector("#editor").style.opacity = "1";
 	}, 100);
 }
+
+document.querySelector("#sbg").onclick = () => {
+	const int = JSON.parse(
+		document
+			.querySelector("#editor-btn[data-interaction]")
+			.getAttribute("data-interaction"),
+	);
+	if (!int.data.showBg) int.data.showBg = true;
+	else int.data.showBg = !int.data.showBg;
+	document
+		.querySelector("#editor-btn[data-interaction]")
+		.setAttribute("data-interaction", JSON.stringify(int));
+	loadData(int.data);
+	document.querySelector("#sbg").checked = int.data.showBg;
+};
 
 document.querySelector("#orl").onclick = () => {
 	const int = JSON.parse(

@@ -7,6 +7,9 @@
 export default function (snd, keyObject, raw) {
 	const k = Object.keys(raw)[0];
 	keyObject.innerHTML = `<div class="button-text"><p>${sanitizeXSS(k)}</div></p>`;
+	if (snd.data.showBg === "true") {
+		keyObject.classList.add("no-bg");
+	}
 	if (snd.data.longPress === "true" && universal.name !== "Companion") {
 		const countdownTime = Number.parseInt(
 			universal.lclCfg().longPressTime ? universal.lclCfg().longPressTime : 3,

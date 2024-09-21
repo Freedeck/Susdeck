@@ -288,6 +288,11 @@ input:disabled {
     animation: fade-in 0.5s, fade-out 0.5s 3s;
 }
 
+.no-bg {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
 
 #keys {
     display: grid;

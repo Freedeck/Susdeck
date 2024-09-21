@@ -16,8 +16,19 @@ function settingsMenu() {
 }
 function settingsMenuClose() {
 	if (universal.name === "Main") {
-		document.querySelector("#keys").style.display = "grid";
-		document.querySelector(".settings-menu").style.display = "none";
+		// document.querySelector("#keys").style.display = "grid";
+		// document.querySelector(".settings-menu").style.display = "none";
+		document.querySelector(".settings-menu").style.animationName = "pull-up";
+		document.querySelector(".settings-menu").style.animationDuration = "0.45s";
+		document.querySelector(".settings-menu").style.animationFillMode = "forwards";
+		document.querySelector("#keys").style.animationName = "pull-down";
+		document.querySelector("#keys").style.animationDuration = "0.5s";
+		
+		setTimeout(() => {
+			document.querySelector(".settings-menu").style.display = "none";
+			document.querySelector(".settings-menu").style.animationName = "pull-down";
+			document.querySelector("#keys").style.display = "grid";
+		}, 250);
 	}
 }
 window.AppSM = settingsMenu;

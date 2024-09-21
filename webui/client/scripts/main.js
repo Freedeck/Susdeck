@@ -131,7 +131,7 @@ document.addEventListener("touchend", (e) => {
 
 if (document.querySelector("#version")) {
   document.querySelector("#version").innerText =
-    `Freedeck Server: ${universal._information.server}\nFreedeck SocketHandler: ${universal._information.version}`;
+    `${universal._information.server}`;
 }
 
 const downEvent = (ev) => {};

@@ -1,93 +1,81 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta content="Freedeck" property="og:title" />
-        <meta content="#00b3ff" data-react-helmet="true" name="theme-color" />
-        <meta name="theme-color" content="#00b3ff" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta
-            name="apple-mobile-web-app-status-bar-style"
-            content="black-translucent"
-        />
-        <meta name="apple-mobile-web-app-title" content="Freedeck" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <meta name="msapplication-TileColor" content="#00b3ff" />
-        <meta
-            name="msapplication-config"
-            content="/assets/icons/browserconfig.xml"
-        />
 
-        <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/common/icons/fd.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/common/icons/fd.png"
-        />
+<head>
+    <meta charset="UTF-8" />
+    <meta content="Freedeck" property="og:title" />
+    <meta content="#00b3ff" data-react-helmet="true" name="theme-color" />
+    <meta name="theme-color" content="#00b3ff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Freedeck" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="msapplication-TileColor" content="#00b3ff" />
+    <meta name="msapplication-config" content="/assets/icons/browserconfig.xml" />
 
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"
-        />
-        <link rel="stylesheet" href="style.css" />
-        <title>Freedeck</title>
-    </head>
-    <div id="boot-log-div">
-        <h1>Freedeck is booting..</h1>
+    <link rel="apple-touch-icon" sizes="180x180" href="/common/icons/fd.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/common/icons/fd.png" />
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Freedeck</title>
+</head>
+<div id="boot-log-div">
+    <h1>Freedeck is booting..</h1>
+</div>
+
+<body>
+    <div id="sidebar">
+        <ul></ul>
     </div>
-    <body>
-        <div id="sidebar">
-            <ul></ul>
-        </div>
 
-        <div class="settings-menu">
+    <div class="settings-menu">
+        <br>
+        <h1>On-Deck</h1>
+        <details>
+            <summary>Themes</summary>
             <div class="themelist"></div>
-            <p id="version">Freedeck v6.0.0-Loading</p>
-            <div class="flex-wrap-r"><button
-                onclick="universal.send(universal.events.default.recompile)"
-            >
+        </details>
+        <div class="flex-wrap-r">
+            <button onclick="universal.send(universal.events.default.recompile)">
                 Ask server to recompile Webpack bundles
             </button>
             <button onclick="window.location.href = '/companion'">
                 To Companion View
             </button>
-            <button
-                onclick="window.AppSMClose()"
-            >
+            <button onclick="window.AppSMClose()">
                 Close
-            </button></div>
+            </button>
         </div>
-        <dialog style="display: none" class="dialog" id="login-dialog">
-            <div id="login-div">
-                <h1 id="login-msg">Welcome to your Freedeck.</h1>
-                <p>Enter the password to connect to the server</p>
-                <input type="password" id="password" />
-                <button
-                    onclick="universal.login(document.getElementById('password').value)"
-                >
-                    Login
-                </button>
-                <button onclick="window.location.reload();">Reload</button>
-            </div>
-        </dialog>
-        <div id="client-key-container">
-            <div id="keys"></div>
+        <p id="version">Freedeck v6.0.0-Loading</p>
+        <img src="/common/icons/fd.png" width="150" height="150" />
+    </div>
+    <dialog style="display: none" class="dialog" id="login-dialog">
+        <div id="login-div">
+            <h1 id="login-msg">Welcome to your Freedeck.</h1>
+            <p>Enter the password to connect to the server</p>
+            <input type="password" id="password" />
+            <button onclick="universal.login(document.getElementById('password').value)">
+                Login
+            </button>
+            <button onclick="window.location.reload();">Reload</button>
         </div>
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="/app/clientMain.js" type="module"></script>
-        <script src="/app/settingsThemes.js" type="module"></script>
-        <script>
-            window.addEventListener("message", (event) => {
-                if (event.data === "close") {
-                    console.log(true);
-                    document.querySelector(".prompt").style.display = "none";
-                }
-            });
-        </script>
-    </body>
+    </dialog>
+    <div id="client-key-container">
+        <div id="keys"></div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/app/clientMain.js" type="module"></script>
+    <script src="/app/settingsThemes.js" type="module"></script>
+    <script>
+        window.addEventListener("message", (event) => {
+            if (event.data === "close") {
+                console.log(true);
+                document.querySelector(".prompt").style.display = "none";
+            }
+        });
+    </script>
+</body>
+
 </html>

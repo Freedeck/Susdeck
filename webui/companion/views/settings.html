@@ -18,7 +18,7 @@
     </p>
     <ul class="uisounds"></ul>
 </div>
-<h1>Developer Tools</h1>
+<h1>Tools</h1>
 <style>
     .uisounds,
     .soundpacks {
@@ -39,11 +39,14 @@
     }
 </style>
 <div class="flex-wrap-r">
-    <button onclick="universal.send(universal.events.default.recompile)">
-        Ask server to recompile Webpack bundles
-    </button>
     <button onclick="universal.save('thanks', '\x9Eée');window.location.reload()">
         Show changelog (Reloads)
+    </button>
+    <button onclick="universal.showBootLog()">
+        Show boot log
+    </button>
+    <button onclick="universal.send(universal.events.default.recompile)">
+        Ask server to recompile Webpack bundles
     </button>
 </div>
 <div class="settings"></div>

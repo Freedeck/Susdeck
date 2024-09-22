@@ -118,7 +118,7 @@ h1 {
 #boot-log {
     display: block;
     width: 94%;
-    height: 90%;
+    height: 73%;
     overflow-y: scroll;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;

@@ -9,12 +9,26 @@ import otherHandler from "./ui/otherHandler.js";
 function quickActions(e) {}
 
 
+
 function makeBootLog() {
 	const bootLog = document.createElement("div");
 	bootLog.id = "boot-log-div";
 	bootLog.classList.add("settings-menu")
-	bootLog.innerHTML = "<center><h1>Freedeck is booting...</h1></center><div id='boot-log'></div>";
+	bootLog.innerHTML = "<center><h1>Freedeck is booting...</h1></center><div id='boot-log'></div><center><button id='oclb'>Close Boot Log</button></center>";
 	document.body.appendChild(bootLog);
+	document.querySelector("#oclb").addEventListener("click", () => {
+		closeBootLog();
+	});
+}
+
+function showBootLog() {
+	return new Promise((resolve, reject) => {
+		document.querySelector("#boot-log-div").style.display = "block";
+		document.querySelector("#boot-log-div").style.animation = "pull-down 0.5s";
+		setTimeout(() => {
+			resolve(true);
+		}, 499);
+	})
 }
 
 function closeBootLog() {
@@ -236,5 +250,6 @@ export const UI = {
 	Pages,
 	initialize,
 	makeBootLog,
-	closeBootLog
+	closeBootLog,
+	showBootLog
 };

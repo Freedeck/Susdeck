@@ -32,6 +32,8 @@
     "...and so many more performance & efficiency improvements."
   ],
   "other": [
+    "Audio is now based on a channel system, so multiple sounds (namely UI & board) can play at once.",
+    "Properly handle Stop Previous mode & monitor checks",
     "Rows is now properly called Columns.",
     "Fixed issue where Stop All wasn't fully working.",
     "Updated a lot of dependencies.",

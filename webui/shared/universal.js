@@ -282,6 +282,7 @@ const universal = {
 	},
 	CL: true,
 	CLUL: [["Page loaded", Date.now()]],
+	showBootLog: UI.showBootLog,
 	CLU: (s, ...m) => {
 		universal.CL ? console.log(`${s}:`, ...m) : null;
 		const elem = document.createElement("code");

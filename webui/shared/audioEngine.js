@@ -20,9 +20,6 @@ const UAE = {
 		for (const audio of universal.audioClient._nowPlaying) {
 			try {
 				await audio.pause();
-				audio.currentTime = audio.duration;
-				await audio.play();
-				universal.audioClient._end({ target: audio });
 				audio.remove();
 			} catch (err) {
 				// "waah waah waah noo you cant just abuse audio api" -companion
@@ -98,7 +95,6 @@ const UAE = {
 			await UAE.useSinkIfExists(audioInstance, "monitor.sink", universal.audioClient._player.monitorSink)
 			audioInstance.volume = universal.audioClient._player.monitorVol;
 		} else {
-			console.log(channel)
 			await UAE.useSinkIfExists(audioInstance, "vb.sink", universal.audioClient._player.sink)
 			audioInstance.volume = universal.audioClient._player.normalVol;
 		}
@@ -126,10 +122,9 @@ const UAE = {
 			}
 		}
 
-		await audioInstance.play();
-		window.lasti = audioInstance;
+		audioInstance.play();
 
-		audioInstance.onended = (ev) => {
+		audioInstance.onpause = (ev) => {
 			universal.sendEvent("audio-end", { audioInstance, name, channel });
 			universal.audioClient._end(ev);
 			audioInstance.remove();

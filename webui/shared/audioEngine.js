@@ -1,5 +1,5 @@
 const UAE = {
-	_nowPlaying: [[], [], []],
+	_nowPlaying: [],
 	_end: (event) => {
 		universal.audioClient._nowPlaying.splice(
 			universal.audioClient._nowPlaying.indexOf(event.target),
@@ -20,7 +20,6 @@ const UAE = {
 		for (const audio of universal.audioClient._nowPlaying) {
 			try {
 				await audio.pause();
-				audio.remove();
 			} catch (err) {
 				// "waah waah waah noo you cant just abuse audio api" -companion
 				// > i dont care :trole:

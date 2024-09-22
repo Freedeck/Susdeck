@@ -32,6 +32,8 @@
     "...and so many more performance & efficiency improvements."
   ],
   "other": [
+    "Rows is now properly called Columns.",
+    "Fixed issue where Stop All wasn't fully working.",
     "Updated a lot of dependencies.",
     "Instead of importing pako from the web, it's now included in the webpack build.",
     "Bug Fix: Tiles no longer clip through the top of the screen.",
@@ -41,6 +43,7 @@
     "Switching folders no longer requires a reload.",
     "Setting themes no longer requires a reload.",
     "The bottom right corner now has the Freedeck icon.",
+    "Added footer to sidebar.",
     "Each right sidebar page now has it's own container & views (further decreasing size of the page).",
     "Theming: Themes no longer keep adding on top of each other.",
     "Theming: You can now change the FDM (marketplace/external view object) text color",

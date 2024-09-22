@@ -1,10 +1,16 @@
 {
+  "version": "Open Beta 7",
   "major": [
     "**Welcome to the Library, a brand new way of managing your sounds.**",
     [
       "Gone are the days of re-uploading a sound multiple times. Just find it in your library, click it, and save.",
       "Check it out when setting an icon, adding a sound, or on the right sidebar!",
       "More features like rename & delete coming soon."
+    ],
+    "Some new Tile options!",
+    [
+      "You can now remove the background of a Tile",
+      "You can now set a Tile to be on release, or on press."
     ],
     "**The settings menu has been renamed to On-Deck and has some cool new animations.**",
     "**There is a brand new drag & drop system for tiles!**",
@@ -18,12 +24,16 @@
     "**Brand new animations for Connect, and a slight redesign there too!**",
     "**The Yellow theme is now called Gold!**",
     "**Added a new theme called Soofle.**",
+    "New logo!",
+    "Release names during Open Beta will now drop v6 - as to rename the project from Freedeck v6 to Freedeck.",
     "Themes now use inheritance of the default, so their size is significantly smaller.",
     "No more external manifest for Themes, they're all in the same file now.",
     "The editor has also gotten a slight redesign!",
     "...and so many more performance & efficiency improvements."
   ],
   "other": [
+    "Updated a lot of dependencies.",
+    "Instead of importing pako from the web, it's now included in the webpack build.",
     "Bug Fix: Tiles no longer clip through the top of the screen.",
     "The left sidebar is now modular! (Smaller HTML size)",
     "Your tiles now have a slight background color to make them stand out more.",

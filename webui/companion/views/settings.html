@@ -38,9 +38,14 @@
         border-radius: 5px;
     }
 </style>
-<button onclick="universal.send(universal.events.default.recompile)">
-    Ask server to recompile Webpack bundles
-</button>
+<div class="flex-wrap-r">
+    <button onclick="universal.send(universal.events.default.recompile)">
+        Ask server to recompile Webpack bundles
+    </button>
+    <button onclick="universal.save('thanks', '\x9Eée');window.location.reload()">
+        Show changelog (Reloads)
+    </button>
+</div>
 <div class="settings"></div>
 <script type="module">
     import "/app/settingsThemes.js";

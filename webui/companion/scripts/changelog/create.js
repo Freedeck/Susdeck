@@ -80,6 +80,13 @@ const makeThanks = () => {
   const linebrak2 = document.createElement("br");
   content.appendChild(linebrak2);
 
+  const version = document.createElement("p");
+  version.innerText = `Welcome to Freedeck ${changes.version}.`;
+  content.appendChild(version);
+
+  const bb = document.createElement("br");
+  content.appendChild(bb);
+
   content.appendChild(close);
   container.appendChild(content);
   document.body.appendChild(container);

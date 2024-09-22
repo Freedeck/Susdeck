@@ -9,7 +9,7 @@ const path = require("node:path");
 const zlib = require("node:zlib");
 const { readFileSync, readdirSync } = require("node:fs");
 
-const serverVersion = `Freedeck OS-${require(path.resolve("package.json")).version}s`;
+const serverVersion = `Freedeck (Release ${require(path.resolve("package.json")).version})`;
 
 module.exports = {
   name: "Main",

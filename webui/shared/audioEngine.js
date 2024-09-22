@@ -81,16 +81,12 @@ const UAE = {
 	play: async ({
 		file,
 		name,
-		isMonitor = false,
 		stopPrevious = universal.load("playback-mode") === "stop_prev",
 		volume = universal.load("vol") || 1,
 		pitch = universal.load("pitch") || 1,
-		channel = isMonitor
-			? universal.audioClient.channels.monitor
-			: universal.audioClient.channels.cable,
+		channel,
 	}) => {
 		const ch = universal.audioClient.channels;
-		const channelSelected = ch[channel];
 		const audioInstance = new Audio();
 		audioInstance.src = file;
 		audioInstance.load();
@@ -98,10 +94,11 @@ const UAE = {
 		audioInstance.setAttribute("data-name", name);
 		audioInstance.setAttribute("data-channel", channel);
 
-		if (channelSelected === ch.monitor) {
+		if (channel === ch.monitor || channel === ch.ui) {
 			await UAE.useSinkIfExists(audioInstance, "monitor.sink", universal.audioClient._player.monitorSink)
 			audioInstance.volume = universal.audioClient._player.monitorVol;
 		} else {
+			console.log(channel)
 			await UAE.useSinkIfExists(audioInstance, "vb.sink", universal.audioClient._player.sink)
 			audioInstance.volume = universal.audioClient._player.normalVol;
 		}
@@ -111,7 +108,7 @@ const UAE = {
 		audioInstance.preservesPitch = false;
 
 		audioInstance.dataset.name = name;
-		audioInstance.dataset.monitoring = isMonitor;
+		audioInstance.dataset.monitoring = channel === ch.monitor;
 
 		if (stopPrevious === true) {
 			for (const audio of universal.audioClient._nowPlaying) {

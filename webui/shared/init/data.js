@@ -88,7 +88,7 @@ export default function dataHandler(universal, user) {
         for (const type of plug.types) {
           universal.CLU(
             "Boot:Handler:Data",
-            `Type: ${type.name} -> ${plug.name}`,
+            `Type: ${type.name} -> ${plug.name} (aka. ${plug.id})`,
           );
           universal._tyc.set(type, plug);
         }
@@ -98,19 +98,6 @@ export default function dataHandler(universal, user) {
         handler();
         universal.CLU("Boot:Handler:Data", "Native handler created.");
       }
-
-      if (universal.lclCfg()["font-size"] !== 15) {
-        document.documentElement.style.setProperty(
-          "--font-size",
-          `${universal.lclCfg()["font-size"]}px`,
-        );
-      }
-      universal.CLU("Boot:Handler:Data", "Set font size.");
-
-      if(universal.lclCfg().compact) {
-        universal.keys.style.width = "unset";
-      }
-      universal.CLU("Boot:Handler:Data", "Set compact mode.");
 
       generic();
       universal.CLU(

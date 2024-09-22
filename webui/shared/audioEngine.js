@@ -47,7 +47,7 @@ const UAE = {
 	},
 	sinks: [],
 	initialize: () => {
-    universal.CLU("Boot / UAE", "Initializing audio engine");
+    universal.CLU("Boot / Universal:AudioEngine", "Initializing audio engine");
     if (!navigator.mediaDevices?.enumerateDevices) {
       console.log("enumerateDevices() not supported.");
     } else {
@@ -62,17 +62,17 @@ const UAE = {
         });
       for (const device of devices) {
         universal.audioClient._player.monitorPotential.push(device);
-        universal.CLU("Boot / UAE", "Created monitor potential devices");
+        universal.CLU("Boot / Universal:AudioEngine", "Created monitor potential devices");
       }
     }
     if (universal.load("vb.sink"))
       universal.audioClient._player.sink = universal.load("vb.sink");
-    universal.CLU("Boot / UAE", "Loaded vb.sink");
+    universal.CLU("Boot / Universal:AudioEngine", "Loaded vb.sink");
     if (universal.load("monitor.sink"))
       universal.audioClient._player.monitorSink =
         universal.load("monitor.sink");
     else universal.audioClient._player.monitorSink = "default";
-    universal.CLU("Boot / UAE", "Loaded monitor.sink");
+    universal.CLU("Boot / Universal:AudioEngine", "Loaded monitor.sink");
   },
 	play: async ({
 		file,

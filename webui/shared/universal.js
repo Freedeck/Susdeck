@@ -59,6 +59,7 @@ const universal = {
 					universal.sendToast(
 						"Wake lock acquired. Your screen will now stay on.",
 					);
+					universal.CLU("Boot / WakeLock", "Wake lock acquired.");
 				} catch (err) {
 					console.error(`${err.name}, ${err.message}`);
 					universal.sendToast("Failed to acquire wake lock.");
@@ -545,7 +546,7 @@ const universal = {
 						});
 					});
 				});
-				universal.CLU("Boot:InitFN", "Attempting to grab wake lock.");
+				universal.CLU("Boot:InitFN / WakeLock", "Attempting to grab wake lock.");
 				universal.wakeLock.request();
 				universal.CLU("Boot:InitFN", "Boot completed.");
 			} catch (e) {

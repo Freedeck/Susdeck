@@ -52,6 +52,18 @@ function initialize() {
 		false,
 	);
 	universal.CLU("Boot / UI", "Set local theme");
+	if (universal.lclCfg()["font-size"] !== 15) {
+		document.documentElement.style.setProperty(
+			"--font-size",
+			`${universal.lclCfg()["font-size"]}px`,
+		);
+	}
+	universal.CLU("Boot / UI", "Set font size");
+
+	if(universal.lclCfg().compact) {
+		universal.keys.style.width = "unset";
+	}
+	universal.CLU("Boot / UI", "Set compact mode");
 	reloadSounds();
 	universal.CLU("Boot / UI", "Reloaded sounds");
 	universal.CLU("Boot / UI", "UI initialized");

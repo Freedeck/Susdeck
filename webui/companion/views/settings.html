@@ -50,55 +50,10 @@
     </button>
 </div>
 <div class="settings"></div>
+<h2>This is the bottom of the Settings menu.</h2>
 <script type="module">
     import "/app/settingsThemes.js";
     st_ldt();
-
-    createSettingCategory("Danger Zone $(DANGEROUS)", "dz");
-
-    createSelectSetting(
-        "Erase all data",
-        "erase",
-        async (select) => {
-            return new Promise(async (resolve) => {
-                const tmpBtn = document.createElement("option");
-                tmpBtn.innerText = "Erase all data";
-                tmpBtn.value = "true";
-                tmpBtn.id = "true";
-                select.appendChild(tmpBtn);
-                resolve();
-            });
-        },
-        "false",
-        ".dz",
-        (value) => {
-            if (value == "true") {
-                createBooleanSetting(
-                    "Are you sure?",
-                    "sure",
-                    async () => {
-                        return new Promise(async (res) => {
-                            res();
-                        });
-                    },
-                    false,
-                    ".dz",
-                    (value) => {
-                        if (value == true) {
-                            for (let i = 0; i < localStorage.length; i++) {
-                                const key = localStorage.key(i);
-                                localStorage.removeItem(key);
-                            }
-                            universal.storage.reset();
-                            setTimeout(() => {
-                                window.location.href = "/companion/";
-                            }, 500);
-                        }
-                    },
-                );
-            }
-        },
-    );
 
     /**
      * Create a setting dynamically.

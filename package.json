@@ -13,8 +13,16 @@
 		"build": "esbuild  --bundle --outfile=out.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
-	"keywords": [],
-	"author": "",
+	"keywords": [
+		"streamdeck",
+		"stream deck",
+		"elgato",
+		"stream",
+		"freedeck",
+		"streaming",
+		"alternative"
+	],
+	"author": "ia74",
 	"license": "ISC",
 	"dependencies": {
 		"asar-bundle-runner": "^1.6.0",

@@ -37,3 +37,15 @@ if (!fs.existsSync("user-data/icons")) {
   if (!fs.existsSync("user-data")) fs.mkdirSync("user-data");
   fs.mkdirSync("user-data/icons");
 }
+
+if(fs.existsSync("src/public/dist")) {
+  console.log("Freedeck has found remnants of the old system. Cleaning up...");
+  fs.rmSync("src/public/dist", { recursive: true });
+}
+
+if(fs.existsSync("src/public/companion") && fs.existsSync("src/public/companion/dist")) {
+  console.log("Freedeck has found more remnants of the old system. Cleaning up...");
+  fs.rmSync("src/public/companion/dist", { recursive: true });
+}
+
+console.log("Migration complete.");

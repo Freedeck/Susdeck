@@ -2,7 +2,7 @@ import { UI } from "../../client/scripts/ui";
 
 export default function eventsHandler(universal, user) {
 	return new Promise((resolve, reject) => {
-		universal.CLU("Bootd", "Creating event handlers...");
+		universal.CLU("Boot:Handler:Events", "Creating event handlers...");
 		universal.on(universal.events.default.not_trusted, () =>
 			universal.sendToast("Not trusted to do this action."),
 		);
@@ -121,7 +121,13 @@ export default function eventsHandler(universal, user) {
 			}
 			universal.sendEvent("auth", auth);
 		});
+
 		universal.sendEvent("init");
+		universal.CLU("Boot:Handler:Events", "Created event handlers, sending init event.");
+		
+		const hookType = universal.name === "Main" ? "client" : "companion";
+		universal.CLU("Boot:Handler:Events", "Loading hooks...");
+		let hookCount = 0;
 		for (const plugin of Object.keys(universal.plugins)) {
 			const data = universal.plugins[plugin];
 			for (const hook of data.hooks.filter(
@@ -129,10 +135,14 @@ export default function eventsHandler(universal, user) {
 			)) {
 				const scr = document.createElement("script");
 				scr.src = `/hooks/${hook.name}`;
+				universal.CLU("Boot:Handler:Events", `Loaded ${hookType} hook: ${hook.name}`);
+				hookCount++;
 				document.body.appendChild(scr);
 			}
 		}
+		universal.CLU("Boot:Handler:Events", `Loaded ${hookCount} ${hookType} hooks from ${Object.keys(universal.plugins).length} plugins.`);
 		universal.sendEvent("loadHooks");
+		universal.CLU("Boot:Handler:Events", "Tell plugins that their hooks are loaded.");
 		resolve(true);
 	});
 }

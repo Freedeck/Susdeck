@@ -300,10 +300,13 @@ const universal = {
 				universal.CLU("Boot", "Pre-init");
 				universal._initFn(user).then(async () => {
 					universal.CLU("Boot", "Init complete");
-					universal.CLU("Boot", "Received config", universal.config);
-					universal.CLU("Boot", "Initializing systems");
+					universal.CLU("Boot", `Received full configuration (${Object.keys(universal.config).length} objects translated from ${Object.keys(universal._information).length})`);
+					universal.CLU("Boot:Systems", "Initializing UI");
 					UI.initialize(); 
+					universal.CLU("Boot:Systems", "UI initialized.");
+					universal.CLU("Boot:Systems", "Initializing Audio Engine");
 					universal.audioClient.initialize(); 
+					universal.CLU("Boot:Systems", "Audio Engine initialized.");
 					universal.CLU("Boot", "Init complete");
 					UI.closeBootLog().then(() => {
 						resolve(true);

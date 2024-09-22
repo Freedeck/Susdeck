@@ -60,13 +60,11 @@ export default function eventsHandler(universal, user) {
 				file: `${interaction.data.path}/${interaction.data.file}`,
 				name: Object.keys(a)[0],
 				channel: universal.audioClient.channels.cable,
-				stopPrevious: universal.load("stopPrevious"),
 			});
 			universal.audioClient.play({
 				file: `${interaction.data.path}/${interaction.data.file}`,
 				name: Object.keys(a)[0],
 				channel: universal.audioClient.channels.monitor,
-				stopPrevious: universal.load("stopPrevious"),
 			});
 		});
 

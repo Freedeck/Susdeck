@@ -87,9 +87,6 @@ const UAE = {
 		audioInstance.src = file;
 		audioInstance.load();
 
-		audioInstance.setAttribute("data-name", name);
-		audioInstance.setAttribute("data-channel", channel);
-
 		if (channel === ch.monitor || channel === ch.ui) {
 			await UAE.useSinkIfExists(audioInstance, "monitor.sink", universal.audioClient._player.monitorSink)
 			audioInstance.volume = universal.audioClient._player.monitorVol;
@@ -103,16 +100,14 @@ const UAE = {
 		audioInstance.preservesPitch = false;
 
 		audioInstance.dataset.name = name;
+		audioInstance.dataset.channel = channel;
 		audioInstance.dataset.monitoring = channel === ch.monitor;
 
-		if (stopPrevious === true) {
+		if (stopPrevious === true && channel !== ch.ui) {
 			for (const audio of universal.audioClient._nowPlaying) {
 				try {
-					if (audio.dataset.name === audioInstance.dataset.name) {
+					if (audio.dataset.name === name && audio.dataset.channel === channel.toString()) {
 						await audio.pause();
-						audio.currentTime = audio.duration;
-						await audio.play();
-						audio.remove();
 					}
 				} catch (err) {
 					// "waah waah waah noo you cant just abuse audio api" -companion

@@ -7,8 +7,7 @@ tmp/
 
 # User data
 src/configs/*
-src/public/sounds/*
-src/public/us-icons/*
+src/public/*
 user-data/sounds/*
 user-data/icons/*
 user-data/hooks/*

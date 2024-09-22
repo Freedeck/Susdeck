@@ -82,47 +82,38 @@ const UAE = {
 		file,
 		name,
 		isMonitor = false,
-		stopPrevious = false,
+		stopPrevious = universal.load("playback-mode") === "stop_prev",
 		volume = universal.load("vol") || 1,
+		pitch = universal.load("pitch") || 1,
 		channel = isMonitor
 			? universal.audioClient.channels.monitor
 			: universal.audioClient.channels.cable,
 	}) => {
 		const ch = universal.audioClient.channels;
 		const channelSelected = ch[channel];
-		const audioInstance = document.createElement("audio");
+		const audioInstance = new Audio();
 		audioInstance.src = file;
 		audioInstance.load();
 
-		if (universal.audioClient._player.sink !== 0) {
-			navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-			await audioInstance.setSinkId(universal.audioClient._player.sink);
-		}
 		audioInstance.setAttribute("data-name", name);
 		audioInstance.setAttribute("data-channel", channel);
 
 		if (channelSelected === ch.monitor) {
-			navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-			await audioInstance.setSinkId(universal.audioClient._player.monitorSink);
-			if (universal.load("monitor.sink")) {
-				navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-				await audioInstance.setSinkId(universal.load("monitor.sink"));
-			}
+			await UAE.useSinkIfExists(audioInstance, "monitor.sink", universal.audioClient._player.monitorSink)
 			audioInstance.volume = universal.audioClient._player.monitorVol;
 		} else {
+			await UAE.useSinkIfExists(audioInstance, "vb.sink", universal.audioClient._player.sink)
 			audioInstance.volume = universal.audioClient._player.normalVol;
 		}
-		if (universal.load("pitch")) {
-			audioInstance.playbackRate = universal.load("pitch");
-		}
 
+		audioInstance.playbackRate = pitch;
 		audioInstance.volume = volume;
 		audioInstance.preservesPitch = false;
 
 		audioInstance.dataset.name = name;
 		audioInstance.dataset.monitoring = isMonitor;
 
-		if (stopPrevious === "stop_prev") {
+		if (stopPrevious === true) {
 			for (const audio of universal.audioClient._nowPlaying) {
 				try {
 					if (audio.dataset.name === audioInstance.dataset.name) {
@@ -137,20 +128,29 @@ const UAE = {
 				}
 			}
 		}
+
 		await audioInstance.play();
+		window.lasti = audioInstance;
 
 		audioInstance.onended = (ev) => {
-			universal.sendEvent("audio-end", { audioInstance, name, isMonitor });
+			universal.sendEvent("audio-end", { audioInstance, name, channel });
 			universal.audioClient._end(ev);
 			audioInstance.remove();
 		};
 
 		universal.audioClient._nowPlaying.push(audioInstance);
-		universal.sendEvent("now-playing", { audioInstance, name, isMonitor });
+		universal.sendEvent("now-playing", { audioInstance, name, channel });
 		universal.updatePlaying();
-		document.body.appendChild(audioInstance);
 		return audioInstance;
 	},
+	useSinkIfExists: async (audioElem, sink, local) => {
+		navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+
+		if (universal.load(sink))
+			await audioElem.setSinkId(universal.load(sink)); 
+		else
+			await audioElem.setSinkId(local);
+	}
 };
 
 export default UAE;

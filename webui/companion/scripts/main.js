@@ -1552,8 +1552,9 @@ universal.on(universal.events.default.notif, (dat) => {
 });
 
 universal.listenFor("now-playing", (data) => {
-	const { name, isMonitor } = data;
-	if(isMonitor) return;
+	const { name, channel } = data;
+	if(channel === universal.audioClient.channels.ui || 
+		channel === universal.audioClient.channels.monitor) return;
 	const newEle = document.createElement("div");
 	const filname = name.replace(/[^a-zA-Z0-9]/g, "");
 	newEle.className = `np s-${filname}`;

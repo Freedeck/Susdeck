@@ -135,7 +135,7 @@ document.addEventListener("touchend", (e) => {
 
 if (document.querySelector("#version")) {
   document.querySelector("#version").innerText =
-    `${universal._information.server}`;
+    `${universal._information.version.human}`;
 }
 
 const downEvent = (ev) => {};

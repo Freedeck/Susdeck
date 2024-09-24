@@ -21,14 +21,14 @@ export default function eventsHandler(universal, user) {
 			const parsedToo = JSON.parse(data);
 			universal._information = JSON.parse(data);
 			universal.events = parsedToo.events;
-			universal.config = parsedToo.cfg;
+			universal.config = parsedToo.config;
 			universal.plugins = parsedToo.plugins;
 			universal._serverRequiresAuth = universal.config.useAuthentication;
 			universal.sendEvent("new-info");
 		});
 
 		universal.on(universal.events.companion.set_theme, (theme) => {
-			universal.setTheme(theme, false);
+			universal.theming.setTheme(theme, false);
 		});
 
 		universal.on(universal.events.companion.set_profile, (data) => {

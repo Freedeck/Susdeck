@@ -4,10 +4,10 @@ universal.listenFor("loadHooks", () => {
 
 window.st_ldt = async () => {
 	document.querySelector(".themelist").innerHTML = "";
-	for (const id of universal.themes) {
-		let theme = universal._data_themes_cache[id];
+	for (const id of universal.theming.listing) {
+		let theme = universal.theming.listingData[id];
 		if (!theme) {
-			theme = await universal.themeParse(id);
+			theme = await universal.theming.fetchAndParse(id);
 		}
 		const element = document.createElement("div");
 		element.className = "theme";
@@ -21,7 +21,7 @@ window.st_ldt = async () => {
 		element.onclick = () => {
 			universal.save("theme", id);
 			universal.send(universal.events.companion.set_theme, id);
-			universal.setTheme(
+			universal.theming.setTheme(
 				id, true
 			);
 			st_ldt();

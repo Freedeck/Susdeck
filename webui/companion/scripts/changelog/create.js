@@ -81,7 +81,7 @@ const makeThanks = () => {
   content.appendChild(linebrak2);
 
   const version = document.createElement("p");
-  version.innerText = `Welcome to Freedeck ${changes.version}.`;
+  version.innerText = `Welcome to ${universal._information.version.human}.`;
   content.appendChild(version);
 
   const bb = document.createElement("br");

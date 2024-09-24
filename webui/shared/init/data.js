@@ -21,9 +21,9 @@ export default function dataHandler(universal, user) {
       universal.CLU("Boot:Handler:Data:Setup", "Set raw server info");
       universal.events = parsed.events;
       universal.CLU("Boot:Handler:Data:Setup", "Set events");
-      universal.config = parsed.cfg;
+      universal.config = parsed.config;
       universal.CLU("Boot:Handler:Data:Setup", "Set Config");
-      universal.config.sounds = parsed.cfg.profiles[parsed.cfg.profile];
+      universal.config.sounds = parsed.config.profiles[parsed.config.profile];
       universal.CLU("Boot:Handler:Data:Setup", "Set Config Sounds");
       universal.plugins = parsed.plugins;
       universal.CLU("Boot:Handler:Data:Setup", "Set plugins");

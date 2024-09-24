@@ -47,7 +47,7 @@ function initialize() {
 	universal.CLU("Boot / UI", "Initializing UI");
 	universal.config.iconCountPerPage = universal.lclCfg().iconCountPerPage || 12;
 	universal.CLU("Boot / UI", "Set icon count");
-	universal.setTheme(
+	universal.theming.setTheme(
 		universal.config.theme ? universal.config.theme : "default",
 		false,
 	);

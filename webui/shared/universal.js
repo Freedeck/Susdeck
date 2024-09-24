@@ -2,9 +2,9 @@ import Pako from "pako";
 import { generic, handler } from "./nativeHandler";
 import dataHandler from "./init/data";
 import eventsHandler from "./init/events";
-import themeIndex from "./theming/themeIndex";
 import { UI } from "../client/scripts/ui";
 import audioEngine from "./audioEngine";
+import themeEngine from "./themeEngine";
 
 /**
  * Open the settings menu (on clients only)
@@ -182,61 +182,8 @@ const universal = {
 		});
 		universal.send(universal.events.login.login, { passwd });
 	},
-	themeData: {},
-	themes: themeIndex /* Theme list */,
-	_data_themes_cache: {},
-	themeParse: async (id) => {
-		const fetchable = await fetch(`/app/shared/theming/${id}.css`);
-		let theme;
-		if (fetchable.status !== 200) {
-			console.error(`Failed to fetch theme ${id}`);
-			return universal.sendToast(`Failed to fetch theme ${id}`);
-		}
-		const rawData = await fetchable.text();
-		const meta = rawData.match(/:theme-meta {([\s\S]*?)}/);
-		if (!meta) {
-			universal.sendToast(`Failed to parse theme ${id}`);
-			return console.error(`Failed to parse theme ${id}`);
-		}
-		theme = {};
-		const metaLines = meta[1].split("\n");
-		for (const line of metaLines) {
-			if (!line.trim()) continue;
-			const [key, value] = line.trim().split(": ");
-			theme[key.split("--")[1]] = value.split('";')[0].split('"')[1];
-		}
-		theme.raw = rawData;
-		universal._data_themes_cache[id] = theme;
-		return theme;
-	},
-	setTheme: (name, global = true) => {
-		const fu = universal.themes.includes(name) ? name : "default";
-
-		fetch(`/app/shared/theming/${fu}.css`)
-			.then((res) => res.text())
-			.then((css) => {
-				if (document.getElementById("theme")) {
-					document.getElementById("theme").remove();
-				}
-				const stylea = document.createElement("style");
-				stylea.id = "theme";
-				stylea.innerText += css;
-				document.body.appendChild(stylea);
-				universal.save("theme", name);
-				const dStyle = getComputedStyle(document.body);
-				universal.themeData = {
-					name: dStyle.getPropertyValue("--theme-name"),
-					author: dStyle.getPropertyValue("--theme-author"),
-					description: dStyle.getPropertyValue("--theme-description"),
-				};
-				if (global) universal.send(universal.events.companion.set_theme, name);
-				universal.save("theme", name);
-			})
-			.catch(() => {
-				console.error("Failed to load theme.");
-				universal.sendToast("Failed to load theme.");
-			});
-	},
+	theming: themeEngine,
+	themes: [] /* Theme list */,
 	imported_scripts: [],
 	import: (script) => {
 		universal.imported_scripts.push(script);
@@ -301,6 +248,9 @@ const universal = {
 				universal._initFn(user).then(async () => {
 					universal.CLU("Boot", "Init complete");
 					universal.CLU("Boot", `Received full configuration (${Object.keys(universal.config).length} objects translated from ${Object.keys(universal._information).length})`);
+					universal.CLU("Boot:Systems", "Initializing Theme Engine");
+					universal.theming.initialize();
+					universal.CLU("Boot:Systems", "Theme Engine initialized.");
 					universal.CLU("Boot:Systems", "Initializing UI");
 					UI.initialize(); 
 					universal.CLU("Boot:Systems", "UI initialized.");

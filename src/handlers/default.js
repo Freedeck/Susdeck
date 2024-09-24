@@ -9,8 +9,6 @@ const path = require("node:path");
 const zlib = require("node:zlib");
 const { readFileSync, readdirSync } = require("node:fs");
 
-const serverVersion = `Freedeck (Release ${require(path.resolve("package.json")).version})`;
-
 module.exports = {
   name: "Main",
   id: "fd.handlers.main",
@@ -105,24 +103,27 @@ module.exports = {
 
       const serverInfo = {
         id: socket._id,
+        tempLoginID: socket.tempLoginID,
         NotificationManager,
         hostname: require("node:os").hostname(),
         soundpacks: readdirSync(path.resolve("webui/common/sounds")).filter(
           (e) => e.endsWith(".soundpack"),
         ),
+        themes: readdirSync(path.resolve("webui/shared/theming")).filter(
+          (e) => e.endsWith(".css"),
+        ),
         mobileConnected: isMobileConnected || false,
-        tempLoginID: socket.tempLoginID,
         style: JSON.parse(
           readFileSync(path.resolve("./src/configs/style.json")),
         ),
         plugins: pl,
-        plSettings: plset,
         disabled: plugins._disabled,
         events: eventNames,
-        version: `OSH v${require(path.resolve("package.json")).version}`,
-        server: serverVersion,
-        cfg: cfg.settings(),
-        profiles: cfg.settings.profiles,
+        version: {
+          raw: require(path.resolve("package.json")).version,
+          human: `Freedeck v${require(path.resolve("package.json")).version}`
+        },
+        config: cfg.settings(),
       };
       debug.log("Setup serverInfo. GZipping.", `Socket ${socket.user}`);
       zlib.gzip(JSON.stringify(serverInfo), (err, buffer) => {

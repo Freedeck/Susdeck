@@ -23,9 +23,6 @@ universal.listenFor("init", () => {
 	const login = document.createElement("li");
 	login.id = "constat";
 	document.querySelector("#sidebar > ul").appendChild(login);
-
-	if (window.location.href.includes("sound=true"))
-		universal.uiSounds.playSound("page_enter");
 });
 
 document.onkeydown = (ev) => universal.uiSounds.playSound("int_type");

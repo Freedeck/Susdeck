@@ -29,7 +29,9 @@ async function fetchAndParse(id) {
 
 async function initialize() {
   for(const t of universal._information.themes) {
-    listing.push(t.split(".css")[0]);
+    const id = t.split(".css")[0];
+    listing.push(id)
+    universal.CLU("Boot / Theme Engine", `Added theme ${id} -> ${t}`);
   }
 }
 

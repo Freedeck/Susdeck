@@ -402,10 +402,10 @@
     window.createInputSetting = createInputSetting;
     window.createSettingCategory = createSettingCategory;
 
-    document.querySelector("#uis").checked = universal.uiSounds.enabled;
+    document.querySelector("#uis").checked = universal.uiSounds.enabled();
     document.querySelector("#uis").onchange = () => {
-        universal.uiSounds.enabled = document.querySelector("#uis").checked;
-        universal.save("uiSounds", universal.uiSounds.enabled);
+        universal.uiSounds.enabled = () => document.querySelector("#uis").checked;
+        universal.save("uiSounds", universal.uiSounds.enabled());
         document.querySelector(".soundpack").style.display = universal.uiSounds
             .enabled
             ? "block"
@@ -441,7 +441,7 @@
 
     universal._information.soundpacks.forEach((soundpack) => {
         const li = document.createElement("li");
-        li.innerText = soundpack;
+        li.innerText = soundpack.split(".css")[0];
         li.classList.add("soundpack");
         li.onclick = async () => {
             document.querySelector("#soundpack-id").innerText = "LOADING";
@@ -458,8 +458,7 @@
             const info = data.info;
             universal.save("soundpack", info.id);
             universal.uiSounds.reload();
-            universal.uiSounds.soundPack = info.id;
-            universal.uiSounds.load().then(() => {
+            universal.uiSounds.load(info.id).then(() => {
                 loadSounds();
             });
             document.querySelector("#soundpack-id").innerText = info.id;

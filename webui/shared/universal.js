@@ -5,6 +5,7 @@ import eventsHandler from "./init/events";
 import { UI } from "../client/scripts/ui";
 import audioEngine from "./audioEngine";
 import themeEngine from "./themeEngine";
+import uiSounds from "./uiSounds";
 
 /**
  * Open the settings menu (on clients only)
@@ -257,6 +258,9 @@ const universal = {
 					universal.CLU("Boot:Systems", "Initializing Audio Engine");
 					universal.audioClient.initialize(); 
 					universal.CLU("Boot:Systems", "Audio Engine initialized.");
+					universal.CLU("Boot:Systems", "Initializing UISound Engine");
+					universal.uiSounds.initialize(); 
+					universal.CLU("Boot:Systems", "UISound Engine initialized.");
 					universal.CLU("Boot", "Init complete");
 					UI.closeBootLog().then(() => {
 						resolve(true);
@@ -309,48 +313,7 @@ const universal = {
 			return _plugins;
 		},
 	},
-	uiSounds: {
-		enabled: false,
-		soundPack: "futuristic.soundpack",
-		info: {},
-		sounds: {},
-		playing: [],
-		reload: () => {
-			universal.uiSounds.enabled = universal.load("uiSounds") === "true";
-			if (!universal.uiSounds.enabled) return;
-			universal.uiSounds.soundPack =
-				universal.load("soundpack") || "futuristic.soundpack";
-			universal.uiSounds.load().then(() => {
-				universal.uiSounds.playSound("page_enter");
-			});
-		},
-		load: async () => {
-			const res = await fetch(
-				`/common/sounds/${universal.uiSounds.soundPack}/manifest.fdsp.json`,
-			).catch((err) => {
-				console.error(err);
-				universal.sendToast(
-					"Failed to load soundpack. Defaulting to futuristic.",
-				);
-				universal.uiSounds.soundPack = "futuristic.soundpack";
-				universal.uiSounds.reload();
-			});
-			const data = await res.json();
-			universal.uiSounds.sounds = data.sounds;
-			universal.uiSounds.info = data.info;
-			return true;
-		},
-		playSound: async (name) => {
-			if (!universal.uiSounds.enabled) return;
-			universal.audioClient.play({
-				file: `/common/sounds/${universal.uiSounds.info.id}/${universal.uiSounds.sounds[name]}`,
-				name,
-				channel: universal.audioClient.channels.ui,
-				stopPrevious: false,
-				volume: 0.5,
-			});
-		},
-	},
+	uiSounds,
 	/*  */
 	_cb: [],
 	keySet: () => {
@@ -472,8 +435,6 @@ const universal = {
 				universal.CLU("Boot:InitFN", "Starting init function");
 				window.universal = universal;
 				universal.CLU("Boot:InitFN", "Copied universal to window");
-				universal.uiSounds.reload();
-				universal.CLU("Boot:InitFN", "Reloaded UI sounds");
 				universal._socket = io();
 				universal.CLU("Boot:InitFN", "Preflight: connection to socket");
 				universal._socket.on("connect", () => {

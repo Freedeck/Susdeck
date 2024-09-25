@@ -1,39 +1,39 @@
 import { generic, handler } from "../nativeHandler";
 
 export default function dataHandler(universal, user) {
-  universal.CLU("Boot:Handler:Data", "Taking over for now.");
+  universal.CLU("Incoming Data Handler", "Taking over for now.");
   return new Promise((ress, rejj) => {
     universal.CLU(
-      "Boot:Handler:Data",
+      "Incoming Data Handler",
       "Created promise, listening for Identify event.",
     );
     universal.on("I", async (gzipped) => {
-      universal.CLU("Boot:Handler:Data", "Caught Identify event.");
+      universal.CLU("Incoming Data Handler", "Caught Identify event.");
       universal.connected = true;
       window.universal = universal;
-      universal.CLU("Boot:Handler:Data", "Re-copied Universal to window.");
+      universal.CLU("Incoming Data Handler", "Re-copied Universal to window.");
 
       const data = await universal.asyncDecompressGzipBlob(gzipped);
-      universal.CLU("Boot:Handler:Data", "Decompressed data.");
+      universal.CLU("Incoming Data Handler", "Decompressed data.");
       const parsed = JSON.parse(data);
-      universal.CLU("Boot:Handler:Data", "Parsed data.");
+      universal.CLU("Incoming Data Handler", "Parsed data.");
       universal._information = JSON.parse(data);
-      universal.CLU("Boot:Handler:Data:Setup", "Set raw server info");
+      universal.CLU("Incoming Data Handler:Setup", "Set raw server info");
       universal.events = parsed.events;
-      universal.CLU("Boot:Handler:Data:Setup", "Set events");
+      universal.CLU("Incoming Data Handler:Setup", "Set events");
       universal.config = parsed.config;
-      universal.CLU("Boot:Handler:Data:Setup", "Set Config");
+      universal.CLU("Incoming Data Handler:Setup", "Set Config");
       universal.config.sounds = parsed.config.profiles[parsed.config.profile];
-      universal.CLU("Boot:Handler:Data:Setup", "Set Config Sounds");
+      universal.CLU("Incoming Data Handler:Setup", "Set Config Sounds");
       universal.plugins = parsed.plugins;
-      universal.CLU("Boot:Handler:Data:Setup", "Set plugins");
+      universal.CLU("Incoming Data Handler:Setup", "Set plugins");
       universal._serverRequiresAuth = universal.config.useAuthentication;
-      universal.CLU("Boot:Handler:Data:Setup", "Set serverRequiresAuth");
+      universal.CLU("Incoming Data Handler:Setup", "Set serverRequiresAuth");
       universal._init = true;
-      universal.CLU("Boot:Handler:Data:Setup", "_init: Completed.");
+      universal.CLU("Incoming Data Handler:Setup", "_init: Completed.");
 
       // default setup
-      universal.CLU("Boot:Handler:Data", "Creating defaults.");
+      universal.CLU("Incoming Data Handler", "Creating defaults.");
 
       universal.default("notification_log", "");
       universal.default("playback-mode", "play_over");
@@ -48,25 +48,25 @@ export default function dataHandler(universal, user) {
 
       if (!universal.load("welcomed")) {
         universal.sendToast("Welcome to Freedeck.");
-        universal.CLU("Boot:Handler:Data", "Welcomed user.");
+        universal.CLU("Incoming Data Handler", "Welcomed user.");
         universal.save("welcomed", "true");
       }
 
-      universal.CLU("Boot:Handler:Data", "Saved TempLoginID.");
+      universal.CLU("Incoming Data Handler", "Saved TempLoginID.");
       universal.save("tempLoginID", parsed.tempLoginID);
 
       universal.keys.id = "keys";
-      universal.CLU("Boot:Handler:Data", "Forcefully setting keys ID.");
+      universal.CLU("Incoming Data Handler", "Forcefully setting keys ID.");
       if (!document.querySelector("#keys")) {
-        universal.CLU("Boot:Handler:Data", "Appending/Creating keys to body.");
+        universal.CLU("Incoming Data Handler", "Appending/Creating keys to body.");
         document.body.appendChild(universal.keys);
       }
 
       universal.notibar.id = "snackbar";
-      universal.CLU("Boot:Handler:Data", "Forcefully setting notibar ID.");
+      universal.CLU("Incoming Data Handler", "Forcefully setting notibar ID.");
       if (!document.querySelector("#snackbar")) {
         universal.CLU(
-          "Boot:Handler:Data",
+          "Incoming Data Handler",
           "Appending/Creating notibar to body.",
         );
         document.body.appendChild(universal.notibar);
@@ -74,20 +74,20 @@ export default function dataHandler(universal, user) {
 
       universal.send(universal.events.information, { apiVersion: "2" });
       universal.CLU(
-        "Boot:Handler:Data",
+        "Incoming Data Handler",
         "Identified ourselves as Companion APIv2.",
       );
 
       universal.repositoryManager.unofficial =
         universal.loadObj("repos.community") || [];
-      universal.CLU("Boot:Handler:Data", "Setup unofficial repositories.");
+      universal.CLU("Incoming Data Handler", "Setup unofficial repositories.");
 
-      universal.CLU("Boot:Handler:Data", "Setting up plugins for Tile Editor.");
+      universal.CLU("Incoming Data Handler", "Setting up plugins for Tile Editor.");
       for (const plugin of Object.keys(universal.plugins)) {
         const plug = universal.plugins[plugin];
         for (const type of plug.types) {
           universal.CLU(
-            "Boot:Handler:Data",
+            "Incoming Data Handler",
             `Type: ${type.name} -> ${plug.name} (aka. ${plug.id})`,
           );
           universal._tyc.set(type, plug);
@@ -96,12 +96,12 @@ export default function dataHandler(universal, user) {
 
       if (user === "Companion") {
         handler();
-        universal.CLU("Boot:Handler:Data", "Native handler created.");
+        universal.CLU("Incoming Data Handler", "Native handler created.");
       }
 
       generic();
       universal.CLU(
-        "Boot:Handler:Data",
+        "Incoming Data Handler",
         "Generic native handler created. Resolving as we're finished here.",
       );
       ress(true);

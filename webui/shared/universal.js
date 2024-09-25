@@ -247,22 +247,23 @@ const universal = {
 			try {
 				universal.CLU("Boot", "Pre-init");
 				universal._initFn(user).then(async () => {
-					universal.CLU("Boot", "Init complete");
 					universal.CLU("Boot", `Received full configuration (${Object.keys(universal.config).length} objects translated from ${Object.keys(universal._information).length})`);
-					universal.CLU("Boot:Systems", "Initializing Theme Engine");
+					universal.CLU("Boot", "Running post-init tasks");
+					universal.CLU("Systems", "Initializing Theme Engine");
 					universal.theming.initialize();
-					universal.CLU("Boot:Systems", "Theme Engine initialized.");
-					universal.CLU("Boot:Systems", "Initializing UI");
+					universal.CLU("Systems", "Theme Engine initialized.");
+					universal.CLU("Systems", "Initializing UI");
 					UI.initialize(); 
-					universal.CLU("Boot:Systems", "UI initialized.");
-					universal.CLU("Boot:Systems", "Initializing Audio Engine");
+					universal.CLU("Systems", "UI initialized.");
+					universal.CLU("Systems", "Initializing Audio Engine");
 					universal.audioClient.initialize(); 
-					universal.CLU("Boot:Systems", "Audio Engine initialized.");
-					universal.CLU("Boot:Systems", "Initializing UISound Engine");
+					universal.CLU("Systems", "Audio Engine initialized.");
+					universal.CLU("Systems", "Initializing UISound Engine");
 					universal.uiSounds.initialize(); 
-					universal.CLU("Boot:Systems", "UISound Engine initialized.");
-					universal.CLU("Boot", "Init complete");
+					universal.CLU("Systems", "UISound Engine initialized.");
+					universal.CLU("Boot", "Post-init tasks completed.");
 					UI.closeBootLog().then(() => {
+						universal.CLU("Boot", "Boot log closed.");
 						resolve(true);
 					})
 				});
@@ -432,37 +433,36 @@ const universal = {
 	_initFn: (/** @type {string} */ user) =>
 		new Promise((resolve, reject) => {
 			try {
-				universal.CLU("Boot:InitFN", "Starting init function");
+				universal.CLU("InitFN", "Starting init function");
 				window.universal = universal;
-				universal.CLU("Boot:InitFN", "Copied universal to window");
+				universal.CLU("InitFN", "Copied universal to window");
 				universal._socket = io();
-				universal.CLU("Boot:InitFN", "Preflight: connection to socket");
+				universal.CLU("InitFN", "Preflight: connection to socket");
 				universal._socket.on("connect", () => {
-					universal.CLU("Boot:InitFN", "We're connected to the server!");
+					universal.CLU("InitFN", "We're connected to the server!");
 					universal.connected = true;
 					universal.name = user;
 					if (universal.lastRetry !== -1) {
-						universal.CLU("Boot:InitFN", "This is a reconnection.");
+						universal.CLU("InitFN", "This is a reconnection.");
 						universal.sendToast("Reconnected to server.");
 						// tell server we're disconnecting
 						universal._socket.disconnect();
 						window.location.reload();
 						return;
 					}
-					universal.CLU("Boot:InitFN", "Sent Identify packet");
+					universal.CLU("InitFN", "Sent Identify packet");
 					universal.send("G", user);
-					universal.CLU("Boot:InitFN", "Starting dataHandler");
+					universal.CLU("InitFN", "Starting dataHandler");
 					dataHandler(universal, user).then(() => {
-						universal.CLU("Boot:InitFN", "Starting eventsHandler");
+						universal.CLU("InitFN", "Starting eventsHandler");
 						eventsHandler(universal, user).then(() => {
-							universal.CLU("Boot:InitFN", "Starting UI");
 							resolve(true);
 						});
 					});
 				});
-				universal.CLU("Boot:InitFN / WakeLock", "Attempting to grab wake lock.");
+				universal.CLU("InitFN / WakeLock", "Attempting to grab wake lock.");
 				universal.wakeLock.request();
-				universal.CLU("Boot:InitFN", "Boot completed.");
+				universal.CLU("InitFN", "Boot completed.");
 			} catch (e) {
 				console.error(e);
 				reject(e);

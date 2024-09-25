@@ -1,7 +1,7 @@
 const path = require("node:path");
 
 const cfg = {
-  mode: "development",
+  mode: "production",
   entry: {
     main: path.resolve("webui/companion/scripts/main.js"),
     settingsThemes: path.resolve("webui/companion/scripts/settingsThemes.js"),
@@ -22,6 +22,7 @@ const cfg = {
       },
     ],
   },
+  devtool: false,
   externals: {
     Pako: "Pako",
     settingsHelpers: "settingsHelpers",

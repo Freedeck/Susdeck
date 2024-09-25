@@ -1,10 +1,10 @@
 const { webpack } = require("webpack");
 const fs = require("node:fs");
 const path = require("node:path");
-const webpackConfig = require("../webpack.config");
+const webpackConfig = require(path.resolve("webpack.config.js"));
 const setWsStateHttp = require(path.resolve("src/routers/connect.js")).webpackState;
 let compileTime = 0;
-
+process.env.NODE_ENV = "production";
 /**
  *  run webpack
  * @param {*} wp  a

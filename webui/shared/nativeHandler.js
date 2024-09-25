@@ -18,12 +18,12 @@ const updateKeys = (data) => {
 };
 
 export function grabAndHandle() {
-	fetch("/native/volume/apps")
-		.then((res) => res.json())
-		.then((a) => {
-			updateKeys(a);
-		})
-		.catch((err) => {});
+	// fetch("/native/volume/apps")
+	// 	.then((res) => res.json())
+	// 	.then((a) => {
+	// 		updateKeys(a);
+	// 	})
+	// 	.catch((err) => {});
 }
 
 export function generic() {

@@ -1,20 +1,51 @@
-<center>
-    <h1>Marketplace</h1>
-    <p>Since the marketplace is in beta, it only supports Windows for now. Support for other platforms will be added
-        later.
-    </p>
-    <button onclick="universal.mkp_addRepo();">
-        Add Unofficial Repo
-    </button>
-    <ul class="repositories"></ul>
-    <div class="marketplace">
-        <p>Loading Marketplace Handler...</p>
-    </div>
-</center>
+<h1>Marketplace <span class="tag-beta">Beta</span></h1>
+<p>Welcome to the Freedeck Marketplace. Here you can download plugins to add even more functionality to your Freedeck.
+</p>
+<button onclick="universal.mkp_addRepo();">
+    Add Unofficial Repo
+</button>
+<h2 class="message">Loading Marketplace...</h2>
+<p>Repositories</p>
+<ul class="repositories"></ul>
+<div class="marketplace">
+    <p>Loading Marketplace...</p>
+</div>
+<div id="dialog-conta"></div>
 
 <style>
     .disabledable {
         display: flex;
+    }
+
+    .repositories {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .repositories li {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        color: var(--modal-item-text);
+        border: 1px solid #000;
+        border-radius: 5px;
+        margin: 0.5rem 0;
+        gap: 1rem;
+        min-width: 150px;
+        text-overflow: ellipsis;
+
+        background: var(--modal-item-bg);
+        background-size: var(--modal-item-bg-size);
+        animation: var(--modal-item-bg-anim);
+    }
+
+    .plugin-ifo {
+        background: rgba(0, 0, 0, 0.25);
+        padding: 0.5rem;
+        border-radius: 5px;
     }
 
     .item {
@@ -41,20 +72,51 @@
         flex-wrap: wrap;
         gap: 5px;
     }
+
+    .special-lineheight {
+        gap: 0;
+    }
+
+    .special-lineheight h1 {
+        height: 0.5em;
+    }
 </style>
 
 <script type="module">
-    const dialog = document.createElement('dialog');
+    const dialogC = document.createElement('dialog');
+    dialogC.classList.add('dialog');
+    dialogC.classList.add('full-center')
+    const dialog = document.createElement('div');
+    dialog.classList.add("flex-wrap")
+    dialog.classList.add("special-lineheight")
+    dialogC.appendChild(dialog)
+    function Show() {
+        dialogC.style.display = 'block';
+        dialog.style.display = 'flex';
+    }
+    function Hide() {
+        dialogC.style.display = 'none';
+        dialog.style.display = 'none';
+    }
+    Hide();
+    document.querySelector("#dialog-conta").appendChild(dialogC)
+
     const loadRepo = (repo, isUnofficial = false) => {
-        document.querySelector('.marketplace').innerHTML = 'Fetching Marketplace repository: ' + repo.title;
+        document.querySelector('.message').innerHTML = 'Fetching Marketplace repository: ' + repo.title;
         const li = document.createElement('li');
         li.setAttribute('hovereffect', 'yes');
         li.style.cursor = 'default';
-        li.innerText = (isUnofficial ? '(!) ' : '') + repo.title + ' - ' + repo.who;
+        if (!isUnofficial) {
+            li.style.background = 'var(--main-bg)';
+            li.style.backgroundSize = 'var(--main-bg-size)';
+            li.style.animation = 'error-bg 5s linear infinite';
+        }
+        li.innerText = (isUnofficial ? '(!) ' : '') + repo.title;
+        li.innerHTML += " &#10148; ";
+        li.innerText += repo.who;
         document.querySelector('.repositories').appendChild(li);
 
         universal.repositoryManager.getPluginsfromRepo(repo.link).then((plugins) => {
-            document.querySelector('.marketplace').innerHTML = '';
             if (plugins[0].err) {
                 li.innerText += ' - Error: ' + plugins[0].msg;
                 if (!isUnofficial) return;
@@ -76,38 +138,40 @@
                 li.className = 'item';
                 const name = document.createElement('div');
                 name.innerText = isUnofficial ? '(!) ' + req.name : req.name;
+                name.innerHTML += ' &bull; by ';
+                name.innerText += req.author;
+                name.style.fontWeight = 'bold';
                 li.appendChild(name);
-                const author = document.createElement('div');
-                author.innerText = req.author;
-                li.appendChild(author);
                 const version = document.createElement('div');
                 version.innerText = 'v' + req.version;
                 li.appendChild(version);
                 const desc = document.createElement('div');
                 desc.innerText = req.description;
+                desc.classList.add("plugin-ifo")
                 li.appendChild(desc);
                 const rl = document.createElement('div');
-                rl.innerText = "Repository: " + repo.title;
+                rl.innerText = "From " + repo.title;
                 li.appendChild(rl);
                 const file = document.createElement('button');
                 file.onclick = () => {
                     universal.uiSounds.playSound('int_confirm');
                     dialog.innerHTML = `
         <h1>Download ${req.name}</h1><p>Are you sure you want to download ${req.name} (from ${repo.title})?</p>
-        <span>
-        <button id="yes">Yes</button>
+        <p class="plugin-ifo">${req.description}</p>
+        <div class="flex-wrap-r space-evenly">
+        <button class="tint-green" id="yes">Yes</button>
         <button id="no">No</button>
-        </span>`;
-                    dialog.showModal();
-                    document.querySelector('#yes').onclick = () => {
-                        universal.uiSounds.playSound('int_yes');
+        </div>`;
+                    Show();
+                    dialog.querySelector('#yes').onclick = () => {
+                        universal.uiSounds.playSound('int_prompt');
                         const handoffURL = 'freedeck://download/' + req.id + '/' + encodeURIComponent(req.file);
                         window.location.href = handoffURL;
                         dialog.innerHTML = `<h1>Downloading ${req.name}</h1><p>Downloading ${req.name}...</p>`;
                     };
-                    document.querySelector('#no').onclick = () => {
+                    dialog.querySelector('#no').onclick = () => {
                         universal.uiSounds.playSound('int_no');
-                        dialog.close();
+                        Hide();
                     };
                 };
                 file.innerText = 'Download';
@@ -131,9 +195,10 @@
                 document.querySelector('.marketplace').appendChild(li);
             });
         });
+
+        document.querySelector('.message').innerHTML = '';
     };
 
-    document.body.appendChild(dialog);
 
     const loadRepos = () => {
         document.querySelector('.repositories').innerHTML = '';
@@ -153,39 +218,42 @@
     });
 
     function addRepo() {
-        universal.uiSounds.playSound('int_prompt');
-        if (document.querySelector('#repo-dialog')) document.querySelector('#repo-dialog').remove();
-        const modal = document.createElement('dialog');
-        modal.className = 'dialog';
-        modal.id = 'repo-dialog';
-        modal.style.zIndex = '1021';
-        modal.innerHTML = `
-            <div id="login-div">
-                <h1>Freedeck 6 - Companion</h1>
-                <p>Enter the URL of the repository</p>
+        universal.uiSounds.playSound('int_confirm');
+        dialog.innerHTML = `
+            <h1>New Repository</h1>
+                <p class="add-msg">Enter the URL of the repository</p>
                 <label for="title">Repository Title</label><input type="text" id="title" placeholder="freedeck.app">
                 <label for="url">Repository Access URL</label><input type="text" id="url" placeholder="https://freedeck.app/_fd/repository.php">
-                <button id="submit">Submit</button>
-                <button onclick="universal.uiSounds.playSound('int_no'); document.querySelector('#repo-dialog').style.display='none';">Cancel</button>
-            </div>
+                <br>
+                <div class="flex-wrap-r space-evenly">
+                <button class="tint-green" id="submit">Done</button>
+                <button id="cancel">Cancel</button>
+                </div>
         `;
+        Show()
+        document.querySelector('#cancel').onclick = () => {
+            Hide();
+            universal.uiSounds.playSound('int_no');
+        };
+        dialog.querySelector('#submit').onclick = () => {
+            document.querySelector('#submit').disabled = true;
+            document.querySelector('#cancel').disabled = true;
 
-        document.body.appendChild(modal)
-        modal.style.display = 'block'
-        modal.style.position = 'absolute'
-        modal.querySelector('#login-div').style.display = 'block';
-        modal.querySelector('#login-div').style.height = 'max-content';
-        modal.querySelector('#login-div').querySelector('#submit').onclick = () => {
-            const title = modal.querySelector('#title').value;
-            fetch(modal.querySelector('#url').value, { method: 'GET' }).then(res => res.text()).then(data => {
+            document.querySelector('#submit').innerText = "Please wait...";
+
+            const title = dialog.querySelector('#title').value;
+            const url = dialog.querySelector('#url');
+            document.querySelector('.add-msg').innerText = 'Fetching repository from ' + url.value + '...';
+
+            universal.uiSounds.playSound('int_prompt');
+            fetch(url.value, { method: 'GET' }).then(res => res.text()).then(data => {
                 const desc = data.split('\n')[0]
-                const url = modal.querySelector('#url').value;
                 console.log(title, desc, url)
                 let curr = [];
                 if (universal.load('repos.community') != 'ée') curr = JSON.parse(universal.load('repos.community'))
-                curr.push({ title, who: desc, link: url })
+                curr.push({ title, who: desc, link: url.value })
                 universal.save('repos.community', JSON.stringify(curr))
-                modal.remove()
+                // Hide()
                 universal.repositoryManager.unofficial = curr;
                 loadRepos();
             })

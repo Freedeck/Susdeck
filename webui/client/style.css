@@ -325,7 +325,17 @@ input {
     outline: none;
 }
 
-#login-dialog {
+.tint-green {
+    background-color: rgba(0, 255, 0, 0.125);
+}
+
+.space-evenly {
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#login-dialog,
+.full-center {
     position: absolute;
     top: 0;
     left: 0;

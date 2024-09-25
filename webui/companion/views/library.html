@@ -1,17 +1,15 @@
-<center>
-  <h1>Library</h1>
-  <p>Here you will find every sound or icon you've uploaded.</p>
-  <button class="save-changes">Save Changes</button>
-</center>
+<h1>Library</h1>
+<p>Here you will find every sound or icon you've uploaded.</p>
+<button class="save-changes">Save Changes</button>
 
-<h1 id="uploads-0-title">Sounds<button onclick="universal._Uploads_New(1)">
+<h2 id="uploads-0-title">Sounds<button onclick="universal._Uploads_New(1)">
     Upload Sound
-  </button></h1>
+  </button></h2>
 <div class="uploads uploads-0"></div>
 
-<h1 id="uploads-1-title">Icons <button onclick="universal._Uploads_New(0)">
+<h2 id="uploads-1-title">Icons <button onclick="universal._Uploads_New(0)">
     Upload Icon
-  </button></h1>
+  </button></h2>
 <div class="uploads uploads-1"></div>
 
 <style>
@@ -62,18 +60,19 @@
 
   .glow {
     animation: glow 1s infinite alternate;
-}
+  }
 
-@keyframes glow {
+  @keyframes glow {
     0% {
-        box-shadow: 0 0 40px rgba(255, 0, 255, 0.5);
-        transform: scale(1);
+      box-shadow: 0 0 40px rgba(255, 0, 255, 0.5);
+      transform: scale(1);
     }
+
     100% {
-        box-shadow: 0 0 40px rgba(0, 255, 255, 1);
-        transform: scale(1.1);
-      }
-}
+      box-shadow: 0 0 40px rgba(0, 255, 255, 1);
+      transform: scale(1.1);
+    }
+  }
 </style>
 
 <script>
@@ -96,7 +95,7 @@
       }
       cc++;
     }
-    if(universal._libraryOnpaint) universal._libraryOnpaint();
+    if (universal._libraryOnpaint) universal._libraryOnpaint();
   })
-  if(universal._libraryOnload) universal._libraryOnload();
+  if (universal._libraryOnload) universal._libraryOnload();
 </script>

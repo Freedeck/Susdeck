@@ -1,27 +1,29 @@
+<h1>Your Plugins</h1>
+<p>Here you can view every plugin connected to Freedeck and it's related tile type!</p>
+<button id="upd">Reload All Plugins</button>
+
 <center>
-    <h1>Your Plugins</h1>
-    <p>Here you can view every plugin connected to Freedeck and it's related tile type!</p>
-    <button id="upd">Reload All Plugins</button>
-
     <ul id="actl" class="btnlist"></ul>
-    <h3>Tile Types</h3>
-    <div class="btns"></div>
-
-    <h2>Disabled Plugins</h2>
-    <div id="disbl-list" class="row"></div>
 </center>
+<h3>Tile Types</h3>
+<div class="btns"></div>
+
+<h2>Disabled Plugins</h2>
+<div id="disbl-list" class="row"></div>
 <style>
     .disabledable,
     #disbl-list {
         display: flex;
         gap: 0.5rem;
     }
+
     .btns {
         display: flex;
         gap: 0.5rem;
         width: 100%;
         flex-wrap: wrap;
     }
+
     center ul {
         list-style-type: none;
         padding: 0;
@@ -30,13 +32,15 @@
         flex-direction: row;
         flex-wrap: wrap;
     }
+
     .btnlist {
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         gap: 0.5rem;
     }
 
-    center ul li {
+    .btnlist li {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -47,7 +51,7 @@
         border-radius: 5px;
         margin: 0.5rem 0;
         gap: 0.25rem;
-        width: 200px;
+        min-width: 150px;
         height: max-content;
         text-overflow: ellipsis;
 
@@ -82,8 +86,8 @@
         a.innerText = 'Disable';
         a.onclick = () => {
             universal.uiSounds.playSound('int_confirm');
-            window.showPick('Are you sure you want to disable ' + req.name + '?', [{name:'Yes',value:true},{name:'No',value:false}], (m, v) => {
-                if(v.value == true) {
+            window.showPick('Are you sure you want to disable ' + req.name + '?', [{ name: 'Yes', value: true }, { name: 'No', value: false }], (m, v) => {
+                if (v.value == true) {
                     universal.send(universal.events.default.disable_plugin, req.id);
                 }
             });
@@ -117,12 +121,12 @@
         document.querySelector('#disbl-list').appendChild(a);
     });
 
-    
-    
+
+
     universal.on(universal.events.default.plugin_downloaded, () => {
         dialog.innerHTML += `<p>Downloaded successfully. Give Freedeck a second to update it's plugin index.</p>`;
     });
-    
+
     document.querySelector('#upd').onclick = () => {
         universal.uiSounds.playSound('int_yes');
         universal.send(universal.events.default.update_plugins);
@@ -130,6 +134,6 @@
         dialog.innerHTML = `<p>Reloading plugins!</p>`;
     };
     const dialog = document.querySelector('dialog') || document.createElement('dialog');
-    if(!document.querySelector('dialog')) document.body.appendChild(dialog);
+    if (!document.querySelector('dialog')) document.body.appendChild(dialog);
 
 </script>

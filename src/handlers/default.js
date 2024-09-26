@@ -17,7 +17,7 @@ module.exports = {
     socket.tempLoginID = `${Math.random() * 1024}.tlid.fd`;
     socket._clientInfo = {};
 
-    debug.log("Client connected", `Socket ${socket._id}`);
+    debug.log("Connected", `Socket.IO API / ${socket._id}`);
 
     socket.on("disconnect", () => {
       if (socket.user === "Main") {
@@ -26,8 +26,8 @@ module.exports = {
       }
       if (socket.user === "Companion") tsm.delete("IC");
       debug.log(
-        pc.red(`Client ${socket.user} disconnected`),
-        `Socket ${socket._id}`,
+        pc.red("Disconnected"),
+        `Socket.IO API / ${socket._id}`,
       );
     });
 
@@ -41,7 +41,7 @@ module.exports = {
       }
     }
 
-    debug.log("Created socket hooks.", `Socket ${socket._id}`);
+    debug.log("Created socket hooks.", `Socket.IO API / ${socket._id}`);
 
     for (const event of Object.keys(eventNames.default)) {
       socket.on(eventNames.default[event], (data) => {
@@ -59,22 +59,22 @@ module.exports = {
       });
     }
     debug.log(
-      "Created event listeners. Now listening for user greet.",
-      `Socket ${socket._id}`,
+      "Created all event listeners.",
+      `Socket.IO API / ${socket._id}`,
     );
 
     socket.on(eventNames.client_greet, (user) => {
       socket.user = user;
-      debug.log("Migrating to username.", `Socket ${socket.user}`);
+      debug.log("Migrating to username.", `Socket.IO API / @${socket.user} ${socket._id}`);
       if (user === "Main") {
-        debug.log("Is mobile.", `Socket ${socket.user}`);
+        debug.log("Mobile device.", `Socket.IO API / @${socket.user} ${socket._id}`);
         if (tsm.get("isMobileConnected") === undefined)
           tsm.set("isMobileConnected", false);
         io.emit(eventNames.user_mobile_conn, true);
         tsm.set("isMobileConnected", true);
       }
       if (user === "Companion") {
-        debug.log("Not mobile.", `Socket ${socket.user}`);
+        debug.log("Not a mobile device.", `Socket.IO API / @${socket.user} ${socket._id}`);
         if (tsm.get("IC") === undefined) tsm.set("IC", socket._id);
         if (tsm.get("IC") !== socket._id) {
           socket.emit(eventNames.companion.conn_fail);
@@ -96,9 +96,9 @@ module.exports = {
           plugin[1].instance.id,
         );
       }
-      debug.log("Setup plugin information", `Socket ${socket.user}`);
+      debug.log("Fetched plugin information", `Socket.IO API / @${socket.user} ${socket._id}`);
       cfg.update();
-      debug.log("Refreshed configuration", `Socket ${socket.user}`);
+      debug.log("Refreshed configuration", `Socket.IO API / @${socket.user} ${socket._id}`);
       const isMobileConnected = tsm.get("isMobileConnected");
 
       const serverInfo = {
@@ -125,13 +125,13 @@ module.exports = {
         },
         config: cfg.settings(),
       };
-      debug.log("Setup serverInfo. GZipping.", `Socket ${socket.user}`);
+      debug.log("Setup serverInfo. GZipping.", `Socket.IO API / @${socket.user} ${socket._id}`);
       zlib.gzip(JSON.stringify(serverInfo), (err, buffer) => {
         if (err) {
           console.error("Compression error:", err);
           return;
         }
-        debug.log("GZipped. Sending information.", `Socket ${socket.user}`);
+        debug.log("GZipped. Sending information.", `Socket.IO API / @${socket.user} ${socket._id}`);
 
         socket.emit(eventNames.information, buffer);
       });
@@ -143,12 +143,12 @@ module.exports = {
       });
       debug.log(
         "Letting user know they're connected.",
-        `Socket ${socket.user}`,
+        `Socket.IO API / @${socket.user} ${socket._id}`
       );
 
       socket.on(eventNames.information, (data) => {
         socket._clientInfo = data;
-        debug.log(`Companion using APIv${data.apiVersion}`);
+        debug.log(`Companion using APIv${data.apiVersion}`, `Socket.IO API / @${socket.user} ${socket._id}`);
       });
     });
   },

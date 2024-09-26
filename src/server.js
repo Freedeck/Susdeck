@@ -29,7 +29,7 @@ pl.update();
 
 const clients = [];
 
-console.log("Initializing server...");
+debug.log("Initializing server...", "Server / HTTP");
 
 io.on("connection", (socket) => {
   socket._originalOn = socket.on;
@@ -64,7 +64,7 @@ io.on("connection", (socket) => {
 
   socket.on = (event, callback) => {
     socket._originalOn(event, callback);
-    debug.log(picocolors.green(`Listening for event ${event}`), "SAPIConn");
+    debug.log(picocolors.green(`Listening for event ${event}`), "Socket.IO API");
   };
 
   socket.emit = (event, data) => {
@@ -74,7 +74,7 @@ io.on("connection", (socket) => {
         picocolors.green(
           `Emitted new event ${event}, data: ${JSON.stringify(data)}`,
         ),
-        "SAPIConn",
+        "Socket.IO API",
       );
   };
 
@@ -98,7 +98,7 @@ io.on("connection", (socket) => {
       }
       debug.log(
         `${picocolors.cyan(`Added new handler ${handler.name}`)}- for ${socket._id}\n`,
-        "SAPI",
+        "Socket.IO API",
       );
     }
   } catch (e) {

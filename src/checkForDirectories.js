@@ -50,4 +50,4 @@ if(fs.existsSync("src/public/companion") && fs.existsSync("src/public/companion/
   fs.rmSync("src/public/companion/dist", { recursive: true });
 }
 
-console.log("Migration complete.");
+debug.log("Migration complete.", "Migration");

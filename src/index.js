@@ -55,14 +55,16 @@ require("./checkForDirectories");
 
 const settings = require("./managers/settings");
 
-fs.writeFileSync(
-  path.resolve("./FreedeckCore.log"),
-  `A{${Date.now()}} Cleared. Launching autoupdater.\n`,
-);
 const appSettings = settings.settings();
 debug.writeLogs = appSettings.writeLogs;
 
-if (!DO_COMPANION && DOES_RUN_SERVER) require("./server");
+if (!DO_COMPANION && DOES_RUN_SERVER) {
+  fs.writeFileSync(
+    path.resolve("./FreedeckCore.log"),
+    `S{${Date.now()}} New log.\n`,
+  );
+  require("./server");
+}
 if (DO_COMPANION) {
   const { app } = require("electron");
   app.whenReady().then(() => {
@@ -95,9 +97,7 @@ function setupTerm() {
 
   for (const sig of signals) {
     process.on(sig, () => {
-      if (sig === "SIGINT") {
-        console.log("So you have chosen an unclean death. Goodbye.");
-      }
+      if (sig === "SIGINT") console.log("[Freedeck] Shutting down...");
       terminator(sig);
       debug.log(`Signal received: ${sig}`);
     });
@@ -111,17 +111,18 @@ function setupTerm() {
           fs.rmSync(path.resolve("./webui/hooks", file), {
             recursive: true,
           });
-          console.log("- Unloaded " + file);
+          console.log(`[Plugin Manager / Hooks] Unloaded ${file}`);
         }
 
-        console.log("Hooks unloaded.");
+        console.log("[Plugin Manager] Hooks unloaded.");
       }
       if (fs.existsSync(path.resolve("./tmp"))) {
         fs.rmSync(path.resolve("./tmp"), { recursive: true });
-        console.log("Plugins unloaded. Bye!");
+        console.log("[Plugin Manager] Plugin extractions unloaded.");
       }
 
       setTimeout(() => {
+        console.log("[Freedeck] Exiting...");
         process.exit(1);
       });
     }

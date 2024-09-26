@@ -11,7 +11,7 @@ const pl = {
 	_ch: new Map(),
 	_settings: new Map(),
 	plugins: () => {
-		debug.log("Plugins accessed.");
+		debug.log("Plugins accessed.", "Plugin Manager");
 		if (pl._plc.length >= 0) pl.update();
 		return pl._plc;
 	},
@@ -33,7 +33,7 @@ const pl = {
 		await pl.update();
 	},
 	update: async () => {
-		console.log("This may take a second- we're rebuilding the plugin cache.");
+		debug.log("Rebuilding the plugin cache.", "Plugin Manager");
 		pl._disabled = [];
 		pl._plc.clear();
 		pl._tyc.clear();
@@ -54,19 +54,7 @@ const pl = {
 		}
 	},
 	singleFile: async (file) => {
-		debug.log(
-			"--- You're loading a single file plugin, this may take a second. ---",
-		);
-		debug.log(
-			`--- If you're the developer of the plugin (${file}), please ensure you know:\n 1. Hooks are UNSUPPORTED, and may be unstable due to the nature of the plugin system.`,
-		);
-		debug.log(
-			"--- If you do make hooks work, kindly ensure that it doesn't crash consistently. ---",
-		);
-		debug.log(
-			"--- 2. You must use CommonJS to export (module.exports) your plugin, and it must be a class. ---",
-		);
-		debug.log("--- With that out of the way, let's load the plugin. ---");
+		debug.log("You're loading a single file plugin. Expect unexpected behavior.", "Plugin Manager");
 		const ipl = require(path.resolve(`./plugins/${file}`));
 		const instantiated = new ipl();
 		pl._plc.set(instantiated.id, { instance: instantiated });
@@ -83,7 +71,7 @@ const pl = {
 			);
 			pl._settings.set(instantiated.id, settings);
 		}
-		debug.log(`Successfully loaded single file plugin ${file}`);
+		debug.log(`Successfully loaded single file plugin ${file}`, "Plugin Manager");
 	},
 	load: async (file) => {
 		if (file.includes(".disabled")) {
@@ -105,12 +93,7 @@ const pl = {
 				return;
 			}
 			if (file.endsWith(".src")) {
-				debug.log(
-					"--- You're loading an unpacked plugin, this may take a second! --- ",
-				);
-				debug.log(
-					"--- Do remember to run your plugin through the dev-env (or ASAR package it, and replace asar with Freedeck)! ---",
-				);
+				debug.log("Loading unpacked plugin. Keep in mind disabling/enabling will not work.", "Plugin Manager");
 				const newPath = path.resolve(`./plugins/${file}`);
 				const cfgPath = path.resolve(newPath, "config.js");
 				try {
@@ -121,7 +104,7 @@ const pl = {
 					const { entrypoint } = require(cfgPath);
 					const entryPath = path.resolve(newPath, entrypoint);
 					const entry = require(entryPath);
-					debug.log("--- Emulating ASAR extraction, then we'll load. --- ");
+					debug.log("Emulating asar extraction...", "Plugin Manager");
 					fs.cpSync(
 						newPath,
 						path.resolve(
@@ -129,7 +112,7 @@ const pl = {
 						),
 						{ recursive: true },
 					);
-					debug.log("--- Loading. --- ");
+					debug.log("Executing plugin...", "Plugin Manager");
 					const instantiated = entry.exec();
 					pl._plc.set(instantiated.id, { instance: instantiated });
 					if (instantiated.disabled) {
@@ -158,7 +141,7 @@ const pl = {
 				}
 				return;
 			}
-			const a = await AsarBundleRunner.extract(`./plugins/${file}`, true);
+			const a = await AsarBundleRunner.extract(`./plugins/${file}`, false);
 			const instantiated = await AsarBundleRunner.run(a);
 			debug.log(
 				picocolors.yellow(

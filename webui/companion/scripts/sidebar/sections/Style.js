@@ -52,7 +52,7 @@ style.children.push(new SidebarSlider("Tile Size", "es-bs", "rem", "1", "12", "6
 	);
 }));
 
-style.children.push(new SidebarSlider("Tile Count", "es-tc", " tiles", "12", "54", "12", (e) => {
+style.children.push(new SidebarSlider("Tile Count", "es-tc", " tiles", "3", "54", "12", (e) => {
   universal.uiSounds.playSound("fdc_slider");
 	const count = document.querySelectorAll(".fdc-placeholder").length;
 	const diff = e.target.value - count;
@@ -79,7 +79,7 @@ style.children.push(new SidebarSlider("Tile Count", "es-tc", " tiles", "12", "54
 	);
 }));
 
-style.children.push(new SidebarSlider("Columns", "es-tr", " cols", "4", "15", "5", (e) => {
+style.children.push(new SidebarSlider("Columns", "es-tr", " cols", "2", "15", "5", (e) => {
   universal.uiSounds.playSound("fdc_slider");
 	universal.send(
 		universal.events.default.config_changed,
@@ -95,6 +95,7 @@ style.children.push(new SidebarSlider("Columns", "es-tr", " cols", "4", "15", "5
 		universal.events.default.config_changed,
 		setToLocalCfg("tileCols", 5),
 	);
+	document.documentElement.style.setProperty("--tile-columns", "repeat(5, 2fr)");
 }));
 
 style.children.push(new SidebarSlider("Hold Time", "es-lp", " sec", "2", "6", "3", (e) => {
@@ -105,6 +106,7 @@ style.children.push(new SidebarSlider("Hold Time", "es-lp", " sec", "2", "6", "3
 	);
 }, () => {
   universal.uiSounds.playSound("fdc_slider");
+	setValue("#es-lp", 3);
 	universal.send(
 		universal.events.default.config_changed,
 		setToLocalCfg("longPressTime", 3),

@@ -1,3 +1,5 @@
+import { UI } from "../../../client/scripts/ui";
+
 export class SidebarSection {
   name;
   id;
@@ -164,7 +166,10 @@ export class SidebarSlider {
     const resetButton = document.createElement("button");
     resetButton.innerText = "Reset";
     resetButton.id = `${this.id}-reset`;
-    resetButton.onclick = this.onReset;
+    resetButton.onclick = (e) => {
+      this.onReset(e);
+      UI.reloadSounds();
+    };
     container.appendChild(resetButton)
 
     const postfix = this.postfix || "";

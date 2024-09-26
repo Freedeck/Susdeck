@@ -12,24 +12,39 @@ const sc = {
 		}
 		return sc._cache;
 	},
-	update: () => {
+	styleSettings: {
+		scroll: false,
+		fill: false,
+		center: false,
+		compact: true,
+		"font-size": "15",
+		buttonSize: "6",
+		iconCountPerPage: "12",
+		longPressTime: "3",
+		tileCols: "5",
+	},
+	checkStyle: () => {
 		if (!fs.existsSync(path.resolve("./src/configs/style.json"))) {
-			const def = JSON.stringify({
-				scroll: false,
-				fill: false,
-				center: false,
-				"font-size": 15,
-				buttonSize: 6,
-				iconCountPerPage: 12,
-				longPressTime: 3,
-				tileCols: 5,
-			});
+			const def = JSON.stringify(this.styleSettings);
 			fs.writeFileSync(path.resolve("./src/configs/style.json"), def);
 		}
+		const data = JSON.parse(fs.readFileSync(path.resolve("./src/configs/style.json")));
+		for (const key in sc.styleSettings) {
+			if (!data[key] || typeof data[key] !== typeof sc.styleSettings[key]) {
+				data[key] = sc.styleSettings[key];
+				console.log(`Migration: Added ${key} to style.json`);
+			}
+		}
+		fs.writeFileSync(path.resolve("./src/configs/style.json"), JSON.stringify(data));
+		console.log("Style settings checked.");
+	},
+	update: () => {
+		sc.checkStyle();
 		delete require.cache[
 			require.resolve(path.resolve("./src/configs/config.fd.js"))
 		];
 		sc._cache = require(path.resolve("./src/configs/config.fd.js"));
+		console.log("Settings recached.")
 	},
 	save: () => {
 		const set = sc.settings();

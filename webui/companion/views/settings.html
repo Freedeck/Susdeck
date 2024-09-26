@@ -1,25 +1,47 @@
 <h1>Themes</h1>
 <div class="themelist"></div>
 
-<h1>UI Sounds</h1>
-<label for="uis">Enable UI Sounds? (Beta!)</label>
-<input type="checkbox" id="uis" />
-<div class="soundpack">
-    <br />
-    <h2>Soundpacks</h2>
+<h1>Experiments</h1>
+<p>These features may be buggy!!! You will not experience data loss.</p>
+<div class="experiments">
+    <div class="experiment">
+        <label for="uis">Enable UI Sounds <span class="tag-beta">BETA</span></label>
+        <input type="checkbox" id="uis" />
+    </div>
+    <div class="experiment">
+        <label for="cpm">Center Mode <span class="tag-beta">TEST</span></label>
+        <input type="checkbox" id="cpm" />
+    </div>
+</div>
+<div class="experiment-exist soundpack">
+    <h1>UI Sounds</h1>
     <ul class="soundpacks"></ul>
     <h2>Current Soundpack</h2>
-    <p>
-        Sound Pack: <span id="soundpack-title">Soundpack</span> (<span
-            id="soundpack-id"
-        ></span
-        >) v<span id="soundpack-version">0.0.0</span> by
+        <div class="experiment-exist">
+            <h3 id="soundpack-title">Soundpack</h3> 
+        (<span id="soundpack-id">id.soundpack</span>)
+        v<span id="soundpack-version">0.0.0</span> by
         <span id="soundpack-author">somebody</span>
-    </p>
+        </div>
     <ul class="uisounds"></ul>
 </div>
 <h1>Tools</h1>
 <style>
+    .experiments {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    .experiment {
+        display: flex;
+        gap: 5px;
+        background: var(--modal-item-bg);
+        background-size: var(--modal-item-bg-size);
+        animation: var(--modal-item-bg-anim);
+        padding: 5px;
+        border-radius: 5px;
+    }
+
     .uisounds,
     .soundpacks {
         display: flex;
@@ -35,7 +57,14 @@
         background-size: var(--modal-item-bg-size);
         animation: var(--modal-item-bg-anim);
         padding: 5px;
-        border-radius: 5px;
+        border-radius: 1.5rem;
+    }
+
+    .experiment-exist {
+        background-color: rgba(0,0,0,0.25);
+        padding: 5px;
+        border-radius: 1.5rem;
+        width: max-content;
     }
 </style>
 <div class="flex-wrap-r">
@@ -44,6 +73,9 @@
     </button>
     <button onclick="universal.showBootLog()">
         Show boot log
+    </button>
+    <button onclick="universal.sendToast('This is a test')">
+        Test Notification
     </button>
     <button onclick="universal.send(universal.events.default.recompile)">
         Ask server to recompile Webpack bundles
@@ -54,6 +86,25 @@
 <script type="module">
     import "/app/settingsThemes.js";
     st_ldt();
+
+    const setToLocalCfg = (key, value) => {
+        const cfg = universal.lclCfg();
+        cfg[key] = value;
+        return cfg;
+    }
+
+    window.settingsView_set = (k, v) => {
+        universal.send(
+            universal.events.default.config_changed,
+            setToLocalCfg(k, v)
+        );
+    }
+
+    document.querySelector("#cpm").checked = universal.lclCfg().center == true;
+
+    document.querySelector("#cpm").onchange = () => {
+        window.settingsView_set("center", !(universal.lclCfg().center == true));
+    };
 
     /**
      * Create a setting dynamically.
@@ -257,6 +308,7 @@
                                             () => {
                                                 universal.sendToast(
                                                     "All done, reloading...",
+                                                    "Setup complete!"
                                                 );
                                                 universal.save(
                                                     "has_setup",
@@ -404,16 +456,15 @@
 
     document.querySelector("#uis").checked = universal.uiSounds.enabled();
     document.querySelector("#uis").onchange = () => {
-        universal.uiSounds.enabled = () => document.querySelector("#uis").checked;
-        universal.save("uiSounds", universal.uiSounds.enabled());
+        universal.save("uiSounds", !universal.uiSounds.enabled());
         document.querySelector(".soundpack").style.display = universal.uiSounds
-            .enabled
+            .enabled()
             ? "block"
             : "none";
     };
 
     document.querySelector(".soundpack").style.display = universal.uiSounds
-        .enabled
+        .enabled()
         ? "block"
         : "none";
     document.querySelector("#soundpack-id").innerText =
@@ -441,7 +492,7 @@
 
     universal._information.soundpacks.forEach((soundpack) => {
         const li = document.createElement("li");
-        li.innerText = soundpack.split(".css")[0];
+        li.innerText = soundpack.split(".soundpack")[0];
         li.classList.add("soundpack");
         li.onclick = async () => {
             document.querySelector("#soundpack-id").innerText = "LOADING";

@@ -45,7 +45,7 @@ function closeBootLog() {
 
 function initialize() {
 	universal.CLU("Boot / UI", "Initializing UI");
-	universal.config.iconCountPerPage = universal.lclCfg().iconCountPerPage || 12;
+	universal.config.iconCountPerPage = Number.parseInt(universal.lclCfg().iconCountPerPage) || 12;
 	universal.CLU("Boot / UI", "Set icon count");
 	universal.theming.setTheme(
 		universal.config.theme ? universal.config.theme : "default",
@@ -59,11 +59,6 @@ function initialize() {
 		);
 	}
 	universal.CLU("Boot / UI", "Set font size");
-
-	if(universal.lclCfg().compact) {
-		universal.keys.style.width = "unset";
-	}
-	universal.CLU("Boot / UI", "Set compact mode");
 	reloadSounds();
 	universal.CLU("Boot / UI", "Reloaded sounds");
 	universal.CLU("Boot / UI", "UI initialized");
@@ -116,6 +111,14 @@ function reloadSounds() {
 		const style = document.getElementById("fill");
 		if (style) style.remove();
 	}
+	if (universal.lclCfg().compact) {
+		universal.keys.style.width = "unset";
+		universal.keys.style.height = "unset";
+	} else {
+		universal.keys.style.width = "100%";
+		universal.keys.style.height = "100%";
+	}
+	universal.config.iconCountPerPage = universal.lclCfg().iconCountPerPage;
 	universal.page =
 		universal.load("page") !== "\x9Eée"
 			? Number.parseInt(universal.load("page"))

@@ -59,6 +59,7 @@ const universal = {
 						await navigator.wakeLock.request("screen");
 					universal.sendToast(
 						"Wake lock acquired. Your screen will now stay on.",
+						"Boot / WakeLock",
 					);
 					universal.CLU("Boot / WakeLock", "Wake lock acquired.");
 				} catch (err) {
@@ -468,10 +469,10 @@ const universal = {
 				reject(e);
 			}
 		}),
-	sendToast: (message) => {
+	sendToast: (message, sender="") => {
 		if (!HTMLElement.prototype.setHTML) {
 			HTMLElement.prototype.setHTML = function (html) {
-				this.innerHTML = html;
+				this.innerHTML = universal.cleanHTML(html);
 			};
 		}
 		if (!document.querySelector("#snackbar")) {
@@ -480,9 +481,9 @@ const universal = {
 			document.body.appendChild(snackbar);
 		}
 		const s = document.createElement("div");
-		s.id = "toast";
-		s.setHTML(message);
-		s.className = "show";
+		s.setHTML(`<h3>${sender}</h3>${message}`);
+		s.classList.add("toast");
+		s.classList.add("show");
 		s.onclick = () => {
 			s.className = s.className.replace("show", "");
 			s.remove();
@@ -490,9 +491,10 @@ const universal = {
 		document.querySelector("#snackbar").appendChild(s);
 
 		setTimeout(() => {
-			// After 3 seconds, remove the show class from DIV
-			s.className = s.className.replace("show", "");
-			s.remove();
+			s.className = s.className.replace("show", "hide");
+			setTimeout(() => {
+				s.remove();
+			}, 500); 
 		}, 3000);
 		universal.save(
 			"notification_log",

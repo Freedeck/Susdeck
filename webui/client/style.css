@@ -290,15 +290,30 @@ h1 {
     z-index: 9999;
 }
 
-#toast {
+.toast {
     visibility: hidden;
-    background-color: #333;
+    background: var(--modal-bg);
+    
     color: #fff;
+    color: var(--modal-item-text);
     text-align: center;
-    border-radius: .25rem;
+    border-radius: 1.5rem;
     padding: 1rem;
     position: relative;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
     z-index: 1;
+}
+
+.toast.show {
+    visibility: visible;
+    animation: fade-in 0.5s, fade-out 0.5s 3s;
+}
+
+.toast.hide {
+    visibility: visible;
+    opacity: 1;
+    animation: real-fade-out 0.5s;
 }
 
 select {
@@ -355,11 +370,6 @@ input:disabled {
     outline: none;
     width: 100%;
     margin: 5px 0;
-}
-
-#toast.show {
-    visibility: visible;
-    animation: fade-in 0.5s, fade-out 0.5s 3s;
 }
 
 .no-bg {

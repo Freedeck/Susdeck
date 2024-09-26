@@ -15,7 +15,6 @@ function runWebpack(webpackInstance) {
     console.log(
       "Welcome to Freedeck! This is your first time running Freedeck, so it will take a moment to set up.",
     );
-    console.log("Creating webui/app directory");
     fs.mkdirSync(path.resolve("webui/app"));
   }
 
@@ -42,7 +41,6 @@ async function compileWebpack() {
   const webpackInstance = webpack(webpackConfig);
   await runWebpack(webpackInstance);
   setWsStateHttp(1);
-  console.log("Webpack bundles compiled.");
 }
 
 module.exports = {

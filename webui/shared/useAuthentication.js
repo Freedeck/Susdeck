@@ -9,12 +9,14 @@ if (!HTMLElement.prototype.setHTML) {
 universal.listenFor("init", () => {
 	if (!universal._authStatus) {
 		const login = document.createElement("li");
+		login.style.display = "none";
 		login.id = "login";
 		login.setHTML('<a href="#">Login</a>');
 		login.onclick = () => {
 			if (document.querySelector("#login-msg"))
 				document.querySelector("#login-msg").setHTML("Login to Freedeck");
 		};
+		login.click();
 		// while (!document.querySelector('#sidebar > ul')) {}
 		document.querySelector("#sidebar > ul").appendChild(login);
 	}

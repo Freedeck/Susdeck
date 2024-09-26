@@ -465,12 +465,15 @@ function editTile(e) {
 					if (data._msg) {
 						universal.sendToast(
 							"NativeBridge is not running. Freedeck may be trying to start it.",
+							"NativeBridge"
 						);
 						universal.sendToast(
 							"If this message persists, please restart Freedeck or",
+							"NativeBridge"
 						)
 						universal.sendToast(
-							"run 'nbui.exe' in your Documents/Freedeck folder."
+							"run 'nbui.exe' in your Documents/Freedeck folder.",
+							"NativeBridge"
 						)
 					}
 					const int = JSON.parse(
@@ -895,12 +898,15 @@ document.querySelector("#none-system").onclick = (e) => {
 			if (data._msg) {
 				universal.sendToast(
 					"NativeBridge is not running. Freedeck may be trying to start it.",
+					"NativeBridge"
 				);
 				universal.sendToast(
 					"If this message persists, please restart Freedeck or",
+					"NativeBridge"
 				)
 				universal.sendToast(
-					"run 'nbui.exe' in your Documents/Freedeck folder."
+					"run 'nbui.exe' in your Documents/Freedeck folder.",
+					"NativeBridge"
 				)
 				return;
 			}
@@ -993,9 +999,9 @@ const setupLibraryFor = (type) => {
 		document.querySelector("#uploads-0-title").style.display = "none";
 		document.querySelector(".uploads-1").style.display = "flex";
 		document.querySelector("#uploads-1-title").style.display = "block";
-		document.querySelector("#library > body > center > p").textContent =
+		document.querySelector("#library > body> p").textContent =
 			"Select an icon to use, or upload a new one!";
-		document.querySelector("#library > body > center > h1").textContent =
+		document.querySelector("#library > body> h1").textContent =
 			"Available Icons";
 		document.querySelector(".save-changes").style.display = "block";
 	} else if (type === "sound") {
@@ -1003,9 +1009,9 @@ const setupLibraryFor = (type) => {
 		document.querySelector("#uploads-0-title").style.display = "block";
 		document.querySelector(".uploads-1").style.display = "none";
 		document.querySelector("#uploads-1-title").style.display = "none";
-		document.querySelector("#library > body > center > p").textContent =
+		document.querySelector("#library > body> p").textContent =
 			"Select an icon to use, or upload a new one!";
-		document.querySelector("#library > body > center > h1").textContent =
+		document.querySelector("#library > body> h1").textContent =
 			"Available Icons";
 		document.querySelector(".save-changes").style.display = "block";
 	} else {
@@ -1013,9 +1019,9 @@ const setupLibraryFor = (type) => {
 		document.querySelector("#uploads-0-title").style.display = "block";
 		document.querySelector(".uploads-1").style.display = "flex";
 		document.querySelector("#uploads-1-title").style.display = "block";
-		document.querySelector("#library > body > center > p").textContent =
+		document.querySelector("#library > body> p").textContent =
 			"Here you will find every sound or icon you've uploaded.";
-		document.querySelector("#library > body > center > h1").textContent =
+		document.querySelector("#library > body> h1").textContent =
 			"Library";
 		document.querySelector(".save-changes").style.display = "none";
 	}

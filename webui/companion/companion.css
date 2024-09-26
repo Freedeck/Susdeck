@@ -5,6 +5,7 @@ body {
 input {
 	background-color: var(--input-bg);
 	color: var(--input-color);
+	width: 100%;
 }
 
 .dialog {
@@ -189,7 +190,7 @@ a:hover {
 	max-height: 80%;
 	border-radius: 10px;
 	display: flex;
-	align-items: center;
+	align-items: start;
 	justify-content: center;
 	flex-direction: column;
 	gap: 1rem;
@@ -432,7 +433,7 @@ a:hover {
 	color: white;
 	padding: 5px;
 	border-radius: 5px;
-	width: 80%;
+	/* width: 80%; */
 }
 
 .sidebar-item {

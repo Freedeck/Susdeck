@@ -12,6 +12,10 @@
         <label for="cpm">Center Mode <span class="tag-beta">TEST</span></label>
         <input type="checkbox" id="cpm" />
     </div>
+    <div class="experiment">
+        <label for="apc">Animate Page Changes <span class="tag-beta">TEST</span></label>
+        <input type="checkbox" id="apc" />
+    </div>
 </div>
 <div class="experiment-exist soundpack">
     <h1>UI Sounds</h1>
@@ -104,6 +108,12 @@
 
     document.querySelector("#cpm").onchange = () => {
         window.settingsView_set("center", !(universal.lclCfg().center == true));
+    };
+
+    document.querySelector("#apc").checked = universal.lclCfg().animation == true;
+
+    document.querySelector("#apc").onchange = () => {
+        window.settingsView_set("animation", !(universal.lclCfg().animation == true));
     };
 
     /**

@@ -630,9 +630,9 @@ input:disabled {
     border-color: rgba(0, 0, 0, 0.5);
     border: 1px solid black;
     color: white;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    margin: 0.5rem;
+    border-radius: var(--tile-radius);
+    width: var(--tile-width);
+    height: calc(var(--tile-height) / 3);
     /* bottom right of parent */
     position: absolute;
     left: 0;

@@ -16,6 +16,7 @@ const sc = {
 		scroll: false,
 		fill: false,
 		center: false,
+		animation: false,
 		compact: true,
 		"font-size": "15",
 		buttonSize: "6",

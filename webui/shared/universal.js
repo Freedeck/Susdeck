@@ -634,6 +634,7 @@ window.onerror = (msg, url, linenumber, column, error) => {
 universal.listenFor(
 	"animate_page",
 	(type = "automated", direction = "left") => {
+		if(universal.lclCfg().animation !== true) return;
 		const keys = document.getElementById("keys");
 		if (type === "automated") {
 			keys.style.animation = `pull-${direction} 0.5s`;

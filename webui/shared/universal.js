@@ -495,6 +495,7 @@ const universal = {
 			s.className = s.className.replace("show", "");
 			s.remove();
 		};
+		universal.uiSounds.playSound("notification");
 		document.querySelector("#snackbar").appendChild(s);
 
 		setTimeout(() => {

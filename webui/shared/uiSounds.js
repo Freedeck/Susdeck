@@ -1,22 +1,16 @@
-let enabled = () => universal.load("uiSounds") === "true";
-let currentSoundpack = "futuristic.soundpack";
-let info = {};
-let sounds = {};
-const playing = [];
-
 function initialize() {
-  enabled = () => universal.load("uiSounds") === "true";
+  uiSoundEngine.enabled = () => universal.load("uiSounds") === "true";
   universal.CLU("Boot / UI Sounds", "Set enabled");
-  reload();
+  uiSoundEngine.reload();
   universal.CLU("Boot / UI Sounds", "Reloaded sounds");
 }
 
 function reload() {
-	if (!enabled()) return;
-	currentSoundpack =
+	if (!uiSoundEngine.enabled()) return;
+	uiSoundEngine.currentSoundpack =
 		universal.load("soundpack") || "futuristic.soundpack";
     universal.CLU("Boot / UI Sounds", "Auto-detecting current soundpack");
-  load(currentSoundpack).then(() => {
+  uiSoundEngine.load(uiSoundEngine.currentSoundpack).then(() => {
     universal.CLU("Boot / UI Sounds", "Loaded current soundpack.");
 		playSound("page_enter");
 	});
@@ -31,21 +25,20 @@ async function load(soundpack) {
     universal.sendToast(
       "Failed to load soundpack. Defaulting to futuristic.",
     );
-    currentSoundpack = "futuristic.soundpack";
+    uiSoundEngine.currentSoundpack = "futuristic.soundpack";
     reload();
   });
   universal.CLU("Boot / UI Sounds", "Fetched manifest");
   const data = await res.json();
-  sounds = data.sounds;
-  info = data.info;
-  universal.uiSounds.info = info;
+  uiSoundEngine.sounds = data.sounds;
+  uiSoundEngine.info = data.info;
   return true;
 }
 
 async function playSound(name) {
-  if (!enabled) return;
+  if (!uiSoundEngine.enabled()) return;
   universal.audioClient.play({
-    file: `/common/sounds/${info.id}/${sounds[name]}`,
+    file: `/common/sounds/${uiSoundEngine.info.id}/${uiSoundEngine.sounds[name]}`,
     name,
     channel: universal.audioClient.channels.ui,
     stopPrevious: false,
@@ -53,14 +46,16 @@ async function playSound(name) {
   });
 }
 
-export default {
-  enabled,
-  currentSoundpack,
-  info,
-  sounds,
-  playing,
+const uiSoundEngine = {
+  enabled: () => universal.load("uiSounds") === "true",
+  currentSoundpack: "futuristic.soundpack",
+  info: {},
+  sounds: {},
+  playing: [],
   initialize,
   reload,
 	load,
 	playSound,
 };
+
+export default uiSoundEngine;

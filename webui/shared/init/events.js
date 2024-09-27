@@ -79,7 +79,7 @@ export default function eventsHandler(universal, user) {
 		universal.on(universal.events.default.notif, (data) => {
 			if (data.incoming) return;
 			if (!data.isCon) {
-				universal.sendToast(`[${data.sender}] ${data.data}`);
+				universal.sendToast(`${data.data}`, data.sender);
 			}
 			if (data.isCon) universal.sendEvent("notif", data);
 		});

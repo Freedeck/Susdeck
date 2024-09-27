@@ -78,7 +78,7 @@
     <button onclick="universal.showBootLog()">
         Show boot log
     </button>
-    <button onclick="universal.sendToast('This is a test')">
+    <button onclick="universal.sendToast('This is a test', 'Settings')">
         Test Notification
     </button>
     <button onclick="universal.send(universal.events.default.recompile)">
@@ -489,6 +489,7 @@
     function loadSounds() {
         const uis = document.querySelector(".uisounds");
         uis.innerHTML = "";
+        console.log(universal.uiSounds.sounds);
         const uisounds = universal.uiSounds.sounds;
         Object.keys(uisounds).forEach((sound) => {
             const li = document.createElement("li");

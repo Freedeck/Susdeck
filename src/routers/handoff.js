@@ -38,4 +38,11 @@ router.get("/:token/notify/:data", (req, res) => {
   res.send({ status: "success", message: "Sent notification." });
 });
 
+router.get("/:token/notify/:data/:sender", (req, res) => {
+  if (req.params.token !== handoffData.token)
+    res.send({ status: "error", message: "Invalid token" });
+  notifMan.add(req.params.sender, req.params.data);
+  res.send({ status: "success", message: "Sent notification." });
+});
+
 module.exports = router;

@@ -562,11 +562,8 @@ function editTile(e) {
 	document.querySelector('label[for="lp"]').style.display =
 		interactionData.renderType === "slider" ? "none" : "block";
 	// make it fade in
-	document.querySelector("#editor").style.opacity = "0";
+	document.querySelector("#editor-div").style.animation = "editor-pull-down 0.5s";
 	document.querySelector(".toggle-sidebar button").style.display = "none";
-	setTimeout(() => {
-		document.querySelector("#editor").style.opacity = "1";
-	}, 100);
 }
 
 document.querySelector("#sbg").onclick = () => {
@@ -1074,13 +1071,14 @@ document.querySelector("#upload-icon").onclick = (e) => {
 
 document.querySelector("#editor-close").onclick = () => {
 	universal.uiSounds.playSound("int_no");
-	document.querySelector("#editor").style.opacity = "0";
+	document.querySelector("#editor-div").style.animation = "editor-pull-up 0.5s";
 	document.querySelector("#sidebar").style.right = "0";
 	document.querySelector(".toggle-sidebar button").style.display = "block";
 	if (document.querySelector(".toggle-sidebar").style.left === "0px")
 		document.querySelector(".toggle-sidebar button").click();
 	setTimeout(() => {
 		document.querySelector("#editor").style.display = "none";
+		document.querySelector("#editor-div").style.animation = "editor-pull-down 0.5s";
 		document.querySelector("#color").value = "#000000";
 		document.querySelector("#color").dataset.has_set = "false";
 		document.querySelector("#editor-btn").style.backgroundColor = "";

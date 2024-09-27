@@ -33,7 +33,7 @@ const sidebar = [
 	{ Plugins: "plugins.html" },
 	{ Marketplace: "marketplace.html" },
 	{ Settings: "settings.html" },
-	{ Connect: "/fdconnect.html?id=Companion" },
+	{ Connect: "/connect2.html?id=Companion&new_ip=true" },
 	// {'Webpack Recompile': '+universal.send(universal.events.default.recompile)'}
 ];
 

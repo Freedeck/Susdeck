@@ -57,6 +57,14 @@ const eventNames = {
 		authorize: "RPC.Authorize",
 		reply: "RPC.Reply",
 	},
+
+	relay: {
+		identify: "RelayIdentify",
+		error: "Error",
+		opened: "RelayOpened",
+		request: "RelayRequest",
+		file: "RelayFile",
+	}
 };
 
 if ("exports" in module) module.exports = eventNames;

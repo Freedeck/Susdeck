@@ -69,7 +69,7 @@ export default function eventsHandler(universal, user) {
 		});
 
 		universal.on(universal.events.default.recompile, () => {
-			window.location.href = `/fdconnect.html?id=${user}`;
+			window.location.href = `/connect2.html?id=${user}`;
 		});
 
 		universal.on(universal.events.default.log, (data) => {

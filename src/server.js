@@ -28,10 +28,111 @@ const types = pl.types;
 pl.update();
 
 const clients = [];
+let RelayStatus = false;
+
+function connectRelayClient() {
+  const relayClient = require("socket.io-client")("http://localhost:3000");
+  relayClient.on("connect", () => {
+    RelayStatus = true;
+    // const rlc = Math.random().toString(36).substring(7);
+    const rlc = "kctonp";
+    relayClient.emit(eventNames.relay.identify, rlc);
+    if(!relayClient._id) handleSock(relayClient);
+    relayClient.on(eventNames.relay.request, (upath) => {
+
+      const allowed =[
+        "",
+        'app',
+        'common',
+        'companion',
+        'shared',
+        'hooks'
+      ]
+
+      if(!allowed.some((a) => upath.startsWith(a))) {
+        relayClient.emit(eventNames.relay.file, "Access Denied");
+        return;
+      } 
+
+      let folder = "client";
+      if(upath.includes("companion")) folder = "companion";
+      if(upath.includes("shared")) folder = "shared";
+      if(upath.includes("hooks")) folder = "hooks";
+      if(upath.includes("app")) folder = "app";
+      if(upath.includes("common")) folder = "common";
+      // /app/shared/theming/a.css -> ["", "app", "shared", "theming", "a.css"]
+      let file = upath.split("/");
+      if(upath.split("/").length > 1) {
+        file.shift();
+      }
+      if(upath.includes("app") && upath.includes("shared")) {
+        folder = "shared";
+        file.shift();
+      }
+      file = file.join("/");
+
+      console.log(folder, file, upath);
+
+      if(file === "") file = "index.html";
+      
+
+      const f = fs.readFileSync(
+        path.resolve(`webui/${folder}/${file}`),
+        "utf8",
+      )
+      let mimeType = "text/plain";
+      console.log(file.split(".").pop())
+      switch(file.split(".").pop()) {
+        case "js":
+          mimeType = "text/javascript";
+          break;
+        case "css":
+          mimeType = "text/css";
+          break;
+        case "html":
+          mimeType = "text/html";
+          break;
+      }
+      relayClient.emit(eventNames.relay.file,[f, mimeType, upath]);
+    })
+    relayClient.on(eventNames.relay.error, (err) => {
+      if(err[1] === -1) {
+        // Device already exists
+        console.log("Device already exists, disconnecting and reconnecting");
+        relayClient.disconnect();
+        connectRelayClient();
+        return;
+      }
+    })
+    relayClient.on(eventNames.relay.opened, () => {
+      console.log(`
+
+Relay connection opened
+Connect with code ${rlc}
+
+        `)
+    });
+    relayClient.on("disconnect", () => {
+      RelayStatus = false;
+      console.log("Disconnected from relay server");
+      relayClient.disconnect();
+      const wait = setInterval(() => {
+        if(!RelayStatus) {
+          clearInterval(wait);
+          connectRelayClient();
+        }
+      }, 1000);
+    });
+  });
+}
+
+// connectRelayClient();
 
 debug.log("Initializing server...", "Server / HTTP");
 
-io.on("connection", (socket) => {
+io.on("connection", handleSock);
+
+function handleSock(socket) {
   socket._originalOn = socket.on;
   socket._originalEmit = socket.emit;
 
@@ -104,4 +205,4 @@ io.on("connection", (socket) => {
   } catch (e) {
     debug.log(picocolors.red(e));
   }
-});
+}

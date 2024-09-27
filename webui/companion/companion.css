@@ -240,6 +240,26 @@ a:hover {
 	right: 0;
 }
 
+@keyframes editor-pull-down {
+	from{
+			top: 0;
+	}
+
+	to {
+			top: 50%;
+	}
+}
+
+@keyframes editor-pull-up {
+	from{
+			top: 50%;
+	}
+
+	to {
+			top: 0;
+	}
+}
+
 #editor-div {
 	position: absolute;
 	top: 50%;

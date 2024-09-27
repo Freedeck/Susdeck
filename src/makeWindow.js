@@ -1,5 +1,5 @@
 const path = require("node:path");
-const { BrowserWindow } = require("electron");
+const { BrowserWindow, ipcMain } = require("electron");
 module.exports = (
 	_page = "webui/client/fdconnect.html",
 	_showTitlebar = true,
@@ -15,9 +15,18 @@ module.exports = (
 		webPreferences: {
 			nodeIntegration: false,
 			contextIsolation: true,
+			preload: path.resolve("src/appPreload.js")
 		},
 		// skipTaskbar: true,
 	});
+	ipcMain.handle("resize-splash", (ev) => {
+		mainWindow.setSize(420, 525)
+		mainWindow.center();
+	})
+	ipcMain.handle("resize", (ev) => {
+		mainWindow.setSize(1400, 850)
+		mainWindow.center();
+	})
 	console.log("Here we go!");
 	if (!isUrl) mainWindow.loadFile(path.resolve(_page));
 	else mainWindow.loadURL(_page);

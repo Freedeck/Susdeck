@@ -1,5 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Rethink+Sans&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Rethink+Sans&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
+@import url("fonts.css");
+
 :root {
     --tile-columns: repeat(5, 2fr);
     --font: 'Rethink Sans', sans-serif;
@@ -108,7 +111,7 @@ h1 {
     display: block;
     animation: none;
     width: 100%;
-    background: var(--main-bg);
+    background: #17212a;
     background-size: var(--main-bg-size);
     font-family: var(--font);
     color: var(--text-color);

@@ -38,7 +38,14 @@ function settingsMenuClose() {
 window.AppSM = settingsMenu;
 window.AppSMClose = settingsMenuClose;
 
+window._OldFetch = window.fetch;
+window.fetch = async (url, options) => {
+	url = `${universal.relay}${url}`;
+	return window._OldFetch(url, options);
+}
+
 const universal = {
+	relay: "",
 	_socket: null,
 	_ca: [],
 	_Uploads_View: 0,

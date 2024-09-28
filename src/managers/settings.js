@@ -27,7 +27,7 @@ const sc = {
 	},
 	checkStyle: () => {
 		if (!fs.existsSync(path.resolve("./src/configs/style.json"))) {
-			const def = JSON.stringify(this.styleSettings);
+			const def = JSON.stringify(sc.styleSettings);
 			fs.writeFileSync(path.resolve("./src/configs/style.json"), def);
 		} else {
 			const data = JSON.parse(fs.readFileSync(path.resolve("./src/configs/style.json")));

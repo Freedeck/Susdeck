@@ -2,6 +2,7 @@ import changes from './changes.json';
 
 const makeThanks = () => {
   if(universal.load("thanks") !== '\x9Eée') return;
+  if(universal.load("has_setup") === 'false') return;
   const {major, other, known} = changes;
   const container = document.createElement("dialog");
   container.classList.add("dialog");
@@ -11,6 +12,7 @@ const makeThanks = () => {
   const close = document.createElement("button");
   close.onclick = () => {
     document.querySelector("#thanks").style.display = "none";
+    universal.uiSounds.playSound("notification");
 		universal.save("thanks", "true");
   }
   close.innerText = "OK";
@@ -73,6 +75,7 @@ const makeThanks = () => {
 
   const discord = document.createElement("a");
   discord.href = "https://discord.gg/7gWrgyt7Aa";
+  discord.target = "_blank";
   discord.innerText = "Join our Discord!";
 
   content.appendChild(discord);

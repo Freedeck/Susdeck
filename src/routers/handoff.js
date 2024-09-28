@@ -24,23 +24,23 @@ router.get("/get-token", (req, res) => {
 });
 
 router.get("/:token/reload-plugins", (req, res) => {
-  if (req.params.token !== handoffData.token)
-    res.send({ status: "error", message: "Invalid token" });
+  if (req.params.token !== handoffData.token && req.path !== "/get-token")
+    return res.send({ status: "error", message: "Invalid token" });
   plugins.reload();
   notifMan.add("handoff-api", "reload-plugins");
   res.send({ status: "success", message: "Reloaded plugins." });
 });
 
 router.get("/:token/notify/:data", (req, res) => {
-  if (req.params.token !== handoffData.token)
-    res.send({ status: "error", message: "Invalid token" });
+  if (req.params.token !== handoffData.token && req.path !== "/get-token")
+    return res.send({ status: "error", message: "Invalid token" });
   notifMan.add("Handoff", req.params.data);
   res.send({ status: "success", message: "Sent notification." });
 });
 
 router.get("/:token/notify/:data/:sender", (req, res) => {
-  if (req.params.token !== handoffData.token)
-    res.send({ status: "error", message: "Invalid token" });
+  if (req.params.token !== handoffData.token && req.path !== "/get-token")
+    return res.send({ status: "error", message: "Invalid token" });
   notifMan.add(req.params.sender, req.params.data);
   res.send({ status: "success", message: "Sent notification." });
 });

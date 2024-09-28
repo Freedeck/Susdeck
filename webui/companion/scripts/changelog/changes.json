@@ -6,6 +6,7 @@
       "Check it out when setting an icon, adding a sound, or on the right sidebar!",
       "More features like rename & delete coming soon."
     ],
+    "**There's a brand new splash screen!**",
     "Some new Tile options!",
     [
       "You can now remove the background of a Tile",
@@ -51,7 +52,7 @@
     "Theming: You can now change the sidebar (left and right!) text/background color"
   ],
   "known": [
-    "Making a tile, then setting it's icon, then setting it's type to Plugin makes the icon disappear.",
+    "Making a tile, then setting any data-related option, then setting it's type to anything makes the data disappear. Type's data persists.",
     "Pressing Upload or Change (Sound) doesn't highlight the proper button. However, this is just visual & the previous option is still selected."
   ],
   "note": "Unfortunately, NativeBridge has been postponed until further notice. It's still in the works, though."

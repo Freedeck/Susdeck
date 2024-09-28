@@ -56,6 +56,7 @@ const eventNames = {
 	rpc: {
 		authorize: "RPC.Authorize",
 		reply: "RPC.Reply",
+		set: "RPC.Set"
 	},
 
 	relay: {

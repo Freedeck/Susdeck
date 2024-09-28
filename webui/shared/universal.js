@@ -64,10 +64,6 @@ const universal = {
 				try {
 					universal.wakeLock.sentinel =
 						await navigator.wakeLock.request("screen");
-					universal.sendToast(
-						"Wake lock acquired. Your screen will now stay on.",
-						"Boot / WakeLock",
-					);
 					universal.CLU("Boot / WakeLock", "Wake lock acquired.");
 				} catch (err) {
 					console.error(`${err.name}, ${err.message}`);
@@ -384,13 +380,22 @@ const universal = {
 		}
 	},
 	connHelpWizard() {
-		const promptEle = document.createElement("div");
-		promptEle.className = "prompt";
-		const iframe = document.createElement("iframe");
-		iframe.src = "/prompt-user-connect.html";
-		iframe.frameBorder = "0";
-		promptEle.appendChild(iframe);
-		document.body.appendChild(promptEle);
+		return new Promise((resolve, reject) => {
+			const promptEle = document.createElement("div");
+			promptEle.className = "prompt";
+			promptEle.style.zIndex = "1002";
+			const iframe = document.createElement("iframe");
+			iframe.src = "/prompt-user-connect.html";
+			iframe.frameBorder = "0";
+			promptEle.appendChild(iframe);
+			document.body.appendChild(promptEle);
+			new MutationObserver(function(mutations) {
+				if(!document.body.contains(promptEle)) {
+					resolve(true);
+					this.disconnect();
+				}
+			}).observe(promptEle.parentElement, {childList: true});
+		})
 	},
 	Pages: {},
 	reloadProfile: () => {

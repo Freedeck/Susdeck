@@ -86,7 +86,7 @@ export default function eventsHandler(universal, user) {
 
 		universal._socket.on("disconnect", () => {
 			universal.connected = false;
-			universal.sendToast("Disconnected from server.");
+			universal.sendToast("Disconnected from server.", "Server");
 			universal.lastRetry = new Date();
 			const retryLoop = setInterval(() => {
 				universal.sendToast("Attempting to reconnect...");

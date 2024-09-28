@@ -25,7 +25,10 @@ gridItemDrag.on("drop", (event, origIndex, targIndex) => {
 	document.querySelector(".mt-next-page").style.display = "none";
 	document.querySelector(".mt-prev-page").style.display = "none";
 
-	if(event.target.classList.contains("mt-next-page") || event.target.classList.contains("mt-prev-page")) {
+	if (
+		event.target.classList.contains("mt-next-page") ||
+		event.target.classList.contains("mt-prev-page")
+	) {
 		const wanted = event.target.classList.contains("mt-next-page");
 		// true -> next, false -> prev
 
@@ -39,22 +42,22 @@ gridItemDrag.on("drop", (event, origIndex, targIndex) => {
 			(universal.page < 0 ? 1 : 0) +
 			(universal.page > 0
 				? universal.config.iconCountPerPage * universal.page
-				: 0)
+				: 0);
 		let targetIndex = 0;
 
-		if(wanted) {
+		if (wanted) {
 			// We need to find the first empty slot
-			for(const item of universal.config.profiles[universal.config.profile]) {
-				if(item.pos === targetIndex) {
+			for (const item of universal.config.profiles[universal.config.profile]) {
+				if (item.pos === targetIndex) {
 					targetIndex++;
 				} else {
 					break;
 				}
 			}
-			
+
 			// We need to move the item to the targetIndex
 		} else {
-			// todo 
+			// todo
 		}
 
 		const changed = document.querySelector(`#keys .button.k-${origIndex}`);
@@ -97,14 +100,17 @@ gridItemDrag.on("drop", (event, origIndex, targIndex) => {
 });
 
 gridItemDrag.on("dragging", (e) => {
-	document.querySelector("#keys").appendChild(document.querySelector(".mt-next-page").cloneNode(true));
-	document.querySelector("#keys").appendChild(document.querySelector(".mt-prev-page").cloneNode(true));
+	document
+		.querySelector("#keys")
+		.appendChild(document.querySelector(".mt-next-page").cloneNode(true));
+	document
+		.querySelector("#keys")
+		.appendChild(document.querySelector(".mt-prev-page").cloneNode(true));
 	// copy the next and prev buttons to the keys container
-	
+
 	document.querySelector(".mt-next-page").style.display = "flex";
 	document.querySelector(".mt-prev-page").style.display = "flex";
-
-})
+});
 
 document.querySelector(".toggle-sidebar button").onclick = (ev) => {
 	if (document.querySelector(".sidebar").style.display === "flex") {
@@ -464,17 +470,9 @@ function editTile(e) {
 				.then((data) => {
 					if (data._msg) {
 						universal.sendToast(
-							"NativeBridge is not running. Freedeck may be trying to start it.",
-							"NativeBridge"
+							"NativeBridge is not running. Freedeck may be trying to start it. If this message persists, please restart Freedeck or run 'nbui.exe' in your Documents/Freedeck folder.",
+							"NativeBridge",
 						);
-						universal.sendToast(
-							"If this message persists, please restart Freedeck or",
-							"NativeBridge"
-						)
-						universal.sendToast(
-							"run 'nbui.exe' in your Documents/Freedeck folder.",
-							"NativeBridge"
-						)
 					}
 					const int = JSON.parse(
 						document
@@ -545,13 +543,20 @@ function editTile(e) {
 		const itm = interactionData.data;
 		loadData(itm);
 	}
-	document.querySelector("#sbg").checked = interactionData.data.showBg === "true";
+	document.querySelector("#sbg").checked =
+		interactionData.data.showBg === "true";
 	document.querySelector("#sbg").style.display =
-		interactionData.renderType === "button" ? "block" : 
-		interactionData.renderType === "slider" ? "none" : "block";
+		interactionData.renderType === "button"
+			? "block"
+			: interactionData.renderType === "slider"
+				? "none"
+				: "block";
 	document.querySelector('label[for="sbg"]').style.display =
-		interactionData.renderType === "button" ? "block" :
-		interactionData.renderType === "slider" ? "none" : "block";
+		interactionData.renderType === "button"
+			? "block"
+			: interactionData.renderType === "slider"
+				? "none"
+				: "block";
 
 	document.querySelector("#orl").checked =
 		interactionData.data.onRelease === "true";
@@ -562,7 +567,8 @@ function editTile(e) {
 	document.querySelector('label[for="lp"]').style.display =
 		interactionData.renderType === "slider" ? "none" : "block";
 	// make it fade in
-	document.querySelector("#editor-div").style.animation = "editor-pull-down 0.5s";
+	document.querySelector("#editor-div").style.animation =
+		"editor-pull-down 0.5s";
 	document.querySelector(".toggle-sidebar button").style.display = "none";
 }
 
@@ -894,17 +900,9 @@ document.querySelector("#none-system").onclick = (e) => {
 		.then((data) => {
 			if (data._msg) {
 				universal.sendToast(
-					"NativeBridge is not running. Freedeck may be trying to start it.",
-					"NativeBridge"
+					"NativeBridge is not running. Freedeck may be trying to start it. If this message persists, please restart Freedeck or run 'nbui.exe' in your Documents/Freedeck folder.",
+					"NativeBridge",
 				);
-				universal.sendToast(
-					"If this message persists, please restart Freedeck or",
-					"NativeBridge"
-				)
-				universal.sendToast(
-					"run 'nbui.exe' in your Documents/Freedeck folder.",
-					"NativeBridge"
-				)
 				return;
 			}
 			const int = JSON.parse(
@@ -1007,9 +1005,9 @@ const setupLibraryFor = (type) => {
 		document.querySelector(".uploads-1").style.display = "none";
 		document.querySelector("#uploads-1-title").style.display = "none";
 		document.querySelector("#library > body> p").textContent =
-			"Select an icon to use, or upload a new one!";
+			"Select an sound to use, or upload a new one!";
 		document.querySelector("#library > body> h1").textContent =
-			"Available Icons";
+			"Available Sounds";
 		document.querySelector(".save-changes").style.display = "block";
 	} else {
 		document.querySelector(".uploads-0").style.display = "flex";
@@ -1018,8 +1016,7 @@ const setupLibraryFor = (type) => {
 		document.querySelector("#uploads-1-title").style.display = "block";
 		document.querySelector("#library > body> p").textContent =
 			"Here you will find every sound or icon you've uploaded.";
-		document.querySelector("#library > body> h1").textContent =
-			"Library";
+		document.querySelector("#library > body> h1").textContent = "Library";
 		document.querySelector(".save-changes").style.display = "none";
 	}
 };
@@ -1072,17 +1069,20 @@ document.querySelector("#upload-icon").onclick = (e) => {
 document.querySelector("#editor-close").onclick = () => {
 	universal.uiSounds.playSound("int_no");
 	document.querySelector("#editor-div").style.animation = "editor-pull-up 0.5s";
+	document.querySelector("#editor").style.animation = "real-fade-out 0.5s";
 	document.querySelector("#sidebar").style.right = "0";
 	document.querySelector(".toggle-sidebar button").style.display = "block";
 	if (document.querySelector(".toggle-sidebar").style.left === "0px")
 		document.querySelector(".toggle-sidebar button").click();
 	setTimeout(() => {
+		document.querySelector("#editor").style.animation = "";
 		document.querySelector("#editor").style.display = "none";
-		document.querySelector("#editor-div").style.animation = "editor-pull-down 0.5s";
+		document.querySelector("#editor-div").style.animation =
+			"editor-pull-down 0.5s";
 		document.querySelector("#color").value = "#000000";
 		document.querySelector("#color").dataset.has_set = "false";
 		document.querySelector("#editor-btn").style.backgroundColor = "";
-	}, 500);
+	}, 499);
 };
 
 document.querySelector("#editor-save").onclick = () => {
@@ -1164,20 +1164,22 @@ function showEditModal(title, content, callback) {
 	document.body.appendChild(modal);
 }
 
-function showText(title, content, callback) {
+function showText(title, content, callback, closable = true) {
 	const modal = document.createElement("div");
 	modal.className = "modal";
 
 	const modalContent = document.createElement("div");
 	modalContent.classList.add("modalContent");
 
-	const modalClose = document.createElement("button");
-	modalClose.innerText = "Close";
-	modalClose.classList.add("modalClose");
-	modalClose.onclick = () => {
-		modal.remove();
-	};
-	modalContent.appendChild(modalClose);
+	if (closable) {
+		const modalClose = document.createElement("button");
+		modalClose.innerText = "Close";
+		modalClose.classList.add("modalClose");
+		modalClose.onclick = () => {
+			modal.remove();
+		};
+		modalContent.appendChild(modalClose);
+	}
 
 	const modalTitle = document.createElement("h2");
 	modalTitle.innerText = title;
@@ -1207,15 +1209,21 @@ function showText(title, content, callback) {
  * @param {Array} listContent The content of the list
  * @param {void} callback What to do when submitted
  */
-function showPick(title, listContent, callback, extraM = null, closable=true) {
+function showPick(
+	title,
+	listContent,
+	callback,
+	extraM = null,
+	closable = true,
+) {
 	const modal = document.createElement("div");
 	modal.className = "modal";
 
 	const modalContent = document.createElement("div");
 	modalContent.classList.add("modalContent");
 
-	if(closable) {
-			const modalClose = document.createElement("button");
+	if (closable) {
+		const modalClose = document.createElement("button");
 		modalClose.innerText = "Close";
 		modalClose.onclick = () => {
 			modal.remove();
@@ -1229,7 +1237,7 @@ function showPick(title, listContent, callback, extraM = null, closable=true) {
 	modalTitle.classList.add("modalTitle");
 	modalContent.appendChild(modalTitle);
 
-	if(extraM != null) {
+	if (extraM != null) {
 		const modalTitlet = document.createElement("p");
 		modalTitlet.innerText = extraM;
 		modalTitlet.classList.add("modalText");
@@ -1281,9 +1289,9 @@ window.UniversalUI = {
 	show: {
 		showEditModal,
 		showPick,
-		showText
-	}
-}
+		showText,
+	},
+};
 
 window.onclick = (e) => {
 	if (e.srcElement.className !== "contextMenu") {
@@ -1292,7 +1300,6 @@ window.onclick = (e) => {
 	}
 	universal.uiSounds.playSound("click");
 };
-
 
 document.addEventListener("keydown", (ev) => {
 	if (ev.key === "ArrowLeft") {
@@ -1368,7 +1375,7 @@ const setupWizard = () => {
 				"Welcome to the Freedeck setup wizard! This will help you set up Freedeck for the first time.",
 				() => {
 					showPick(
-						"Select a monitor device (where you will hear the sounds)",
+						"Select a monitor device!",
 						Object.keys(sinks).map((data) => {
 							return {
 								sink: data,
@@ -1379,7 +1386,7 @@ const setupWizard = () => {
 							console.log(`User selected ${data.name}`);
 							universal.save("monitor.sink", data.sink);
 							showPick(
-								"Select your VB-Cable device (where you will play the sounds through)",
+								"Select your preferred VB-Cable!",
 								Object.keys(sources).map((data) => {
 									return {
 										sink: data,
@@ -1397,14 +1404,23 @@ const setupWizard = () => {
 										() => {
 											universal.save("has_setup", true);
 											if (!universal._information.mobileConnected)
-												universal.connHelpWizard();
+												universal.connHelpWizard().then((e) => {
+													universal.save("has_setup", true);
+													makeThanks();
+												});
 										},
+										false,
 									);
 								},
+								"This is where Freedeck will also send audio. If you do not have VB-Cable, install it from https://vb-audio.com/Cable/",
+								false,
 							);
 						},
+						"This will be where you hear the sounds. If you are using a headset, select that. If you are using speakers, select those.",
+						false,
 					);
 				},
+				false,
 			);
 		});
 	});
@@ -1549,7 +1565,7 @@ universal.on(universal.events.default.notif, (dat) => {
 				);
 			},
 			dat.incoming.appInformation.authorizationMessage,
-			false
+			false,
 		);
 		return;
 	}
@@ -1557,18 +1573,22 @@ universal.on(universal.events.default.notif, (dat) => {
 
 universal.listenFor("now-playing", (data) => {
 	const { name, channel } = data;
-	if(channel === universal.audioClient.channels.ui || 
-		channel === universal.audioClient.channels.monitor) return;
+	if (
+		channel === universal.audioClient.channels.ui ||
+		channel === universal.audioClient.channels.monitor
+	)
+		return;
 	const newEle = document.createElement("div");
 	const filname = name.replace(/[^a-zA-Z0-9]/g, "");
 	newEle.className = `np s-${filname}`;
- 	newEle.innerText = name;
+	newEle.innerText = name;
 	document.querySelector("#np-sb").appendChild(newEle);
-})
+});
 
 universal.listenFor("audio-end", (data) => {
 	const filname = data.name.replace(/[^a-zA-Z0-9]/g, "");
-	if(document.querySelector(`.s-${filname}`)) document.querySelector(`.s-${filname}`).remove();
+	if (document.querySelector(`.s-${filname}`))
+		document.querySelector(`.s-${filname}`).remove();
 });
 
 window.showPick = showPick;

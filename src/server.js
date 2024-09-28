@@ -193,6 +193,7 @@ function handleSock(socket) {
   try {
     for (const handler of handlers.values()) {
       try {
+        if(io.rpcClients?.includes(socket) && handler.name !== "RPC") continue;
         handler.exec({ socket, types, plugins, io, clients });
       } catch (e) {
         debug.log(picocolors.red(e));

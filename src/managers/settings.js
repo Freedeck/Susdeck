@@ -29,16 +29,17 @@ const sc = {
 		if (!fs.existsSync(path.resolve("./src/configs/style.json"))) {
 			const def = JSON.stringify(this.styleSettings);
 			fs.writeFileSync(path.resolve("./src/configs/style.json"), def);
-		}
-		const data = JSON.parse(fs.readFileSync(path.resolve("./src/configs/style.json")));
-		for (const key in sc.styleSettings) {
-			if (!data[key] || typeof data[key] !== typeof sc.styleSettings[key]) {
-				data[key] = sc.styleSettings[key];
-				debug.log(`Added ${key} to style.json`, "Style / Migration");
+		} else {
+			const data = JSON.parse(fs.readFileSync(path.resolve("./src/configs/style.json")));
+			for (const key in sc.styleSettings) {
+				if (!data[key] || typeof data[key] !== typeof sc.styleSettings[key]) {
+					data[key] = sc.styleSettings[key];
+					debug.log(`Added ${key} to style.json`, "Style / Migration");
+				}
 			}
+			fs.writeFileSync(path.resolve("./src/configs/style.json"), JSON.stringify(data));
+			debug.log("Completed preflight.", "Style / Migration");
 		}
-		fs.writeFileSync(path.resolve("./src/configs/style.json"), JSON.stringify(data));
-		debug.log("Completed preflight.", "Style / Migration");
 	},
 	update: () => {
 		sc.checkStyle();

@@ -603,6 +603,7 @@ input:disabled {
     min-width: var(--tile-width);
     width: var(--tile-width);
     height: var(--tile-height);
+    font-size: var(--font-size);
 }
 
 .plugin-missing {

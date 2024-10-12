@@ -153,26 +153,10 @@
                 rl.innerText = "From " + repo.title;
                 li.appendChild(rl);
                 const file = document.createElement('button');
+                file.dataset.HandoffUrl = 'freedeck://download/' + req.id + '/' + encodeURIComponent(req.file) + '/' + encodeURIComponent(req.description) + '/' + encodeURIComponent(repo.title);
                 file.onclick = () => {
+                    window.location.href = file.dataset.HandoffUrl;
                     universal.uiSounds.playSound('int_confirm');
-                    dialog.innerHTML = `
-        <h1>Download ${req.name}</h1><p>Are you sure you want to download ${req.name} (from ${repo.title})?</p>
-        <p class="plugin-ifo">${req.description}</p>
-        <div class="flex-wrap-r space-evenly">
-        <button class="tint-green" id="yes">Yes</button>
-        <button id="no">No</button>
-        </div>`;
-                    Show();
-                    dialog.querySelector('#yes').onclick = () => {
-                        universal.uiSounds.playSound('int_prompt');
-                        const handoffURL = 'freedeck://download/' + req.id + '/' + encodeURIComponent(req.file);
-                        window.location.href = handoffURL;
-                        dialog.innerHTML = `<h1>Downloading ${req.name}</h1><p>Downloading ${req.name}...</p>`;
-                    };
-                    dialog.querySelector('#no').onclick = () => {
-                        universal.uiSounds.playSound('int_no');
-                        Hide();
-                    };
                 };
                 file.innerText = 'Download';
                 if (universal.plugins[req.id]) {
@@ -181,6 +165,7 @@
                     if (!universal.plugins[req.id].version) universal.plugins[req.id].version = '1.0.0';
                     if (universal.plugins[req.id].version != req.version) {
                         file.innerText = 'Update';
+                        file.dataset.HandoffUrl = file.dataset.HandoffUrl.replace('freedeck://download', 'freedeck://update') + "/" + encodeURIComponent(universal.plugins[req.id].version) + "/" + encodeURIComponent(req.version);
                         file.style.backgroundColor = 'var(--marketplace-plugin-updatable)';
                     } else
                         if (universal.plugins[req.id].version == req.version) {

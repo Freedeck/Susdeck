@@ -3,7 +3,7 @@ const path = require("node:path");
 const debug = require(path.resolve("./src/utils/debug.js"));
 
 if (!fs.existsSync("plugins")) {
-  deblug.log("Creating plugins directory...", "Migration");
+  debug.log("Creating plugins directory...", "Migration");
   fs.mkdirSync("plugins");
 }
 

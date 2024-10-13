@@ -24,6 +24,10 @@
         <label for="insanity">TILE INSANITY!! (1024 tiles) <span class="tag-beta">INSANE!</span></label>
         <input type="checkbox" id="insanity" />
     </div>
+    <div class="experiment">
+        <label for="ebigt">EVEN BIGGER TEXT!! (50rem) <span class="tag-beta">WORKS</span></label>
+        <input type="checkbox" id="ebigt" />
+    </div>
 </div>
 <div class="experiment-exist soundpack">
     <h1>UI Sounds</h1>
@@ -111,6 +115,12 @@
             setToLocalCfg(k, v)
         );
     }
+
+    document.querySelector("#ebigt").checked = universal.load("ebigt") == "true";
+
+    document.querySelector("#ebigt").onchange = () => {
+        universal.save("ebigt", !(universal.load("ebigt") == "true"));
+    };
 
     document.querySelector("#hwnmt").checked = universal.load("houston") == "true";
 

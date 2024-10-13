@@ -17,6 +17,9 @@ style.children.push(new SidebarCheck("Compact Mode", "es-center", (e) => handleC
 style.children.push(new SidebarCheck("Scroll Long Text", "es-scroll", (e) => handleCheckFor(e, "scroll")));
 style.children.push(new SidebarCheck("Fill Tiles", "es-fill", (e) => handleCheckFor(e, "fill")));
 
+let fontSize = "25";
+if(universal.load("ebigt") === "true") fontSize = "50";
+
 style.children.push(new SidebarSlider("Font Size", "es-fs", "px", "10", "25", "15", (e) => {
   universal.uiSounds.playSound("fdc_slider");
 	document.documentElement.style.setProperty(

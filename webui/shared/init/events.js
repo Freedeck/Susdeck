@@ -45,7 +45,7 @@ export default function eventsHandler(universal, user) {
 				return;
 			}
 			universal.sendEvent("button", interaction);
-
+			
 			if (interaction.type !== "fd.sound") return;
 			universal.reloadProfile();
 			// get name from universal.config.sounds with uuid
@@ -53,6 +53,7 @@ export default function eventsHandler(universal, user) {
 				const k = Object.keys(snd)[0];
 				return snd[k].uuid === interaction.uuid;
 			})[0];
+
 			if (!universal.load("playback-mode")) {
 				universal.save("playback-mode", "play_over");
 			}

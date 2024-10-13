@@ -16,6 +16,14 @@
         <label for="apc">Animate Page Changes <span class="tag-beta">TEST</span></label>
         <input type="checkbox" id="apc" />
     </div>
+    <div class="experiment">
+        <label for="hwnmt">Houston, we need more Tiles (512 tiles) <span class="tag-beta">WORKS</span></label>
+        <input type="checkbox" id="hwnmt" />
+    </div>
+    <div class="experiment">
+        <label for="insanity">TILE INSANITY!! (1024 tiles) <span class="tag-beta">INSANE!</span></label>
+        <input type="checkbox" id="insanity" />
+    </div>
 </div>
 <div class="experiment-exist soundpack">
     <h1>UI Sounds</h1>
@@ -103,6 +111,18 @@
             setToLocalCfg(k, v)
         );
     }
+
+    document.querySelector("#hwnmt").checked = universal.load("houston") == "true";
+
+    document.querySelector("#hwnmt").onchange = () => {
+        universal.save("houston", !(universal.load("houston") == "true"));
+    };
+
+    document.querySelector("#insanity").checked = universal.load("insanity") == "true";
+
+    document.querySelector("#insanity").onchange = () => {
+        universal.save("insanity", !(universal.load("insanity") == "true"));
+    };
 
     document.querySelector("#cpm").checked = universal.lclCfg().center == true;
 

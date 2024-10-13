@@ -543,8 +543,9 @@ function editTile(e) {
 		const itm = interactionData.data;
 		loadData(itm);
 	}
-	document.querySelector("#sbg").checked =
-		interactionData.data.showBg === "true";
+
+	universal.sendEvent("editTile", interactionData);
+
 	document.querySelector("#sbg").style.display =
 		interactionData.renderType === "button"
 			? "block"
@@ -572,50 +573,33 @@ function editTile(e) {
 	document.querySelector(".toggle-sidebar button").style.display = "none";
 }
 
-document.querySelector("#sbg").onclick = () => {
-	const int = JSON.parse(
+function createEditorCheckbox(selector, dataKey) {
+	universal.listenFor("editTile", () => {
+		const int = JSON.parse(document.querySelector("#editor-btn[data-interaction]").getAttribute("data-interaction"));
+		document.querySelector(selector).checked = int.data[dataKey];
+	})
+	document.querySelector(selector).addEventListener("click", (e) => {
+		const int = JSON.parse(
+			document
+				.querySelector("#editor-btn[data-interaction]")
+				.getAttribute("data-interaction"),
+		);
+		if (!int.data[dataKey]) int.data[dataKey] = true;
+		else int.data[dataKey] = !int.data[dataKey];
 		document
 			.querySelector("#editor-btn[data-interaction]")
-			.getAttribute("data-interaction"),
-	);
-	if (!int.data.showBg) int.data.showBg = true;
-	else int.data.showBg = !int.data.showBg;
-	document
-		.querySelector("#editor-btn[data-interaction]")
-		.setAttribute("data-interaction", JSON.stringify(int));
-	loadData(int.data);
-	document.querySelector("#sbg").checked = int.data.showBg;
-};
+			.setAttribute("data-interaction", JSON.stringify(int));
+		loadData(int.data);
+		document.querySelector(selector).checked = int.data[dataKey];
+	})
+}
 
-document.querySelector("#orl").onclick = () => {
-	const int = JSON.parse(
-		document
-			.querySelector("#editor-btn[data-interaction]")
-			.getAttribute("data-interaction"),
-	);
-	if (!int.data.onRelease) int.data.onRelease = true;
-	else int.data.onRelease = !int.data.onRelease;
-	document
-		.querySelector("#editor-btn[data-interaction]")
-		.setAttribute("data-interaction", JSON.stringify(int));
-	loadData(int.data);
-	document.querySelector("#orl").checked = int.data.onRelease;
-};
+createEditorCheckbox("#sbg", "showBg");
+createEditorCheckbox("#nbo", "noBorder");
+createEditorCheckbox("#nsh", "noShadow");
+createEditorCheckbox("#orl", "onRelease");
+createEditorCheckbox("#lp", "longPress");
 
-document.querySelector("#lp").onclick = () => {
-	const int = JSON.parse(
-		document
-			.querySelector("#editor-btn[data-interaction]")
-			.getAttribute("data-interaction"),
-	);
-	if (!int.data.longPress) int.data.longPress = true;
-	else int.data.longPress = !int.data.longPress;
-	document
-		.querySelector("#editor-btn[data-interaction]")
-		.setAttribute("data-interaction", JSON.stringify(int));
-	loadData(int.data);
-	document.querySelector("#lp").checked = int.data.longPress;
-};
 
 document.querySelector("#change-pl-settings").onclick = () => {
 	const plugin = document.querySelector("#plugin").value;

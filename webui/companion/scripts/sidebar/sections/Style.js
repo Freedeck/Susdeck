@@ -52,7 +52,15 @@ style.children.push(new SidebarSlider("Tile Size", "es-bs", "rem", "1", "12", "6
 	);
 }));
 
-style.children.push(new SidebarSlider("Tile Count", "es-tc", " tiles", "3", "54", "12", (e) => {
+let iconAmount = "54";
+if(universal.load("houston") === "true") iconAmount = "512";
+if(universal.load("insanity") === "true") iconAmount = "1024";
+
+let cols = "15";
+if(universal.load("houston") === "true") cols = "60";
+if(universal.load("insanity") === "true") cols = "120";
+
+style.children.push(new SidebarSlider("Tile Count", "es-tc", " tiles", "3", iconAmount, "12", (e) => {
   universal.uiSounds.playSound("fdc_slider");
 	const count = document.querySelectorAll(".fdc-placeholder").length;
 	const diff = e.target.value - count;
@@ -79,7 +87,7 @@ style.children.push(new SidebarSlider("Tile Count", "es-tc", " tiles", "3", "54"
 	);
 }));
 
-style.children.push(new SidebarSlider("Columns", "es-tr", " cols", "2", "15", "5", (e) => {
+style.children.push(new SidebarSlider("Columns", "es-tr", " cols", "2", cols, "5", (e) => {
   universal.uiSounds.playSound("fdc_slider");
 	universal.send(
 		universal.events.default.config_changed,

@@ -33,14 +33,27 @@
                     <input type="text" id="name" onkeyup="document.querySelector('#editor-btn').innerText = this.value;"
                         value="Not Loaded" />
                 </div>
-                <div class="flex-wrap-r alc">
-                    <label for="color">Color</label>
-                    <input type="color" id="color" data-has_set="false" value="#000" />
-                </div>
-                <div class="flex-wrap-r alc">
-                    <label for="sbg">No Background</label>
-                    <input class="fdc-checkbox" type="checkbox" id="sbg" />
-                </div>
+                <details>
+                    <summary>
+                        Style
+                    </summary>
+                    <div class="flex-wrap-r alc">
+                        <label for="color">Color</label>
+                        <input type="color" id="color" data-has_set="false" value="#000" />
+                    </div>
+                    <div class="flex-wrap-r alc">
+                        <label for="sbg">No Background</label>
+                        <input class="fdc-checkbox" type="checkbox" id="sbg" />
+                    </div>
+                    <div class="flex-wrap-r alc">
+                        <label for="nbo">No Border</label>
+                        <input class="fdc-checkbox" type="checkbox" id="nbo" />
+                    </div>
+                    <div class="flex-wrap-r alc">
+                        <label for="nsh">No Shadow</label>
+                        <input class="fdc-checkbox" type="checkbox" id="nsh" />
+                    </div>
+                </details>
                 <div class="flex-wrap-r alc">
                     <label for="lp">Long Press</label>
                     <input class="fdc-checkbox" type="checkbox" id="lp" />

@@ -14,6 +14,12 @@ export default function (sndType, keyObject, snd, rawDat) {
 	if (snd.data.showBg === "true") {
 		keyObject.classList.add("no-bg");
 	}
+	if (snd.data.noBorder === "true") {
+		keyObject.classList.add("no-border");
+	}
+	if (snd.data.noShadow === "true") {
+		keyObject.classList.add("no-shadow");
+	}
 	
 	if (sndType === "fd.sound") defaultHandler(snd, keyObject, rawDat);
 	else if (sndType === "fd.none") noneHandler(snd, keyObject, rawDat, true);

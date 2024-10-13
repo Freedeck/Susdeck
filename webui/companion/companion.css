@@ -462,7 +462,8 @@ a:hover {
 .sidebar-item {
 	background-color: var(--companion-sidebar-item-bg);
 	color: var(--companion-sidebar-item-color);
-	border-radius: 0.5rem;
+	border-radius: 1.5rem;
+	padding: .25rem;
 	transition-duration: .25s;
 	display: flex;
 	flex-direction: column;

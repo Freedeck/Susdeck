@@ -5,14 +5,23 @@
 <h2 id="uploads-0-title">Sounds<button onclick="universal._Uploads_New(1)">
     Upload Sound
   </button></h2>
-<div class="uploads uploads-0"></div>
+<details id="library-view-sounds">
+  <summary>View Sounds</summary>
+  <div class="uploads uploads-0"></div>
+</details>
 
 <h2 id="uploads-1-title">Icons <button onclick="universal._Uploads_New(0)">
     Upload Icon
   </button></h2>
-<div class="uploads uploads-1"></div>
-
+  <details id="library-view-icons">
+    <summary>View Icons</summary>
+    <div class="uploads uploads-1"></div>
+  </details>
+  
 <style>
+  #library-view-sounds, #library-view-icons {
+    width: unset;
+  }
   .save-changes {
     position: fixed;
     top: 0;
@@ -36,6 +45,8 @@
     border: 1px solid #000;
     border-radius: 5px;
     gap: 0.25rem;
+    width: min-content;
+    height: min-content;
     text-overflow: ellipsis;
 
     background: var(--modal-item-bg);
@@ -43,6 +54,16 @@
     animation: var(--modal-item-bg-anim);
   }
 
+  .uploads-0 .upload audio {
+    transform: scale(0.8);
+  }
+
+  .uploads-0 .upload p {
+    background-color: rgba(0,0,0,0.125);
+    border-radius: 1.5rem;
+    padding: 0.5rem;
+  }
+  
   .uploads-1 .upload {
     width: var(--tile-width);
     height: var(--tile-height);
@@ -64,12 +85,12 @@
 
   @keyframes glow {
     0% {
-      box-shadow: 0 0 40px rgba(255, 0, 255, 0.5);
+      box-shadow: 0 0 40px rgba(255, 0, 89, 0.9);
       transform: scale(1);
     }
 
     100% {
-      box-shadow: 0 0 40px rgba(0, 255, 255, 1);
+      box-shadow: 0 0 40px rgb(0, 179, 255);
       transform: scale(1.1);
     }
   }

@@ -1,59 +1,24 @@
 {
   "major": [
-    "**Welcome to the Library, a brand new way of managing your sounds.**",
+    "**The sidebar has gotten a slight redesign!**",
     [
-      "Gone are the days of re-uploading a sound multiple times. Just find it in your library, click it, and save.",
-      "Check it out when setting an icon, adding a sound, or on the right sidebar!",
-      "More features like rename & delete coming soon."
+      "The Freedeck logo is now on the sidebar",
+      "The Home tab has been renamed to Tiles"
     ],
-    "**There's a brand new splash screen!**",
-    "Some new Tile options!",
-    [
-      "You can now remove the background of a Tile",
-      "You can now set a Tile to be on release, or on press."
-    ],
-    "**The settings menu has been renamed to On-Deck and has some cool new animations.**",
-    "**There is a brand new drag & drop system for tiles!**",
-    "**Hovering over a Tile creates a tooltip!**",
-    "**Doing any action no longer causes the entire page to reload. Instead, just the tiles!**",
-    "**Legacy themes no-longer try to fit on top of each other!**",
-    "**All the existing themes have been given a new fresh coat of paint!**",
-    "**You'll also notice that there's a lot more synchronization between your device & Companion!**",
-    "**Response times of button have been increased!**",
-    "**Companion load times are significantly faster now!**",
-    "**Brand new animations for Connect, and a slight redesign there too!**",
-    "**The Yellow theme is now called Gold!**",
-    "**Added a new theme called Soofle.**",
-    "New logo!",
-    "Release names during Open Beta will now drop v6 - as to rename the project from Freedeck v6 to Freedeck.",
-    "Themes now use inheritance of the default, so their size is significantly smaller.",
-    "No more external manifest for Themes, they're all in the same file now.",
-    "The editor has also gotten a slight redesign!",
-    "...and so many more performance & efficiency improvements."
+    "Opening other views (Settings, Marketplace, etc.) now have an animation!",
+    "The Library has some extra styling-- a dropdown to view Sounds or Icons, for performance.",
+    "Tiles now are more customizable - background, border, and shadow toggles have been added into a new dropdown in the Editor.",
+    "Bug Fixed! Pressing Upload or Change (Sound) now highlights the proper upload.",
+    "Bug Fixed! Making a tile, then setting any data-related option, then setting a plugin now retains data!"
   ],
   "other": [
-    "Audio is now based on a channel system, so multiple sounds (namely UI & board) can play at once.",
-    "Properly handle Stop Previous mode & monitor checks",
-    "Rows is now properly called Columns.",
-    "Fixed issue where Stop All wasn't fully working.",
-    "Updated a lot of dependencies.",
-    "Instead of importing pako from the web, it's now included in the webpack build.",
-    "Bug Fix: Tiles no longer clip through the top of the screen.",
-    "The left sidebar is now modular! (Smaller HTML size)",
-    "Your tiles now have a slight background color to make them stand out more.",
-    "Clicking every option on the left sidebar no longer requires a reload, and still syncs instantly!",
-    "Switching folders no longer requires a reload.",
-    "Setting themes no longer requires a reload.",
-    "The bottom right corner now has the Freedeck icon.",
-    "Added footer to sidebar.",
-    "Each right sidebar page now has it's own container & views (further decreasing size of the page).",
-    "Theming: Themes no longer keep adding on top of each other.",
-    "Theming: You can now change the FDM (marketplace/external view object) text color",
-    "Theming: You can now change the sidebar (left and right!) text/background color"
+    "Some new styling for the Themes in Settings",
+    "Fixed corner radius for left sidebar",
+    "Minor style changes for CTXL views",
+    "Font now synchronizes everywhere when changed.",
+    "Fixed font-size not being set to current size"
   ],
   "known": [
-    "Making a tile, then setting any data-related option, then setting it's type to anything makes the data disappear. Type's data persists.",
-    "Pressing Upload or Change (Sound) doesn't highlight the proper button. However, this is just visual & the previous option is still selected."
   ],
-  "note": "Unfortunately, NativeBridge has been postponed until further notice. It's still in the works, though."
+  "note": ""
 }

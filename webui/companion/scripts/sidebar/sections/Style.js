@@ -20,7 +20,7 @@ style.children.push(new SidebarCheck("Fill Tiles", "es-fill", (e) => handleCheck
 let fontSize = "25";
 if(universal.load("ebigt") === "true") fontSize = "50";
 
-style.children.push(new SidebarSlider("Font Size", "es-fs", "px", "10", "25", "15", (e) => {
+style.children.push(new SidebarSlider("Font Size", "es-fs", "px", "10", fontSize, "15", (e) => {
   universal.uiSounds.playSound("fdc_slider");
 	document.documentElement.style.setProperty(
 		"--font-size",

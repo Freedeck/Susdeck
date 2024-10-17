@@ -286,36 +286,42 @@ const universal = {
 			},
 		],
 		unofficial: [],
-		getPluginsfromRepo: async (url) => {
-			const _plugins = [];
-			const res = await fetch(url);
-			const data = await res.text();
-			if (res.status !== 200)
-				return [
-					{
-						err: true,
-						msg: `Repository not found. Server returned ${res.status}`,
-					},
-				];
-			if (!data.includes(",!"))
-				return [{ err: true, msg: "No plugin metadata found." }];
-			let lines = data.split("\n");
-			lines.shift();
-			lines = lines.filter((line) => line.length > 0);
-			for (const line of lines) {
-				const comma = line.split(",!");
-				const meta = {
-					file: comma[0],
-					githubRepo: `https://github.com/${comma[1]}`,
-					name: comma[2],
-					author: comma[3],
-					version: comma[4],
-					description: comma[5],
-					id: comma[6],
-				};
-				_plugins.push(meta);
-			}
-			return _plugins;
+		getPluginsfromRepo: (url) => {
+			return new Promise((resolve, reject) => {
+				const _plugins = [];
+				const res = fetch(url).catch(err => {
+					reject(err);
+				}).then((r)=>r.text()).then((data) => {
+					if (res.status !== 200)
+						return [
+							{
+								err: true,
+								msg: `Repository not found. Server returned ${res.status}`,
+							},
+						];
+					if (!data.includes(",!"))
+						return [{ err: true, msg: "No plugin metadata found." }];
+					let lines = data.split("\n");
+					lines.shift();
+					lines = lines.filter((line) => line.length > 0);
+					for (const line of lines) {
+						const comma = line.split(",!");
+						const meta = {
+							file: comma[0],
+							githubRepo: `https://github.com/${comma[1]}`,
+							name: comma[2],
+							author: comma[3],
+							version: comma[4],
+							description: comma[5],
+							id: comma[6],
+						};
+						_plugins.push(meta);
+					}
+					resolve(_plugins);
+				}).catch(err => {
+					reject(err);
+				});
+			})
 		},
 	},
 	uiSounds,

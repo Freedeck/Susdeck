@@ -151,6 +151,7 @@ a:hover {
 	padding: 5px;
 	background-color: var(--companion-left-sidebar-bg);
 	color: var(--companion-left-sidebar-color);
+	animation: pull-up 0.5s;
 	height: 100%;
 	z-index: 1002;
 	overflow-y: scroll;
@@ -468,7 +469,6 @@ a:hover {
 	transition-duration: .25s;
 	display: flex;
 	flex-direction: column;
-	font-family: 'Rubik', sans-serif;
 }
 
 
@@ -597,7 +597,7 @@ a:hover {
 
 #ctxl-view-cont html {
 	background: none;
-	margin-right: 10rem;
+	width: calc(100% - 13rem);
 }
 
 #ctxl-view-cont html body {
@@ -605,7 +605,7 @@ a:hover {
 	background-image: none;
 	width:100%;
 	color:var(--modal-color);
-	padding-left: 1.25rem;
+	padding-left: 1rem;
 }
 #ctxl-view-cont html body::-webkit-scrollbar {
   display: none;

@@ -9,11 +9,6 @@ import { makeThanks } from "./changelog/create.js";
 await universal.init("Companion");
 
 universal.connectionTest = true;
-universal.doCtxlLoadAnim = () => {
-	document.querySelector("#ctxl-view-cont > html").style.transition =
-		"opacity 0.5s";
-	document.querySelector("#ctxl-view-cont").style.display = "block";
-};
 
 gridItemDrag.setFilter("#keys .button");
 gridItemDrag.unmovableClass = ".builtin, .unset";
@@ -792,15 +787,16 @@ generateProfileSelect();
 document.querySelector("#upload-sound").onclick = () => {
 	document.querySelector("#upload-sound").disabled = true;
 	universal.uiSounds.playSound("int_confirm");
-	if (document.querySelector(universal.ctx.view_container))
-		document.querySelector(universal.ctx.view_container).style.display =
-			"block";
+	const ito = JSON.parse(document.querySelector("#editor-btn[data-interaction]").dataset.interaction);
+
 	universal._Uploads_View = 0;
-	universal.ctx.destructiveView("library");
+	universal.vopen("library");
 	universal._libraryOnload = () => {
 		setupLibraryFor("sound");
 	};
 	universal._libraryOnpaint = () => {
+		if(ito.data.file && document.querySelector(`.upload[data-name='${ito.data.file}']`))
+			document.querySelector(`.upload[data-name='${ito.data.file}']`).classList.add("glow")
 		for (const el of document.querySelectorAll(".uploads-0 .upload")) {
 			el.onclick = () => {
 				for (const el of document.querySelectorAll(".upload")) {
@@ -815,7 +811,7 @@ document.querySelector("#upload-sound").onclick = () => {
 				setupLibraryFor("");
 			};
 			universal._libraryOnpaint = undefined;
-			universal.vopen("index.html");
+			universal.vclose();
 		};
 	};
 	universal._Uploads_Select = (itm) => {
@@ -962,7 +958,6 @@ document.querySelector("#none-plugin").onclick = (e) => {
 			.getAttribute("data-interaction"),
 	);
 	int.type = "fd.select";
-	int.data = {};
 	document.querySelector("#type").innerText = "fd.select";
 	document
 		.querySelector("#editor-btn[data-interaction]")
@@ -974,6 +969,10 @@ document.querySelector("#none-plugin").onclick = (e) => {
 
 const setupLibraryFor = (type) => {
 	if (type === "icon") {
+		document.querySelector("#library-view-sounds").style.display = "none";
+		document.querySelector("#library-view-icons").style.display = "block";
+		document.querySelector("#library-view-sounds").open = false;
+		document.querySelector("#library-view-icons").open = true;
 		document.querySelector(".uploads-0").style.display = "none";
 		document.querySelector("#uploads-0-title").style.display = "none";
 		document.querySelector(".uploads-1").style.display = "flex";
@@ -984,6 +983,10 @@ const setupLibraryFor = (type) => {
 			"Available Icons";
 		document.querySelector(".save-changes").style.display = "block";
 	} else if (type === "sound") {
+		document.querySelector("#library-view-sounds").style.display = "block";
+		document.querySelector("#library-view-icons").style.display = "none";
+		document.querySelector("#library-view-sounds").open = true;
+		document.querySelector("#library-view-icons").open = false;
 		document.querySelector(".uploads-0").style.display = "flex";
 		document.querySelector("#uploads-0-title").style.display = "block";
 		document.querySelector(".uploads-1").style.display = "none";
@@ -994,6 +997,10 @@ const setupLibraryFor = (type) => {
 			"Available Sounds";
 		document.querySelector(".save-changes").style.display = "block";
 	} else {
+		document.querySelector("#library-view-sounds").style.display = "block";
+		document.querySelector("#library-view-icons").style.display = "block";
+		document.querySelector("#library-view-sounds").open = false;
+		document.querySelector("#library-view-icons").open = false;
 		document.querySelector(".uploads-0").style.display = "flex";
 		document.querySelector("#uploads-0-title").style.display = "block";
 		document.querySelector(".uploads-1").style.display = "flex";
@@ -1007,15 +1014,15 @@ const setupLibraryFor = (type) => {
 
 document.querySelector("#upload-icon").onclick = (e) => {
 	universal.uiSounds.playSound("int_confirm");
-	if (document.querySelector(universal.ctx.view_container))
-		document.querySelector(universal.ctx.view_container).style.display =
-			"block";
 	universal._Uploads_View = 1;
-	universal.ctx.destructiveView("library");
+	universal.vopen("library");
+	const ito = JSON.parse(document.querySelector("#editor-btn[data-interaction]").dataset.interaction);
 	universal._libraryOnload = () => {
 		setupLibraryFor("icon");
 	};
 	universal._libraryOnpaint = () => {
+		if(ito.data.icon && document.querySelector(`.upload[data-name='${ito.data.icon.split("/icons/")[1]}']`))
+			document.querySelector(`.upload[data-name='${ito.data.icon.split("/icons/")[1]}']`).classList.add("glow")
 		for (const el of document.querySelectorAll(".uploads-1 .upload")) {
 			el.onclick = () => {
 				for (const el of document.querySelectorAll(".upload")) {
@@ -1030,7 +1037,7 @@ document.querySelector("#upload-icon").onclick = (e) => {
 				setupLibraryFor("");
 			};
 			universal._libraryOnpaint = undefined;
-			universal.vopen("index.html");
+			universal.vclose();
 		};
 	};
 	universal._Uploads_Select = (itm) => {

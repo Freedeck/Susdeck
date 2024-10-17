@@ -1,4 +1,4 @@
-<h1>Marketplace <span class="tag-beta">Beta</span></h1>
+<h1>Marketplace</h1>
 <p>Welcome to the Freedeck Marketplace. Here you can download plugins to add even more functionality to your Freedeck.
 </p>
 <button onclick="universal.mkp_addRepo();">
@@ -113,7 +113,7 @@
         }
         li.innerText = (isUnofficial ? '(!) ' : '') + repo.title;
         li.innerHTML += " &#10148; ";
-        li.innerText += repo.who;
+        li.innerText += universal.cleanHTML(repo.who);
         document.querySelector('.repositories').appendChild(li);
 
         universal.repositoryManager.getPluginsfromRepo(repo.link).then((plugins) => {
@@ -122,8 +122,10 @@
                 if (!isUnofficial) return;
             }
             if (isUnofficial) {
-                li.innerHTML += '<a href="#">Remove</a>';
-                li.querySelector('a').onclick = () => {
+                const btn = document.createElement("button");
+                btn.innerText = "Remove";
+                li.appendChild(btn);
+                btn.onclick = () => {
                     universal.repositoryManager.unofficial = universal.repositoryManager.unofficial.filter((r) => r.link != repo.link);
                     universal.save('repos.community', JSON.stringify(universal.repositoryManager.unofficial));
                     document.querySelector('.repositories').removeChild(li);
@@ -179,7 +181,18 @@
                 li.appendChild(file);
                 document.querySelector('.marketplace').appendChild(li);
             });
-        });
+        }).catch(err => {
+            const cnt = document.createElement("div");
+            const txt = document.createElement("h1");
+            txt.innerHTML = `Error while loading repository "${repo.title}"`;
+            const er = document.createElement("p");
+            er.innerHTML = err;
+            if(err.toString().includes("Failed to fetch"))
+            er.innerHTML += `<br>(Could not reach ${repo.link}, is the internet down?)`;
+            cnt.appendChild(txt);
+            cnt.appendChild(er);
+            document.querySelector(".marketplace").appendChild(cnt);
+        })
 
         document.querySelector('.message').innerHTML = '';
     };

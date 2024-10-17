@@ -10,6 +10,9 @@ import "./sidebar/sections/Footer.js";
 import contextual from "./lib/ctxl.js";
 universal.ctx = contextual;
 
+document.body.appendChild(contextual.createViewContainer());
+document.body.querySelector(contextual.view_container).style.display = 'none';
+
 contextual.addView("marketplace");
 contextual.addView("plugins");
 contextual.addView("settings");
@@ -28,7 +31,7 @@ universal.listenFor("init", () => {
 document.onkeydown = (ev) => universal.uiSounds.playSound("int_type");
 
 const sidebar = [
-	{ Home: "index.html" },
+	{ Tiles: "index.html" },
 	{ Library: "library.html" },
 	{ Plugins: "plugins.html" },
 	{ Marketplace: "marketplace.html" },
@@ -44,7 +47,13 @@ sidebarEle.id = "sidebar";
 const sidebarUl = document.createElement("ul");
 sidebarEle.appendChild(sidebarUl);
 sidebarUl.setHTML(
-	'<li style="font-size: .65em; background: none; margin: 0 auto;"><h2>Freedeck</h2></li>',
+	`<li style="font-size: .6em; background: none; margin: 0 auto;">
+	<span style="display:flex;align-items:center;">
+	<img src="/common/icons/fd.png" width="50" height="50" alt="Freedeck" />
+	&nbsp;
+	<h2>Freedeck</h2>
+	</span>
+	</li>`,
 );
 for (const itm of sidebar) {
 	const name = Object.keys(itm)[0];
@@ -62,23 +71,43 @@ for (const itm of sidebar) {
 	sidebarUl.appendChild(ele);
 }
 
+universal.vclose = () => {
+	const view_container = document.querySelector(universal.ctx.view_container);
+	setAnim(view_container, "pull-up 0.5s");
+	setTimeout(() => {
+		setDisplay(view_container, "none");
+	}, 500);
+}
+
 universal.vopen = (v) => {
 	universal.uiSounds.playSound("sidebar");
-	console.log("vopen", v);
+	const view_container = document.querySelector(universal.ctx.view_container);
+	const leftSidebar = document.querySelector(".sidebar");
+
+	if(view_container == null) return;
+
 	if (!pages.includes(v)) {
-		if (document.querySelector(universal.ctx.view_container))
-			document.querySelector(universal.ctx.view_container).style.display =
-				"none";
-		if (v.startsWith("/")) {
-			window.location.href = v;
-		}
+		if(leftSidebar.style.display === 'none') document.querySelector(".toggle-sidebar button").click();
+		setAnim(view_container, "pull-up 0.5s");
+		setTimeout(() => {
+			setDisplay(view_container, "none");
+		}, 500);
+		if (v.startsWith("/")) window.location.href = v;
 		return;
 	}
-	if (document.querySelector(universal.ctx.view_container))
-		document.querySelector(universal.ctx.view_container).style.display =
-			"block";
+
+	setDisplay(view_container, "block");
+	if(leftSidebar.style.display === 'flex') document.querySelector(".toggle-sidebar button").click();
 	universal.ctx.destructiveView(v);
-	universal.doCtxlLoadAnim();
+	setAnim(view_container, "pull-down 0.5s");
 };
+
+function setDisplay(ele, val) {
+	if(ele) ele.style.display = val;
+}
+
+function setAnim(ele, val) {
+	if(ele) ele.style.animation = val;
+}
 
 document.body.appendChild(sidebarEle);

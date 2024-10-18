@@ -13,7 +13,7 @@
         <input type="checkbox" id="cpm" />
     </div>
     <div class="experiment">
-        <label for="swc">BRYCE ISG GAY <span class="tag-beta">BRYCE IS GAY</span></label>
+        <label for="swc">Show Recompile as a Sidebar tab</label>
         <input type="checkbox" id="swc" />
     </div>
     <div class="experiment">
@@ -122,26 +122,23 @@
         );
     }
 
-    document.querySelector("#ebigt").checked = universal.load("ebigt") == "true";
+    window.settingsView_check = (k, v, a=()=>{}) => {
+        document.querySelector(k).checked = universal.load(v) == "true";
+        document.querySelector(k).onchange = (ev) => {
+            universal.save(v, !(universal.load(v) == "true"));
+            a(ev);
+        }
+    }
 
-    document.querySelector("#ebigt").onchange = () => {
-        universal.save("ebigt", !(universal.load("ebigt") == "true"));
-    };
-    document.querySelector("#swc").onchange = () => {
-        universal.save("swc", !(universal.load("swc") == "true"));
-    };
+    window.settingsView_createLSCheck = (id, label, description, changed) => {
+        const a = "";
+        window.settingsView_check("#" + id, id, changed);
+    }
 
-    document.querySelector("#hwnmt").checked = universal.load("houston") == "true";
-
-    document.querySelector("#hwnmt").onchange = () => {
-        universal.save("houston", !(universal.load("houston") == "true"));
-    };
-
-    document.querySelector("#insanity").checked = universal.load("insanity") == "true";
-
-    document.querySelector("#insanity").onchange = () => {
-        universal.save("insanity", !(universal.load("insanity") == "true"));
-    };
+    window.settingsView_check("#ebigt", "ebigt");
+    window.settingsView_check("#swc", "swc", () => {universal.reloadRight()});
+    window.settingsView_check("#hwnmt", "houston");
+    window.settingsView_check("#insanity", "insanity");
 
     document.querySelector("#cpm").checked = universal.lclCfg().center == true;
 

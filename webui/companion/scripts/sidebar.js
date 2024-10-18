@@ -23,49 +23,50 @@ universal.listenFor("init", () => {
 
 document.onkeydown = (ev) => universal.uiSounds.playSound("int_type");
 
-const sidebar = [
-	{ Tiles: "index.html" },
-	{ Library: "library.html" },
-	{ Plugins: "plugins.html" },
-	{ Marketplace: "marketplace.html" },
-	{ Settings: "settings.html" },
-	{ Connect: "/connect2.html?id=Companion&new_ip=true" },
-	// {'Webpack Recompile': '+universal.send(universal.events.default.recompile)'}
-];
-
-if(universal.load("swc") === "true") sidebar.push({'Webpack Recompile': '+universal.send(universal.events.default.recompile)'})
-
 const pages = ["library", "plugins", "marketplace", "settings"];
 
 const sidebarEle = document.createElement("div");
 sidebarEle.id = "sidebar";
 const sidebarUl = document.createElement("ul");
 sidebarEle.appendChild(sidebarUl);
-sidebarUl.setHTML(
-	`<li style="font-size: .6em; background: none; margin: 0 auto;">
-	<span style="display:flex;align-items:center;">
-	<img src="/common/icons/fd.png" width="50" height="50" alt="Freedeck" />
-	&nbsp;
-	<h2>Freedeck</h2>
-	</span>
-	</li>`,
-);
-for (const itm of sidebar) {
-	const name = Object.keys(itm)[0];
-	const val = itm[name];
-	const page = pages.find((p) => val.includes(p)) || val;
-	if (val.startsWith("+")) {
+universal.reloadRight = () => {
+	const sidebar = [
+		{ Tiles: "index.html" },
+		{ Library: "library.html" },
+		{ Plugins: "plugins.html" },
+		{ Marketplace: "marketplace.html" },
+		{ Settings: "settings.html" },
+		{ Connect: "/connect2.html?id=Companion&new_ip=true" },
+	];
+	if(universal.load("swc") === "true")
+		sidebar.push({'Recompile': '+universal.send(universal.events.default.recompile)'})
+	sidebarUl.setHTML(
+		`<li style="font-size: .6em; background: none; margin: 0 auto;">
+		<span style="display:flex;align-items:center;">
+		<img src="/common/icons/fd.png" width="50" height="50" alt="Freedeck" />
+		&nbsp;
+		<h2>Freedeck</h2>
+		</span>
+		</li>`,
+	);
+	for (const itm of sidebar) {
+		const name = Object.keys(itm)[0];
+		const val = itm[name];
+		const page = pages.find((p) => val.includes(p)) || val;
+		if (val.startsWith("+")) {
+			const ele = document.createElement("li");
+			ele.setHTML(`<a onclick="${val.substring(1)}">${name}</a>`);
+			sidebarUl.appendChild(ele);
+			break;
+		}
 		const ele = document.createElement("li");
-		ele.setHTML(`<a onclick="${val.substring(1)}">${name}</a>`);
+		ele.setAttribute("hovereffect", "yes");
+		ele.setHTML(`<a onclick="universal.vopen('${page}')">${name}</a>`);
 		sidebarUl.appendChild(ele);
-		break;
 	}
-	const ele = document.createElement("li");
-	ele.setAttribute("hovereffect", "yes");
-	ele.setHTML(`<a onclick="universal.vopen('${page}')">${name}</a>`);
-	sidebarUl.appendChild(ele);
 }
 
+universal.reloadRight();
 universal.vclose = () => {
 	const view_container = document.querySelector(universal.ctx.view_container);
 	setAnim(view_container, "pull-up 0.5s");

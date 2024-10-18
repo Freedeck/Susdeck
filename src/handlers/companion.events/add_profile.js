@@ -2,10 +2,6 @@ const config = require("../../managers/settings");
 const flags = require("../flags");
 
 module.exports = {
-	flags: [
-		flags.reload_all,
-		flags.authenticate
-	],
 	exec: ({ io, data }) => {
 		const settings = config.settings();
 		settings.profiles[data] = [

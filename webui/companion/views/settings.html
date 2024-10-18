@@ -13,6 +13,10 @@
         <input type="checkbox" id="cpm" />
     </div>
     <div class="experiment">
+        <label for="swc">BRYCE ISG GAY <span class="tag-beta">BRYCE IS GAY</span></label>
+        <input type="checkbox" id="swc" />
+    </div>
+    <div class="experiment">
         <label for="apc">Animate Page Changes <span class="tag-beta">TEST</span></label>
         <input type="checkbox" id="apc" />
     </div>
@@ -46,16 +50,18 @@
     .experiments {
         display: flex;
         flex-wrap: wrap;
-        gap: 5px;
+        gap: 1rem;
     }
     .experiment {
         display: flex;
-        gap: 5px;
         background: var(--modal-item-bg);
         background-size: var(--modal-item-bg-size);
         animation: var(--modal-item-bg-anim);
-        padding: 5px;
-        border-radius: 5px;
+        padding: 0.65rem;
+        border-radius: var(--tile-radius);
+    }
+    .experiment input {
+        width: 50%;
     }
 
     .uisounds,
@@ -77,6 +83,7 @@
     }
 
     .experiment-exist {
+        margin-top: 1.5rem;
         background-color: rgba(0,0,0,0.25);
         padding: 5px;
         border-radius: 1.5rem;
@@ -119,6 +126,9 @@
 
     document.querySelector("#ebigt").onchange = () => {
         universal.save("ebigt", !(universal.load("ebigt") == "true"));
+    };
+    document.querySelector("#swc").onchange = () => {
+        universal.save("swc", !(universal.load("swc") == "true"));
     };
 
     document.querySelector("#hwnmt").checked = universal.load("houston") == "true";

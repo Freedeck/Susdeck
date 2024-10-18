@@ -1430,87 +1430,6 @@ universal.on(universal.events.user_mobile_conn, (isConn) => {
 if (universal._information.mobileConnected)
 	document.querySelector(".mobd").style.display = "none";
 
-/**
- * @name getAudioOutputDevices
- * @description Get the audio output devices.
- * @param {Boolean} isCable If we're looking for VB-Cable instances or Monitor
- * @return {Object[]}
- */
-async function getAudioOutputDevices(isCable = false) {
-	const devices = await navigator.mediaDevices.enumerateDevices();
-	const audioOutputs = devices
-		.filter(
-			(device) =>
-				device.kind === "audiooutput" &&
-				(isCable
-					? device.label.includes("VB-Audio")
-					: !device.label.includes("VB-Audio")),
-		)
-		.map((device) => ({
-			name: device.label || "Unknown Audio Output",
-			value: device.deviceId,
-		}));
-	return audioOutputs;
-}
-
-const embeddedSettingsAudio = document.querySelector("#es-audio");
-const embeddedSettingsClient = document.querySelector("#es-client");
-
-getAudioOutputDevices().then(async (audioOutputs) => {
-	const select = await universal.embedded_settings.createSelect(
-		"Monitor",
-		"es-monitor",
-		audioOutputs.map((device) => device.value),
-		audioOutputs.map((device) => device.name),
-		universal.load("monitor.sink"),
-		(ev) => {
-			universal.save("monitor.sink", ev.target.value);
-			console.log(`Pitch set to ${ev.target.value}`);
-		},
-	);
-	embeddedSettingsAudio.appendChild(select);
-});
-
-getAudioOutputDevices(true).then(async (audioOutputs) => {
-	const select = await universal.embedded_settings.createSelect(
-		"VB-Cable",
-		"es-cable",
-		audioOutputs.map((device) => device.value),
-		audioOutputs.map((device) => device.name),
-		universal.load("vb.sink"),
-		(ev) => {
-			universal.save("vb.sink", ev.target.value);
-			console.log(`Cable set to ${ev.target.value}`);
-		},
-	);
-	embeddedSettingsAudio.appendChild(select);
-});
-
-const playbackModes = [
-	{
-		label: "Stop Previous",
-		value: "stop_prev",
-	},
-	{
-		label: "Play Over",
-		value: "play_over",
-	},
-];
-
-const playbackModeSetting = await universal.embedded_settings.createSelect(
-	"Playback Mode",
-	"es-playback",
-	playbackModes.map((mode) => mode.value),
-	playbackModes.map((mode) => mode.label),
-	universal.load("playback-mode"),
-	(ev) => {
-		universal.save("playback-mode", ev.target.value);
-		console.log(`Playback mode set to ${ev.target.value}`);
-	},
-);
-
-embeddedSettingsClient.appendChild(playbackModeSetting);
-
 const setToLocalCfg = (key, value) => {
 	const cfg = universal.lclCfg();
 	cfg[key] = value;
@@ -1560,20 +1479,6 @@ universal.on(universal.events.default.notif, (dat) => {
 		);
 		return;
 	}
-});
-
-universal.listenFor("now-playing", (data) => {
-	const { name, channel } = data;
-	if (
-		channel === universal.audioClient.channels.ui ||
-		channel === universal.audioClient.channels.monitor
-	)
-		return;
-	const newEle = document.createElement("div");
-	const filname = name.replace(/[^a-zA-Z0-9]/g, "");
-	newEle.className = `np s-${filname}`;
-	newEle.innerText = name;
-	document.querySelector("#np-sb").appendChild(newEle);
 });
 
 universal.listenFor("audio-end", (data) => {

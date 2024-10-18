@@ -1,6 +1,6 @@
 import { SidebarSection, SidebarSvgButton } from "../SidebarSection";
 
-const style = new SidebarSection("Folders", "es-profiles");
+const style = new SidebarSection("Folders", "Profiles");
 
 const newBtn = new SidebarSvgButton("", ()=>{
   window.UniversalUI.show.showEditModal(
@@ -11,9 +11,24 @@ const newBtn = new SidebarSvgButton("", ()=>{
 				feedback.innerText = "Please enter a name for the folder";
 				return false;
 			}
+			universal.config.profiles[value] = [
+				{
+					"Back to Home": {
+						type: "fd.profile",
+						pos: 0,
+						uuid: "fdc.0.0",
+						data: { profile: "Default" },
+					},
+				},
+			];
 			universal.page = 0;
 			universal.save("page", universal.page);
 			universal.send(universal.events.companion.add_profile, value);
+			universal.send(universal.events.companion.set_profile, value);
+			const option = document.createElement("option");
+			option.innerText = value;
+			option.setAttribute("value", value);
+			profileSelect.appendChild(option);
 			return true;
 		},
 	);
@@ -82,16 +97,14 @@ const profileTxt = document.createElement("span");
 
 const profileSelect = document.createElement("select");
 
-universal.listenFor("loadHooks", () => {
-	for (const profile of Object.keys(universal.config.profiles)) {
-		const option = document.createElement("option");
-		option.innerText = profile;
-		option.setAttribute("value", profile);
-		profileSelect.appendChild(option);
-	}
-	profileTxt.innerHTML = `Current Folder:&nbsp<i>${universal.cleanHTML(universal.config.profile)}</i>`;
-	profileSelect.value = universal.config.profile;
-})
+for (const profile of Object.keys(universal.config.profiles)) {
+	const option = document.createElement("option");
+	option.innerText = profile;
+	option.setAttribute("value", profile);
+	profileSelect.appendChild(option);
+}
+profileTxt.innerHTML = `Current Folder:&nbsp<i>${universal.cleanHTML(universal.config.profile)}</i>`;
+profileSelect.value = universal.config.profile;
 
 profileSelect.onchange = () => {
 	universal.page = 0;

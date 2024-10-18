@@ -27,6 +27,9 @@ const cfg = {
     Pako: "Pako",
     settingsHelpers: "settingsHelpers",
   },
+  stats: {
+    errorDetails: true
+  }
 };
 
 module.exports = cfg;

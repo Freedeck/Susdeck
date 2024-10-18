@@ -1,13 +1,13 @@
 import { UI } from "../../../../client/scripts/ui";
 import { SidebarSection, SidebarButton } from "../SidebarSection";
 
-const style = new SidebarSection("", "");
+const style = new SidebarSection("", "CurrentPage");
 
 style.children.push({
   build: () => {
     const h1 = document.createElement("h1");
     h1.classList.add("cpage");
-    h1.innerText = "Page: 0/0";
+    h1.innerText = `Page: ${universal.page + 1}/${Object.keys(UI.Pages).length}`;
     return h1;
   }
 })

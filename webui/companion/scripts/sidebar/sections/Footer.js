@@ -1,6 +1,6 @@
 import { SidebarSection } from "../SidebarSection";
 
-const style = new SidebarSection("", "", ["mobd", "rem-mobd"]);
+const style = new SidebarSection("", "Footer", ["mobd", "rem-mobd"]);
 
 style.children.push(
   {

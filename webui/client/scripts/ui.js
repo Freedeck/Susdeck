@@ -14,7 +14,7 @@ function makeBootLog() {
 	const bootLog = document.createElement("div");
 	bootLog.id = "boot-log-div";
 	bootLog.classList.add("settings-menu")
-	bootLog.innerHTML = "<center><h1>Freedeck is booting...</h1></center><div id='boot-log'></div><center><button id='oclb'>Close Boot Log</button></center>";
+	bootLog.innerHTML = "<center><h1>Freedeck</h1></center><div id='boot-log'></div><center><button id='oclb'>Close Boot Log</button></center>";
 	document.body.appendChild(bootLog);
 	document.querySelector("#oclb").addEventListener("click", () => {
 		closeBootLog();

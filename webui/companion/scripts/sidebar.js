@@ -1,11 +1,4 @@
-import "./sidebar/sections/MobileDevice.js";
-import "./sidebar/sections/CurrentPage.js";
-import "./sidebar/sections/Client.js";
-import "./sidebar/sections/Soundboard.js";
-import "./sidebar/sections/Style.js";
-import "./sidebar/sections/Profiles.js";
-
-import "./sidebar/sections/Footer.js";
+import "./sidebar/sections/SidebarLoader.js";
 
 import contextual from "./lib/ctxl.js";
 universal.ctx = contextual;
@@ -39,6 +32,8 @@ const sidebar = [
 	{ Connect: "/connect2.html?id=Companion&new_ip=true" },
 	// {'Webpack Recompile': '+universal.send(universal.events.default.recompile)'}
 ];
+
+if(universal.load("swc") === "true") sidebar.push({'Webpack Recompile': '+universal.send(universal.events.default.recompile)'})
 
 const pages = ["library", "plugins", "marketplace", "settings"];
 

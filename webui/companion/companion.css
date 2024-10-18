@@ -548,7 +548,7 @@ a:hover {
 	text-align: center;
 }
 
-#es-profiles>div button {
+#Profiles>div button {
 	background-color: rgba(0, 0, 0, 0.25);
 	border-radius: 100%;
 	width: 3rem;
@@ -593,6 +593,16 @@ a:hover {
 	overflow-x: hidden;
 	/* margin-right: 10rem; */
 	z-index: 1000;
+}
+
+#thanks .modalContent {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	gap: 4px;
+}
+#thanks .modalContent details {
+	text-align: start;
 }
 
 #ctxl-view-cont html {

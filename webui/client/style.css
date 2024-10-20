@@ -348,7 +348,6 @@ select {
     border: 1px solid black;
     border-radius: 5px;
     padding: 5px;
-    font-size: var(--font-size);
     font-family: var(--font);
     color: var(--input-color);
     outline: none;
@@ -361,7 +360,6 @@ input {
     border: 0;
     border-radius: 5px;
     padding: 5px;
-    font-size: var(--font-size);
     font-family: var(--font);
     color: var(--input-color);
     outline: none;
@@ -391,7 +389,6 @@ input:disabled {
     border: 1px solid black;
     border-radius: 5px;
     padding: 5px;
-    font-size: var(--font-size);
     font-family: var(--font);
     color: var(--text-color);
     outline: none;
@@ -405,6 +402,9 @@ input:disabled {
 
 .no-border {
     border: none !important;
+}
+
+.no-rounding {
     border-radius: 0 !important;
 }
 

@@ -12,10 +12,9 @@ const handleCheckFor = (e, property) => {
   UI.reloadSounds();
 }
 
-
-style.children.push(new SidebarCheck("Compact Mode", "es-center", (e) => handleCheckFor(e, "compact")));
-style.children.push(new SidebarCheck("Scroll Long Text", "es-scroll", (e) => handleCheckFor(e, "scroll")));
-style.children.push(new SidebarCheck("Fill Tiles", "es-fill", (e) => handleCheckFor(e, "fill")));
+style.children.push(new SidebarCheck("Compact Mode", "es-center", (e) => handleCheckFor(e, "compact"), universal.lclCfg().compact));
+style.children.push(new SidebarCheck("Scroll Long Text", "es-scroll", (e) => handleCheckFor(e, "scroll"), universal.lclCfg().scroll));
+style.children.push(new SidebarCheck("Fill Tiles", "es-fill", (e) => handleCheckFor(e, "fill"), universal.lclCfg().fill));
 
 let fontSize = "25";
 if(universal.load("ebigt") === "true") fontSize = "50";
@@ -128,9 +127,6 @@ style.children.push(new SidebarSlider("Hold Time", "es-lp", " sec", "2", "6", "3
 document.querySelector(".sidebar").appendChild(style.build());
 
 universal.listenFor("loadHooks", () => {
-  document.querySelector("#es-scroll").checked = universal.lclCfg().scroll;
-  document.querySelector("#es-center").checked = universal.lclCfg().compact;
-  document.querySelector("#es-fill").checked = universal.lclCfg().fill;
   setValue("#es-fs", universal.lclCfg()["font-size"]);
   setValue("#es-bs", universal.lclCfg().buttonSize);
   setValue("#es-tc", universal.lclCfg().iconCountPerPage);

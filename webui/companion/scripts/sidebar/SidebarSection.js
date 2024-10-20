@@ -138,10 +138,12 @@ export class SidebarCheck {
   name;
   id;
   onClick;
-  constructor(name, id, onClick) {
+  defaultValue = false;
+  constructor(name, id, onClick, defaultValue=false) {
     this.name = name;
     this.id = id;
     this.onClick = onClick;
+    this.defaultValue = defaultValue;
   }
 
   build() {
@@ -161,6 +163,7 @@ export class SidebarCheck {
     button.id = this.id;
     button.type = "checkbox";
     button.onchange = this.onClick;
+    button.checked = this.defaultValue;
 
     inlineContainer.appendChild(label);
     inlineContainer.appendChild(button);

@@ -17,6 +17,9 @@ export default function (sndType, keyObject, snd, rawDat) {
 	if (snd.data.noBorder === "true") {
 		keyObject.classList.add("no-border");
 	}
+	if (snd.data.noRounding === "true") {
+		keyObject.classList.add("no-rounding");
+	}
 	if (snd.data.noShadow === "true") {
 		keyObject.classList.add("no-shadow");
 	}

@@ -542,8 +542,6 @@ function editTile(e) {
     loadData(itm);
   }
 
-  universal.sendEvent("editTile", interactionData);
-
   document.querySelector("#sbg").style.display =
     interactionData.renderType === "button"
       ? "block"
@@ -557,11 +555,12 @@ function editTile(e) {
       ? "none"
       : "block";
 
-  setCheck("#orl", "onRelease", interaction);
-  setCheck("#lp", "longPress", interaction);
-  setCheck("#sbg", "showBg", interaction);
-  setCheck("#nbo", "noBorder", interaction);
-  setCheck("#nsh", "noShadow", interaction);
+  setCheck("#orl", "onRelease", interactionData);
+  setCheck("#lp", "longPress", interactionData);
+  setCheck("#sbg", "showBg", interactionData);
+  setCheck("#nbo", "noBorder", interactionData);
+  setCheck("#nbr", "noRounding", interactionData);
+  setCheck("#nsh", "noShadow", interactionData);
 
 
   document.querySelector("#lp").style.display =
@@ -572,6 +571,8 @@ function editTile(e) {
   document.querySelector("#editor-div").style.animation =
     "editor-pull-down 0.5s";
   document.querySelector(".toggle-sidebar button").style.display = "none";
+
+	universal.sendEvent("editTile", interactionData);
 }
 
 function setCheck(id, key, interaction) {
@@ -579,14 +580,6 @@ function setCheck(id, key, interaction) {
 }
 
 function createEditorCheckbox(selector, dataKey) {
-  universal.listenFor("editTile", () => {
-    const int = JSON.parse(
-      document
-        .querySelector("#editor-btn[data-interaction]")
-        .getAttribute("data-interaction")
-    );
-    document.querySelector(selector).checked = int.data[dataKey];
-  });
   document.querySelector(selector).addEventListener("click", (e) => {
     const int = JSON.parse(
       document
@@ -605,6 +598,7 @@ function createEditorCheckbox(selector, dataKey) {
 
 createEditorCheckbox("#sbg", "showBg");
 createEditorCheckbox("#nbo", "noBorder");
+createEditorCheckbox("#nbr", "noRounding");
 createEditorCheckbox("#nsh", "noShadow");
 createEditorCheckbox("#orl", "onRelease");
 createEditorCheckbox("#lp", "longPress");

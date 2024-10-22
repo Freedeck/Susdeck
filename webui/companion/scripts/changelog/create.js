@@ -1,7 +1,7 @@
 import changes from './changes.json';
 
 const makeThanks = () => {
-  if(universal.load("thanks") !== '\x9Eée') return;
+  if(universal.load("thanks") === universal._information.version.raw) return;
   if(universal.load("has_setup") === 'false') return;
   const {major, other, known} = changes;
   const container = document.createElement("dialog");
@@ -13,7 +13,7 @@ const makeThanks = () => {
   close.onclick = () => {
     document.querySelector("#thanks").style.display = "none";
     universal.uiSounds.playSound("notification");
-		universal.save("thanks", "true");
+		universal.save("thanks", universal._information.version.raw);
   }
   close.innerText = "OK";
 

@@ -33,15 +33,16 @@
         <input type="checkbox" id="ebigt" />
     </div>
 </div>
+<br>
 <div class="experiment-exist soundpack">
     <h1>UI Sounds</h1>
     <ul class="soundpacks"></ul>
     <h2>Current Soundpack</h2>
         <div class="experiment-exist">
             <h3 id="soundpack-title">Soundpack</h3> 
-        (<span id="soundpack-id">id.soundpack</span>)
+        <span>(<span id="soundpack-id">id.soundpack</span>)
         v<span id="soundpack-version">0.0.0</span> by
-        <span id="soundpack-author">somebody</span>
+        <span id="soundpack-author">somebody</span></span>
         </div>
     <ul class="uisounds"></ul>
 </div>
@@ -81,12 +82,24 @@
         padding: 5px;
         border-radius: 1.5rem;
     }
+    .experiment-exist h3 {
+        margin: 0;
+    }
 
     .experiment-exist {
-        margin-top: 1.5rem;
         background-color: rgba(0,0,0,0.25);
         padding: 5px;
         border-radius: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+    }
+    .cti {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
     }
 </style>
 <div class="flex-wrap-r">
@@ -104,7 +117,12 @@
     </button>
 </div>
 <div class="settings"></div>
-<h2>This is the bottom of the Settings menu.</h2>
+<div class="cti">
+    <h1>Freedeck</h1>
+    <img src="/common/icons/fd.png" alt="Freedeck Logo" width="75" height="75">
+    <p>is a project by <a href="https://aidens.dev" target="_blank">ia74 / Aiden S.</a></p>
+</div>
+<!-- <h2>This is the bottom of the Settings menu.</h2> -->
 <script type="module">
     import "/app/settingsThemes.js";
     st_ldt();

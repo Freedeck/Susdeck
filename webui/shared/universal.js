@@ -291,16 +291,18 @@ const universal = {
 				const _plugins = [];
 				const res = fetch(url).catch(err => {
 					reject(err);
-				}).then((r)=>r.text()).then((data) => {
-					if (res.status !== 200)
-						return [
+				}).then((r)=>{
+					if (r.status !== 200)
+						reject(
 							{
 								err: true,
-								msg: `Repository not found. Server returned ${res.status}`,
+								msg: `Repository not found. Server returned ${r.status}`,
 							},
-						];
+						);
+					return r.text()
+				}).then((data) => {
 					if (!data.includes(",!"))
-						return [{ err: true, msg: "No plugin metadata found." }];
+						reject({ err: true, msg: "No plugin metadata found." });
 					let lines = data.split("\n");
 					lines.shift();
 					lines = lines.filter((line) => line.length > 0);
@@ -470,7 +472,7 @@ const universal = {
 						return;
 					}
 					universal.CLU("InitFN", "Sent Identify packet");
-					universal.send("G", user);
+					universal.send(0x00, user);
 					universal.CLU("InitFN", "Starting dataHandler");
 					dataHandler(universal, user).then(() => {
 						universal.CLU("InitFN", "Starting eventsHandler");

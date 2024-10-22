@@ -28,7 +28,9 @@ window.st_ldt = async () => {
 		};
 		if (universal.load("theme") === id) {
 			title.innerText += " (Active)";
-			element.style.backgroundColor = "rgba(0, 0, 0, 0.725)";
+			element.style.background = "var(--selected-item-bg)";
+			element.style.backgroundSize = "var(--selected-item-bg-size)";
+			element.style.animation = "var(--selected-item-bg-anim)";
 			apply.innerText = "";
 		}
 		element.appendChild(desc);

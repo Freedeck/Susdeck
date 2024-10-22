@@ -46,7 +46,7 @@ const pl = {
 					file.endsWith(".fdr.js") ||
 					file.endsWith(".disabled"),
 			)
-			.map((file) => pl.load(file));
+			.map(async (file) => await pl.load(file));
 		try {
 			await Promise.all(loadPromises);
 		} catch (er) {

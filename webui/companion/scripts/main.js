@@ -4,6 +4,7 @@ import { universal } from "../../shared/universal.js";
 import "./sidebar.js";
 import "../../shared/useAuthentication.js"; // Only for authenticated pages
 import "./uploadsHandler.js";
+import "./editorReactivity.js";
 import { makeThanks } from "./changelog/create.js";
 
 await universal.init("Companion");
@@ -357,23 +358,6 @@ function setEditorData(key, value, int) {
   int.data[key] = value;
 }
 
-document.querySelector("#color").onchange = (e) => {
-  document.querySelector("#editor-btn").style.backgroundColor =
-    e.srcElement.value;
-  document.querySelector("#color").dataset.has_set = "true";
-  // create data "color"
-  const interaction = JSON.parse(
-    document
-      .querySelector("#editor-btn[data-interaction]")
-      .getAttribute("data-interaction")
-  );
-  interaction.data.color = e.srcElement.value;
-  document
-    .querySelector("#editor-btn")
-    .setAttribute("data-interaction", JSON.stringify(interaction));
-  loadData(interaction.data);
-};
-
 const selectableViews = ["audio", "plugins", "system", "none", "profile"];
 
 const openViewCloseAll = (view) => {
@@ -431,11 +415,15 @@ function editTile(e) {
     document.querySelector("#plugin").value =
       interactionData.plugin || "Freedeck";
   }
+  document.querySelector("#editor-back").style.display = "none";
   document.querySelector("#audio-only").style.display = "none";
   document.querySelector("#plugins-only").style.display = "none";
   document.querySelector("#system-only").style.display = "none";
   document.querySelector("#none-only").style.display = "none";
   document.querySelector("#profile-only").style.display = "none";
+  if(interactionData.type.includes("fd.") && interactionData.type !== "fd.none") {
+    document.querySelector("#editor-back").style.display = "block";
+  } else document.querySelector("#editor-back").style.display = "none";
   if (interactionData.type === "fd.sound") {
     document.querySelector("#audio-file").innerText = interactionData.data.file;
     // document.querySelector("#audio-path").innerText = interactionData.data.path;

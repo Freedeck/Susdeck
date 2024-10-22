@@ -1,16 +1,19 @@
-<h1>Your Plugins</h1>
+<h1>Installed Plugins</h1>
 <p>Here you can view every plugin connected to Freedeck and it's related tile type!</p>
 <button id="upd">Reload All Plugins</button>
 
 <center>
     <ul id="actl" class="btnlist"></ul>
 </center>
-<h3>Tile Types</h3>
-<div class="btns"></div>
+<details id="tile-prev">
+    <summary><strong>Tile Previews</strong></summary>
+    <div class="btns"></div>
+</details>
 
 <h2>Disabled Plugins</h2>
 <div id="disbl-list" class="row"></div>
 <style>
+    
     .disabledable,
     #disbl-list {
         display: flex;

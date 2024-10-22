@@ -2,26 +2,40 @@
 <p>Here you will find every sound or icon you've uploaded.</p>
 <button class="save-changes">Save Changes</button>
 
-<h2 id="uploads-0-title">Sounds<button onclick="universal._Uploads_New(1)">
-    Upload Sound
-  </button></h2>
+<h2 id="uploads-0-title">
+  Sounds
+  <button onclick="universal._Uploads_New(1)">
+    Add a Sound
+  </button>
+</h2>
 <details id="library-view-sounds">
-  <summary>View Sounds</summary>
+  <summary><strong>View Sounds</strong></summary>
   <div class="uploads uploads-0"></div>
 </details>
 
-<h2 id="uploads-1-title">Icons <button onclick="universal._Uploads_New(0)">
-    Upload Icon
-  </button></h2>
-  <details id="library-view-icons">
-    <summary>View Icons</summary>
-    <div class="uploads uploads-1"></div>
-  </details>
-  
+<h2 id="uploads-1-title">
+  Icons
+  <button onclick="universal._Uploads_New(0)">
+    Add a Icon
+  </button>
+</h2>
+<details id="library-view-icons">
+  <summary><strong>View Icons</strong></summary>
+  <div class="uploads uploads-1"></div>
+</details>
+
 <style>
-  #library-view-sounds, #library-view-icons {
+  #library h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #library-view-sounds,
+  #library-view-icons {
     width: unset;
   }
+
   .save-changes {
     position: fixed;
     top: 0;
@@ -59,11 +73,11 @@
   }
 
   .uploads-0 .upload p {
-    background-color: rgba(0,0,0,0.125);
+    background-color: rgba(0, 0, 0, 0.125);
     border-radius: 1.5rem;
     padding: 0.5rem;
   }
-  
+
   .uploads-1 .upload {
     width: var(--tile-width);
     height: var(--tile-height);
@@ -77,6 +91,7 @@
     top: 0;
     left: 0;
     z-index: 1;
+    background-color: white;
   }
 
   .glow {

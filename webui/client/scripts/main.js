@@ -15,6 +15,7 @@ let touchendX = 2500;
 const checkDirection = () => {
   const currentPage = universal.page;
   const range = touchendX - touchstartX;
+  if(document.querySelector("#lock").checked) return;
   if (range < -50) {
     // go page up
     if (UI.Pages[currentPage + 1]) {

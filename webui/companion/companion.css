@@ -19,33 +19,6 @@ input {
 	display: block;
 	transition-duration: .25s;
 }
-.prompt {
-	display: block;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.75);
-	z-index: 500;
-}
-
-.prompt > iframe {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 50%;
-	height: 50%;
-	background: var(--modal-bg);
-	color: var(--modal-color);
-	border-radius: 0.5rem;
-	padding: 1.5rem;
-	z-index: 1000;
-	transition-duration: .25s;
-	overflow-y: scroll;
-	overflow-x: hidden;
-}
 
 .tag-beta {
 	background-color: rgba(0, 0, 0, 0.25);
@@ -97,6 +70,33 @@ input {
 	transition-duration: .25s;
 }
 
+.prompt {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 500;
+}
+
+.prompt > iframe {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 50%;
+	height: 50%;
+	background: var(--modal-bg);
+	color: var(--modal-color);
+	border-radius: var(--tile-radius);
+	padding: 1.5rem;
+	z-index: 1000;
+	transition-duration: .25s;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
 
 /* find first item in ul*/
 #sidebar ul li:first-child {
@@ -130,7 +130,6 @@ a {
 a:hover {
 	transform: scale(1.15);
 }
-
 
 .alc {
 	align-items: center;
@@ -239,10 +238,9 @@ a:hover {
 	transition-duration: .25s;
 }
 
-#editor-save {
-	position: fixed;
-	bottom: 0;
-	right: 0;
+.editor-options {
+	align-content: end;
+	width: min-content;
 }
 
 @keyframes editor-pull-down {
@@ -704,4 +702,8 @@ audio::-webkit-media-controls-panel {
 
 audio::-webkit-media-controls-play-button {
 	color: var(--modal-color);
+}
+
+#editor-btn {
+	font-size: var(--font-size);
 }

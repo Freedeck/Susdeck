@@ -1,5 +1,5 @@
 const eventNames = {
-	client_greet: "G",
+	client_greet: 0x00,
 	information: "I",
 	keypress: "K",
 	user_mobile_conn: "U",
@@ -38,6 +38,7 @@ const eventNames = {
 	},
 
 	companion: {
+		tile_update: "cTu",
 		conn_fail: "cF",
 		new_key: "ckN",
 		del_key: "ckD",

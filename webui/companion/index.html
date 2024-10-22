@@ -30,12 +30,11 @@
                 <div class="button" id="editor-btn">Not Loaded</div>
                 <div class="flex-wrap-r alc">
                     <label for="name">Name</label>
-                    <input type="text" id="name" onkeyup="document.querySelector('#editor-btn').innerText = this.value;"
-                        value="Not Loaded" />
+                    <input type="text" id="name" value="Not Loaded" />
                 </div>
                 <details>
                     <summary>
-                        Style
+                        <strong>Style</strong>
                     </summary>
                     <div class="flex-wrap-r alc">
                         <label for="color">Color</label>
@@ -158,7 +157,10 @@
                     </div>
                 </div>
             </div>
-            <div class="button" id="editor-save">Save</div>
+            <div class="flex-wrap-r editor-options">
+                <div class="button" id="editor-back" style="display: none;">Back</div>
+                <div class="button" id="editor-save">Save</div>
+            </div>
         </div>
     </dialog>
     <div class="toggle-sidebar" style="display: none">

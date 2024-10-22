@@ -1,7 +1,7 @@
 <modal>
 	<p class="dev-status">Status: Your device is not connected yet!</p>
 	<div class="modal-content">
-		<h1 id="prompt-title">Freedeck on your other device:</h1>
+		<h1 id="prompt-title">Connect your other device to Freedeck</h1>
 		<p>Choose your device's OS:</p>
 		<div class="flc">
 			<select id="user-select">
@@ -48,9 +48,9 @@
 	const ios = document.querySelector('#c0');
 	const android = document.querySelector('#c1');
 	const localIp = document.querySelectorAll('.local-ip');
-	window.top.universal.uiSounds.playSound('step_1')
+	universal.uiSounds.playSound('step_1')
 	connectButton.onclick = () => {
-		window.top.universal.uiSounds.playSound('step_2')
+		universal.uiSounds.playSound('step_2')
 		modalContent.style.display = 'none';
 		if (userSelect.value === '0') {
 			ios.style.display = 'block';
@@ -61,19 +61,21 @@
 		}
 	}
 	userSelect.oninput = () => {
-		window.top.universal.uiSounds.playSound('fdc_slider')
+		universal.uiSounds.playSound('fdc_slider')
 	}
 	laterButton.onclick = () => {
-		window.top.universal.uiSounds.playSound('step_1')
-		window.parent.document.querySelector('.rem-mobd').remove();
-		window.parent.document.querySelector('.prompt').remove();
+		universal.uiSounds.playSound('step_1')
 		modal.style.display = 'none';
 	}
 
 	fetch('/connect/local-ip').then(res => res.json()).then(data => {
+		if(Object.keys(data.ip).length == 0) {
+			document.querySelectorAll('.mfa-code').forEach(e => e.innerText = "You are offline, please try again later.");
+			return;
+		}
 		const ip = data.ip[Object.keys(data.ip)[0]][0];
 		let code = Math.random().toString(36).toUpperCase().split('.')[1].substring(0,5);
-		fetch('https://my.freedeck.app/api.php?code=' + code +'&name=' + window.top.universal._information.hostname +'&local_ip=' + ip, {
+		fetch('https://my.freedeck.app/api.php?code=' + code +'&name=' + universal._information.hostname +'&local_ip=' + ip, {
 			// mode: 'no-cors'
 		}).then((res)=>res.text()).then((res) => {
 			if(res.includes('EXISTS@')) code = res.split('EXISTS@')[1].split('@')[0]
@@ -93,7 +95,7 @@
 				if(document.querySelector('.modal-content').style.display =='none') {
 					clearInterval(poll);
 				setTimeout(() => {
-					window.top.universal.uiSounds.playSound('step_3');
+					universal.uiSounds.playSound('step_3');
 					document.querySelector('#later-button').click();
 				}, 1500);
 				}
@@ -115,43 +117,22 @@
 		align-items: center;
 		justify-content: center;
 	}
-	* {
-		text-align: center;
-	}
 	#c0,
 	#c1 {
 		display: none;
 	}
-
-	select {
-		width: 100%;
-		padding: 1rem;
-		border-radius: 5px;
-		border: 0;
+	#connect-button {
+		background-color: #4CAF50;
 	}
-
-	modal {
-		display: block;
-		position: fixed;
-		z-index: 1;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		overflow: hidden;
-		background-color: rgb(0, 0, 0);
-		color: white;
-		font-family: 'Rethink Sans', sans-serif;
-		background-color: rgba(0, 0, 0, 0.4);
-		border-radius: 10px;
-	}
-	button {
+	#prompts body * > button {
 		width: 6rem;
 		height: 6rem;
 		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-		background-color: rgba(255,255,255,0.125);
-		border: 1px solid black;
-		border-radius: 5px;
+		background-color: rgba(255, 0, 89, 1);
+		transition-duration: .125s;
+		border-radius: 1.5rem;
+		color: black;
+		border: 2px solid #f8f9fa;
 	}
 	.fla {
 		display: flex;
@@ -185,16 +166,6 @@
 
 	.modal-content input {
 		margin-bottom: 1rem;
-	}
-
-	#connect-button {
-		background-color: #4CAF50;
-		border-radius: 5px;
-		border: 0;
-	}
-
-	button {
-		transition-duration: .125s;
 	}
 
 	button:active {

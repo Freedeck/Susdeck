@@ -31,7 +31,7 @@
 
     --modal-item-bg: linear-gradient(105deg,rgba(0, 179, 255, 1) 0%, rgba(0, 135, 255, 1) 50%, rgba(0, 179, 255, 1) 100%);
     --modal-item-bg-size: 400% 400%;
-    --modal-item-bg-anim: backgroundAnimation 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+    --modal-item-bg-anim: error-bg 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
     --modal-item-text: white;
 
     --companion-left-sidebar-bg: rgba(0,0,0,0.5);
@@ -44,7 +44,7 @@
     --companion-sidebar-item-color: white;
 }
 
-@keyframes backgroundAnimation {
+@keyframes error-bg {
     0%, 100% {
         background-position: 0 0;
     }

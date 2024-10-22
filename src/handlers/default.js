@@ -7,7 +7,7 @@ const tsm = require("../managers/temporarySettings");
 const pc = require("../utils/picocolors");
 const path = require("node:path");
 const zlib = require("node:zlib");
-const { readFileSync, readdirSync } = require("node:fs");
+const { readFileSync, readdirSync, existsSync } = require("node:fs");
 
 module.exports = {
   name: "Main",
@@ -45,7 +45,11 @@ module.exports = {
 
     for (const event of Object.keys(eventNames.default)) {
       socket.on(eventNames.default[event], (data) => {
-        const eventHandler = require(`./default.events/${event}`);
+        if(!existsSync(path.resolve(`./src/handlers/default.events/${event}.js`))) {
+          console.log(`Event ${event} is not implemented.`);
+          return;
+        }
+        const eventHandler = require(path.resolve(`./src/handlers/default.events/${event}`));
         if(typeof eventHandler !== "function") {
           // its a new event handler
           const flags = eventHandler.flags || [];

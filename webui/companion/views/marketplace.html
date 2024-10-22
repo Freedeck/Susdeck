@@ -116,22 +116,18 @@
         li.innerText += universal.cleanHTML(repo.who);
         document.querySelector('.repositories').appendChild(li);
 
+        if (isUnofficial) {
+            const btn = document.createElement("button");
+            btn.innerText = "Remove";
+            li.appendChild(btn);
+            btn.onclick = () => {
+                universal.repositoryManager.unofficial = universal.repositoryManager.unofficial.filter((r) => r.link != repo.link);
+                universal.save('repos.community', JSON.stringify(universal.repositoryManager.unofficial));
+                document.querySelector('.repositories').removeChild(li);
+                loadRepos();
+            };
+        }
         universal.repositoryManager.getPluginsfromRepo(repo.link).then((plugins) => {
-            if (plugins[0].err) {
-                li.innerText += ' - Error: ' + plugins[0].msg;
-                if (!isUnofficial) return;
-            }
-            if (isUnofficial) {
-                const btn = document.createElement("button");
-                btn.innerText = "Remove";
-                li.appendChild(btn);
-                btn.onclick = () => {
-                    universal.repositoryManager.unofficial = universal.repositoryManager.unofficial.filter((r) => r.link != repo.link);
-                    universal.save('repos.community', JSON.stringify(universal.repositoryManager.unofficial));
-                    document.querySelector('.repositories').removeChild(li);
-                    loadRepos();
-                };
-            }
             plugins.forEach((plugin) => {
                 const req = plugin;
                 const li = document.createElement('div');
@@ -183,10 +179,12 @@
             });
         }).catch(err => {
             const cnt = document.createElement("div");
+            cnt.classList.add("item");
             const txt = document.createElement("h1");
-            txt.innerHTML = `Error while loading repository "${repo.title}"`;
+            txt.innerHTML = `${repo.title}`;
             const er = document.createElement("p");
-            er.innerHTML = err;
+            er.classList.add("plugin-ifo");
+            er.innerHTML = err.msg;
             if(err.toString().includes("Failed to fetch"))
             er.innerHTML += `<br>(Could not reach ${repo.link}, is the internet down?)`;
             cnt.appendChild(txt);
@@ -221,10 +219,10 @@
             <h1>New Repository</h1>
                 <p class="add-msg">Enter the URL of the repository</p>
                 <label for="title">Repository Title</label><input type="text" id="title" placeholder="freedeck.app">
-                <label for="url">Repository Access URL</label><input type="text" id="url" placeholder="https://freedeck.app/_fd/repository.php">
+                <label for="url">Repository URL</label><input type="text" id="url" placeholder="https://freedeck.app/_fd/repository.php">
                 <br>
                 <div class="flex-wrap-r space-evenly">
-                <button class="tint-green" id="submit">Done</button>
+                <button class="tint-green" id="submit">Add</button>
                 <button id="cancel">Cancel</button>
                 </div>
         `;
@@ -237,24 +235,49 @@
             document.querySelector('#submit').disabled = true;
             document.querySelector('#cancel').disabled = true;
 
-            document.querySelector('#submit').innerText = "Please wait...";
+            document.querySelector('#submit').innerText = "Downloading content...";
 
             const title = dialog.querySelector('#title').value;
             const url = dialog.querySelector('#url');
+
+            if(url == "https://freedeck.app/_fd/repository.php") {
+                document.querySelector('.add-msg').innerText = 'The official repository is already added! No need to add it again.';
+                document.querySelector('#submit').disabled = false;
+                document.querySelector('#cancel').disabled = false;
+                document.querySelector('#submit').innerText = "Add";
+                return;
+            }
+
             document.querySelector('.add-msg').innerText = 'Fetching repository from ' + url.value + '...';
 
             universal.uiSounds.playSound('int_prompt');
-            fetch(url.value, { method: 'GET' }).then(res => res.text()).then(data => {
+            fetch(url.value, { method: 'GET' }).then(res => {
+                if(res.status != 200) {
+                    document.querySelector('.add-msg').innerText = 'Failed to fetch repository from ' + url.value + '. Is the URL correct?';
+                    document.querySelector('#submit').disabled = false;
+                    document.querySelector('#cancel').disabled = false;
+                    document.querySelector('#submit').innerText = "Add";
+                    return;
+                }
+                return res.text()
+            }).then(data => {
                 const desc = data.split('\n')[0]
                 console.log(title, desc, url)
                 let curr = [];
                 if (universal.load('repos.community') != 'ée') curr = JSON.parse(universal.load('repos.community'))
                 curr.push({ title, who: desc, link: url.value })
                 universal.save('repos.community', JSON.stringify(curr))
-                // Hide()
+                Hide()  
                 universal.repositoryManager.unofficial = curr;
                 loadRepos();
-            })
+            }).catch(err => {
+                document.querySelector('.add-msg').innerHTML = 'Failed to fetch repository from ' + url.value + '.<br>' + err;
+                if(err.toString().includes("Failed to fetch"))
+                document.querySelector('.add-msg').innerHTML += `<br>(Could not reach site, is the internet down?)`;
+                document.querySelector('#submit').disabled = false;
+                document.querySelector('#cancel').disabled = false;
+                document.querySelector('#submit').innerText = "Add";
+            });
         }
     }
 

@@ -10,6 +10,7 @@ contextual.addView("marketplace");
 contextual.addView("plugins");
 contextual.addView("settings");
 contextual.addView("library");
+contextual.addView("prompts");
 
 HTMLElement.prototype.setHTML = function (html) {
 	this.innerHTML = html;
@@ -23,14 +24,15 @@ universal.listenFor("init", () => {
 
 document.onkeydown = (ev) => universal.uiSounds.playSound("int_type");
 
-const pages = ["library", "plugins", "marketplace", "settings"];
+const pages = ["library", "plugins", "marketplace", "settings", "prompts"];
 
 const sidebarEle = document.createElement("div");
 sidebarEle.id = "sidebar";
 const sidebarUl = document.createElement("ul");
 sidebarEle.appendChild(sidebarUl);
+let sidebar = [];
 universal.reloadRight = () => {
-	const sidebar = [
+	sidebar = [
 		{ Tiles: "index.html" },
 		{ Library: "library.html" },
 		{ Plugins: "plugins.html" },
@@ -38,6 +40,11 @@ universal.reloadRight = () => {
 		{ Settings: "settings.html" },
 		{ Connect: "/connect2.html?id=Companion&new_ip=true" },
 	];
+	if(universal.load("has_setup") === "false") {
+		sidebar = [
+			{ "Connect Device": "prompts.html" },
+		]
+	}
 	if(universal.load("swc") === "true")
 		sidebar.push({'Recompile': '+universal.send(universal.events.default.recompile)'})
 	sidebarUl.setHTML(

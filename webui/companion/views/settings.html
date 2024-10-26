@@ -9,6 +9,10 @@
         <input type="checkbox" id="uis" />
     </div>
     <div class="experiment">
+        <label for="cct">Clicking Companion tiles does not play sounds</label>
+        <input type="checkbox" id="cct" />
+    </div>
+    <div class="experiment">
         <label for="cpm">Center Mode <span class="tag-beta">TEST</span></label>
         <input type="checkbox" id="cpm" />
     </div>
@@ -38,12 +42,12 @@
     <h1>UI Sounds</h1>
     <ul class="soundpacks"></ul>
     <h2>Current Soundpack</h2>
-        <div class="experiment-exist">
-            <h3 id="soundpack-title">Soundpack</h3> 
+    <div class="experiment-exist">
+        <h3 id="soundpack-title">Soundpack</h3>
         <span>(<span id="soundpack-id">id.soundpack</span>)
-        v<span id="soundpack-version">0.0.0</span> by
-        <span id="soundpack-author">somebody</span></span>
-        </div>
+            v<span id="soundpack-version">0.0.0</span> by
+            <span id="soundpack-author">somebody</span></span>
+    </div>
     <ul class="uisounds"></ul>
 </div>
 <h1>Tools</h1>
@@ -53,6 +57,7 @@
         flex-wrap: wrap;
         gap: 1rem;
     }
+
     .experiment {
         display: flex;
         background: var(--modal-item-bg);
@@ -61,6 +66,7 @@
         padding: 0.65rem;
         border-radius: var(--tile-radius);
     }
+
     .experiment input {
         width: 50%;
     }
@@ -82,12 +88,13 @@
         padding: 5px;
         border-radius: 1.5rem;
     }
+
     .experiment-exist h3 {
         margin: 0;
     }
 
     .experiment-exist {
-        background-color: rgba(0,0,0,0.25);
+        background-color: rgba(0, 0, 0, 0.25);
         padding: 5px;
         border-radius: 1.5rem;
         display: flex;
@@ -95,11 +102,18 @@
         align-items: center;
         justify-content: start;
     }
+
     .cti {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
+    }
+
+    .ctxl,
+    .flags {
+        display: flex;
+        flex-wrap: wrap;
     }
 </style>
 <div class="flex-wrap-r">
@@ -122,10 +136,75 @@
     <img src="/common/icons/fd.png" alt="Freedeck Logo" width="75" height="75">
     <p>is a project by <a href="https://aidens.dev" target="_blank">ia74 / Aiden S.</a></p>
 </div>
+<details>
+    <summary><strong>Developer Tools</strong></summary>
+    <strong>Bug Report Tools</strong>
+    <textarea name="bgrep" id="bgrep">Click "Generate Report"</textarea>
+    <br>
+    <button id="genr">Generate Report</button>
+    <br>
+    <strong><a href="//github.com/ia74/contextual">Contextual</a></strong>
+    <div class="ctxl"></div>
+    <p id="ctx"></p>
+    <h3>Be warned, you can reset your data from here. Tile configuration is NOT affected.</h3>
+    <strong>Flags</strong>
+    <div class="flags"></div>
+    <strong>Cfg</strong>
+    <div>
+        <button id="fsw">Force setup-wizard</button>
+    </div>
+</details>
 <!-- <h2>This is the bottom of the Settings menu.</h2> -->
 <script type="module">
     import "/app/settingsThemes.js";
     st_ldt();
+
+    b("#fsw").onclick = () => {
+        universal.save("has_setup", false);
+        window.location.reload();
+    }
+
+    b("#genr").onclick = () => {
+        const bgrep = b("#bgrep");
+        const report = bgrep.value;
+        bgrep.value = "Generating report...";
+        const rep = universal.ExportReportData();
+        bgrep.value = rep;
+    }
+
+    function b(s) { return document.querySelector(s) }
+
+    function settingsViewMakeFlagButton(flag, name) {
+        const button = document.createElement("button");
+        button.innerText = name;
+        button.onclick = () => {
+            universal.save(flag, false);
+            universal.sendToast("Flag " + flag + " reset!");
+        };
+        return button;
+    }
+    function settingsViewOpen(view, name) {
+        const button = document.createElement("button");
+        button.innerText = name;
+        button.onclick = () => {
+            universal.vopen(view);
+        };
+        return button;
+    }
+
+    document.querySelector("#ctx").innerText = JSON.stringify(universal.ctx);
+    const _flags = [
+        settingsViewMakeFlagButton("has_setup", "set flag has_setup to false")
+    ]
+
+    for (const flag of _flags) document.querySelector(".flags").appendChild(flag);
+
+    const _views = [
+        settingsViewOpen("index.html", "open index"),
+        settingsViewOpen("setup", "open setup"),
+        settingsViewOpen("prompts", "open prompts"),
+    ];
+    for (const view of _views) document.querySelector(".ctxl").appendChild(view);
 
     const setToLocalCfg = (key, value) => {
         const cfg = universal.lclCfg();
@@ -140,7 +219,7 @@
         );
     }
 
-    window.settingsView_check = (k, v, a=()=>{}) => {
+    window.settingsView_check = (k, v, a = () => { }) => {
         document.querySelector(k).checked = universal.load(v) == "true";
         document.querySelector(k).onchange = (ev) => {
             universal.save(v, !(universal.load(v) == "true"));
@@ -154,7 +233,8 @@
     }
 
     window.settingsView_check("#ebigt", "ebigt");
-    window.settingsView_check("#swc", "swc", () => {universal.reloadRight()});
+    window.settingsView_check("#cct", "cct");
+    window.settingsView_check("#swc", "swc", () => { universal.reloadRight() });
     window.settingsView_check("#hwnmt", "houston");
     window.settingsView_check("#insanity", "insanity");
 
@@ -185,7 +265,7 @@
         value,
         onLoad,
         goto,
-        onChanged = () => {},
+        onChanged = () => { },
     ) {
         const div = document.createElement("div");
         div.className = "flex-wrap-r";
@@ -226,7 +306,7 @@
         value,
         onLoad,
         goto,
-        onChanged = () => {},
+        onChanged = () => { },
     ) {
         const div = document.createElement("div");
         div.className = "flex-wrap-r";
@@ -291,7 +371,7 @@
         value,
         onLoad,
         goto,
-        onChanged = () => {},
+        onChanged = () => { },
     ) {
         const div = document.createElement("div");
         div.className = "flex-wrap-r";

@@ -1,0 +1,120 @@
+<div class="flex-wrap-r alc">
+	<img src="/common/icons/fd.png" alt="Freedeck" width="75" height="75">
+	<h1>Freedeck Audio Setup</h1>
+</div>
+<p>
+	You're almost there! We just need to configure your outputs and connect your phone.
+</p>
+<div class="item">
+	<h3>Monitor Device</h3>
+	<p>This will be where you hear the sounds. If you are using a headset, select that. If you are using speakers, select those.</p>
+	<select name="monitor" id="monitor"></select>
+</div>
+<br>
+<div class="item">
+	<h3>VB-Cable device</h3>
+	<p>This is where Freedeck will also send audio. If you do not have VB-Cable, install it from <a target="_blank" href="https://vb-audio.com/Cable/">https://vb-audio.com/Cable/</a></p>
+	<select name="vb" id="vb"></select>
+</div>
+<br>
+<button id="nexta">
+	Next
+</button>
+<br>
+<details id="fas">
+	<summary>
+		<strong>Developer Mode</strong>
+	</summary>
+	<button id="bypass">Partial Setup Bypass</button>
+	<button id="bypasssi">Full Setup Bypass</button>
+	<p>If you bypass with sidebar, you will not be able to come back without resetting "has_setup" from the Settings tab.</p>
+	<button id="recom">Toggle Recompile on Right</button>
+</details>
+
+<style>
+	#fas {
+		background-color: rgba(0,0,0,0.25);
+		padding: 5px;
+		border-radius: 1.5rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: start;
+		display: none;
+	}
+	.item {
+		background-color: rgba(0,0,0,0.25);
+		padding: 5px;
+		border-radius: 1.5rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: start;	
+	}
+</style>
+
+<script>
+	document.querySelector("#nexta").onclick = (e) => {
+		universal.save("monitor", document.querySelector("#monitor").value);
+		universal.save("vb", document.querySelector("#vb").value);
+		universal.vopen("prompts");
+	}
+	
+	document.querySelector("#bypass").onclick = (e) => {
+		universal.vopen("index.html");
+	}
+
+	document.querySelector("#bypasssi").onclick = (e) => {
+		universal.save("has_setup", "true");
+		universal.vopen("index.html");
+		universal.reloadRight();
+	}
+
+	document.querySelector("#recom").onclick = (e) => {
+		universal.save("swc", universal.load("swc") == "true" ? "false" : "true");
+		universal.reloadRight();
+	}
+
+	let last = '';
+
+	function a(ev) {
+		if(last == 'f' && ev.key == 'd') {
+			document.querySelector("#fas").style.display = document.querySelector("#fas").style.display == "none" ? "block" : "none";
+		}
+		last = ev.key;
+	}
+	window.onkeydown = a;
+	  const sinks = {
+    null: "None",
+  };
+  const sources = { null: "None" };
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+    navigator.mediaDevices.enumerateDevices().then((devices) => {
+      for (const device of devices) {
+        if (device.kind === "audiooutput") {
+          if (!device.label.includes("Input"))
+            sinks[device.deviceId] = device.label;
+          if (device.label.includes("Input"))
+            sources[device.deviceId] = device.label;
+        }
+      }
+			const monitor = document.querySelector("#monitor");
+			const vb = document.querySelector("#vb");
+			for (const sink in sinks) {
+				const option = document.createElement("option");
+				option.value = sink;
+				option.innerText = sinks[sink];
+				monitor.appendChild(option);
+			}
+			for (const source in sources) {
+				const option = document.createElement("option");
+				option.value = source;
+				option.innerText = sources[source];
+				vb.appendChild(option);
+			}
+
+			monitor.value = universal.load("monitor") || null;
+			vb.value = universal.load("vb") || null;
+		});
+	});
+</script>

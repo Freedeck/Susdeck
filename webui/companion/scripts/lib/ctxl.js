@@ -83,7 +83,7 @@ const ctxl = {
 		document
 			.querySelector(ctxl.view_container)
 			.appendChild(ctxl.generateView(view));
-		ctxl.opened.push(view);
+		ctxl.opened = [view];
 	},
 	waitForClose: async (view) =>
 		new Promise((resolve, reject) => {

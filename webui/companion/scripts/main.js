@@ -1427,7 +1427,7 @@ const setupWizard = () => {
 };
 
 if (universal.load("has_setup") === "false") {
-  setupWizard();
+  universal.vopen("setup")
 }
 
 universal.on(universal.events.user_mobile_conn, (isConn) => {

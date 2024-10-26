@@ -172,7 +172,7 @@ function reloadSounds() {
 				if (!universal.plugins[snd.plugin]) {
 					console.log("plugin missing", snd.plugin);
 					const indicator = document.createElement("div");
-					indicator.className = "plugin-missing";
+					indicator.className = "indicator-red";
 					keyObject.appendChild(indicator);
 					continue;
 				}
@@ -183,7 +183,7 @@ function reloadSounds() {
 				if (!typeExists) {
 					console.log("type missing", snd.type);
 					const indicator = document.createElement("div");
-					indicator.className = "plugin-type-missing";
+					indicator.className = "indicator-yellow";
 					keyObject.appendChild(indicator);
 				}
 			}

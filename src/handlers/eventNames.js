@@ -28,7 +28,6 @@ const eventNames = {
 		reload_sounds: "dRS",
 		recompile: "dC",
 
-		plugin_downloaded: "dPD",
 		disable_plugin: "dBP",
 		enable_plugin: "dEP",
 		plugins_updated: "dPU",

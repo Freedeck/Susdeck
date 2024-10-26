@@ -208,11 +208,6 @@
         });
     };
     loadRepos();
-
-    universal.on(universal.events.default.plugin_downloaded, () => {
-        dialog.innerHTML += `<p>Downloaded successfully. Give Freedeck a second to update it's plugin index.</p>`;
-    });
-
     function addRepo() {
         universal.uiSounds.playSound('int_confirm');
         dialog.innerHTML = `

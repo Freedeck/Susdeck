@@ -66,6 +66,13 @@
 	laterButton.onclick = () => {
 		universal.uiSounds.playSound('step_1')
 		modal.style.display = 'none';
+		universal.sendEvent("finish_conn");
+		document.querySelector("#sidebar").style.right = "-20%";
+		universal.save("has_setup", true);
+		universal.reloadRight();
+		universal.vclose();
+		universal.vopen("index");
+		document.querySelector("#sidebar").style.right = "0";
 	}
 
 	fetch('/connect/local-ip').then(res => res.json()).then(data => {

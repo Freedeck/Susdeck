@@ -124,12 +124,6 @@
         document.querySelector('#disbl-list').appendChild(a);
     });
 
-
-
-    universal.on(universal.events.default.plugin_downloaded, () => {
-        dialog.innerHTML += `<p>Downloaded successfully. Give Freedeck a second to update it's plugin index.</p>`;
-    });
-
     document.querySelector('#upd').onclick = () => {
         universal.uiSounds.playSound('int_yes');
         universal.send(universal.events.default.update_plugins);

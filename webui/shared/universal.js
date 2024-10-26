@@ -215,8 +215,8 @@ const universal = {
 		console.log("<p>Now, we're putting it all together.</p>");
 		const state = {};
 		Object.assign(state, universal);
-		state._socket = "circular, cannot be stringified";
-		state.keys = "circular, cannot be stringified";
+		state._socket = `C=${universal._socket.connected},U=${universal._socket.io.uri}`;
+		state.keys = "DOM element";
 		const erd = {
 			erdStart,
 			time: Date.now(),
@@ -389,20 +389,8 @@ const universal = {
 	},
 	connHelpWizard() {
 		return new Promise((resolve, reject) => {
-			const promptEle = document.createElement("div");
-			promptEle.className = "prompt";
-			promptEle.style.zIndex = "1002";
-			const iframe = document.createElement("iframe");
-			iframe.src = "/prompt-user-connect.html";
-			iframe.frameBorder = "0";
-			promptEle.appendChild(iframe);
-			document.body.appendChild(promptEle);
-			new MutationObserver(function(mutations) {
-				if(!document.body.contains(promptEle)) {
-					resolve(true);
-					this.disconnect();
-				}
-			}).observe(promptEle.parentElement, {childList: true});
+			universal.listenFor("finish_conn", resolve);
+			universal.vopen("prompts")
 		})
 	},
 	Pages: {},

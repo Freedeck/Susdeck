@@ -60,6 +60,7 @@ export default function (snd, keyObject, raw) {
 			});
 		};
 	} else {
+		if(universal.load("cct") === "true") return;
 		if(universal.user === "Companion") {
 			keyObject.onpointerup = (ev) => {
 				if (ev.which !== 1) return;

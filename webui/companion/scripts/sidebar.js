@@ -11,6 +11,7 @@ contextual.addView("plugins");
 contextual.addView("settings");
 contextual.addView("library");
 contextual.addView("prompts");
+contextual.addView("setup");
 
 HTMLElement.prototype.setHTML = function (html) {
 	this.innerHTML = html;
@@ -24,7 +25,7 @@ universal.listenFor("init", () => {
 
 document.onkeydown = (ev) => universal.uiSounds.playSound("int_type");
 
-const pages = ["library", "plugins", "marketplace", "settings", "prompts"];
+const pages = ["library", "plugins", "marketplace", "settings", "prompts", "setup"];
 
 const sidebarEle = document.createElement("div");
 sidebarEle.id = "sidebar";
@@ -42,7 +43,8 @@ universal.reloadRight = () => {
 	];
 	if(universal.load("has_setup") === "false") {
 		sidebar = [
-			{ "Connect Device": "prompts.html" },
+			{ "Setup": "setup.html" },
+			{ "Pair Device": "prompts.html" },
 		]
 	}
 	if(universal.load("swc") === "true")

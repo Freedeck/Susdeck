@@ -14,7 +14,7 @@ function makeBootLog() {
 	const bootLog = document.createElement("div");
 	bootLog.id = "boot-log-div";
 	bootLog.classList.add("settings-menu")
-	bootLog.innerHTML = "<center><h1>Freedeck</h1></center><div id='boot-log'></div><center><button id='oclb'>Close Boot Log</button></center>";
+	bootLog.innerHTML = "<center class='thing'><h1>Freedeck</h1></center><div id='boot-log'></div><center class='oclb'><button id='oclb'>Close Boot Log</button></center>";
 	document.body.appendChild(bootLog);
 	document.querySelector("#oclb").addEventListener("click", () => {
 		closeBootLog();
@@ -35,10 +35,24 @@ function closeBootLog() {
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {
 			resolve(true);
-			document.querySelector("#boot-log-div").style.animation = "pull-up 0.5s";
+			document.querySelector("#boot-log").style.scale='0';
+			document.querySelector("#boot-log-div > center").style.top = '50%';
+			document.querySelector("#boot-log-div > center").style.transform= 'translate(-50%, -50%)';
+			document.querySelector("#oclb").style.display = 'none';
+			document.querySelector("#boot-log-div > .thing > h1").innerText = universal._information.version.human;
+			if(universal.load("skipanim") === "true") {
+				document.querySelector("#boot-log-div").style.display = 'none';
+			} else {
 			setTimeout(() => {
-				document.querySelector("#boot-log-div").style.display = "none";
+					document.querySelector("#boot-log").style.display = "none";
+					setTimeout(() => {
+							document.querySelector("#boot-log-div").style.animation = "pull-up 0.5s";
+							setTimeout(() => {
+								document.querySelector("#boot-log-div").style.display = 'none';
+							}, 499);
+						},200);
 			}, 499);
+			}
 		}, 250); 
 	})
 }
@@ -174,13 +188,12 @@ function reloadSounds() {
 					const indicator = document.createElement("div");
 					indicator.className = "indicator-red";
 					keyObject.appendChild(indicator);
-					continue;
 				}
 				let typeExists = false;
 				for (const tyc of universal._tyc.keys()) {
 					if (tyc.type === snd.type) typeExists = true;
 				}
-				if (!typeExists) {
+				if (!typeExists && universal.plugins[snd.plugin]) {
 					console.log("type missing", snd.type);
 					const indicator = document.createElement("div");
 					indicator.className = "indicator-yellow";
@@ -213,7 +226,10 @@ function reloadSounds() {
 			}
 			
 			if (snd.plugin) {
-				out += `<p>This tile uses ${universal.cleanHTML(snd.plugin, false)}.</p>`;
+				if(universal.plugins[snd.plugin])
+					out += `<p>This tile uses ${universal.cleanHTML(snd.plugin, false)}.</p>`;
+				else
+					out += `<p>${universal.cleanHTML(snd.plugin, false)} could not be found.</p>`
 				for (const i of Array.from(universal._tyc.keys())) {
 					if (i.type === snd.type) {
 						out += `<code>${i.name}</code>`;

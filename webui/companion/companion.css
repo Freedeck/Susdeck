@@ -150,7 +150,6 @@ a:hover {
 	padding: 5px;
 	background-color: var(--companion-left-sidebar-bg);
 	color: var(--companion-left-sidebar-color);
-	animation: pull-up 0.5s;
 	height: 100%;
 	z-index: 1002;
 	overflow-y: scroll;

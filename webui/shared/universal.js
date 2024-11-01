@@ -339,7 +339,7 @@ const universal = {
 			universal.keys.appendChild(tempDiv);
 		}
 
-		const builtInKeys = [
+		let builtInKeys = [
 			{
 				name: "Stop All",
 				onclick: (ev) => {
@@ -364,6 +364,32 @@ const universal = {
 				onmousedown: UI.quickActions,
 			},
 		];
+
+		if(universal.load("nostopall") === "true") builtInKeys = [{
+			name: "Settings",
+			onclick: (ev) => {
+				window.AppSM();
+			},
+			handlers: ["onmousedown"],
+			onmousedown: UI.quickActions,
+		}];
+		if(universal.load("nologo") === "true") builtInKeys = [{
+			name: "Stop All",
+			onclick: (ev) => {
+				universal.send(universal.events.keypress, {
+					builtIn: true,
+					data: "stop-all",
+				});
+			},
+		},
+		{
+			name: "Reload",
+			onclick: (ev) => {
+				window.location.reload();
+			},
+		}];
+		if(universal.load("nostopall") === "true" && 
+			universal.load("nologo") === "true") builtInKeys = [];
 
 		for (const key of builtInKeys) {
 			const tempDiv = document.createElement("div");

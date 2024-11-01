@@ -87,6 +87,9 @@ universal.on(universal.events.default.config_changed, (e) => {
   );
   let tc = "repeat(5, 2fr)";
   if (e.tileCols) tc = tc.replace("5", e.tileCols);
+  console.log(e.nostopall);
+  universal.save("nostopall", e.nostopall);
+  universal.save("nologo", e.nologo);
   document.documentElement.style.setProperty("--tile-columns", tc);
   universal.lclCfg = () => e;
   universal.lclCfg().iconCountPerPage = Number.parseInt(e.iconCountPerPage);

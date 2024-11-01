@@ -5,11 +5,27 @@
 <p>These features may be buggy!!! You will not experience data loss.</p>
 <div class="experiments">
     <div class="experiment">
+        <label for="blvs">Skip Boot Log Version Show <span class="tag-beta">BETA</span></label>
+        <input type="checkbox" id="blvs" />
+    </div>
+    <div class="experiment">
         <label for="uis">Enable UI Sounds <span class="tag-beta">BETA</span></label>
         <input type="checkbox" id="uis" />
     </div>
     <div class="experiment">
-        <label for="cct">Clicking Companion tiles does not play sounds</label>
+        <label for="cte">Custom Theme Editor<span class="tag-beta">ALPHA</span></label>
+        <input type="checkbox" id="cte" />
+    </div>
+    <div class="experiment">
+        <label for="nbik">No "Stop All" or "Reload" keys <span class="tag-beta">BETA</span></label>
+        <input type="checkbox" id="nbik" />
+    </div>
+    <div class="experiment">
+        <label for="nologo">No Freedeck Logo <span class="tag-beta">BETA</span></label>
+        <input type="checkbox" id="nologo" />
+    </div>
+    <div class="experiment">
+        <label for="cct">Clicking Tiles here plays no sound</label>
         <input type="checkbox" id="cct" />
     </div>
     <div class="experiment">
@@ -143,7 +159,7 @@
     <br>
     <button id="genr">Generate Report</button>
     <br>
-    <strong><a href="//github.com/ia74/contextual">Contextual</a></strong>
+    <strong><a href="//github.com/ia74/contextual" target="_blank">Contextual</a></strong>
     <div class="ctxl"></div>
     <p id="ctx"></p>
     <h3>Be warned, you can reset your data from here. Tile configuration is NOT affected.</h3>
@@ -226,6 +242,13 @@
             a(ev);
         }
     }
+    window.settingsView_lcCheck = (k, v) => {
+        document.querySelector(k).checked = universal.lclCfg()[v] == true;
+
+        document.querySelector(k).onchange = () => {
+            window.settingsView_set(v, !(universal.lclCfg()[v] == true));
+        };
+    }
 
     window.settingsView_createLSCheck = (id, label, description, changed) => {
         const a = "";
@@ -234,20 +257,24 @@
 
     window.settingsView_check("#ebigt", "ebigt");
     window.settingsView_check("#cct", "cct");
+    window.settingsView_check("#cte", "cte");
     window.settingsView_check("#swc", "swc", () => { universal.reloadRight() });
     window.settingsView_check("#hwnmt", "houston");
     window.settingsView_check("#insanity", "insanity");
+    window.settingsView_check("#blvs", "skipanim");
 
-    document.querySelector("#cpm").checked = universal.lclCfg().center == true;
+    window.settingsView_lcCheck("#nbik", "nobuiltin")
+    window.settingsView_lcCheck("#nologo", "nologo")
+    window.settingsView_lcCheck("#cpm", "center")
+    window.settingsView_lcCheck("#apc", "animation")
 
-    document.querySelector("#cpm").onchange = () => {
-        window.settingsView_set("center", !(universal.lclCfg().center == true));
-    };
-
-    document.querySelector("#apc").checked = universal.lclCfg().animation == true;
-
-    document.querySelector("#apc").onchange = () => {
-        window.settingsView_set("animation", !(universal.lclCfg().animation == true));
+    document.querySelector("#uis").checked = universal.uiSounds.enabled();
+    document.querySelector("#uis").onchange = () => {
+        universal.save("uiSounds", !universal.uiSounds.enabled());
+        document.querySelector(".soundpack").style.display = universal.uiSounds
+            .enabled()
+            ? "block"
+            : "none";
     };
 
     /**
@@ -597,15 +624,6 @@
     window.createSelectSetting = createSelectSetting;
     window.createInputSetting = createInputSetting;
     window.createSettingCategory = createSettingCategory;
-
-    document.querySelector("#uis").checked = universal.uiSounds.enabled();
-    document.querySelector("#uis").onchange = () => {
-        universal.save("uiSounds", !universal.uiSounds.enabled());
-        document.querySelector(".soundpack").style.display = universal.uiSounds
-            .enabled()
-            ? "block"
-            : "none";
-    };
 
     document.querySelector(".soundpack").style.display = universal.uiSounds
         .enabled()

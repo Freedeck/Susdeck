@@ -11,6 +11,8 @@ module.exports = ({ io, data }) => {
 				center: true,
 				fill: false,
 				"font-size": 15,
+				nostopall: false,
+				nologo: false,
 				buttonSize: 6,
 				iconCountPerPage: 12,
 				longPressTime: 3,

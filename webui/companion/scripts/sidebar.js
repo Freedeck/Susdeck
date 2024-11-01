@@ -6,12 +6,6 @@ universal.ctx = contextual;
 document.body.appendChild(contextual.createViewContainer());
 document.body.querySelector(contextual.view_container).style.display = 'none';
 
-contextual.addView("marketplace");
-contextual.addView("plugins");
-contextual.addView("settings");
-contextual.addView("library");
-contextual.addView("prompts");
-contextual.addView("setup");
 
 HTMLElement.prototype.setHTML = function (html) {
 	this.innerHTML = html;
@@ -25,7 +19,8 @@ universal.listenFor("init", () => {
 
 document.onkeydown = (ev) => universal.uiSounds.playSound("int_type");
 
-const pages = ["library", "plugins", "marketplace", "settings", "prompts", "setup"];
+const pages = ["library", "plugins", "marketplace", "settings", "prompts", "setup", "customtheme"];
+for(const page of pages) contextual.addView(page);
 
 const sidebarEle = document.createElement("div");
 sidebarEle.id = "sidebar";
@@ -47,6 +42,8 @@ universal.reloadRight = () => {
 			{ "Pair Device": "prompts.html" },
 		]
 	}
+	if(universal.load("cte") === "true")
+		sidebar.push({'Themer': 'customtheme.html'});
 	if(universal.load("swc") === "true")
 		sidebar.push({'Recompile': '+universal.send(universal.events.default.recompile)'})
 	sidebarUl.setHTML(

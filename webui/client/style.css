@@ -114,12 +114,29 @@ h1 {
     display: block;
     animation: none;
     width: 100%;
-    background: #17212a;
+    background: var(--modal-bg);
     background-size: var(--main-bg-size);
     font-family: var(--font);
     color: var(--text-color);
     animation: error-bg 5s linear infinite;
+    transition-duration: .5s;
     color: white;
+}
+
+#boot-log-div > .thing {
+    transition-duration: .5s;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+#boot-log-div > .oclb {
+    transition-duration: .5s;
+    position: absolute;
+    top: 87%;
+    left: 50%;
+    transform: translate(-50%, 0);
 }
 
 #boot-log {
@@ -127,9 +144,14 @@ h1 {
     width: 94%;
     height: 73%;
     overflow-y: scroll;
+    position: absolute;
+    top: 48.85%;
+    left: 48.85%;
+    transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     padding: 1rem;
+    transition-duration: .125s;
     border-radius: 1rem;
 }
 

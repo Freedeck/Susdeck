@@ -82,6 +82,7 @@ universal.vclose = () => {
 }
 
 universal.vopen = (v) => {
+	if(universal.load("has_setup") === "false") return;
 	universal.uiSounds.playSound("sidebar");
 	const view_container = document.querySelector(universal.ctx.view_container);
 	const leftSidebar = document.querySelector(".sidebar");

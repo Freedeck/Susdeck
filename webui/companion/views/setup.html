@@ -54,10 +54,11 @@
 </style>
 
 <script>
+	universal.reloadRight();
 	document.querySelector("#nexta").onclick = (e) => {
 		universal.save("monitor", document.querySelector("#monitor").value);
 		universal.save("vb", document.querySelector("#vb").value);
-		universal.vopen("prompts");
+		universal.ctx.destructiveView("prompts");
 	}
 	
 	document.querySelector("#bypass").onclick = (e) => {

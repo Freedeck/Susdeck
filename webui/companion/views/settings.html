@@ -168,6 +168,10 @@
     <strong>Cfg</strong>
     <div>
         <button id="fsw">Force setup-wizard</button>
+        <details>
+            <summary>Erase ALL LocalStorage data</summary>
+            <button id="erals">ERASE! (NO UNDOING, WILL HAPPEN ON CLICK.)</button>
+        </details>
     </div>
 </details>
 <!-- <h2>This is the bottom of the Settings menu.</h2> -->
@@ -276,6 +280,12 @@
             ? "block"
             : "none";
     };
+
+    document.querySelector("#erals").onclick = () => {
+        localStorage.clear();
+        universal.sendToast("Erased all LocalStorage data! Cleaning up...", "Settings: Developer Tools");
+        window.location.reload();
+    }
 
     /**
      * Create a setting dynamically.

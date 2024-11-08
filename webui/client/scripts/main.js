@@ -132,12 +132,15 @@ document.addEventListener("touchend", (e) => {
   checkDirection();
 });
 
-if (document.querySelector("#version")) {
-  document.querySelector("#version").innerText =
-    `${universal._information.version.human}`;
+const versionDisplay = document.querySelector("#version");
+
+if (versionDisplay) {
+  versionDisplay.innerText = `${universal._information.version.human}`;
 }
 
 const downEvent = (ev) => {};
 
-document.querySelector("#fd-settings-button").onmousedown = downEvent;
-document.querySelector("#fd-settings-button").ontouchstart = downEvent;
+const fdSettingsButton = document.querySelector("#fd-settings-button");
+
+fdSettingsButton.onmousedown = downEvent;
+fdSettingsButton.ontouchstart = downEvent;

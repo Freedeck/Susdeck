@@ -1,9 +1,11 @@
 const editorButton = document.querySelector("#editor-btn");
+const color = document.querySelector("#color");
+const name = document.querySelector("#name");
 
-document.querySelector("#color").onchange = (e) => {
+color.onchange = (e) => {
   editorButton.style.backgroundColor =
     e.srcElement.value;
-  document.querySelector("#color").dataset.has_set = "true";
+  color.dataset.has_set = "true";
   const interaction = JSON.parse(editorButton.getAttribute("data-interaction"));
   interaction.data.color = e.srcElement.value;
   editorButton
@@ -11,7 +13,7 @@ document.querySelector("#color").onchange = (e) => {
   universal.loadEditorData(interaction.data);
 };
 
-document.querySelector("#name").onkeyup = (e) => {
+name.onkeyup = (e) => {
   editorButton.innerText = e.srcElement.value;
 }
 
@@ -48,7 +50,7 @@ for(const w of wants) {
 
 universal.listenFor("editTile", (d) => {
   const data = d.data;
-  if(data.color) document.querySelector("#color").value = data.color;
+  if(data.color) color.value = data.color;
   for(const w of wants) {
     if(data[w.data]) editorButton.classList.add(w.class);
     else editorButton.classList.remove(w.class);

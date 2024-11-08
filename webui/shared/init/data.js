@@ -41,7 +41,7 @@ export default function dataHandler(universal, user) {
       universal.default("pitch", 1);
       universal.default("monitor.sink", "default");
       universal.default("vb.sink", "default");
-      universal.default("has_setup", false);
+      universal.default("has_setup", "false");
       universal.default("theme", "default");
       universal.default("profile", "Default");
       universal.default("repos.community", JSON.stringify([]));

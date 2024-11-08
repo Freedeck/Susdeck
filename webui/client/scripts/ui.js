@@ -8,26 +8,36 @@ import otherHandler from "./ui/otherHandler.js";
  */
 function quickActions(e) {}
 
-
+let openCloseBootLog;
+let bootLog;
+let bootLogCenter;
+let bootLogContainer;
 
 function makeBootLog() {
-	const bootLog = document.createElement("div");
-	bootLog.id = "boot-log-div";
-	bootLog.classList.add("settings-menu")
-	bootLog.innerHTML = "<center class='thing'><h1>Freedeck</h1></center><div id='boot-log'></div><center class='oclb'><button id='oclb'>Close Boot Log</button></center>";
-	document.body.appendChild(bootLog);
-	document.querySelector("#oclb").addEventListener("click", () => {
+	const thisbootLog = document.createElement("div");
+	thisbootLog.id = "boot-log-div";
+	thisbootLog.classList.add("settings-menu")
+	thisbootLog.innerHTML = "<center class='thing'><h1>Freedeck</h1></center><div id='boot-log'></div><center class='oclb'><button id='oclb'>Close Boot Log</button></center>";
+	document.body.appendChild(thisbootLog);
+	bootLog = thisbootLog;
+	bootLogCenter = document.querySelector("#boot-log-div > center");
+	bootLogContainer = document.querySelector("#boot-log");
+	openCloseBootLog = document.querySelector("#oclb");
+	openCloseBootLog.addEventListener("click", () => {
 		closeBootLog();
 	});
 }
 
 function showBootLog() {
 	return new Promise((resolve, reject) => {
-		document.querySelector("#boot-log-div").style.display = "block";
-		document.querySelector("#boot-log-div").style.animation = "pull-down 0.5s";
-		setTimeout(() => {
-			resolve(true);
-		}, 499);
+		bootLogContainer.style.scale='1';
+		bootLogContainer.style.display='block';
+			bootLogCenter.style.top = '';
+			bootLogCenter.style.transform= '';
+			openCloseBootLog.style.display = 'block';
+			document.querySelector("#boot-log-div > .thing > h1").innerText = "Freedeck";
+			bootLog.style.animation = "pull-down 0.5s";
+			bootLog.style.display = 'block';
 	})
 }
 
@@ -35,20 +45,20 @@ function closeBootLog() {
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {
 			resolve(true);
-			document.querySelector("#boot-log").style.scale='0';
-			document.querySelector("#boot-log-div > center").style.top = '50%';
-			document.querySelector("#boot-log-div > center").style.transform= 'translate(-50%, -50%)';
-			document.querySelector("#oclb").style.display = 'none';
+			bootLogContainer.style.scale='0';
+			bootLogCenter.style.top = '50%';
+			bootLogCenter.style.transform= 'translate(-50%, -50%)';
+			openCloseBootLog.style.display = 'none';
 			document.querySelector("#boot-log-div > .thing > h1").innerText = universal._information.version.human;
 			if(universal.load("skipanim") === "true") {
-				document.querySelector("#boot-log-div").style.display = 'none';
+				bootLog.style.display = 'none';
 			} else {
 			setTimeout(() => {
-					document.querySelector("#boot-log").style.display = "none";
+					bootLogContainer.style.display = "none";
 					setTimeout(() => {
-							document.querySelector("#boot-log-div").style.animation = "pull-up 0.5s";
+							bootLog.style.animation = "pull-up 0.5s";
 							setTimeout(() => {
-								document.querySelector("#boot-log-div").style.display = 'none';
+								bootLog.style.display = 'none';
 							}, 499);
 						},200);
 			}, 499);

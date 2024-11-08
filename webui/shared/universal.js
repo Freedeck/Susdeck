@@ -98,12 +98,13 @@ const universal = {
 		return localStorage.removeItem(btoa(`fd.${k}`));
 	},
 	exists: (k) => {
-		return !!localStorage.getItem(btoa(`fd.${k}`));
+		return localStorage.getItem(btoa(`fd.${k}`)) != null;
 	},
 	loadObj: (k) => {
 		return JSON.parse(atob(localStorage.getItem(btoa(`fd.${k}`))));
 	},
 	default: (k, v) => {
+		universal.CLU("Default", `Setting ${k} to ${v}`);
 		return universal.exists(k) ? universal.load(k) : universal.save(k, v);
 	},
 	storage: {

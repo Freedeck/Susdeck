@@ -115,6 +115,49 @@ function reloadProfile() {
 }
 
 /**
+ * @name reloadPluginViews
+ * @description reload plugin views for the editor
+ */
+function reloadPluginViews() {
+	for (const view of document.querySelectorAll(".plugin-view")) {
+		view.remove();
+	}
+	for (const plkey in universal.plugins) {
+		const plugin = universal.plugins[plkey];
+		if(Object.keys(plugin.views).length === 0) continue;
+		for (const view in plugin.views) {
+			const viewData = plugin.views[view];
+			const viewElement = document.createElement("div");
+			viewElement.classList.add("plugin-view");
+			viewElement.classList.add("editor-section");
+			viewElement.style.display = "none";
+			viewElement.id = `plugin-view-${btoa(view).toLowerCase().split("=")[0]}`;
+			(async () => {
+				const data = await fetch(`/hooks/_views/${plugin.id}/${viewData}/view.html`);
+				const text = await data.text();
+				viewElement.innerHTML = text;
+				const script = document.createElement("script");
+				script.src = `/hooks/_views/${plugin.id}/${viewData}/script.js`;
+				script.type = "module";
+				document.body.appendChild(script);
+			})();
+			document.querySelector("#editor-div").insertBefore(viewElement, document.querySelector(".editor-options"));
+			const selectorBtn = document.createElement("button");
+			selectorBtn.innerText = view;
+			selectorBtn.onclick = () => {
+				document.querySelector("#none-only").style.display = "none";
+				for (const v of document.querySelectorAll(".plugin-view")) {
+					v.style.display = "none";
+				}
+				document.querySelector(`#plugin-view-${btoa(view).toLowerCase().split("=")[0]}`).style.display = "block";
+			}
+			document.querySelector(".plugin-view-listing").appendChild(selectorBtn);
+		}
+	}
+}
+window.RplTest = reloadPluginViews;
+
+/**
  * @name reloadSounds
  * @description Reload all of the sounds in the client's DOM.
  */
@@ -240,6 +283,7 @@ function reloadSounds() {
 					out += `<p>This tile uses ${universal.cleanHTML(snd.plugin, false)}.</p>`;
 				else
 					out += `<p>${universal.cleanHTML(snd.plugin, false)} could not be found.</p>`
+					out += `<p>Press R to try to reload ${universal.cleanHTML(snd.plugin, false)}.</p>`
 				for (const i of Array.from(universal._tyc.keys())) {
 					if (i.type === snd.type) {
 						out += `<code>${i.name}</code>`;
@@ -266,11 +310,6 @@ function reloadSounds() {
 
 			const tt = universal.createTooltipFor(keyObject, out);
 			tt.classList.add("tile-tooltip");
-			window.addEventListener("keydown", (e) => {
-				if (e.key === "v") {
-					tt.querySelector("details").open = !tt.querySelector("details").open;
-				}
-			})
 		} catch (e) {
 			console.log(
 				`while rendering sound: ${k}`,
@@ -284,6 +323,15 @@ function reloadSounds() {
 	universal.sendEvent("page_change");
 	// document.getElementById('keys').style.maxHeight = document.querySelectorAll('.k').length * (10*12)/window.innerWidth + '%';
 }
+
+window.onkeydown = (e) => {
+	if(e.key === 'v') {
+		if(document.querySelector('.tile-tooltip')) {
+			document.querySelector('.tile-tooltip').style.display = 'block';
+		}
+	}
+}
+
 export const UI = {
 	reloadSounds,
 	reloadProfile,
@@ -292,5 +340,6 @@ export const UI = {
 	initialize,
 	makeBootLog,
 	closeBootLog,
-	showBootLog
+	showBootLog,
+	reloadPluginViews
 };

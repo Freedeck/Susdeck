@@ -37,8 +37,8 @@ universal._Uploads_New = (uploadsType = UploadsType.ICON) => {
 			onlySetIfExists("#audio-file", "innerText", data.newName);
 			// onlySetIfExists("#audio-path", "innerText", "/sounds/");
 			universal.loadEditorData(previousInteractionData.data);
-			universal.uiSounds.playSound("int_yes");
 			universal.ctx.destructiveView("library");
+			universal.sendToast(`Successfully uploaded ${data.newName}`, "Library");
 		});
 	} else if (uploadsType === UploadsType.ICON) {
 		upload(
@@ -58,8 +58,8 @@ universal._Uploads_New = (uploadsType = UploadsType.ICON) => {
 					`url("${`/icons/${data.newName}`}")`,
 				);
 				universal.loadEditorData(previousInteractionData.data);
-				universal.uiSounds.playSound("int_yes");
 				universal.ctx.destructiveView("library");
+				universal.sendToast(`Successfully uploaded ${data.newName}`, "Library");
 			},
 			"icon",
 		);

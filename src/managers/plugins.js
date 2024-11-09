@@ -32,6 +32,26 @@ const pl = {
 		}
 		await pl.update();
 	},
+	reloadSinglePlugin: async (id) => {
+		const plList = pl.plugins();
+		if(plList.has(id)) {
+			if(plList.get(id).instance?.stop) plList.get(id).instance.stop();
+			plList.delete(id);
+		}
+		for (const key in require.cache) {
+			if (key.startsWith(path.resolve(`./tmp/_e_._plugins_${id}.Freedeck`)) || key.startsWith(path.resolve(`./plugins/${id}`)) || key.startsWith(path.resolve(`./plugins/${id}.disabled`))) {
+				delete require.cache[key];
+			}
+		}
+		if(!fs.existsSync(path.resolve(`./plugins/${id}.Freedeck`))) {
+			if(fs.existsSync(path.resolve(`./plugins/${id}.src`))) {
+				await pl.load(`${id}.src`);
+			}
+		} else {
+			await pl.load(`${id}.Freedeck`);
+		}
+		debug.log(picocolors.green(`Successfully reloaded plugin with ID ${id}`), "Plugin Manager");
+	},
 	update: async () => {
 		debug.log("Rebuilding the plugin cache.", "Plugin Manager");
 		pl._disabled = [];

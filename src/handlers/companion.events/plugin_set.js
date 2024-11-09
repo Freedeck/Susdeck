@@ -13,5 +13,6 @@ module.exports = ({ io, data }) => {
 			console.log(`Settings for ${data.plugin} saved`);
 		},
 	);
+	plugins.reloadSinglePlugin(data.plugin);
 	io.emit(eventNames.default.reload);
 };

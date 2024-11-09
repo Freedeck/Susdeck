@@ -17,6 +17,7 @@ module.exports = class Plugin {
   jsSockHookPath;
   imports = [];
   Settings = {};
+  views = {};
   id;
   disabled = false;
   stopped = false;
@@ -85,6 +86,14 @@ module.exports = class Plugin {
     this.internalAdd(HookRef.types.server, hook, "webui/hooks/");
   }
 
+  addView(view, file) {
+    const viewFolder = `${file}.view`;
+    this.views[view] = viewFolder;
+    const viewBase = "webui/hooks/_views/";
+    if(!fs.existsSync(path.resolve(viewBase, this.id))) fs.mkdirSync(path.resolve(viewBase, this.id), {recursive: true});
+    this.internalAdd(HookRef.types.view, viewFolder, path.resolve(viewBase, this.id));
+  }
+
   /**
    Internal method for adding hookrefs
    @param {*} type the HookRef type
@@ -106,9 +115,14 @@ module.exports = class Plugin {
     if (!fs.existsSync(destination)) {
       fs.mkdirSync(destination, { recursive: true });
     }
+    const dt = {force:true};
+    if(type === HookRef.types.view) {
+      dt.recursive = true; 
+    }
 
     setImmediate(() => {
-      fs.copyFile(hp, path.resolve(destination, path.basename(hook)), (err) => {
+  
+      fs.cp(hp, path.resolve(destination, path.basename(hook)), dt, (err) => {
         if (err) {
           console.log(`Failed to copy hook: ${err}`);
         } else {

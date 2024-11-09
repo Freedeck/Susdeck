@@ -1,3 +1,4 @@
+import { UI } from "../../client/scripts/ui";
 import { generic, handler } from "../nativeHandler";
 
 export default function dataHandler(universal, user) {
@@ -96,6 +97,7 @@ export default function dataHandler(universal, user) {
 
       if (user === "Companion") {
         handler();
+        UI.reloadPluginViews();
         universal.CLU("Incoming Data Handler", "Native handler created.");
       }
 

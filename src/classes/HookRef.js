@@ -6,6 +6,7 @@ module.exports = class HookRef {
 		server: 1,
 		socket: 2,
 		import: 3,
+		view: 4,
 	};
 	name;
 

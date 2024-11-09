@@ -1043,7 +1043,7 @@ document.querySelector("#upload-icon").onclick = (e) => {
     editorButton.setAttribute("data-interaction", JSON.stringify(interaction));
     editorButton.style.backgroundImage = `url("${`/icons/${itm}`}")`;
     loadData(interaction.data);
-    universal.uiSounds.playSound("int_yes");
+    universal.uiSounds.playSound("uploaded");
   };
 };
 

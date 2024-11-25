@@ -149,6 +149,11 @@ function reloadPluginViews() {
 				for (const v of document.querySelectorAll(".plugin-view")) {
 					v.style.display = "none";
 				}
+				const editor = document.querySelector("#editor-btn");
+				const int = JSON.parse(editor.getAttribute("data-interaction"));
+				int.data._view = btoa(view).toLowerCase().split("=")[0];
+				universal.setEditorData("_view", btoa(view).toLowerCase().split("=")[0], int);
+				editor.setAttribute("data-interaction", JSON.stringify(int));
 				document.querySelector(`#plugin-view-${btoa(view).toLowerCase().split("=")[0]}`).style.display = "block";
 			}
 			document.querySelector(".plugin-view-listing").appendChild(selectorBtn);
@@ -278,6 +283,7 @@ function reloadSounds() {
 				out += "<p>Not pressable.</p>";
 			}
 			
+
 			if (snd.plugin) {
 				if(universal.plugins[snd.plugin])
 					out += `<p>This tile uses ${universal.cleanHTML(snd.plugin, false)}.</p>`;
@@ -310,6 +316,12 @@ function reloadSounds() {
 
 			const tt = universal.createTooltipFor(keyObject, out);
 			tt.classList.add("tile-tooltip");
+			
+			window.addEventListener("keydown", (e) => {
+				if (e.key === "v") {
+					tt.querySelector("details").open = !tt.querySelector("details").open;
+				}
+			})
 		} catch (e) {
 			console.log(
 				`while rendering sound: ${k}`,
@@ -322,14 +334,6 @@ function reloadSounds() {
 	}
 	universal.sendEvent("page_change");
 	// document.getElementById('keys').style.maxHeight = document.querySelectorAll('.k').length * (10*12)/window.innerWidth + '%';
-}
-
-window.onkeydown = (e) => {
-	if(e.key === 'v') {
-		if(document.querySelector('.tile-tooltip')) {
-			document.querySelector('.tile-tooltip').style.display = 'block';
-		}
-	}
 }
 
 export const UI = {

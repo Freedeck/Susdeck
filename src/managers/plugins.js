@@ -2,7 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const debug = require(path.resolve("./src/utils/debug.js"));
 const picocolors = require(path.resolve("./src/utils/picocolors.js"));
-const AsarBundleRunner = require("asar-bundle-runner");
+const packageHandler = require(path.resolve("./src/managers/packageHandler.js"));
 
 const pl = {
 	_plc: new Map(),
@@ -32,24 +32,28 @@ const pl = {
 		}
 		await pl.update();
 	},
-	reloadSinglePlugin: async (id) => {
+	unload: (id) => {
 		const plList = pl.plugins();
-		if(plList.has(id)) {
-			if(plList.get(id).instance?.stop) plList.get(id).instance.stop();
+		const plugin = plList.get(id);
+	
+		if(plugin) {
+			if(plugin.instance?.stop) plugin.instance.stop();
 			plList.delete(id);
 		}
 		for (const key in require.cache) {
-			if (key.startsWith(path.resolve(`./tmp/_e_._plugins_${id}.Freedeck`)) || key.startsWith(path.resolve(`./plugins/${id}`)) || key.startsWith(path.resolve(`./plugins/${id}.disabled`))) {
+			if (key.startsWith(path.resolve(`./tmp/_e_._plugins_${id}.Freedeck`)) || 
+					key.startsWith(path.resolve(`./plugins/${id}`)) || 
+					key.startsWith(path.resolve(`./plugins/${id}.disabled`))) {
 				delete require.cache[key];
 			}
 		}
-		if(!fs.existsSync(path.resolve(`./plugins/${id}.Freedeck`))) {
-			if(fs.existsSync(path.resolve(`./plugins/${id}.src`))) {
-				await pl.load(`${id}.src`);
-			}
-		} else {
-			await pl.load(`${id}.Freedeck`);
-		}
+		debug.log(picocolors.green(`Successfully unloaded plugin with ID ${id}`), "Plugin Manager");
+	},
+	reloadSinglePlugin: async (id) => {
+		const file = pl.plugins().get(id).file;
+		pl.unload(id);
+		if (fs.existsSync(path.resolve('./plugins', file)))
+		await pl.load(file);
 		debug.log(picocolors.green(`Successfully reloaded plugin with ID ${id}`), "Plugin Manager");
 	},
 	update: async () => {
@@ -64,6 +68,7 @@ const pl = {
 					file.endsWith(".Freedeck") ||
 					file.endsWith(".src") ||
 					file.endsWith(".fdr.js") ||
+					file.endsWith(".fdpackage") ||
 					file.endsWith(".disabled"),
 			)
 			.map(async (file) => await pl.load(file));
@@ -73,118 +78,40 @@ const pl = {
 			console.log(er);
 		}
 	},
-	singleFile: async (file) => {
-		debug.log("You're loading a single file plugin. Expect unexpected behavior.", "Plugin Manager");
-		const ipl = require(path.resolve(`./plugins/${file}`));
-		const instantiated = new ipl();
-		pl._plc.set(instantiated.id, { instance: instantiated });
-		if (instantiated.disabled) {
-			pl._disabled.push(instantiated.id);
-		}
-		if (
-			fs.existsSync(path.resolve(`./plugins/${instantiated.id}/settings.json`))
-		) {
-			const settings = JSON.parse(
-				fs.readFileSync(
-					path.resolve(`./plugins/${instantiated.id}/settings.json`),
-				),
-			);
-			pl._settings.set(instantiated.id, settings);
-		}
-		debug.log(`Successfully loaded single file plugin ${file}`, "Plugin Manager");
-	},
 	load: async (file) => {
+		if(pl._disabled.includes(file)) {
+			pl._disabled = pl._disabled.filter((value) => value !== file);
+		}
+		if (file.endsWith(".fdpackage")) {
+			packageHandler.openPackage(file, pl);
+			return;
+		}
 		if (file.includes(".disabled")) {
-			pl._disabled.push(file.split(".")[0]);
+			pl._disabled.push(file);
 			return;
 		}
 		try {
 			if (file.endsWith(".fdr.js")) {
-				try {
-					pl.singleFile(file);
-				} catch (err) {
-					console.error(
-						picocolors.red(
-							`Error while trying to load single file plugin ${file}: ${err}`,
-						),
-						"Plugin Manager",
-					);
-				}
+				require(path.resolve("./src/managers/providers/singleFile.js"))({
+					debug,
+					file,
+					pl,
+				})
 				return;
 			}
 			if (file.endsWith(".src")) {
-				debug.log("Loading unpacked plugin. Keep in mind disabling/enabling will not work.", "Plugin Manager");
-				const newPath = path.resolve(`./plugins/${file}`);
-				const cfgPath = path.resolve(newPath, "config.js");
-				try {
-					debug.log(
-						picocolors.yellow(`Initializing unpacked plugin ${file}`),
-						"Plugin Manager",
-					);
-					const { entrypoint } = require(cfgPath);
-					const entryPath = path.resolve(newPath, entrypoint);
-					const entry = require(entryPath);
-					debug.log("Emulating asar extraction...", "Plugin Manager");
-					fs.cpSync(
-						newPath,
-						path.resolve(
-							`./tmp/_e_._plugins_${file.split(".src")[0]}.Freedeck`,
-						),
-						{ recursive: true },
-					);
-					debug.log("Executing plugin...", "Plugin Manager");
-					const instantiated = entry.exec();
-					pl._plc.set(instantiated.id, { instance: instantiated });
-					if (instantiated.disabled) {
-						pl._disabled.push(instantiated.id);
-					}
-					if (
-						fs.existsSync(
-							path.resolve(`./plugins/${instantiated.id}/settings.json`),
-						)
-					) {
-						const settings = JSON.parse(
-							fs.readFileSync(
-								path.resolve(`./plugins/${instantiated.id}/settings.json`),
-							),
-						);
-						pl._settings.set(instantiated.id, settings);
-					}
-					return;
-				} catch (err) {
-					console.error(
-						picocolors.red(
-							`Error while trying to load unpacked plugin ${file}: ${err}`,
-						),
-						"Plugin Manager",
-					);
-				}
+				require(path.resolve("./src/managers/providers/sourceFolder.js"))({
+					debug,
+					file,
+					pl,
+				})
 				return;
 			}
-			const a = await AsarBundleRunner.extract(`./plugins/${file}`, false);
-			const instantiated = await AsarBundleRunner.run(a);
-			debug.log(
-				picocolors.yellow(
-					`Plugin initialized ${instantiated.name} - ID ${instantiated.id}`,
-				),
-				"Plugin Manager",
-			);
-			pl._plc.set(instantiated.id, { instance: instantiated });
-			if (instantiated.disabled) {
-				pl._disabled.push(instantiated.id);
-			}
-			if (
-				fs.existsSync(
-					path.resolve(`./plugins/${instantiated.id}/settings.json`),
-				)
-			) {
-				const settings = JSON.parse(
-					fs.readFileSync(
-						path.resolve(`./plugins/${instantiated.id}/settings.json`),
-					),
-				);
-				pl._settings.set(instantiated.id, settings);
-			}
+			require(path.resolve("./src/managers/providers/default.js"))({
+				debug,
+				file,
+				pl,
+			});
 		} catch (err) {
 			console.log(
 				picocolors.red(`Error while trying to load plugin ${file}: ${err}`),

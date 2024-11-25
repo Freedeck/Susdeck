@@ -9,14 +9,9 @@ const HookRef = require("./HookRef");
 module.exports = class Plugin {
   name;
   author;
-  jsSHook;
-  jsShPath;
-  jsCHook;
-  jsChPath;
-  jsSockHook;
-  jsSockHookPath;
   imports = [];
   Settings = {};
+  hooks = [];
   views = {};
   id;
   disabled = false;
@@ -42,48 +37,29 @@ module.exports = class Plugin {
     if (!this.hasInit) {
       console.log("Plugin didn't initialize?");
     }
-    // return this;
-  }
-  hooks = [];
-
-  /**
-   * Code to run when the plugin is stopping.
-   */
-  onStopping() {}
-
-  /**
-   * End the plugin.
-   */
-  stop() {
-    this.onStopping();
-    this.disabled = true;
-    this.stopped = true;
   }
 
+  _hookLocation = "webui/hooks/";
+  _usesAsar = true;
   /**
    * @param {String} hook The JS file that will be loaded into the socket handler
    */
   setJSSocketHook(hook) {
-    this.jsSockHook = hook;
-    this.jsSockHookPath = path.resolve(
-      `tmp/_e_._plugins_${this.id}.Freedeck`,
-      this.jsSockHook,
-    );
-    // this.hooks.push(new HookRef(path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', hook), HookRef.types.socket, hook));
-    // this.internalAdd(HookRef.types.socket, hook, )
+    this.internalAdd(HookRef.types.socket, hook, `${this._hookLocation}_`);
   }
 
   /**
    * @param {String} hook The JS file that will be loaded into the browser
    */
   setJSServerHook(hook) {
-    //  this.jsSHook = hook;
-    //  this.jsShPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', this.jsSHook);
-    // let hp = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', hook);
-    // this.hooks.push(new HookRef(hp, HookRef.types.server, hook));
-    // if (!fs.existsSync(path.resolve('src/public/hooks/'))) fs.mkdirSync(path.resolve('src/public/hooks/'));
-    // fs.cpSync(hp, path.resolve('src/public/hooks/'+hook));
-    this.internalAdd(HookRef.types.server, hook, "webui/hooks/");
+    this.internalAdd(HookRef.types.server, hook, this._hookLocation);
+  }
+
+  /**
+   * @param {String} hook The JS file that will be loaded into the browser
+   */
+   setJSClientHook(hook) {
+    this.internalAdd(HookRef.types.client, hook, this._hookLocation);
   }
 
   addView(view, file) {
@@ -101,7 +77,9 @@ module.exports = class Plugin {
    @param {*} copyTo folder to copy hook to
    */
   internalAdd(type, hook, copyTo) {
-    const hp = path.resolve(`tmp/_e_._plugins_${this.id}.Freedeck`, hook);
+    let foundPath = `tmp/_${this.id}.fdpackage`;
+    if(this._usesAsar) foundPath = `tmp/_e_._plugins_${this.id}.Freedeck`;
+    const hp = path.resolve(foundPath, hook);
 
     if (!fs.existsSync(hp)) {
       console.log(`Source file does not exist: ${hp}`);
@@ -132,18 +110,6 @@ module.exports = class Plugin {
   }
 
   /**
-   * @param {String} hook The JS file that will be loaded into the browser
-   */
-  setJSClientHook(hook) {
-    //  this.jsCHook = hook
-    //  this.jsChPath = path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', this.jsCHook);
-    // this.hooks.push(new HookRef(path.resolve('tmp/_e_._plugins_' + this.id+'.Freedeck', hook), HookRef.types.client, hook));
-    // if (!fs.existsSync(path.resolve('src/public/hooks/'))) fs.mkdirSync(path.resolve('src/public/hooks/'));
-    // fs.cpSync(this.jsChPath, path.resolve('src/public/hooks/'+this.jsCHook));
-    this.internalAdd(HookRef.types.client, hook, "webui/hooks/");
-  }
-
-  /**
    * @param {String} file The file you want to import
    */
   addImport(file) {
@@ -167,7 +133,6 @@ module.exports = class Plugin {
    */
   getJSClientHook() {
     return this.hooks.filter((ref) => ref.type === HookRef.types.client);
-    // return this.jsCHook;
   }
 
   /**
@@ -289,6 +254,20 @@ module.exports = class Plugin {
    */
   onButton(interaction) {
     return true;
+  }
+
+  /**
+   * Code to run when the plugin is stopping.
+   */
+  onStopping() {}
+
+  /**
+   * End the plugin.
+   */
+  stop() {
+    this.onStopping();
+    this.disabled = true;
+    this.stopped = true;
   }
 
   /**

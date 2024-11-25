@@ -5,16 +5,20 @@ const fs = require("node:fs");
 
 module.exports = ({ io, data }) => {
 	const currLoaded = plugins.plugins();
-	plugin = currLoaded.get(data).instance;
-	currLoaded.delete(plugin.id);
-	for (const type of plugin.types) {
-		plugins._tyc.delete(type);
+	plugin = currLoaded.get(data);
+	if(!fs.existsSync(path.resolve(`./plugins/${plugin.file}`))) return;
+	if(Object.keys(plugin.instance.types).length > 0) {
+		for (const type of plugin.instance.types) {
+			plugins._tyc.delete(type);
+		}
 	}
-	console.log(`Disabled ${plugin.name}(${plugin.id})`);
+	console.log(`Attempting to disable ${plugin.file} (${plugin.instance.name})...`);
+	currLoaded.delete(plugin.instance.id);
 	fs.renameSync(
-		path.resolve(`./plugins/${plugin.id}.Freedeck`),
-		path.resolve(`./plugins/${plugin.id}.Freedeck.disabled`),
+		path.resolve(`./plugins/${plugin.file}`),
+		path.resolve(`./plugins/${plugin.file}.disabled`),
 	);
-	plugins.reload();
+	plugins.unload(plugin.instance.id);
+	plugins._disabled.push(`${plugin.file}.disabled`);
 	io.emit(eventNames.default.reload);
 };

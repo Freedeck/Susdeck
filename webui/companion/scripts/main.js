@@ -108,12 +108,8 @@ gridItemDrag.on("drop", (event, origIndex, targIndex) => {
 });
 
 gridItemDrag.on("dragging", (e) => {
-  document
-    .querySelector("#keys")
-    .appendChild(mtNextPage.cloneNode(true));
-  document
-    .querySelector("#keys")
-    .appendChild(mtPrevPage.cloneNode(true));
+  document.querySelector("#keys").appendChild(mtNextPage.cloneNode(true));
+  document.querySelector("#keys").appendChild(mtPrevPage.cloneNode(true));
   // copy the next and prev buttons to the keys container
 
   mtNextPage.style.display = "flex";
@@ -125,11 +121,9 @@ const leftSidebar = document.querySelector(".sidebar");
 toggleSidebarButton.onclick = (ev) => {
   if (leftSidebar.style.display === "flex") {
     if (!ev.target.dataset.nosound) universal.uiSounds.playSound("slide_close");
-    leftSidebar.style.animation =
-      "sidebar-slide-out 0.5s";
+    leftSidebar.style.animation = "sidebar-slide-out 0.5s";
     leftSidebar.style.animationFillMode = "forward";
-    toggleSidebarButton.style.transform =
-      "rotate(0deg)";
+    toggleSidebarButton.style.transform = "rotate(0deg)";
     toggleSidebarContainer.style.left = "0";
     setTimeout(() => {
       leftSidebar.style.display = "none";
@@ -137,10 +131,8 @@ toggleSidebarButton.onclick = (ev) => {
   } else {
     if (!ev.target.dataset.nosound) universal.uiSounds.playSound("slide_open");
     leftSidebar.style.display = "flex";
-    leftSidebar.style.animation =
-      "sidebar-slide-in 0.5s";
-    toggleSidebarButton.style.transform =
-      "rotate(180deg)";
+    leftSidebar.style.animation = "sidebar-slide-in 0.5s";
+    toggleSidebarButton.style.transform = "rotate(180deg)";
     toggleSidebarContainer.style.left = "calc(11.5%)";
   }
 };
@@ -158,8 +150,7 @@ window["button-types"] = [
 
 window.oncontextmenu = (e) => {
   const ctxMenu = document.querySelector(".contextMenu");
-  if (ctxMenu)
-    ctxMenu.remove();
+  if (ctxMenu) ctxMenu.remove();
   if (!e.srcElement.classList.contains("button")) return false;
   if (e.srcElement.classList.contains("builtin")) return false;
   const custMenu = document.createElement("div");
@@ -368,9 +359,23 @@ universal.loadEditorData = loadData;
 function setEditorData(key, value, int) {
   if (document.querySelector(`.editor-data#${key}`)) {
     document.querySelector(`.editor-data#${key}`).value = value;
+  } else {
+    const elem = document.createElement("input");
+    elem.type = "text";
+    elem.placeholder = key;
+    elem.value = value;
+    elem.className = "editor-data";
+    elem.id = key;
+    const label = document.createElement("label");
+    label.class = "editordata-removable";
+    label.innerText = key;
+    label.appendChild(elem);
+    document.querySelector("#editor-data").appendChild(label);
   }
   int.data[key] = value;
 }
+
+universal.setEditorData = setEditorData;
 
 const selectableViews = ["audio", "plugins", "system", "none", "profile"];
 
@@ -391,13 +396,15 @@ function editTile(e) {
   const interactionData = JSON.parse(
     e.srcElement.getAttribute("data-interaction")
   );
-  editorButton.dataset.state = 'opening';
+  editorButton.dataset.state = "opening";
   if (toggleSidebarContainer.style.left !== "0px")
     toggleSidebarButton.dataset.nosound = "true";
-  if (toggleSidebarContainer.style.left !== "0px")
-    toggleSidebarButton.click();
+  if (toggleSidebarContainer.style.left !== "0px") toggleSidebarButton.click();
   if (document.querySelector(".contextMenu"))
     document.querySelector(".contextMenu").style.display = "none";
+  for(const el of document.querySelectorAll(".plugin-view")) {
+    el.style.display = "none";
+  }
   document.querySelector("#advanced-view").style.display = "none";
   document.querySelector("#sidebar").style.right = "-20%";
   document.querySelector("#editor").style.display = "block";
@@ -406,17 +413,24 @@ function editTile(e) {
   if (interactionData.data.icon)
     editorButton.style.backgroundImage = `url("${interactionData.data.icon}")`;
   if (interactionData.data.color)
-    editorButton.style.backgroundColor =
-  interactionData.data.color;
+    editorButton.style.backgroundColor = interactionData.data.color;
   document.querySelector("#color").value = interactionData.data.color;
   document.querySelector("#name").value = e.srcElement.dataset.name;
-  editorButton
-    .setAttribute("data-pre-edit", e.srcElement.dataset.name);
-    editorButton
-    .setAttribute(
-      "data-interaction",
-      e.srcElement.getAttribute("data-interaction")
-    );
+  editorButton.setAttribute("data-pre-edit", e.srcElement.dataset.name);
+  editorButton.setAttribute(
+    "data-interaction",
+    e.srcElement.getAttribute("data-interaction")
+  );
+  for (const a of document.querySelectorAll(".spiaction")) {
+    a.style.display = "none";
+    a.classList.remove("spi-active");
+    if(!interactionData.plugin) continue;
+    if (a.dataset.plugin === interactionData.plugin) {
+      if (a.dataset.type === interactionData.type)
+        a.classList.add("spi-active");
+      a.style.display = "block";
+    }
+  }
   document.querySelector("#type").value = interactionData.type;
   if (interactionData.plugin === "Freedeck" || !interactionData.plugin) {
     document.querySelector("#plugin").style.display = "none";
@@ -433,7 +447,12 @@ function editTile(e) {
   view_systemOnly.style.display = "none";
   view_noneOnly.style.display = "none";
   view_profileOnly.style.display = "none";
-  if(interactionData.type.includes("fd.") && interactionData.type !== "fd.none") {
+  document.querySelector('.spi-actions-disabled').style.display = "none";
+  document.querySelector('.spi-actions-notfound').style.display = "none";
+  if (
+    interactionData.type.includes("fd.") &&
+    interactionData.type !== "fd.none"
+  ) {
     document.querySelector("#editor-back").style.display = "";
   } else document.querySelector("#editor-back").style.display = "none";
   if (interactionData.type === "fd.sound") {
@@ -452,6 +471,19 @@ function editTile(e) {
       for (const el of document.querySelectorAll(".spiplugin")) {
         el.style.display = "none";
       }
+
+      for(const el of document.querySelectorAll('.spi-actions-disabled-id')) {
+        el.innerText = interactionData.plugin;
+      }
+      for(const el of document.querySelectorAll('.spi-actions-notfound-type')) {
+        el.innerText = interactionData.type;
+      }
+      if(!document.querySelector(`.spi[data-type="${interactionData.type}"]`)) {
+        document.querySelector('.spi-actions-notfound').style.display = "block"; 
+      }
+      if(universal.plugins[interactionData.plugin] === undefined) {
+        document.querySelector('.spi-actions-disabled').style.display = "block";
+      }
     } else {
       for (const el of document.querySelectorAll(".spiaction, .spiback")) {
         el.style.display = "none";
@@ -463,52 +495,43 @@ function editTile(e) {
     openViewCloseAll("plugins");
     if (interactionData.type.startsWith("fd.sys")) {
       openViewCloseAll("system");
-      fetch("/native/volume/apps")
-        .then((res) => res.json())
-        .then((data) => {
-          if (data._msg) {
-            universal.sendToast(
-              "NativeBridge is not running. Freedeck may be trying to start it. If this message persists, please restart Freedeck or run 'nbui.exe' in your Documents/Freedeck folder.",
-              "NativeBridge"
-            );
-          }
-          const int = JSON.parse(
-            editorButton
-              .getAttribute("data-interaction")
-          );
 
-          const select = document.querySelector("#system-select");
-          select.innerHTML = "";
+      universal.nbws.send("get_apps", "");
+      universal.nbws.once("apps", (rawData) => {
+        const data = JSON.parse(rawData[0]);
+        const int = JSON.parse(editorButton.getAttribute("data-interaction"));
 
-          for (const app of data) {
-            const option = document.createElement("option");
-            let friendly =
-              app.friendly !== "" ? `${app.friendly} (${app.name})` : app.name;
-            if (app.name === "_fd.System") friendly = "System Volume";
-            option.innerText = friendly;
-            option.value = app.name;
-            if (int.data?.app && int.data.app === app.name)
-              option.selected = true;
-            select.appendChild(option);
-          }
-          select.onchange = (e) => {
-            const dt =
-              e.srcElement.value !== "_fd.System"
-                ? "fd.sys.volume"
-                : "fd.sys.volume.sys";
-            document.querySelector("#type").value = dt;
-            int.type = dt;
-            int.renderType = "slider";
-            setEditorData("app", e.srcElement.value, int);
-            setEditorData("min", 0, int);
-            setEditorData("max", 100, int);
-            setEditorData("value", 50, int);
-            setEditorData("format", "%", int);
-            setEditorData("direction", "vertical", int);
-            editorButton
-              .setAttribute("data-interaction", JSON.stringify(int));
-          };
-        });
+        const select = document.querySelector("#system-select");
+        select.innerHTML = "";
+
+        for (const app of data) {
+          const option = document.createElement("option");
+          let friendly =
+            app.friendly !== "" ? `${app.friendly} (${app.name})` : app.name;
+          if (app.name === "_fd.System") friendly = "System Volume";
+          option.innerText = friendly;
+          option.value = app.name;
+          if (int.data?.app && int.data.app === app.name)
+            option.selected = true;
+          select.appendChild(option);
+        }
+        select.onchange = (e) => {
+          const dt =
+            e.srcElement.value !== "_fd.System"
+              ? "fd.sys.volume"
+              : "fd.sys.volume.sys";
+          document.querySelector("#type").value = dt;
+          int.type = dt;
+          int.renderType = "slider";
+          setEditorData("app", e.srcElement.value, int);
+          setEditorData("min", 0, int);
+          setEditorData("max", 100, int);
+          setEditorData("value", 50, int);
+          setEditorData("format", "%", int);
+          setEditorData("direction", "vertical", int);
+          editorButton.setAttribute("data-interaction", JSON.stringify(int));
+        };
+      });
       if (interactionData.type.startsWith("fd.sys.volume")) {
         document.querySelector("#system-select").value =
           interactionData.data.app;
@@ -523,15 +546,6 @@ function editTile(e) {
     if (interactionData.type === "fd.none") {
       openViewCloseAll("none");
     } else if (interactionData.plugin) {
-      for (const a of document.querySelectorAll(".spiaction")) {
-        a.style.display = "none";
-        a.classList.remove("spi-active");
-        if (a.dataset.plugin === interactionData.plugin) {
-          if (a.dataset.type === interactionData.type)
-            a.classList.add("spi-active");
-          a.style.display = "block";
-        }
-      }
       loadSettings(interactionData.plugin);
     }
   }
@@ -560,7 +574,6 @@ function editTile(e) {
   setCheck("#nbr", "noRounding", interactionData);
   setCheck("#nsh", "noShadow", interactionData);
 
-
   document.querySelector("#lp").style.display =
     interactionData.renderType === "slider" ? "none" : "block";
   document.querySelector('label[for="lp"]').style.display =
@@ -570,7 +583,7 @@ function editTile(e) {
     "editor-pull-down 0.5s";
   toggleSidebarButton.style.display = "none";
 
-	universal.sendEvent("editTile", interactionData);
+  universal.sendEvent("editTile", interactionData);
 }
 
 document.querySelector("#editor-back").onclick = () => {
@@ -580,9 +593,8 @@ document.querySelector("#editor-back").onclick = () => {
   view_systemOnly.style.display = "none";
   view_noneOnly.style.display = "none";
   view_profileOnly.style.display = "none";
-  openViewCloseAll("none")
-  
-}
+  openViewCloseAll("none");
+};
 
 function setCheck(id, key, interaction) {
   document.querySelector(id).checked = interaction.data[key] === "true";
@@ -590,10 +602,7 @@ function setCheck(id, key, interaction) {
 
 function createEditorCheckbox(selector, dataKey) {
   document.querySelector(selector).addEventListener("click", (e) => {
-    const int = JSON.parse(
-      editorButton
-        .getAttribute("data-interaction")
-    );
+    const int = JSON.parse(editorButton.getAttribute("data-interaction"));
     if (!int.data[dataKey]) int.data[dataKey] = true;
     else int.data[dataKey] = !int.data[dataKey];
     editorButton.setAttribute("data-interaction", JSON.stringify(int));
@@ -687,18 +696,15 @@ const generateProfileSelect = () => {
     select.appendChild(option);
   }
   select.onchange = (e) => {
-    const int = JSON.parse(
-      editorButton
-        .getAttribute("data-interaction")
-    );
+    const int = JSON.parse(editorButton.getAttribute("data-interaction"));
     int.data.profile = e.srcElement.value;
-    editorButton
-      .setAttribute("data-interaction", JSON.stringify(int));
+    editorButton.setAttribute("data-interaction", JSON.stringify(int));
     loadData(int.data);
   };
 };
 
 document.querySelector("#spiback").onclick = (e) => {
+  document.querySelector('.spi-actions-disabled').style.display = "none";
   for (const el of document.querySelectorAll(".spiaction, .spiback")) {
     el.style.display = "none";
   }
@@ -708,10 +714,7 @@ document.querySelector("#spiback").onclick = (e) => {
 };
 
 document.querySelector("#spiav").onclick = () => {
-  const interaction = JSON.parse(
-    editorButton
-      .getAttribute("data-interaction")
-  );
+  const interaction = JSON.parse(editorButton.getAttribute("data-interaction"));
   if (!interaction.data || Object.keys(interaction.data).length === 0) {
     document.querySelector("#tiledata").style.display = "none";
   } else {
@@ -794,9 +797,7 @@ generateProfileSelect();
 document.querySelector("#upload-sound").onclick = () => {
   document.querySelector("#upload-sound").disabled = true;
   universal.uiSounds.playSound("int_confirm");
-  const ito = JSON.parse(
-    editorButton.dataset.interaction
-  );
+  const ito = JSON.parse(editorButton.dataset.interaction);
 
   universal._Uploads_View = 0;
   universal.vopen("library");
@@ -846,9 +847,7 @@ document.querySelector("#upload-sound").onclick = () => {
 };
 
 document.querySelector("#none-audio").onclick = (e) => {
-  const int = JSON.parse(
-    editorButton.getAttribute("data-interaction")
-  );
+  const int = JSON.parse(editorButton.getAttribute("data-interaction"));
   int.type = "fd.sound";
   int.data.file = "Unset.mp3";
   int.data.path = "/sounds/";
@@ -860,9 +859,7 @@ document.querySelector("#none-audio").onclick = (e) => {
 };
 
 document.querySelector("#none-profiles").onclick = (e) => {
-  const int = JSON.parse(
-    editorButton.getAttribute("data-interaction")
-  );
+  const int = JSON.parse(editorButton.getAttribute("data-interaction"));
   int.type = "fd.profile";
   int.data.profile = "Default";
   editorButton.setAttribute("data-interaction", JSON.stringify(int));
@@ -873,76 +870,63 @@ document.querySelector("#none-profiles").onclick = (e) => {
 };
 
 document.querySelector("#none-system").onclick = (e) => {
-  fetch("/native/volume/apps")
-    .then((res) => res.json())
-    .then((data) => {
-      if (data._msg) {
-        universal.sendToast(
-          "NativeBridge is not running. Freedeck may be trying to start it. If this message persists, please restart Freedeck or run 'nbui.exe' in your Documents/Freedeck folder.",
-          "NativeBridge"
-        );
-        return;
-      }
-      const int = JSON.parse(
-        editorButton.getAttribute("data-interaction")
-      );
-      const select = document.querySelector("#system-select");
-      select.innerHTML = "";
+  universal.nbws.send("get_apps", "");
+  universal.nbws.once("apps", (rawData) => {
+    const data = JSON.parse(rawData[0]);
+    const int = JSON.parse(editorButton.getAttribute("data-interaction"));
+    const select = document.querySelector("#system-select");
+    select.innerHTML = "";
 
-      for (const app of data) {
-        const option = document.createElement("option");
-        let friendly =
-          app.friendly !== "" ? `${app.friendly} (${app.name})` : app.name;
-        if (app.name === "_fd.System") friendly = "System Volume";
-        option.innerText = friendly;
-        option.value = app.name;
-        if (int.data?.app && int.data.app === app.name) option.selected = true;
-        select.appendChild(option);
-      }
+    for (const app of data) {
+      const option = document.createElement("option");
+      let friendly =
+        app.friendly !== "" ? `${app.friendly} (${app.name})` : app.name;
+      if (app.name === "_fd.System") friendly = "System Volume";
+      option.innerText = friendly;
+      option.value = app.name;
+      if (int.data?.app && int.data.app === app.name) option.selected = true;
+      select.appendChild(option);
+    }
 
-      select.onchange = (e) => {
-        const int = JSON.parse(
-          editorButton.getAttribute("data-interaction")
-        );
-        const dt =
-          e.srcElement.value !== "_fd.System"
-            ? "fd.sys.volume"
-            : "fd.sys.volume.sys";
-        document.querySelector("#type").value = dt;
-        int.type = dt;
-        int.renderType = "slider";
-        setEditorData("app", e.srcElement.value, int);
-        setEditorData("min", 0, int);
-        setEditorData("max", 100, int);
-        setEditorData("value", 50, int);
-        setEditorData("format", "%", int);
-        setEditorData("direction", "vertical", int);
-        editorButton.setAttribute("data-interaction", JSON.stringify(int));
-      };
-
-      int.type = "fd.sys.volume.sys";
+    select.onchange = (e) => {
+      const int = JSON.parse(editorButton.getAttribute("data-interaction"));
+      const dt =
+        e.srcElement.value !== "_fd.System"
+          ? "fd.sys.volume"
+          : "fd.sys.volume.sys";
+      document.querySelector("#type").value = dt;
+      int.type = dt;
       int.renderType = "slider";
-      int.data.app = "_fd.System";
-      int.data.min = 0;
-      int.data.max = 100;
-      int.data.value = 50;
-      int.data.format = "%";
-      int.data.direction = "vertical";
+      setEditorData("app", e.srcElement.value, int);
+      setEditorData("min", 0, int);
+      setEditorData("max", 100, int);
+      setEditorData("value", 50, int);
+      setEditorData("format", "%", int);
+      setEditorData("direction", "vertical", int);
       editorButton.setAttribute("data-interaction", JSON.stringify(int));
-      document.querySelector("#type").value = "fd.sys.volume.sys";
-      view_systemOnly.style.display = "flex";
-      view_audioOnly.style.display = "none";
-      view_pluginsOnly.style.display = "none";
-      view_noneOnly.style.display = "none";
-    });
+    };
+
+    int.type = "fd.sys.volume.sys";
+    int.renderType = "slider";
+    int.data.app = "_fd.System";
+    int.data.min = 0;
+    int.data.max = 100;
+    int.data.value = 50;
+    int.data.format = "%";
+    int.data.direction = "vertical";
+    editorButton.setAttribute("data-interaction", JSON.stringify(int));
+    document.querySelector("#type").value = "fd.sys.volume.sys";
+    view_systemOnly.style.display = "flex";
+    view_audioOnly.style.display = "none";
+    view_pluginsOnly.style.display = "none";
+    view_noneOnly.style.display = "none";
+  });
 };
 
 document.querySelector("#none-plugin").onclick = (e) => {
   document.querySelector('label[for="plugin"]').style.display = "block";
   document.querySelector("#plugin").style.display = "block";
-  const int = JSON.parse(
-    editorButton.getAttribute("data-interaction")
-  );
+  const int = JSON.parse(editorButton.getAttribute("data-interaction"));
   int.type = "fd.select";
   document.querySelector("#type").innerText = "fd.select";
   editorButton.setAttribute("data-interaction", JSON.stringify(int));
@@ -1000,9 +984,7 @@ document.querySelector("#upload-icon").onclick = (e) => {
   universal.uiSounds.playSound("int_confirm");
   universal._Uploads_View = 1;
   universal.vopen("library");
-  const ito = JSON.parse(
-    editorButton.dataset.interaction
-  );
+  const ito = JSON.parse(editorButton.dataset.interaction);
   universal._libraryOnload = () => {
     setupLibraryFor("icon");
   };
@@ -1053,8 +1035,7 @@ document.querySelector("#editor-close").onclick = () => {
   document.querySelector("#editor").style.animation = "real-fade-out 0.5s";
   document.querySelector("#sidebar").style.right = "0";
   toggleSidebarButton.style.display = "block";
-  if (toggleSidebarContainer.style.left === "0px")
-    toggleSidebarButton.click();
+  if (toggleSidebarContainer.style.left === "0px") toggleSidebarButton.click();
   setTimeout(() => {
     document.querySelector("#editor").style.animation = "";
     document.querySelector("#editor").style.display = "none";
@@ -1068,9 +1049,7 @@ document.querySelector("#editor-close").onclick = () => {
 
 document.querySelector("#editor-save").onclick = () => {
   const name = document.querySelector("#name").value;
-  const interaction = JSON.parse(
-    editorButton.getAttribute("data-interaction")
-  );
+  const interaction = JSON.parse(editorButton.getAttribute("data-interaction"));
   for (const input of document.querySelectorAll(".editor-data")) {
     interaction.data[input.id] = input.value;
   }
@@ -1405,8 +1384,8 @@ const setupWizard = () => {
 
 if (universal.load("has_setup") === "false") {
   universal.ctx.destructiveView("setup");
-	const view_container = document.querySelector(universal.ctx.view_container);
-  view_container.style.display = 'block';
+  const view_container = document.querySelector(universal.ctx.view_container);
+  view_container.style.display = "block";
   leftSidebar.style.display = "none";
 }
 

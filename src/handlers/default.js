@@ -9,6 +9,8 @@ const path = require("node:path");
 const zlib = require("node:zlib");
 const { readFileSync, readdirSync, existsSync } = require("node:fs");
 
+const HookRef = require("../classes/HookRef");
+
 module.exports = {
   name: "Main",
   id: "fd.handlers.main",
@@ -32,14 +34,21 @@ module.exports = {
     });
 
     for (const plugin of plugins.plugins()) {
-      if (plugin[1].instance.jsSockHook) {
-        require(plugin[1].instance.jsSockHookPath)(
-          socket,
-          io,
-          plugin[1].instance,
-        );
+      for (const hook of plugin[1].instance.hooks) {
+        if(hook.type === HookRef.types.socket) {
+          require(hook.file)(
+            socket, io, plugin[1].instance
+          )
+        }
       }
     }
+
+    socket.onAny((event, ...args) => {
+      debug.log(
+        `Received event ${event} with data ${args}`,
+        `Socket.IO API / ${socket._id}`,
+      );
+    });
 
     debug.log("Created socket hooks.", `Socket.IO API / ${socket._id}`);
 

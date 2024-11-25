@@ -72,7 +72,7 @@ const universal = {
 			}
 		},
 	},
-	lclCfg: () => universal._information.style,
+	lclCfg: () => universal._information.style || {compact: false},
 	_information: {},
 	_init: false,
 	_authStatus: false,

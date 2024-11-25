@@ -1,3 +1,5 @@
+let nativeDataCache = [];
+
 const updateKeys = (data) => {
 	const formatted = {};
 	for (const el of data) {
@@ -5,10 +7,11 @@ const updateKeys = (data) => {
 		formatted[el.name] = [el.friendly, el.volume];
 	}
 	for (const el of document.querySelectorAll(".button")) {
-		if (!el.getAttribute("data-interaction")) return;
+		if (!el.getAttribute("data-interaction")) continue;
+		if (el.id === "editor-btn") continue;
 		let interact = el.getAttribute("data-interaction");
 		interact = JSON.parse(interact);
-		if (interact.data?.app && formatted[interact.data.app]) {
+		if (interact.data.app && formatted[interact.data.app]) {
 			interact.data.value = formatted[interact.data.app][1] * 100;
 			el.setAttribute("data-interaction", JSON.stringify(interact));
 			el.querySelector(".slider-container").dataset.value =
@@ -18,89 +21,106 @@ const updateKeys = (data) => {
 };
 
 export function grabAndHandle() {
-	// fetch("/native/volume/apps")
-	// 	.then((res) => res.json())
-	// 	.then((a) => {
-	// 		updateKeys(a);
-	// 	})
-	// 	.catch((err) => {});
+	if(universal.nbws)
+	universal.nbws.send("get_apps", "");
 }
 
 export function generic() {
+	if(Object.values(nativeDataCache).length !== 0) updateKeys(nativeDataCache);
 	grabAndHandle();
 	grabAndHandle();
 	universal.listenFor("page_change", () => {
+		if(Object.values(nativeDataCache).length !== 0) updateKeys(nativeDataCache);
 		grabAndHandle();
 	});
 	setInterval(() => {
+		if(Object.values(nativeDataCache).length !== 0) updateKeys(nativeDataCache);
 		grabAndHandle();
 	}, 250);
+
+	universal.nbws = {
+		_socket: new WebSocket('ws://localhost:5756/'),
+		connected: false,
+		_callbacks: {},
+		send: (data, ...args) => {
+			if (universal.nbws._socket.readyState === WebSocket.OPEN) {
+				universal.nbws._socket.send(JSON.stringify({Event: data, Data: [...args]}));
+			}
+		},
+		on: (event, callback) => {
+			if(!universal.nbws._callbacks[event])
+				universal.nbws._callbacks[event] = [];
+			universal.nbws._callbacks[event].push(callback);
+		},
+		once: (event, callback) => {
+			if(!universal.nbws._callbacks[event])
+				universal.nbws._callbacks[event] = [];
+			const fn = (...args) => { 
+				callback(...args);
+				universal.nbws._callbacks[event] = universal.nbws._callbacks[event].filter((x) => x !== fn);
+			};
+			universal.nbws._callbacks[event].push(fn);
+		},
+		setVolume: (app, volume) => {
+			universal.nbws.send("set_volume", app, "" + volume);
+			universal.nbws.once("volume_set", (data) => {
+				nativeDataCache = JSON.parse(data[0]);
+				updateKeys(nativeDataCache);
+			});
+		},
+		doOnOpen: () => {
+			universal.nbws._socket.onopen = (event) => {
+				universal.nbws.connected = true;
+					console.log('WebSocket is open now.');
+					universal.nbws.Interval = setInterval(() => {
+						
+					}, 1000);
+					
+			};
+		
+			universal.nbws._socket.onclose = (event) => {
+				universal.nbws.connected = false;
+				clearInterval(universal.nbws.Interval);
+					console.log('WebSocket is closed now.');
+			};
+
+			universal.nbws.on("error", (data) => {
+				universal.sendToast("Native WebSocket", data[0]);
+			});
+
+			universal.nbws.on("apps", (data) => {
+				nativeDataCache = JSON.parse(data[0]);
+				updateKeys(JSON.parse(data[0]));
+			});
+		
+			universal.nbws._socket.onmessage = (event) => {
+				const realData = atob(event.data);
+					try {
+						const data = JSON.parse(realData);
+						if(!universal.nbws._callbacks[data.Event]) return;
+						for(const callback of universal.nbws._callbacks[data.Event]) {
+							callback(data.Data);
+						}
+					} catch (e) {
+						console.log(`Failed to parse JSON: ${e}`);
+					}
+			};
+		
+			universal.nbws._socket.onerror = (error) => {
+					console.error(`WebSocket error: ${error}`);
+			};
+		}
+	}
+	universal.nbws.doOnOpen();
 }
 
-const sendVolume = (padded, app = "") => {
-	fetch(`/native/volume/app/${padded}/${app}`)
-		.then((res) => res.json())
-		.then((a) => {
-			console.log(a);
-		})
-		.catch((err) => {
-			console.log("Error while fetching app volume", err);
-		});
+const sendVolume = (app, volume) => {
+	universal.nbws.setVolume(app, volume);
 };
 
 export function handler() {
 	universal.on(universal.events.companion.native_keypress, (data) => {
-		if (data.type === "fd.sys.volume") {
-			const padded =
-				data.data.value.length === 1
-					? `00${data.data.value}`
-					: data.data.value.length === 2
-						? `0${data.data.value}`
-						: data.data.value;
-			fetch(`/native/volume/app/${padded}/${data.data.app}`)
-				.then((res) => res.json())
-				.then((a) => {
-					for(const button of document.querySelectorAll('.button')) {
-						if (button.getAttribute('data-interaction')) {
-							let dat = button.getAttribute('data-interaction');
-							dat = JSON.parse(dat);
-							if (dat.data?.app === data.data.app) {
-								dat.data.value = a.Volume;
-								button.setAttribute("data-interaction", JSON.stringify(dat));
-								button.querySelector(".slider-container").dataset.value = a.Volume;
-							}
-						}
-					};
-				})
-				.catch((err) => {
-					console.log("Error while fetching app volume", err);
-				});
-		} else if (data.type === "fd.sys.volume.sys") {
-			const padded =
-				data.data.value.length === 1
-					? `00${data.data.value}`
-					: data.data.value.length === 2
-						? `0${data.data.value}`
-						: data.data.value;
-			fetch(`/native/volume/sys/${padded}`)
-				.then((res) => res.json())
-				.then((a) => {
-					for(const button of document.querySelectorAll('.button')) {
-						if (button.getAttribute('data-interaction')) {
-							let dat = button.getAttribute('data-interaction');
-							dat = JSON.parse(dat);
-							if (dat.data?.app === data.data.app) {
-								dat.data.value = a.Volume;
-								button.setAttribute("data-interaction", JSON.stringify(dat));
-								button.querySelector(".slider-container").dataset.value = a.Volume;
-							}
-						}
-					};
-				})
-				.catch((err) => {
-					console.log("Error while fetching system volume", err);
-				});
-		}
+		sendVolume(data.data.app, data.data.value);
 	});
 
 	universal.on(universal.events.keypress, (data) => {

@@ -52,7 +52,15 @@ universal.listenFor("editTile", (d) => {
   const data = d.data;
   if(data.color) color.value = data.color;
   for(const w of wants) {
-    if(data[w.data]) editorButton.classList.add(w.class);
+    if(data[w.data] === 'true') editorButton.classList.add(w.class);
     else editorButton.classList.remove(w.class);
+  }
+
+  if(data._view) {
+    for (const v of document.querySelectorAll(".plugin-view")) {
+      v.style.display = "none";
+    };
+    document.querySelector("#plugins-only").style.display = "none";
+    document.querySelector(`#plugin-view-${data._view}`).style.display = "block";
   }
 })

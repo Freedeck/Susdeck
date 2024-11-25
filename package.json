@@ -33,6 +33,7 @@
 		"pako": "^2.1.0",
 		"socket.io": "^4.8.0",
 		"socket.io-client": "^4.8.0",
+		"tar": "^7.4.3",
 		"webpack": "^5.94.0"
 	},
 	"devDependencies": {

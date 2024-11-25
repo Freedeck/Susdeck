@@ -29,6 +29,7 @@ const eventNames = {
 		recompile: "dC",
 
 		disable_plugin: "dBP",
+		reload_single_plugin: "dRSP",
 		enable_plugin: "dEP",
 		plugins_updated: "dPU",
 		update_plugins: "dUP",

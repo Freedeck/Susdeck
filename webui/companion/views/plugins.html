@@ -85,6 +85,11 @@
         authorEle.innerText = 'by ' + req.author;
         li.appendChild(authorEle);
 
+        const actionContainer = document.createElement('div');
+        actionContainer.classList.add('flex-wrap-r');
+        actionContainer.style.width = '100%';
+        actionContainer.style.justifyContent = 'space-between';
+
         const a = document.createElement('button');
         a.innerText = 'Disable';
         a.onclick = () => {
@@ -96,7 +101,15 @@
             });
             // universal.send(universal.events.default.disable_plugin, req.id);
         };
-        li.appendChild(a);
+        const b = document.createElement('button');
+        b.innerText = 'Reload';
+        b.onclick = () => {
+            universal.uiSounds.playSound('int_yes');
+            universal.send(universal.events.default.reload_single_plugin, req.id);
+        };
+        actionContainer.appendChild(a);
+        actionContainer.appendChild(b);
+        li.appendChild(actionContainer);
         document.querySelector('#actl').appendChild(li);
 
         const types = req.types;
@@ -114,8 +127,9 @@
         if (seen[plugin]) return;
         seen[plugin] = true;
         const a = document.createElement('button');
-        a.innerText = 'Enable ' + plugin;
+        a.innerText = 'Enable ' + plugin.split('.disabled')[0].split(".")[0];
         a.onclick = () => {
+            console.log(plugin);
             universal.uiSounds.playSound('int_confirm');
             universal.send(universal.events.default.enable_plugin, plugin);
             if (!dialog.open) dialog.showModal();

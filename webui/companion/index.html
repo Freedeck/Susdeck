@@ -83,7 +83,21 @@
                     <h1>Plugins</h1>
                     <p>Select the plugin this tile will control</p>
                 </div>
-                <div id="spi-actions" class="plugin-items"></div>
+                <div id="spi-actions" class="plugin-items">
+                    <div class="spi-actions-disabled">
+                        <h1><span class="spi-actions-disabled-id"></span> is uninstalled, disabled, or failed to load!</h1>
+                        <p>
+                            Please restart Freedeck or try reinstalling <span class="spi-actions-disabled-id"></span>.
+                        </p>
+                        <p>You may change this Tile by pressing Back below this message.</p>
+                    </div>
+                    <div class="spi-actions-notfound">
+                        <h2>Failed to find a suitable type for <span class="spi-actions-notfound-type"></span></h2>
+                        <p>
+                            You may need to reload <span class="spi-actions-disabled-id"></span>.
+                        </p>
+                    </div>
+                </div>
                 <div class="flex-wrap-r">
                     <button class="spiback" id="spiback" style="display: none">
                         Back
@@ -129,7 +143,7 @@
                 <br />
                 <button id="none-plugin">Plugin</button>
                 <!-- <br /> -->
-                <button id="none-system" style="display: none;">
+                <button id="none-system">
                     Application Volume
                 </button>
                 <br />

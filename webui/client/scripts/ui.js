@@ -289,7 +289,6 @@ function reloadSounds() {
 					out += `<p>This tile uses ${universal.cleanHTML(snd.plugin, false)}.</p>`;
 				else
 					out += `<p>${universal.cleanHTML(snd.plugin, false)} could not be found.</p>`
-					out += `<p>Press R to try to reload ${universal.cleanHTML(snd.plugin, false)}.</p>`
 				for (const i of Array.from(universal._tyc.keys())) {
 					if (i.type === snd.type) {
 						out += `<code>${i.name}</code>`;

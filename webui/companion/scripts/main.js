@@ -402,6 +402,8 @@ function editTile(e) {
   if (toggleSidebarContainer.style.left !== "0px") toggleSidebarButton.click();
   if (document.querySelector(".contextMenu"))
     document.querySelector(".contextMenu").style.display = "none";
+  if(!universal.nbws.connected) document.querySelector("#none-system").style.display = "none";
+  else document.querySelector("#none-system").style.display = "block";
   for(const el of document.querySelectorAll(".plugin-view")) {
     el.style.display = "none";
   }

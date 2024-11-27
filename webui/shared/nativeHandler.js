@@ -1,5 +1,3 @@
-let nativeDataCache = [];
-
 const updateKeys = (data) => {
 	const formatted = {};
 	for (const el of data) {
@@ -25,93 +23,60 @@ export function grabAndHandle() {
 	universal.nbws.send("get_apps", "");
 }
 
+const nbws = {
+	cache: [],
+	send: (data, ...args) => {
+		universal.send(universal.events.nbws.request, [data, args]);
+	},
+	on: (event, callback) => {
+		universal.send(universal.events.nbws.reply, event);
+		universal.on(universal.events.nbws.reply, (data) => {
+			if(data[0] === event) {
+				callback(data[1]);
+			}
+		});
+	},
+	once: (event, callback) => {
+		universal.send(universal.events.nbws.replyOnce, event);
+		universal.on(universal.events.nbws.replyOnce, (data) => {
+			if(data[0] === event) {
+				callback(data[1]);
+			}
+		});
+	},
+	setVolume: (app, volume) => {
+		nbws.send("set_volume", app, `${volume}`);
+		nbws.once("volume_set", (data) => {
+			nbws.cache = JSON.parse(data[0]);
+			updateKeys(nbws.cache);
+		});
+	}
+}
+
 export function generic() {
-	if(Object.values(nativeDataCache).length !== 0) updateKeys(nativeDataCache);
+	
+	universal.nbws = nbws;
+
+	universal.nbws.on("error", (data) => {
+		universal.sendToast("Native WebSocket", data[0]);
+	});
+
+	universal.nbws.on("apps", (data) => {
+		universal.nbws.cache = JSON.parse(data[0]);
+		updateKeys(JSON.parse(data[0]));
+	});
+
+	if(Object.values(universal.nbws.cache).length !== 0) updateKeys(universal.nbws.cache);
 	grabAndHandle();
 	grabAndHandle();
 	universal.listenFor("page_change", () => {
-		if(Object.values(nativeDataCache).length !== 0) updateKeys(nativeDataCache);
+		if(Object.values(universal.nbws.cache).length !== 0) updateKeys(universal.nbws.cache);
 		grabAndHandle();
 	});
 	setInterval(() => {
-		if(Object.values(nativeDataCache).length !== 0) updateKeys(nativeDataCache);
+		if(Object.values(universal.nbws.cache).length !== 0) updateKeys(universal.nbws.cache);
 		grabAndHandle();
 	}, 250);
-
-	universal.nbws = {
-		_socket: new WebSocket('ws://localhost:5756/'),
-		connected: false,
-		_callbacks: {},
-		send: (data, ...args) => {
-			if (universal.nbws._socket.readyState === WebSocket.OPEN) {
-				universal.nbws._socket.send(JSON.stringify({Event: data, Data: [...args]}));
-			}
-		},
-		on: (event, callback) => {
-			if(!universal.nbws._callbacks[event])
-				universal.nbws._callbacks[event] = [];
-			universal.nbws._callbacks[event].push(callback);
-		},
-		once: (event, callback) => {
-			if(!universal.nbws._callbacks[event])
-				universal.nbws._callbacks[event] = [];
-			const fn = (...args) => { 
-				callback(...args);
-				universal.nbws._callbacks[event] = universal.nbws._callbacks[event].filter((x) => x !== fn);
-			};
-			universal.nbws._callbacks[event].push(fn);
-		},
-		setVolume: (app, volume) => {
-			universal.nbws.send("set_volume", app, "" + volume);
-			universal.nbws.once("volume_set", (data) => {
-				nativeDataCache = JSON.parse(data[0]);
-				updateKeys(nativeDataCache);
-			});
-		},
-		doOnOpen: () => {
-			universal.nbws._socket.onopen = (event) => {
-				universal.nbws.connected = true;
-					console.log('WebSocket is open now.');
-					universal.nbws.Interval = setInterval(() => {
-						
-					}, 1000);
-					
-			};
-		
-			universal.nbws._socket.onclose = (event) => {
-				universal.nbws.connected = false;
-				clearInterval(universal.nbws.Interval);
-					console.log('WebSocket is closed now.');
-			};
-
-			universal.nbws.on("error", (data) => {
-				universal.sendToast("Native WebSocket", data[0]);
-			});
-
-			universal.nbws.on("apps", (data) => {
-				nativeDataCache = JSON.parse(data[0]);
-				updateKeys(JSON.parse(data[0]));
-			});
-		
-			universal.nbws._socket.onmessage = (event) => {
-				const realData = atob(event.data);
-					try {
-						const data = JSON.parse(realData);
-						if(!universal.nbws._callbacks[data.Event]) return;
-						for(const callback of universal.nbws._callbacks[data.Event]) {
-							callback(data.Data);
-						}
-					} catch (e) {
-						console.log(`Failed to parse JSON: ${e}`);
-					}
-			};
-		
-			universal.nbws._socket.onerror = (error) => {
-					console.error(`WebSocket error: ${error}`);
-			};
-		}
-	}
-	universal.nbws.doOnOpen();
 }
 
 const sendVolume = (app, volume) => {

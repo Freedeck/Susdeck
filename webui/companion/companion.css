@@ -8,46 +8,12 @@ input {
 	width: 100%;
 }
 
-.dialog {
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
-	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 500;
-	display: block;
-	transition-duration: .25s;
-}
-
 .tag-beta {
 	background-color: rgba(0, 0, 0, 0.25);
 	border-radius: 1.5rem;
 	padding: 0.25rem;
 	display: inline-block;
 	top: 0;
-}
-
-#login-div, dialog > div:not(#editor-div) {
-	background: var(--modal-bg);
-	color: var(--modal-color);
-	min-width: 400px;
-	min-height: 150px;
-	max-height: 90vh;
-	overflow-y: scroll;
-	scrollbar-width: none;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	border: 1px solid rgba(255,255,255,0.125);
-	border-radius: 1.5rem;
-	padding: 20px;
-	transition-duration: .25s;
-}
-
-#login-dialog {
-	display: none;
 }
 
 #sidebar {
@@ -126,24 +92,6 @@ input {
 	border-block-end-color: rgba(255,255,255,0.125);
 }
 
-a {
-	width: max-content;
-	padding: 5px;
-	background-color: rgba(0, 0, 0, 0.25);
-	border-radius: 1.5rem;
-	text-align: left;
-	transition-duration: .25s;
-}
-
-a {
-	color: white;
-	text-decoration: none;
-}
-
-a:hover {
-	transform: scale(1.15);
-}
-
 .alc {
 	align-items: center;
 }
@@ -152,7 +100,7 @@ a:hover {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	gap: 1rem;
+	gap: .5rem;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -479,9 +427,10 @@ a:hover {
 
 .sidebar-item {
 	background-color: var(--companion-sidebar-item-bg);
+	border: 1px solid rgba(255,255,255,0.125);
 	color: var(--companion-sidebar-item-color);
 	border-radius: 1.5rem;
-	padding: .25rem;
+	padding: .5rem;
 	transition-duration: .25s;
 	display: flex;
 	flex-direction: column;

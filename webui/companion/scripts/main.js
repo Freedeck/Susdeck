@@ -869,58 +869,58 @@ document.querySelector("#none-profiles").onclick = (e) => {
   openViewCloseAll("profile");
 };
 
+universal.nbws.on("apps", (rawData) => {
+  const data = JSON.parse(rawData[0]);
+  const int = JSON.parse(editorButton.getAttribute("data-interaction"));
+  const select = document.querySelector("#system-select");
+  select.innerHTML = "";
+
+  for (const app of data) {
+    const option = document.createElement("option");
+    let friendly =
+      app.friendly !== "" ? `${app.friendly} (${app.name})` : app.name;
+    if (app.name === "_fd.System") friendly = "System Volume";
+    option.innerText = friendly;
+    option.value = app.name;
+    if (int.data?.app && int.data.app === app.name) option.selected = true;
+    select.appendChild(option);
+  }
+
+  select.onchange = (e) => {
+    const int = JSON.parse(editorButton.getAttribute("data-interaction"));
+    const dt =
+      e.srcElement.value !== "_fd.System"
+        ? "fd.sys.volume"
+        : "fd.sys.volume.sys";
+    document.querySelector("#type").value = dt;
+    int.type = dt;
+    int.renderType = "slider";
+    setEditorData("app", e.srcElement.value, int);
+    setEditorData("min", 0, int);
+    setEditorData("max", 100, int);
+    setEditorData("value", 50, int);
+    setEditorData("format", "%", int);
+    setEditorData("direction", "vertical", int);
+    editorButton.setAttribute("data-interaction", JSON.stringify(int));
+  };
+
+});
+
 document.querySelector("#none-system").onclick = (e) => {
   universal.nbws.send("get_apps", "");
-  universal.nbws.once("apps", (rawData) => {
-    const data = JSON.parse(rawData[0]);
-    const int = JSON.parse(editorButton.getAttribute("data-interaction"));
-    const select = document.querySelector("#system-select");
-    select.innerHTML = "";
+  const int = JSON.parse(editorButton.getAttribute("data-interaction"));
 
-    for (const app of data) {
-      const option = document.createElement("option");
-      let friendly =
-        app.friendly !== "" ? `${app.friendly} (${app.name})` : app.name;
-      if (app.name === "_fd.System") friendly = "System Volume";
-      option.innerText = friendly;
-      option.value = app.name;
-      if (int.data?.app && int.data.app === app.name) option.selected = true;
-      select.appendChild(option);
-    }
-
-    select.onchange = (e) => {
-      const int = JSON.parse(editorButton.getAttribute("data-interaction"));
-      const dt =
-        e.srcElement.value !== "_fd.System"
-          ? "fd.sys.volume"
-          : "fd.sys.volume.sys";
-      document.querySelector("#type").value = dt;
-      int.type = dt;
-      int.renderType = "slider";
-      setEditorData("app", e.srcElement.value, int);
-      setEditorData("min", 0, int);
-      setEditorData("max", 100, int);
-      setEditorData("value", 50, int);
-      setEditorData("format", "%", int);
-      setEditorData("direction", "vertical", int);
-      editorButton.setAttribute("data-interaction", JSON.stringify(int));
-    };
-
-    int.type = "fd.sys.volume.sys";
-    int.renderType = "slider";
-    int.data.app = "_fd.System";
-    int.data.min = 0;
-    int.data.max = 100;
-    int.data.value = 50;
-    int.data.format = "%";
-    int.data.direction = "vertical";
-    editorButton.setAttribute("data-interaction", JSON.stringify(int));
-    document.querySelector("#type").value = "fd.sys.volume.sys";
-    view_systemOnly.style.display = "flex";
-    view_audioOnly.style.display = "none";
-    view_pluginsOnly.style.display = "none";
-    view_noneOnly.style.display = "none";
-  });
+  int.type = "fd.sys.volume.sys";
+  int.renderType = "slider";
+  int.data.app = "_fd.System";
+  int.data.min = 0;
+  int.data.max = 100;
+  int.data.value = 50;
+  int.data.format = "%";
+  int.data.direction = "vertical";
+  editorButton.setAttribute("data-interaction", JSON.stringify(int));
+  document.querySelector("#type").value = "fd.sys.volume.sys";
+  openViewCloseAll("system");
 };
 
 document.querySelector("#none-plugin").onclick = (e) => {

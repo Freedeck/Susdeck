@@ -34,16 +34,27 @@ module.exports = {
     });
 
     for (const plugin of plugins.plugins()) {
-      for (const hook of plugin[1].instance.hooks) {
+      const instance = plugin[1].instance;
+      if(instance.v2) {
+        instance.emit(instance.events.connection, {
+          active: true,
+          io: plugin._intents.includes(plugin.intents.IO) ? io : null,
+          socket: plugin._intents.includes(plugin.intents.SOCKET) ? socket : null,
+          clients: plugin._intents.includes(plugin.intents.CLIENTS) ? clients : null,
+        });
+        return;
+      }
+      for (const hook of instance.hooks) {
         if(hook.type === HookRef.types.socket) {
           require(hook.file)(
-            socket, io, plugin[1].instance
+            socket, io, instance
           )
         }
       }
     }
 
     socket.onAny((event, ...args) => {
+      if (event !== eventNames.nbws.request)
       debug.log(
         `Received event ${event} with data ${args}`,
         `Socket.IO API / ${socket._id}`,

@@ -1,5 +1,5 @@
 import Pako from "pako";
-import { generic, handler } from "./nativeHandler";
+import repositoryManager from "./lib/repositoryManager";
 import dataHandler from "./init/data";
 import eventsHandler from "./init/events";
 import { UI } from "../client/scripts/ui";
@@ -278,55 +278,7 @@ const universal = {
 			}
 		}),
 	/* repos */
-	repositoryManager: {
-		official: [
-			{
-				title: "freedeck.app",
-				who: "Official Freedeck Repository",
-				link: "https://freedeck.app/_fd/repository.php",
-			},
-		],
-		unofficial: [],
-		getPluginsfromRepo: (url) => {
-			return new Promise((resolve, reject) => {
-				const _plugins = [];
-				const res = fetch(url).catch(err => {
-					reject(err);
-				}).then((r)=>{
-					if (r.status !== 200)
-						reject(
-							{
-								err: true,
-								msg: `Repository not found. Server returned ${r.status}`,
-							},
-						);
-					return r.text()
-				}).then((data) => {
-					if (!data.includes(",!"))
-						reject({ err: true, msg: "No plugin metadata found." });
-					let lines = data.split("\n");
-					lines.shift();
-					lines = lines.filter((line) => line.length > 0);
-					for (const line of lines) {
-						const comma = line.split(",!");
-						const meta = {
-							file: comma[0],
-							githubRepo: `https://github.com/${comma[1]}`,
-							name: comma[2],
-							author: comma[3],
-							version: comma[4],
-							description: comma[5],
-							id: comma[6],
-						};
-						_plugins.push(meta);
-					}
-					resolve(_plugins);
-				}).catch(err => {
-					reject(err);
-				});
-			})
-		},
-	},
+	repositoryManager,
 	uiSounds,
 	/*  */
 	_cb: [],

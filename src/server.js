@@ -170,7 +170,9 @@ function handleSock(socket) {
 
   socket.emit = (event, data) => {
     socket._originalEmit(event, data);
-    if (event !== eventNames.information)
+    if (event !== eventNames.nbws.reply && 
+        event !== eventNames.nbws.replyOnce &&
+        event !== eventNames.information)
       debug.log(
         picocolors.green(
           `Emitted new event ${event}, data: ${JSON.stringify(data)}`,

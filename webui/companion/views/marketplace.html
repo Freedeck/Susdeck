@@ -104,6 +104,8 @@
     const loadRepo = (repo, isUnofficial = false) => {
         document.querySelector('.message').innerHTML = 'Fetching Marketplace repository: ' + repo.title;
         const li = document.createElement('li');
+        const btn = document.createElement("button");
+        btn.innerText = "Remove";
         li.setAttribute('hovereffect', 'yes');
         li.style.cursor = 'default';
         if (!isUnofficial) {
@@ -111,23 +113,99 @@
             li.style.backgroundSize = 'var(--main-bg-size)';
             li.style.animation = 'error-bg 5s linear infinite';
         }
-        li.innerText = (isUnofficial ? '(!) ' : '') + repo.title;
+        if(isUnofficial) li.innerText += "(!) ";
+        li.innerText += repo.title;
         li.innerHTML += " &#10148; ";
-        li.innerText += universal.cleanHTML(repo.who);
-        document.querySelector('.repositories').appendChild(li);
-
         if (isUnofficial) {
-            const btn = document.createElement("button");
-            btn.innerText = "Remove";
-            li.appendChild(btn);
             btn.onclick = () => {
-                universal.repositoryManager.unofficial = universal.repositoryManager.unofficial.filter((r) => r.link != repo.link);
+                universal.repositoryManager.unofficial = universal.repositoryManager.unofficial.filter((r) => {
+                    return r != repo;
+                });
                 universal.save('repos.community', JSON.stringify(universal.repositoryManager.unofficial));
                 document.querySelector('.repositories').removeChild(li);
                 loadRepos();
             };
         }
-        universal.repositoryManager.getPluginsfromRepo(repo.link).then((plugins) => {
+
+        if (repo.type == 'legacy' || !repo.type) {
+            li.innerText += universal.cleanHTML(repo.who);
+            if(isUnofficial) li.appendChild(btn);
+
+            legacyFillRepo(repo.link, repo, isUnofficial);
+        }
+
+
+        if (repo.type == 'v3') {
+            universal.repositoryManager.getV3Repository(repo).then((data) => {
+                li.innerText += " " + universal.cleanHTML(data.title);
+                if(isUnofficial) li.appendChild(btn);
+                data.plugins.forEach((plugin) => {
+                    if (plugin.visible && plugin.visible == 'false') return;
+                    const req = plugin;
+                    const li = document.createElement('div');
+                    li.setAttribute('hovereffect', 'yes');
+                    li.style.cursor = 'default';
+                    li.className = 'item';
+                    const officialTag = document.createElement('img');
+                    officialTag.src = '/common/icons/official.svg';
+                    officialTag.style.width = '8rem';
+                    const name = document.createElement('div');
+                    name.innerText += plugin.title;
+                    name.innerHTML += ' &bull; by ';
+                    name.innerText += req.author;
+                    name.style.fontWeight = 'bold';
+                    li.appendChild(name);
+                    const version = document.createElement('div');
+                    version.innerText = 'v' + req.version;
+                    li.appendChild(version);
+                    const desc = document.createElement('div');
+                    desc.innerText = req.description;
+                    desc.classList.add("plugin-ifo")
+                    li.appendChild(desc);
+                    const rl = document.createElement('div');
+                    rl.innerText = "From " + repo.title;
+                    li.appendChild(rl);
+                    const file = document.createElement('button');
+                    file.dataset.HandoffUrl = 'freedeck://download/' + req.id + '/' + encodeURIComponent(req.url) + '/' + encodeURIComponent(req.description) + '/' + encodeURIComponent(repo.title);
+                    file.onclick = () => {
+                        window.location.href = file.dataset.HandoffUrl;
+                        universal.uiSounds.playSound('int_confirm');
+                    };
+                    file.innerText = 'Download';
+                    if (universal.plugins[req.id]) {
+                        file.innerText = 'Installed';
+                        file.style.backgroundColor = 'var(--marketplace-plugin-installed)';
+                        if (!universal.plugins[req.id].version) universal.plugins[req.id].version = '1.0.0';
+                        if (universal.plugins[req.id].version != req.version) {
+                            file.innerText = 'Update';
+                            file.dataset.HandoffUrl = file.dataset.HandoffUrl.replace('freedeck://download', 'freedeck://update') + "/" + encodeURIComponent(universal.plugins[req.id].version) + "/" + encodeURIComponent(req.version);
+                            file.style.backgroundColor = 'var(--marketplace-plugin-updatable)';
+                        } else
+                            if (universal.plugins[req.id].version == req.version) {
+                                file.innerText = 'Up to date';
+                                file.style.backgroundColor = 'var(--marketplace-plugin-no-updates)';
+                                file.onclick = () => { };
+                            } else {
+                                file.onclick = () => { };
+                            }
+                    };
+                    li.appendChild(file);
+                    if (repo.url == "https://releases.freedeck.app/index.json") {
+                        li.appendChild(officialTag);
+                        if ('official' in plugin && plugin.official == 'false') officialTag.style.display = 'none';
+                    }
+                    document.querySelector('.marketplace').appendChild(li);
+                });
+            })
+        }
+
+        document.querySelector('.repositories').appendChild(li);
+
+        document.querySelector('.message').innerHTML = '';
+    };
+
+    function legacyFillRepo(url, repo, isUnofficial = false) {
+        universal.repositoryManager.getLegacyRepository(url).then((plugins) => {
             plugins.forEach((plugin) => {
                 const req = plugin;
                 const li = document.createElement('div');
@@ -184,16 +262,14 @@
             txt.innerHTML = `${repo.title}`;
             const er = document.createElement("p");
             er.classList.add("plugin-ifo");
-            er.innerHTML = err.msg;
-            if(err.toString().includes("Failed to fetch"))
-            er.innerHTML += `<br>(Could not reach ${repo.link}, is the internet down?)`;
+            er.innerHTML = err.msg || err.toString() || err || "An error occurred while fetching the repository.";
+            if (err.toString().includes("Failed to fetch"))
+                er.innerHTML += `<br>(Could not reach ${repo.link}, is the internet down?)`;
             cnt.appendChild(txt);
             cnt.appendChild(er);
             document.querySelector(".marketplace").appendChild(cnt);
         })
-
-        document.querySelector('.message').innerHTML = '';
-    };
+    }
 
 
     const loadRepos = () => {
@@ -211,10 +287,15 @@
     function addRepo() {
         universal.uiSounds.playSound('int_confirm');
         dialog.innerHTML = `
-            <h1>New Repository</h1>
-                <p class="add-msg">Enter the URL of the repository</p>
-                <label for="title">Repository Title</label><input type="text" id="title" placeholder="freedeck.app">
-                <label for="url">Repository URL</label><input type="text" id="url" placeholder="https://freedeck.app/_fd/repository.php">
+            <h1>Adding Unofficial Repository</h1>
+                <p class="add-msg">Enter the information for the repository.</p>
+                <label for="title">Title</label><input type="text" id="title" placeholder="freedeck.app">
+                <label for="url">URL</label><input type="text" id="url" placeholder="https://releases.freedeck.app/index.json">
+                <label for="mktr_type">Type</label>
+                <select id="mktr_type">
+                    <option value="new" selected>Marketplace V3 (.json)</option>    
+                    <option value="legacy">Old Manifest Type (.fdr.txt)</option>    
+                </select>
                 <br>
                 <div class="flex-wrap-r space-evenly">
                 <button class="tint-green" id="submit">Add</button>
@@ -222,24 +303,27 @@
                 </div>
         `;
         Show()
-        document.querySelector('#cancel').onclick = () => {
+        const submit = document.querySelector('#submit');
+        const cancel = document.querySelector('#cancel');
+        const selected = document.querySelector('#mktr_type');
+        cancel.onclick = () => {
             Hide();
             universal.uiSounds.playSound('int_no');
         };
         dialog.querySelector('#submit').onclick = () => {
-            document.querySelector('#submit').disabled = true;
-            document.querySelector('#cancel').disabled = true;
+            submit.disabled = true;
+            cancel.disabled = true;
 
-            document.querySelector('#submit').innerText = "Downloading content...";
+            submit.innerText = "Downloading content...";
 
             const title = dialog.querySelector('#title').value;
-            const url = dialog.querySelector('#url');
+            const url = dialog.querySelector('#url').value;
 
-            if(url == "https://freedeck.app/_fd/repository.php") {
+            if (url == "https://freedeck.app/_fd/repository.php" || url == "https://releases.freedeck.app/index.json") {
                 document.querySelector('.add-msg').innerText = 'The official repository is already added! No need to add it again.';
-                document.querySelector('#submit').disabled = false;
-                document.querySelector('#cancel').disabled = false;
-                document.querySelector('#submit').innerText = "Add";
+                submit.disabled = false;
+                cancel.disabled = false;
+                submit.innerText = "Add";
                 return;
             }
 
@@ -247,32 +331,115 @@
 
             universal.uiSounds.playSound('int_prompt');
             fetch(url.value, { method: 'GET' }).then(res => {
-                if(res.status != 200) {
+                if (res.status != 200) {
                     document.querySelector('.add-msg').innerText = 'Failed to fetch repository from ' + url.value + '. Is the URL correct?';
-                    document.querySelector('#submit').disabled = false;
-                    document.querySelector('#cancel').disabled = false;
-                    document.querySelector('#submit').innerText = "Add";
+                    submit.disabled = false;
+                    cancel.disabled = false;
+                    submit.innerText = "Add";
                     return;
                 }
-                return res.text()
+                if (selected.selectedIndex == 1) {
+                    return res.text();
+                } else {
+                    return res.json();
+                }
             }).then(data => {
-                const desc = data.split('\n')[0]
-                console.log(title, desc, url)
-                let curr = [];
-                if (universal.load('repos.community') != 'ée') curr = JSON.parse(universal.load('repos.community'))
-                curr.push({ title, who: desc, link: url.value })
-                universal.save('repos.community', JSON.stringify(curr))
-                Hide()  
-                universal.repositoryManager.unofficial = curr;
-                loadRepos();
+                if (selected.selectedIndex == 1) {
+                    const desc = data.split('\n')[0]
+                    let curr = [];
+                    if (universal.load('repos.community') != 'ée') curr = JSON.parse(universal.load('repos.community'))
+                    curr.push({ title, who: desc, link: url.value })
+                    universal.save('repos.community', JSON.stringify(curr))
+                    Hide()
+                    universal.repositoryManager.unofficial = curr;
+                    loadRepos();
+                } else {
+                    const options = [];
+                    for(const channelKey in data.channels) {
+                        const channel = data.channels[channelKey];
+                        if(channel.type != 'repository' && channel.type != 'repository_external') continue;
+                        options.push({added: Date.now(), type: "legacy", id: channelKey, display: `${channel.title} (${channelKey})`});
+                    }
+                    selectModal({
+                        title: "Repository Channel",
+                        message: "Please select the channel of the repository you are adding.",
+                        options
+                    }, (selectedElement) => {
+                        const curr = JSON.parse(universal.load('repos.community'))
+                        const chn = selectedElement.value;
+                        curr.push({ added: Date.now(), type:"v3", title, url: url.value, channel: chn })
+                        universal.save('repos.community', JSON.stringify(curr))
+                        Hide()
+                        universal.repositoryManager.unofficial = curr;
+                        loadRepos();
+                    })
+                }
             }).catch(err => {
                 document.querySelector('.add-msg').innerHTML = 'Failed to fetch repository from ' + url.value + '.<br>' + err;
-                if(err.toString().includes("Failed to fetch"))
-                document.querySelector('.add-msg').innerHTML += `<br>(Could not reach site, is the internet down?)`;
-                document.querySelector('#submit').disabled = false;
-                document.querySelector('#cancel').disabled = false;
-                document.querySelector('#submit').innerText = "Add";
+                if (err.toString().includes("Failed to fetch"))
+                    document.querySelector('.add-msg').innerHTML += `<br>(Could not reach site, is the internet down?)`;
+                submit.disabled = false;
+                cancel.disabled = false;
+                submit.innerText = "Add";
             });
+        }
+    }
+
+    function selectModal(opt, cb) {
+        const modal = document.createElement('dialog');
+        modal.classList.add('dialog');
+        modal.classList.add('full-center')
+        const dialog = document.createElement('div');
+        dialog.classList.add("flex-wrap")
+        dialog.classList.add("special-lineheight")
+        modal.appendChild(dialog)
+        function Show() {
+            modal.style.display = 'block';
+            dialog.style.display = 'flex';
+        }
+        function Hide() {
+            modal.style.display = 'none';
+            dialog.style.display = 'none';
+        }
+        Hide();
+        document.querySelector("#dialog-conta").appendChild(modal)
+        const dialogOptions = document.createElement('select');
+        dialog.innerHTML = `
+            <h1>${opt.title}</h1>
+            <p>${opt.message}</p>
+        `;
+        
+        for(const option of opt.options) {
+            const opt = document.createElement('option');
+            opt.value = option.id;
+            opt.innerText = option.display;
+            opt.onclick = () => {
+                dialogOptions.value = option.id;
+            }
+            dialogOptions.appendChild(opt);
+        }
+        dialog.appendChild(dialogOptions);
+        dialog.innerHTML += `
+            <div class="flex-wrap-r space-evenly">
+            <button class="tint-green" id="extr-submit">Add</button>
+            <button id="extr-cancel">Cancel</button>
+            </div>`
+
+        Show()
+        const newsubmit = document.querySelector('#extr-submit');
+        const newcancel = document.querySelector('#extr-cancel');
+        newcancel.onclick = () => {
+            Hide();
+            universal.uiSounds.playSound('int_no');
+        };
+        newsubmit.onclick = () => {
+            newsubmit.disabled = true;
+            newcancel.disabled = true;
+
+            newsubmit.innerText = "Downloading content...";
+            universal.uiSounds.playSound('int_prompt');
+            cb(dialogOptions);
+            Hide();
         }
     }
 

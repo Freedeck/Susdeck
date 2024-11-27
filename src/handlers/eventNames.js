@@ -60,6 +60,12 @@ const eventNames = {
 		set: "RPC.Set"
 	},
 
+	nbws: {
+		request: "n-r",
+		reply: "n-R",
+		replyOnce: "n-R1",
+	},
+
 	relay: {
 		identify: "RelayIdentify",
 		error: "Error",

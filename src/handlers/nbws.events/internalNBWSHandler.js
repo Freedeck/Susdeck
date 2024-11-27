@@ -1,7 +1,7 @@
 const ws = require('ws');
 
 const nbws = {
-  _socket: new ws('ws://localhost:5756/'),
+  _socket: null,
   connected: false,
   _callbacks: {},
   send: (data, ...args) => {
@@ -25,25 +25,38 @@ const nbws = {
   }
 }
 
-nbws._socket.onopen = (event) => {
-  nbws.connected = true;
-    console.log('WebSocket is open now.');
-    nbws.Interval = setInterval(() => {
-      
-    }, 1000);
-    
-};
+let retryDelay = 1000;
 
-nbws._socket.onclose = (event) => {
-  nbws.connected = false;
-  setInterval(() => {
-    if(nbws._socket.readyState === ws.OPEN) {
-      clearInterval(nbws.Interval);
-    } else nbws._socket = new ws('ws://localhost:5756/');
-    console.log("NBWS Reconnecting...");
-  }, 2500);
-    console.log('WebSocket is closed now.');
-};
+function retryConnection() {
+  try {
+    nbws._socket = new ws('ws://localhost:5756/');
+    nbws._socket.onopen = (event) => {
+      nbws.connected = true;
+      retryDelay = 1000;
+      console.log('WebSocket is open now.');
+    };
+    nbws._socket.onclose = (event) => {
+      nbws.connected = false;
+      console.log('WebSocket is closed now.');
+      setTimeout(() => {
+        if (nbws._socket.readyState !== ws.OPEN) {
+          retryConnection();
+          console.log("NBWS Reconnecting...");
+        }
+      }, retryDelay);
+      retryDelay = Math.min(retryDelay * 2, 30000);
+    };
+    nbws._socket.onerror = (event) => {
+      console.error(`WebSocket error: ${event.message}`);
+    };
+  } catch (e) {
+    console.error(`WebSocket error: ${e.message}`);
+    setTimeout(retryConnection, retryDelay);
+    retryDelay = Math.min(retryDelay * 2, 30000);
+  }
+}
+
+retryConnection();
 
 nbws._socket.onmessage = (event) => {
   const realData = atob(event.data);

@@ -191,8 +191,8 @@
                     };
                     li.appendChild(file);
                     if (repo.url == "https://releases.freedeck.app/index.json") {
+                        if ('official' in plugin && plugin.official == 'false') return;
                         li.appendChild(officialTag);
-                        if ('official' in plugin && plugin.official == 'false') officialTag.style.display = 'none';
                     }
                     document.querySelector('.marketplace').appendChild(li);
                 });
@@ -290,7 +290,7 @@
             <h1>Adding Unofficial Repository</h1>
                 <p class="add-msg">Enter the information for the repository.</p>
                 <label for="title">Title</label><input type="text" id="title" placeholder="freedeck.app">
-                <label for="url">URL</label><input type="text" id="mkt_url" placeholder="https://releases.freedeck.app/index.json">
+                <label for="url">URL</label><input type="text" id="url" placeholder="https://releases.freedeck.app/index.json">
                 <label for="mktr_type">Type</label>
                 <select id="mktr_type">
                     <option value="new" selected>Marketplace V3 (.json)</option>    
@@ -317,7 +317,7 @@
             submit.innerText = "Downloading content...";
 
             const title = dialog.querySelector('#title').value;
-            const url = dialog.querySelector('#mkt_url').value;
+            const url = dialog.querySelector('#url').value;
 
             if (url == "https://freedeck.app/_fd/repository.php" || url == "https://releases.freedeck.app/index.json") {
                 document.querySelector('.add-msg').innerText = 'The official repository is already added! No need to add it again.';
@@ -327,12 +327,12 @@
                 return;
             }
 
-            document.querySelector('.add-msg').innerText = 'Fetching repository from ' + url.value + '...';
+            document.querySelector('.add-msg').innerText = 'Fetching repository from ' + url + '...';
 
             universal.uiSounds.playSound('int_prompt');
             fetch(url, { method: 'GET' }).then(res => {
                 if (res.status != 200) {
-                    document.querySelector('.add-msg').innerText = 'Failed to fetch repository from ' + url.value + '. Is the URL correct?';
+                    document.querySelector('.add-msg').innerText = 'Failed to fetch repository from ' + url + '. Is the URL correct?';
                     submit.disabled = false;
                     cancel.disabled = false;
                     submit.innerText = "Add";
@@ -348,7 +348,7 @@
                     const desc = data.split('\n')[0]
                     let curr = [];
                     if (universal.load('repos.community') != 'ée') curr = JSON.parse(universal.load('repos.community'))
-                    curr.push({ title, who: desc, link: url.value })
+                    curr.push({ title, who: desc, link: url })
                     universal.save('repos.community', JSON.stringify(curr))
                     Hide()
                     universal.repositoryManager.unofficial = curr;
@@ -367,7 +367,7 @@
                     }, (selectedElement) => {
                         const curr = JSON.parse(universal.load('repos.community'))
                         const chn = selectedElement.value;
-                        curr.push({ added: Date.now(), type:"v3", title, url: url.value, channel: chn })
+                        curr.push({ added: Date.now(), type:"v3", title, url: url, channel: chn })
                         universal.save('repos.community', JSON.stringify(curr))
                         Hide()
                         universal.repositoryManager.unofficial = curr;
@@ -375,7 +375,7 @@
                     })
                 }
             }).catch(err => {
-                document.querySelector('.add-msg').innerHTML = 'Failed to fetch repository from ' + url.value + '.<br>' + err;
+                document.querySelector('.add-msg').innerHTML = 'Failed to fetch repository from ' + url + '.<br>' + err;
                 if (err.toString().includes("Failed to fetch"))
                     document.querySelector('.add-msg').innerHTML += `<br>(Could not reach site, is the internet down?)`;
                 submit.disabled = false;

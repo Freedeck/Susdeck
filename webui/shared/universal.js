@@ -300,27 +300,48 @@ const universal = {
 								msg: `Repository not found. Server returned ${r.status}`,
 							},
 						);
-					return r.text()
+
+					if (url.includes(".legacy"))
+						return r.text()
+					return r.json()
 				}).then((data) => {
-					if (!data.includes(",!"))
-						reject({ err: true, msg: "No plugin metadata found." });
-					let lines = data.split("\n");
-					lines.shift();
-					lines = lines.filter((line) => line.length > 0);
-					for (const line of lines) {
-						const comma = line.split(",!");
-						const meta = {
-							file: comma[0],
-							githubRepo: `https://github.com/${comma[1]}`,
-							name: comma[2],
-							author: comma[3],
-							version: comma[4],
-							description: comma[5],
-							id: comma[6],
-						};
-						_plugins.push(meta);
+					if (url.includes(".legacy")) {
+						if (!data.includes(",!"))
+							reject({ err: true, msg: "No plugin metadata found." });
+						let lines = data.split("\n");
+						lines.shift();
+						lines = lines.filter((line) => line.length > 0);
+						for (const line of lines) {
+							const comma = line.split(",!");
+							const meta = {
+								file: comma[0],
+								repo: `https://github.com/${comma[1]}`,
+								name: comma[2],
+								author: comma[3],
+								version: comma[4],
+								description: comma[5],
+								id: comma[6],
+							};
+							_plugins.push(meta);
+						}
+						resolve(_plugins);
+					} else { // I won't bother with allat case-insensitive bs, do it for me 🤑
+						for (channel of data.Channels) {
+							for (const pluginId of Object.keys(channel.Repo)){const plugin = channel.Repo[pluginId]
+								const meta = {
+									file: plugin.Download,
+									repo: plugin.Repo,
+									name: plugin.Name,
+									author: plugin.Author,
+									version: plugin.Version,
+									description: plugin.Description,
+									id: pluginId,
+								};
+								_plugins.push(meta);
+							}
+						}
+						resolve(_plugins);
 					}
-					resolve(_plugins);
 				}).catch(err => {
 					reject(err);
 				});

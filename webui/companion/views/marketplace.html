@@ -25,7 +25,7 @@
 
     .repositories li {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: space-between;
         align-items: center;
         padding: 1rem;
@@ -40,6 +40,11 @@
         background: var(--modal-item-bg);
         background-size: var(--modal-item-bg-size);
         animation: var(--modal-item-bg-anim);
+    }
+
+    .repositories li button {
+        height: 3rem;
+        min-height: 3rem;
     }
 
     .plugin-ifo {
@@ -65,6 +70,10 @@
         background: var(--modal-item-bg);
         background-size: var(--modal-item-bg-size);
         animation: var(--modal-item-bg-anim);
+    }
+
+    .item button {
+        width: 100%;
     }
 
     .marketplace {

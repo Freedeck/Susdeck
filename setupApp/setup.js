@@ -14,14 +14,14 @@ module.exports = () => {
     app.use(express.static(path.resolve("setupApp/public")));
 
     require(path.resolve("src/makeWindow.js"))(
-      `http://localhost:5756/?a=${authToken}`,
+      `http://localhost:5757/?a=${authToken}`,
       false,
       850,
       550,
       true,
     );
     console.log(
-      `Can't see the window? Open your browser and go to http://localhost:5756/?a=${authToken} .`,
+      `Can't see the window? Open your browser and go to http://localhost:5757/?a=${authToken} .`,
     );
     app.use(express.json());
     let a = false;
@@ -54,9 +54,9 @@ module.exports = () => {
       }
     });
 
-    server.listen(5756, () => {
+    server.listen(5757, () => {
       console.log(
-        "Setup wizard server listening on port 5756. Sending token to wizard.",
+        "Setup wizard server listening on port 5757. Sending token to wizard.",
       );
     });
   });

@@ -18,4 +18,7 @@ if(fs.existsSync("src/public/companion") && fs.existsSync("src/public/companion/
   fs.rmSync("src/public/companion/dist", { recursive: true });
 }
 
+if(!fs.existsSync(path.resolve("webui/hooks"))) fs.mkdirSync(path.resolve("webui/hooks"));
+if(!fs.existsSync(path.resolve("webui/hooks/_themes"))) fs.mkdirSync(path.resolve("webui/hooks/_themes"));
+
 debug.log("Migration complete.", "Migration");

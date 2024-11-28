@@ -15,11 +15,11 @@ const repom = {
 async function getV3Repository(repoData) {
   const plugins = [];
   const res = await fetch(repoData.url).catch((err) => {
-    reject(err);
+    return err;
   });
   const data = await res.json();
   if (!data.channels[repoData.channel])
-    reject({ err: true, msg: "Channel not found." });
+    return { err: true, msg: `Channel ${repoData.channel} not found.` };
   const channel = data.channels[repoData.channel];
 
   for (const id in channel.catalog) {

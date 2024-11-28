@@ -133,9 +133,12 @@ module.exports = {
         soundpacks: readdirSync(path.resolve("webui/common/sounds")).filter(
           (e) => e.endsWith(".soundpack"),
         ),
-        themes: readdirSync(path.resolve("webui/shared/theming")).filter(
+        themes: [...readdirSync(path.resolve("webui/shared/theming")).filter(
           (e) => e.endsWith(".css"),
-        ),
+        ), ...readdirSync(path.resolve("webui/hooks/_themes")).filter(
+                (e) => e.endsWith(".css"),
+              ).map(e=>`${e}#`)
+        ],
         mobileConnected: isMobileConnected || false,
         style: JSON.parse(
           readFileSync(path.resolve("./src/configs/style.json")),

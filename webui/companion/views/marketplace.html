@@ -146,6 +146,11 @@
 
         if (repo.type == 'v3') {
             universal.repositoryManager.getV3Repository(repo).then((data) => {
+                if(data.err) {
+                    li.innerText += " " + data.msg;
+                    if(isUnofficial) li.appendChild(btn);
+                    return;
+                }
                 li.innerText += " " + universal.cleanHTML(data.title);
                 if(isUnofficial) li.appendChild(btn);
                 data.plugins.forEach((plugin) => {
@@ -321,9 +326,8 @@
         };
         dialog.querySelector('#submit').onclick = () => {
             submit.disabled = true;
-            cancel.disabled = true;
 
-            submit.innerText = "Downloading content...";
+            submit.innerText = "Getting channels..";
 
             const title = dialog.querySelector('#title').value;
             const url = dialog.querySelector('#url').value;
@@ -381,7 +385,7 @@
                         Hide()
                         universal.repositoryManager.unofficial = curr;
                         loadRepos();
-                    })
+                    }, submit, cancel)
                 }
             }).catch(err => {
                 document.querySelector('.add-msg').innerHTML = 'Failed to fetch repository from ' + url + '.<br>' + err;
@@ -394,7 +398,7 @@
         }
     }
 
-    function selectModal(opt, cb) {
+    function selectModal(opt, cb, submit, cancel) {
         const modal = document.createElement('dialog');
         modal.classList.add('dialog');
         modal.classList.add('full-center')
@@ -422,11 +426,9 @@
             const opt = document.createElement('option');
             opt.value = option.id;
             opt.innerText = option.display;
-            opt.onclick = () => {
-                dialogOptions.value = option.id;
-            }
             dialogOptions.appendChild(opt);
         }
+
         dialog.appendChild(dialogOptions);
         dialog.innerHTML += `
             <div class="flex-wrap-r space-evenly">
@@ -438,17 +440,24 @@
         const newsubmit = document.querySelector('#extr-submit');
         const newcancel = document.querySelector('#extr-cancel');
         newcancel.onclick = () => {
+            submit.disabled = false;
+            cancel.disabled = false;
+            submit.innerText = "Add";
             Hide();
             universal.uiSounds.playSound('int_no');
         };
         newsubmit.onclick = () => {
             newsubmit.disabled = true;
             newcancel.disabled = true;
-
+            
             newsubmit.innerText = "Downloading content...";
             universal.uiSounds.playSound('int_prompt');
-            cb(dialogOptions);
+            cb({
+                value: dialogOptions.value,
+            });
             Hide();
+            newsubmit.disabled = false;
+            newcancel.disabled = false;
         }
     }
 

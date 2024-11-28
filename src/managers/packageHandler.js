@@ -12,7 +12,7 @@ function openPackage(filePath, pluginManager) {
     sync: true
   });
   const cfgPath = path.resolve(pathToEx, "package.json");
-  const { main, name, freedeck } = require(cfgPath);
+  const { main, name, description, author, version, freedeck } = require(cfgPath);
   if(!freedeck) {
     console.error(`[Plugin Manager / FDPackage] Error: ${filePath} does not contain a Freedeck package definition.`);
     return;
@@ -43,7 +43,29 @@ function openPackage(filePath, pluginManager) {
     } catch(er) {
       console.error(`[Plugin Manager / FDPackage] Error while trying to load unpacked plugin ${filePath}: ${er}`);
     }
-  } else {
+  } else if(freedeck.package === 'theme') {
+    if(!fs.existsSync(path.resolve(`webui/hooks/_themes/${name}`))) {
+      fs.mkdirSync(path.resolve(`webui/hooks/_themes/${name}`), { recursive: true });
+    }
+    if(freedeck.files) {
+      for(const file of freedeck.files) {
+        if(!fs.existsSync(path.resolve(pathToEx, file))) {
+          console.error(`[Plugin Manager / FDPackage] Error: ${file} does not exist in ${filePath}`);
+          continue;
+        }
+        const dest = path.resolve(`webui/hooks/_themes/${name}/${file}`);
+        fs.copyFileSync(path.resolve(pathToEx, file), dest);
+      }
+    }
+    const themeMeta = `:theme-meta {
+      --name: "${freedeck.title}";
+      --description: "${description}";
+      --author: "${author}";
+      --version: "${version}";
+      }\n`;  
+    fs.appendFileSync(path.resolve(`webui/hooks/_themes/${name}.css`), themeMeta);
+
+    fs.appendFileSync(path.resolve(`webui/hooks/_themes/${name}.css`), fs.readFileSync(path.resolve(pathToEx, main)));
   }
   console.log(`[Plugin Manager / FDPackage] Loaded ${freedeck.package} ${freedeck.title} - ID ${name}`);
 }

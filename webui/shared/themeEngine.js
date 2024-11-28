@@ -2,8 +2,16 @@ const listing = [];
 const listingData = {};
 let currentTheme = {};
 
+function getPathFor(id) {
+	console.log(id)
+	if(id.endsWith("#")) {
+		return `/hooks/_themes/${id.split("#")[0]}`;
+	}
+	return `/app/shared/theming/${id}`;
+}
+
 async function fetchAndParse(id) {
-	const fetchable = await fetch(`/app/shared/theming/${id}.css`);
+	const fetchable = await fetch(getPathFor(id));
 	let theme;
 	if (fetchable.status !== 200) {
 		console.error(`Failed to fetch theme ${id}`);
@@ -29,16 +37,15 @@ async function fetchAndParse(id) {
 
 async function initialize() {
   for(const t of universal._information.themes) {
-    const id = t.split(".css")[0];
-    listing.push(id)
-    universal.CLU("Boot / Theme Engine", `Added theme ${id} -> ${t}`);
+    listing.push(t)
+    universal.CLU("Boot / Theme Engine", `Added theme ${t}`);
   }
 }
 
 function setTheme(name, global = true) {
 	const fu = listing.includes(name) ? name : "default";
 
-	fetch(`/app/shared/theming/${fu}.css`)
+	fetch(getPathFor(fu))
 		.then((res) => res.text())
 		.then((css) => {
 			if (document.getElementById("theme")) {

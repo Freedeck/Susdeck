@@ -1,22 +1,20 @@
 {
   "major": [
-    "**The sidebar has gotten a slight redesign!**",
-    [
-      "The Freedeck logo is now on the sidebar",
-      "The Home tab has been renamed to Tiles"
-    ],
-    "Opening other views (Settings, Marketplace, etc.) now have an animation!",
-    "The Library has some extra styling-- a dropdown to view Sounds or Icons, for performance.",
-    "Tiles now are more customizable - background, border, and shadow toggles have been added into a new dropdown in the Editor.",
-    "Bug Fixed! Pressing Upload or Change (Sound) now highlights the proper upload.",
-    "Bug Fixed! Making a tile, then setting any data-related option, then setting a plugin now retains data!"
+    "**Welcome to NativeBridge. Keeping the Freedeck App (launcher) open in the background will allow you to control your computer with Freedeck like never before.**",
+    "**The editor has gotten a better redesign!** Everything feels modern, and the main content sticks out better.",
+    "**Added support for .fdpackage bundles!** These are like .Freedeck files, but much, much smaller AND can now be used for themes!",
+    "**Added support for Marketplace V3!** The old marketplace will not receive any new updates.",
+    "**You can now reload and disable single plugins!**",
+    "**Plugin [re]loading has been reworked and is now more efficient.**",
+    "Official badges have been added to official Marketplace plugins!",
+    "During the startup animation, the app now shows you the current version!",
+    "The sidebar has once again, gotten a few more design improvements!",
+    "A lot of UI elements now have a border"
   ],
   "other": [
-    "Some new styling for the Themes in Settings",
-    "Fixed corner radius for left sidebar",
-    "Minor style changes for CTXL views",
-    "Font now synchronizes everywhere when changed.",
-    "Fixed font-size not being set to current size"
+    "Fixed a bug where opening the plugin-type selector will cause the previously selected type to still be highlighted",
+    "Fixed a bug where the plugin-type selector wouldn't work at all",
+    "(WIP, but works) **Plugins can now add Editor views!**"
   ],
   "known": [
   ],

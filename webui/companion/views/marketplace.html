@@ -417,10 +417,12 @@
         Hide();
         document.querySelector("#dialog-conta").appendChild(modal)
         const dialogOptions = document.createElement('select');
-        dialog.innerHTML = `
-            <h1>${opt.title}</h1>
-            <p>${opt.message}</p>
-        `;
+        const title = document.createElement('h1');
+        const message = document.createElement('p');
+        title.innerText = opt.title;
+        message.innerText = opt.message;
+        dialog.appendChild(title);
+        dialog.appendChild(message);
         
         for(const option of opt.options) {
             const opt = document.createElement('option');
@@ -430,15 +432,25 @@
         }
 
         dialog.appendChild(dialogOptions);
-        dialog.innerHTML += `
-            <div class="flex-wrap-r space-evenly">
-            <button class="tint-green" id="extr-submit">Add</button>
-            <button id="extr-cancel">Cancel</button>
-            </div>`
+
+        const container = document.createElement('div');
+        container.classList.add('flex-wrap-r');
+        container.classList.add('space-evenly');
+
+        const newsubmit = document.createElement('button');
+        newsubmit.innerText = "Add";
+        newsubmit.classList.add('tint-green');
+
+        const newcancel = document.createElement('button');
+        newcancel.innerText = "Cancel";
+        
+        container.appendChild(newsubmit);
+        container.appendChild(newcancel);
+        
+        dialog.appendChild(container);
 
         Show()
-        const newsubmit = document.querySelector('#extr-submit');
-        const newcancel = document.querySelector('#extr-cancel');
+
         newcancel.onclick = () => {
             submit.disabled = false;
             cancel.disabled = false;

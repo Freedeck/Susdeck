@@ -524,7 +524,7 @@ input:disabled {
 	top: 0;
 	left: 0;
 	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 500;
+	z-index: 1222;
 	display: block;
 	transition-duration: .25s;
     scrollbar-width: none;

@@ -16,13 +16,14 @@ let bootLogContainer;
 function makeBootLog() {
 	const thisbootLog = document.createElement("div");
 	thisbootLog.id = "boot-log-div";
-	thisbootLog.classList.add("settings-menu")
-	thisbootLog.innerHTML = "<center class='thing'><h1>Freedeck</h1></center><div id='boot-log'></div><center class='oclb'><button id='oclb'>Close Boot Log</button></center>";
+	thisbootLog.innerHTML = "<img src='/logo_big.png' class='n-icon'><h1>Freedeck</h1><div style='display:none;' id='boot-log'></div><center class='oclb'><button style='display:none;' id='oclb'>Close Boot Log</button></center>";
 	document.body.appendChild(thisbootLog);
 	bootLog = thisbootLog;
 	bootLogCenter = document.querySelector("#boot-log-div > center");
 	bootLogContainer = document.querySelector("#boot-log");
+	bootLogContainer.style.display = 'none';
 	openCloseBootLog = document.querySelector("#oclb");
+	openCloseBootLog.style.display = 'none';
 	openCloseBootLog.addEventListener("click", () => {
 		closeBootLog();
 	});
@@ -30,12 +31,10 @@ function makeBootLog() {
 
 function showBootLog() {
 	return new Promise((resolve, reject) => {
+		universal.CLU("Boot / UI : WARNING!", "The boot log style hasn't been updated, and won't be! You may notice a few imperfections.");
 		bootLogContainer.style.scale='1';
 		bootLogContainer.style.display='block';
-			bootLogCenter.style.top = '';
-			bootLogCenter.style.transform= '';
 			openCloseBootLog.style.display = 'block';
-			document.querySelector("#boot-log-div > .thing > h1").innerText = "Freedeck";
 			bootLog.style.animation = "pull-down 0.5s";
 			bootLog.style.display = 'block';
 	})
@@ -46,17 +45,18 @@ function closeBootLog() {
 		setTimeout(() => {
 			resolve(true);
 			bootLogContainer.style.scale='0';
-			bootLogCenter.style.top = '50%';
-			bootLogCenter.style.transform= 'translate(-50%, -50%)';
 			openCloseBootLog.style.display = 'none';
-			document.querySelector("#boot-log-div > .thing > h1").innerText = universal._information.version.human;
 			if(universal.load("skipanim") === "true") {
 				bootLog.style.display = 'none';
 			} else {
 			setTimeout(() => {
 					bootLogContainer.style.display = "none";
+					if(window.splashScreen)
+						window.splashScreen.unsplash();
 					setTimeout(() => {
 							bootLog.style.animation = "pull-up 0.5s";
+							bootLog.querySelector("h1").style.animation = "real-fade-out 0.5s";
+							bootLog.querySelector("img").style.animation = "real-fade-out 0.5s";
 							setTimeout(() => {
 								bootLog.style.display = 'none';
 							}, 499);

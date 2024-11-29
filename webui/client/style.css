@@ -114,21 +114,32 @@ h1 {
     display: block;
     animation: none;
     width: 100%;
+    height: 100%;
     background: var(--modal-bg);
     background-size: var(--main-bg-size);
     font-family: var(--font);
     color: var(--text-color);
-    animation: error-bg 5s linear infinite;
+    position: fixed;
+    z-index: 9999;
     transition-duration: .5s;
     color: white;
 }
 
-#boot-log-div > .thing {
-    transition-duration: .5s;
+.n-icon {
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    bottom: 6%;
+    left: 49.8%;
+    transform: translate(-50%, -49.8%);
+}
+
+#boot-log-div > h1 {
     position: absolute;
-    top: 0;
+    top: 6%;
     left: 50%;
     transform: translate(-50%, 0);
+    /* width:max-content; */
 }
 
 #boot-log-div > .oclb {

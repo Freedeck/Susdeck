@@ -34,7 +34,7 @@ universal.reloadRight = () => {
 		{ Plugins: "plugins.html" },
 		{ Marketplace: "marketplace.html" },
 		{ Settings: "settings.html" },
-		{ Connect: "/connect2.html?id=Companion&new_ip=true" },
+		{ Connect: "/new-connect.html?id=Companion&new_ip=true" },
 	];
 	if(universal.load("has_setup") === "false") {
 		sidebar = [

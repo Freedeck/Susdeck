@@ -70,7 +70,7 @@ export default function eventsHandler(universal, user) {
 		});
 
 		universal.on(universal.events.default.recompile, () => {
-			window.location.href = `/connect2.html?id=${user}`;
+			window.location.href = `/new-connect.html?id=${user}`;
 		});
 
 		universal.on(universal.events.default.log, (data) => {

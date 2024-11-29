@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Freedeck - Connecting...</title>
+</head>
+
+<body>
+  <h1>Freedeck</h1>
+  <div class="center">
+    <div class="col-start">
+      <progress id="progress" value="0" max="100"></progress>
+    </div>
+  </div>
+  <div class="connection">
+    <small id="failure">Connection Settings</small>
+    <br>
+    <input type="text" value="http://localhost:5754" id="url">
+  </div>
+  <img src="logo_big.png" class="icon">
+  <p class="progress-text"></p>
+  <style>
+    .connection {
+      position: fixed;
+      bottom: 6%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(255, 255, 255, 0.25);
+      border-radius: 1.5rem;
+      padding: 5px;
+      display: none;
+    }
+
+    .progress-text {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    input {
+      background-color: rgba(0, 0, 0, 0.25);
+      color: white;
+      border: 0;
+      border-radius: 1.5rem;
+      padding: 5px;
+      transition-duration: .125s;
+    }
+
+    h1 {
+      position: absolute;
+      top: 6%;
+    }
+
+    .col-start {
+      /* width: 100%; */
+      position: fixed;
+      top: 43.5%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+    }
+
+    progress {
+      width: 300px;
+      background-color: #17212a;
+      border: 1px solid #f8f9fa;
+      border-radius: 1.5rem;
+    }
+
+    progress::-webkit-progress-bar {
+      background-color: #17212a;
+      border: 1px solid #f8f9fa;
+      border-radius: 1.5rem;
+    }
+
+    progress::-webkit-progress-value {
+      background-color: #f8f9fa;
+      padding: .2rem;
+      /* border-radius: 1.5rem; */
+    }
+
+    body {
+      background-color: #17212a;
+      color: white;
+      font-family: Rethink Sans, Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      margin: 0;
+    }
+
+    .icon {
+      width: 100px;
+      height: 100px;
+      position: fixed;
+      bottom: 6%;
+      left: 49.8%;
+      transform: translate(-50%, -49.8%);
+    }
+  </style>
+  <script>
+    const p = document.getElementById("progress");
+    function animateProgressTo(num) {
+      p.value += (num - p.value) / 50;
+      if (p.value < num) {
+        requestAnimationFrame(() => animateProgressTo(num));
+      }
+    }
+    function setText(text) {
+      document.querySelector(".progress-text").innerText = text;
+    }
+    let id = "Main";
+
+    if (!window.splashScreen) {
+      window.splashScreen = {
+        splash: () => { },
+        unsplash: () => { }
+      }
+    }
+    const urlEle = document.getElementById("url");
+    let url = urlEle.value;
+
+    const urls = new URLSearchParams(window.location.search);
+    const existing = window.location.href.split("/new-connect.html")[0];
+    url = existing;
+    if (urls.has("sloc")) {
+      url = urls.get("sloc");
+    }
+    if (existing.includes('file:')) {
+      url = "http://localhost:5754";
+      id = "Companion";
+    }
+    if (urls.has("id") &&
+      urls.get("id").includes("Companion")) id = "Companion";
+
+
+    let isTryingToConnect = false;
+
+    async function waitFor(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+    window.splashScreen.splash()
+    async function task() {
+      if (isTryingToConnect) return;
+      setText("Connecting to server...");
+      animateProgressTo(1);
+      const res = await fetch(url + "/connect/webpack").catch((err) => {
+        setText("Failed to connect to server.");
+        document.querySelector(".connection").style.display = "block";
+        document.querySelector("#failure").innerText = "Failed to connect to server.";
+        document.querySelector("#url").value = url;
+        return;
+      });
+      const data = await res.json();
+      const isBuilding = data.compiled != 1;
+      setText(isBuilding ? "Preparing client..." : "Compiling Bundles: " + (data.compiled + 1) + "/2");
+      animateProgressTo(20);
+
+      if(isBuilding) {
+        const timer = setInterval(async () => {
+          const res = await fetch(url + "/connect/webpack").catch((err) => {
+          setText("Failed to connect to server.");
+            document.querySelector(".connection").style.display = "block";
+            document.querySelector("#failure").innerText = "Failed to connect to server.";
+            document.querySelector("#url").value = url;
+            return;
+          });
+          const data = await res.json();
+          const isBuilding = data.compiled != 1;
+          setText(isBuilding ? "Preparing client..." : "Compiling Bundles: " + (data.compiled + 1) + "/2");
+          animateProgressTo(20);
+          if (!isBuilding) {
+            clearInterval(timer);
+          }
+        }, 500);
+      };
+
+      setText("Locking client...");
+      isTryingToConnect = true;
+      animateProgressTo(21);
+
+      setText("Deciding where to send user " + id);
+      let whereToGo = url;
+      if (localStorage.getItem(btoa("fd.BfCon"))) {
+        localStorage.removeItem(btoa("fd.BfCon"));
+        whereToGo = atob(localStorage.getItem(btoa("fd.BfCon")));
+      }
+      
+      if (id === "Companion") {
+        whereToGo = url + "/companion?fdc=true";
+      } else {
+        whereToGo = url;
+      }
+      animateProgressTo(75);
+
+      setText(`Redirecting to ${whereToGo}`);
+      await waitFor(1000);
+      window.location.href = whereToGo;
+    }
+    setInterval(() => {
+      if (isTryingToConnect) return;
+      task();
+    }, 500);
+  </script>
+</body>
+
+</html>

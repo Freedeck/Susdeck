@@ -12,13 +12,13 @@ const makeThanks = () => {
   const close = document.createElement("button");
   close.onclick = () => {
     document.querySelector("#thanks").style.display = "none";
-    universal.uiSounds.playSound("notification");
+    universal.uiSounds.playSound("welcome");
 		universal.save("thanks", universal._information.version.raw);
   }
   close.innerText = "OK";
 
   const title = document.createElement("h1");
-  title.innerText = "Thanks you for using Freedeck!";
+  title.innerText = "Thank you for using Freedeck!";
   content.appendChild(title);
   const description = document.createElement("p");
   description.innerText = "A lot has changed since the previous update, so here are the changes."

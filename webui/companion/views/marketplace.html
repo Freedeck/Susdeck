@@ -180,7 +180,7 @@
                     rl.innerText = "From " + repo.title;
                     li.appendChild(rl);
                     const file = document.createElement('button');
-                    file.dataset.HandoffUrl = 'freedeck://download/' + req.id + '/' + encodeURIComponent(req.url) + '/' + encodeURIComponent(req.description) + '/' + encodeURIComponent(repo.title);
+                    file.dataset.HandoffUrl = 'freedeck://download/' + req.id + '/' + encodeURIComponent(req.download) + '/' + encodeURIComponent(req.description) + '/' + encodeURIComponent(repo.title);
                     file.onclick = () => {
                         window.location.href = file.dataset.HandoffUrl;
                         universal.uiSounds.playSound('int_confirm');

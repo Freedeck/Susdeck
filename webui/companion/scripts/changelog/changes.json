@@ -1,15 +1,16 @@
 {
   "major": [
-    "**Welcome to NativeBridge. Keeping the Freedeck App (launcher) open in the background will allow you to control your computer with Freedeck like never before.**",
+    "**The splash screen has been improved!** The transition now feels much better, and there's a progress bar!",
     "**The editor has gotten a better redesign!** Everything feels modern, and the main content sticks out better.",
     "**Added support for .fdpackage bundles!** These are like .Freedeck files, but much, much smaller AND can now be used for themes!",
     "**Added support for Marketplace V3!** The old marketplace will not receive any new updates.",
     "**You can now reload and disable single plugins!**",
     "**Plugin [re]loading has been reworked and is now more efficient.**",
+    "**NativeBridge support has been added. Keeping the Freedeck App (launcher) open in the background will allow you to control your computer with Freedeck like never before.**",
     "Official badges have been added to official Marketplace plugins!",
     "During the startup animation, the app now shows you the current version!",
     "The sidebar has once again, gotten a few more design improvements!",
-    "A lot of UI elements now have a border"
+    "A lot of UI elements have now gotten a border!"
   ],
   "other": [
     "Fixed a bug where opening the plugin-type selector will cause the previously selected type to still be highlighted",

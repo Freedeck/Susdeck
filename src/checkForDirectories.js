@@ -20,5 +20,6 @@ if(fs.existsSync("src/public/companion") && fs.existsSync("src/public/companion/
 
 if(!fs.existsSync(path.resolve("webui/hooks"))) fs.mkdirSync(path.resolve("webui/hooks"));
 if(!fs.existsSync(path.resolve("webui/hooks/_themes"))) fs.mkdirSync(path.resolve("webui/hooks/_themes"));
+if(!fs.existsSync(path.resolve("webui/hooks/_sounds"))) fs.mkdirSync(path.resolve("webui/hooks/_sounds"));
 
 debug.log("Migration complete.", "Migration");

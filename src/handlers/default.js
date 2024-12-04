@@ -132,9 +132,12 @@ module.exports = {
         tempLoginID: socket.tempLoginID,
         NotificationManager,
         hostname: require("node:os").hostname(),
-        soundpacks: readdirSync(path.resolve("webui/common/sounds")).filter(
+        soundpacks: [...readdirSync(path.resolve("webui/common/sounds")).filter(
           (e) => e.endsWith(".soundpack"),
-        ),
+        ), ...readdirSync(path.resolve("webui/hooks/_sounds")).filter(
+                (e) => e.endsWith(".soundpack"),
+              ).map(e=>`${e}#`)
+        ],
         themes: [...readdirSync(path.resolve("webui/shared/theming")).filter(
           (e) => e.endsWith(".css"),
         ), ...readdirSync(path.resolve("webui/hooks/_themes")).filter(

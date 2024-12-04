@@ -4,8 +4,7 @@
 		"version": "1.0.0",
 		"author": "Freedeck",
 		"description": "The OLD Futuristic soundpack for Freedeck",
-		"id": "legacy_futuristic.soundpack",
-		"path": "/common/sounds/legacy_futuristic.soundpack"
+		"id": "Legacy Futuristic.soundpack"
 	},
 	"sounds": {
 		"click": "click.mp3",

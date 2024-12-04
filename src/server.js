@@ -152,7 +152,6 @@ function handleSock(socket) {
         const value = notification.data.split("-")[3];
         io.emit(eventNames.default.slider_update, { slider, value });
       }
-      return;
     }
     console.log("Sending notification to client");
     socket.emit(eventNames.default.notif, notification);

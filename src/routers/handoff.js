@@ -23,6 +23,13 @@ router.get("/get-token", (req, res) => {
   res.send("0".repeat(handoffData.token.length));
 });
 
+router.get("/:token/play-ui-sound/:sound", (req, res) => {
+  if (req.params.token !== handoffData.token && req.path !== "/get-token")
+    return res.send({ status: "error", message: "Invalid token" });
+  notifMan.add("handoff-api", `ui-sound:${req.params.sound}`);
+  res.send({ status: "success", message: `Requested sound ${req.params.sound} to be queued.` });
+});
+
 router.get("/:token/reload-plugins", (req, res) => {
   if (req.params.token !== handoffData.token && req.path !== "/get-token")
     return res.send({ status: "error", message: "Invalid token" });

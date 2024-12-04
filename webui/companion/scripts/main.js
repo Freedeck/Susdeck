@@ -1484,38 +1484,6 @@ universal.on(universal.events.default.plugins_updated, () => {
   window.location.reload();
 });
 
-universal.on(universal.events.default.notif, (dat) => {
-  if (!dat.incoming) return;
-  if (dat.data === "Authorize") {
-    showPick(
-      `${dat.incoming.appInformation.title} wants to connect to your Freedeck!`,
-      [
-        {
-          value: "true",
-          name: "Authorize",
-        },
-        {
-          value: "false",
-          name: "Deny",
-        },
-      ],
-      (modal, value, feedback, title, button, input, content) => {
-        universal.send(
-          universal.events.rpc.reply,
-          JSON.stringify({
-            id: dat.incoming.appInformation.id,
-            nonce: dat.incoming.nonce,
-            value: value.value,
-          })
-        );
-      },
-      dat.incoming.appInformation.authorizationMessage,
-      false
-    );
-    return;
-  }
-});
-
 universal.listenFor("audio-end", (data) => {
   const filname = data.name.replace(/[^a-zA-Z0-9]/g, "");
   if (document.querySelector(`.s-${filname}`))

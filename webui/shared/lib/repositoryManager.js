@@ -21,9 +21,17 @@ async function getV3Repository(repoData) {
   if (!data.channels[repoData.channel])
     return { err: true, msg: `Channel ${repoData.channel} not found.` };
   const channel = data.channels[repoData.channel];
+  let catalog = channel.catalog;
 
-  for (const id in channel.catalog) {
-    const meta = channel.catalog[id];
+  if(channel.type === "repository_external") {
+    const res = await fetch(channel.catalog).catch((err) => {
+      return err;
+    });
+    catalog = await res.json();
+  }
+
+  for (const id in catalog) {
+    const meta = catalog[id];
     meta.id = id;
     plugins.push(meta);
   }

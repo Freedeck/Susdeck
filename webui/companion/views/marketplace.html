@@ -188,10 +188,12 @@
                             window.showYesNo("Before you install " + req.title +"...", req.message, (yes) => {
                                 if(yes) {
                                     window.location.href = file.dataset.HandoffUrl;
+                                    universal.uiSounds.playSound('step_2');
                                 }
                             }, ()=>{});
                         } else {
                             window.location.href = file.dataset.HandoffUrl;
+                            universal.uiSounds.playSound('step_2');
                         }
                     };
                     file.innerText = 'Download';
@@ -213,7 +215,7 @@
                             }
                     };
                     li.appendChild(file);
-                    if (repo.url == "https://releases.freedeck.app/index.json") {
+                    if (universal.repositoryManager.official.find((r) => r === repo)) {
                         if (!plugin.unofficial || plugin.unofficial !== 'true') {
                         li.appendChild(officialTag);
                         }

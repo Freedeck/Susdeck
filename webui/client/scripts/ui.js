@@ -48,6 +48,8 @@ function closeBootLog() {
 			openCloseBootLog.style.display = 'none';
 			if(universal.load("skipanim") === "true") {
 				bootLog.style.display = 'none';
+				if(window.splashScreen)
+					window.splashScreen.unsplash();
 			} else {
 			setTimeout(() => {
 					bootLogContainer.style.display = "none";
@@ -86,6 +88,8 @@ function initialize() {
 	reloadSounds();
 	universal.CLU("Boot / UI", "Reloaded sounds");
 	universal.CLU("Boot / UI", "UI initialized");
+	universal.showBootLog = showBootLog;
+	universal.closeBootLog = closeBootLog;
 }
 
 /**

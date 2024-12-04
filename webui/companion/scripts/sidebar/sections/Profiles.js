@@ -97,14 +97,19 @@ const profileTxt = document.createElement("span");
 
 const profileSelect = document.createElement("select");
 
-for (const profile of Object.keys(universal.config.profiles)) {
-	const option = document.createElement("option");
-	option.innerText = profile;
-	option.setAttribute("value", profile);
-	profileSelect.appendChild(option);
+function fix() {
+	profileSelect.innerHTML = "";
+	for (const profile of Object.keys(universal.config.profiles)) {
+		const option = document.createElement("option");
+		option.innerText = profile;
+		option.setAttribute("value", profile);
+		profileSelect.appendChild(option);
+	}
+	profileTxt.innerHTML = `Current Folder:&nbsp<i>${universal.cleanHTML(universal.config.profile)}</i>`;
+	profileSelect.value = universal.config.profile;
 }
-profileTxt.innerHTML = `Current Folder:&nbsp<i>${universal.cleanHTML(universal.config.profile)}</i>`;
-profileSelect.value = universal.config.profile;
+fix();
+universal.listenFor("pageChanged", fix)
 
 profileSelect.onchange = () => {
 	universal.page = 0;

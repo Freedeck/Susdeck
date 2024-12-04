@@ -5,7 +5,7 @@
 <p>These features may be buggy!!! You will not experience data loss.</p>
 <div class="experiments">
     <div class="experiment">
-        <label for="blvs">Skip Boot Log Version Show <span class="tag-beta">BETA</span></label>
+        <label for="blvs">Skip Bootup Animation <span class="tag-beta">BETA</span></label>
         <input type="checkbox" id="blvs" />
     </div>
     <div class="experiment">
@@ -13,20 +13,8 @@
         <input type="checkbox" id="uis" />
     </div>
     <div class="experiment">
-        <label for="cte">Custom Theme Editor<span class="tag-beta">ALPHA</span></label>
-        <input type="checkbox" id="cte" />
-    </div>
-    <div class="experiment">
-        <label for="nbik">No "Stop All" or "Reload" keys <span class="tag-beta">BETA</span></label>
+        <label for="nbik">No preset keys (Stop All,Reload,Logo) <span class="tag-beta">BETA</span></label>
         <input type="checkbox" id="nbik" />
-    </div>
-    <div class="experiment">
-        <label for="nologo">No Freedeck Logo <span class="tag-beta">BETA</span></label>
-        <input type="checkbox" id="nologo" />
-    </div>
-    <div class="experiment">
-        <label for="cct">Clicking Tiles here plays no sound</label>
-        <input type="checkbox" id="cct" />
     </div>
     <div class="experiment">
         <label for="cpm">Center Mode <span class="tag-beta">TEST</span></label>
@@ -37,20 +25,8 @@
         <input type="checkbox" id="swc" />
     </div>
     <div class="experiment">
-        <label for="apc">Animate Page Changes <span class="tag-beta">TEST</span></label>
+        <label for="apc">Animate Page Changes <span class="tag-beta">BAD</span></label>
         <input type="checkbox" id="apc" />
-    </div>
-    <div class="experiment">
-        <label for="hwnmt">Houston, we need more Tiles (512 tiles) <span class="tag-beta">WORKS</span></label>
-        <input type="checkbox" id="hwnmt" />
-    </div>
-    <div class="experiment">
-        <label for="insanity">TILE INSANITY!! (1024 tiles) <span class="tag-beta">INSANE!</span></label>
-        <input type="checkbox" id="insanity" />
-    </div>
-    <div class="experiment">
-        <label for="ebigt">EVEN BIGGER TEXT!! (50rem) <span class="tag-beta">WORKS</span></label>
-        <input type="checkbox" id="ebigt" />
     </div>
 </div>
 <br>
@@ -146,6 +122,42 @@
         Ask server to recompile Webpack bundles
     </button>
 </div>
+<details>
+    <summary>
+        App Utilities
+    </summary>
+    <p>Prefix is freedeck://COMMAND/ARGS</p>
+    <div class="flex-wrap-r">
+        <button onclick="window.location.href='freedeck://startup'">
+            startup
+        </button>
+        <button onclick="window.location.href='freedeck://show'">
+            show
+        </button>
+        <button onclick="window.location.href='freedeck://hide'">
+            hide
+        </button>
+        <button onclick="window.location.href='freedeck://show/front'">
+            show/front
+        </button>
+    </div>
+    <h3>App Utilities - Plugin Management</h3>
+    <div class="flex-wrap-r">
+        <div><h3>Download Flow</h3>
+            <p>://download/ID/URL/DESCRIPTION/REPO_TITLE</p></div>
+            <br>
+        <button onclick="window.location.href='freedeck://download/ID/URL/DESCRIPTION/REPO_TITLE'">
+            Download Flow
+        </button>
+        <br>
+        <div><h3>Update Flow</h3>
+            <p>://update/ID/URL/DESCRIPTION/REPO_TITLE/FROM_V0/TO_V1</p></div>
+            <br>
+        <button onclick="window.location.href='freedeck://update/ID/URL/DESCRIPTION/REPO_TITLE/FROM_V0/TO_V1'">
+            Update Flow
+        </button>
+    </div>
+</details>
 <div class="settings"></div>
 <div class="cti">
     <h1>Freedeck</h1>
@@ -259,16 +271,10 @@
         window.settingsView_check("#" + id, id, changed);
     }
 
-    window.settingsView_check("#ebigt", "ebigt");
-    window.settingsView_check("#cct", "cct");
-    window.settingsView_check("#cte", "cte");
     window.settingsView_check("#swc", "swc", () => { universal.reloadRight() });
-    window.settingsView_check("#hwnmt", "houston");
-    window.settingsView_check("#insanity", "insanity");
     window.settingsView_check("#blvs", "skipanim");
 
-    window.settingsView_lcCheck("#nbik", "nobuiltin")
-    window.settingsView_lcCheck("#nologo", "nologo")
+    window.settingsView_lcCheck("#nbik", "nopreset")
     window.settingsView_lcCheck("#cpm", "center")
     window.settingsView_lcCheck("#apc", "animation")
 

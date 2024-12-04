@@ -72,30 +72,6 @@ if (universal.config.profile !== universal.load("profile")) {
   UI.reloadSounds();
 }
 
-universal.on(universal.events.default.config_changed, (e) => {
-  document.documentElement.style.setProperty(
-    "--font-size",
-    `${e["font-size"]}px`,
-  );
-  document.documentElement.style.setProperty(
-    "--tile-width",
-    `${e.buttonSize}rem`,
-  );
-  document.documentElement.style.setProperty(
-    "--tile-height",
-    `${e.buttonSize}rem`,
-  );
-  let tc = "repeat(5, 2fr)";
-  if (e.tileCols) tc = tc.replace("5", e.tileCols);
-  console.log(e.nostopall);
-  universal.save("nostopall", e.nostopall);
-  universal.save("nologo", e.nologo);
-  document.documentElement.style.setProperty("--tile-columns", tc);
-  universal.lclCfg = () => e;
-  universal.lclCfg().iconCountPerPage = Number.parseInt(e.iconCountPerPage);
-  UI.reloadSounds();
-});
-
 const lcfg = universal.lclCfg();
 document.documentElement.style.setProperty(
   "--font-size",

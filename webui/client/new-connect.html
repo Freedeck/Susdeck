@@ -4,6 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta content="Freedeck" property="og:title" />
+  <meta content="#00b3ff" data-react-helmet="true" name="theme-color" />
+  <meta name="theme-color" content="#00b3ff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Freedeck" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="msapplication-TileColor" content="#00b3ff" />
   <title>Freedeck - Connecting...</title>
 </head>
 
@@ -206,7 +214,7 @@
       animateProgressTo(75);
 
       setText(`Redirecting to ${whereToGo}`);
-      await waitFor(1000);
+      await waitFor(1200);
       window.location.href = whereToGo;
     }
     setInterval(() => {

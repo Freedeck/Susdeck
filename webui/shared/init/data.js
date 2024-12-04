@@ -99,6 +99,10 @@ export default function dataHandler(universal, user) {
         handler();
         UI.reloadPluginViews();
         universal.CLU("Incoming Data Handler", "Native handler created.");
+        const isNbwsClosed = universal._information.nbws;
+        if(isNbwsClosed) {
+          window.open(window.location.href.replace("?fdc=true", "open_native.html"), "_blank")
+        }
       }
 
       generic();

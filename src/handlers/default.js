@@ -10,6 +10,7 @@ const zlib = require("node:zlib");
 const { readFileSync, readdirSync, existsSync } = require("node:fs");
 
 const HookRef = require("../classes/HookRef");
+const { check } = require("./nbws.events/internalNBWSHandler");
 
 module.exports = {
   name: "Main",
@@ -124,6 +125,7 @@ module.exports = {
       cfg.update();
       debug.log("Refreshed configuration", `Socket.IO API / @${socket.user} ${socket._id}`);
       const isMobileConnected = tsm.get("isMobileConnected");
+      const nbwsState = check();
 
       const serverInfo = {
         id: socket._id,
@@ -146,6 +148,7 @@ module.exports = {
         plugins: pl,
         disabled: plugins._disabled,
         events: eventNames,
+        nbws: nbwsState,
         version: {
           raw: require(path.resolve("package.json")).version,
           human: `Freedeck v${require(path.resolve("package.json")).version}`

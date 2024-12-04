@@ -4,6 +4,7 @@ const eventNames = require("../eventNames");
 const path = require("node:path");
 
 module.exports = ({ io, data }) => {
+	if(!plugins.plugins().has(data.plugin)) return;
 	fs.writeFile(
 		path.resolve(`./plugins/${data.plugin}/settings.json`),
 		JSON.stringify(data.settings),
@@ -11,7 +12,6 @@ module.exports = ({ io, data }) => {
 			console.log(`Settings for ${data.plugin} saved`);
 		},
 	);
-	console.log("[LSALA] ", data)
 	plugins.reloadSinglePlugin(data.plugin);
 	io.emit(eventNames.default.reload);
 };

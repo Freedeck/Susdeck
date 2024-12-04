@@ -1156,6 +1156,7 @@ function showText(title, content, callback, closable = true) {
   modalContent.appendChild(modalButton);
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
+  universal.uiSounds.playSound("int_prompt");
   return modal;
 }
 
@@ -1239,6 +1240,66 @@ function showPick(
   modal.appendChild(modalContent);
 
   document.body.appendChild(modal);
+  universal.uiSounds.playSound("int_prompt");
+
+}
+
+function showYesNo(
+  title,
+  content,
+  yesCallback,
+  noCallback,
+  closable = true
+)  {
+  const modal = document.createElement("div");
+  modal.className = "modal";
+
+  const modalContent = document.createElement("div");
+  modalContent.classList.add("modalContent");
+
+  if (closable) {
+    const modalClose = document.createElement("button");
+    modalClose.innerText = "Close";
+    modalClose.onclick = () => {
+      modal.remove();
+    };
+    modalClose.classList.add("modalClose");
+    modalContent.appendChild(modalClose);
+  }
+
+  const modalTitle = document.createElement("h2");
+  modalTitle.innerText = title;
+  modalTitle.classList.add("modalTitle");
+  modalContent.appendChild(modalTitle);
+
+  const modalTextContent = document.createElement("div");
+  modalTextContent.innerText = content;
+  modalTextContent.classList.add("modalTextContent");
+  modalContent.appendChild(modalTextContent);
+
+  const yesnoc = document.createElement("div");
+  yesnoc.classList.add("flex-wrap-r");
+
+  const modalButton = document.createElement("button");
+  modalButton.innerText = "Yes";
+  modalButton.onclick = () => {
+    modal.remove();
+    yesCallback();
+  };
+  yesnoc.appendChild(modalButton);
+
+  const modalButtonNo = document.createElement("button");
+  modalButtonNo.innerText = "No";
+  modalButtonNo.onclick = () => {
+    modal.remove();
+    noCallback();
+  };
+  yesnoc.appendChild(modalButtonNo);
+
+  modalContent.appendChild(yesnoc);
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
+  universal.uiSounds.playSound("int_confirm");
 }
 
 window.UniversalUI = {
@@ -1391,8 +1452,14 @@ if (universal.load("has_setup") === "false") {
 
 universal.on(universal.events.user_mobile_conn, (isConn) => {
   if (universal.load("has_setup") === "false") return;
-  if (isConn) document.querySelector(".mobd").style.display = "none";
-  else document.querySelector(".mobd").style.display = "flex";
+  if (isConn) {
+    document.querySelector(".mobd").style.display = "none";
+    universal.uiSounds.playSound("mobile_connect");
+  }
+  else {
+    document.querySelector(".mobd").style.display = "flex";
+    universal.uiSounds.playSound("mobile_disconnect");
+  }
 });
 
 if (universal._information.mobileConnected)
@@ -1456,5 +1523,8 @@ universal.listenFor("audio-end", (data) => {
 });
 
 window.showPick = showPick;
+window.showText = showText;
+window.showYesNo = showYesNo;
+window.showEditModal = showEditModal;
 
 makeThanks();

@@ -29,6 +29,8 @@
     "step_3": "step_three.mp3",
     "step_4": "step_four.mp3",
     "uploaded": "uploaded.mp3",
-    "welcome": "welcome.mp3"
+    "welcome": "welcome.mp3",
+    "mobile_connect": "mobile_conn.mp3",
+    "mobile_disconnect": "mobile_disconn.mp3"
   }
 }

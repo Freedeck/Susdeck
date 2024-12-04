@@ -27,18 +27,18 @@
 	"dependencies": {
 		"asar-bundle-runner": "^1.6.0",
 		"babel-loader": "^9.2.1",
-		"electron": "^32.1.2",
+		"electron": "^32.2.6",
 		"express": "^4.19.2",
-		"formidable": "^3.5.1",
+		"formidable": "^3.5.2",
 		"pako": "^2.1.0",
-		"socket.io": "^4.8.0",
-		"socket.io-client": "^4.8.0",
+		"socket.io": "^4.8.1",
+		"socket.io-client": "^4.8.1",
 		"tar": "^7.4.3",
-		"webpack": "^5.94.0",
+		"webpack": "^5.97.0",
 		"ws": "^8.18.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^1.9.2",
+		"@biomejs/biome": "^1.9.4",
 		"webpack-cli": "^5.1.4"
 	}
 }

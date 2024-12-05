@@ -4,21 +4,22 @@
  */
 export default function (data, keyObject, raw) {
 	const sliderContainer = document.createElement("div");
-	sliderContainer.className = "slider-container";
+	sliderContainer.classList.add("slider-container");
 	sliderContainer.dataset.value = data.data.value;
 	keyObject.appendChild(sliderContainer);
 
 	const sliderTitle = document.createElement("div");
-	sliderTitle.className = "slider-title";
+	sliderTitle.classList.add("slider-title");
 	sliderTitle.innerText = Object.keys(raw)[0];
 	sliderContainer.appendChild(sliderTitle);
 
 	const sliderThumb = document.createElement("div");
-	sliderThumb.className = "slider-thumb context-aware";
+	sliderThumb.classList.add("slider-thumb");
+	sliderThumb.classList.add("context-aware");
 	sliderContainer.appendChild(sliderThumb);
 
 	const sliderPercentage = document.createElement("div");
-	sliderPercentage.className = "slider-percentage";
+	sliderPercentage.classList.add("slider-percentage");
 	sliderPercentage.innerText = `${data.data.value}${data.data.format ? data.data.format : "%"}`;
 	sliderContainer.appendChild(sliderPercentage);
 	sliderContainer.dataset.value = data.data.value;

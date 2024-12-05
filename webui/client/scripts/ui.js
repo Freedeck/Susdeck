@@ -235,7 +235,7 @@ function reloadSounds() {
 				continue;
 			keyObject.setAttribute("data-interaction", JSON.stringify(snd));
 			keyObject.setAttribute("data-name", k);
-			keyObject.className = keyObject.className.replace("unset", "");
+			keyObject.classList.remove("unset");
 
 			if (snd.data.icon)
 				keyObject.style.backgroundImage = `url("${snd.data.icon}")`;
@@ -248,7 +248,7 @@ function reloadSounds() {
 				if (!universal.plugins[snd.plugin]) {
 					console.log("plugin missing", snd.plugin);
 					const indicator = document.createElement("div");
-					indicator.className = "indicator-red";
+					indicator.classList.add("indicator-red");
 					keyObject.appendChild(indicator);
 				}
 				let typeExists = false;
@@ -258,7 +258,7 @@ function reloadSounds() {
 				if (!typeExists && universal.plugins[snd.plugin]) {
 					console.log("type missing", snd.type);
 					const indicator = document.createElement("div");
-					indicator.className = "indicator-yellow";
+					indicator.classList.add("indicator-yellow");
 					keyObject.appendChild(indicator);
 				}
 			}
@@ -336,6 +336,45 @@ function reloadSounds() {
 		}
 	}
 	universal.sendEvent("page_change");
+	for(const e of document.querySelectorAll(".unset")) {
+		let out = "<h4>Nothing!</h4>";
+			 out += "<p>Click this space to create a new Tile here.</p>";
+		const tt = universal.createTooltipFor(e, out);
+			tt.classList.add("tile-tooltip");
+		const pos =
+            Number.parseInt(
+              e.className.split(" ")[1].split("-")[1]
+            ) +
+            (universal.page < 0 ? 1 : 0) +
+            (universal.page > 0
+              ? universal.config.iconCountPerPage * universal.page
+              : 0);
+          const uuid = `fdc.${Math.random() * 10000000}`;
+          UI.reloadProfile();
+          const interaction = {
+            type: "fd.none",
+            pos,
+            uuid,
+            data: {},
+          };
+		e.addEventListener("click", (v) => {
+			universal.send(universal.events.companion.new_key, {
+				"New Tile": interaction,
+			});
+			universal.editTile({
+				srcElement: {
+					getAttribute: (attr) => {
+						return JSON.stringify(interaction);
+					},
+					dataset: {
+						name: "New Tile",
+						interaction: JSON.stringify(interaction),
+					},
+					className: "button k-0",
+				}
+			});
+		})
+	}
 	// document.getElementById('keys').style.maxHeight = document.querySelectorAll('.k').length * (10*12)/window.innerWidth + '%';
 }
 

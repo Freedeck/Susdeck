@@ -40,8 +40,9 @@ function runWebpack(webpackInstance) {
 async function compileWebpack() {
   setWsStateHttp(0);
   const webpackInstance = webpack(webpackConfig);
-  await runWebpack(webpackInstance);
-  setWsStateHttp(1);
+  await runWebpack(webpackInstance).then(() => {
+    setWsStateHttp(1);
+  });
 }
 
 module.exports = {

@@ -83,6 +83,7 @@
       background-color: #17212a;
       border: 1px solid #f8f9fa;
       border-radius: 1.5rem;
+      transition-duration: .125s;
     }
 
     progress::-webkit-progress-bar {
@@ -179,7 +180,7 @@
       if(isBuilding) {
         const timer = setInterval(async () => {
           const res = await fetch(url + "/connect/webpack").catch((err) => {
-          setText("Failed to connect to server.");
+            setText("Failed to connect to server.");
             document.querySelector(".connection").style.display = "block";
             document.querySelector("#failure").innerText = "Failed to connect to server.";
             document.querySelector("#url").value = url;
@@ -187,17 +188,17 @@
           });
           const data = await res.json();
           const isBuilding = data.compiled != 1;
-          setText(isBuilding ? "Preparing client..." : "Compiling Bundles: " + (data.compiled + 1) + "/2");
-          animateProgressTo(20);
+          setText("Compiling Bundles: " + (data.compiled + 1) + "/2");
           if (!isBuilding) {
             clearInterval(timer);
           }
         }, 500);
+        return;
       };
 
       setText("Locking client...");
       isTryingToConnect = true;
-      animateProgressTo(21);
+      animateProgressTo(100);
 
       setText("Deciding where to send user " + id);
       let whereToGo = url;
@@ -211,10 +212,9 @@
       } else {
         whereToGo = url;
       }
-      animateProgressTo(75);
-
+      document.querySelector("progress").style.opacity = '0';
+      
       setText(`Redirecting to ${whereToGo}`);
-      await waitFor(1200);
       window.location.href = whereToGo;
     }
     setInterval(() => {

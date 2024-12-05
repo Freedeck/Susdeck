@@ -153,6 +153,7 @@ window.oncontextmenu = (e) => {
   if (ctxMenu) ctxMenu.remove();
   if (!e.srcElement.classList.contains("button")) return false;
   if (e.srcElement.classList.contains("builtin")) return false;
+  if  (!e.srcElement.classList.contains("k")) return false;
   const custMenu = document.createElement("div");
   custMenu.className = "contextMenu";
   custMenu.style.top = `${e.clientY - window.scrollY}px`;
@@ -585,6 +586,8 @@ function editTile(e) {
 
   universal.sendEvent("editTile", interactionData);
 }
+
+universal.editTile = editTile;
 
 document.querySelector("#editor-back").onclick = () => {
   document.querySelector("#editor-back").style.display = "none";

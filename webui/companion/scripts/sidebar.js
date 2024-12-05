@@ -49,9 +49,8 @@ universal.reloadRight = () => {
 	sidebarUl.setHTML(
 		`<li style="font-size: .6em; background: none; margin: 0 auto;">
 		<span style="display:flex;align-items:center;">
-		<img src="/common/icons/fd.png" width="50" height="50" alt="Freedeck" />
-		&nbsp;
-		<h2>Freedeck</h2>
+		<img src="/common/icons/fd.png" width="75" height="75" alt="Freedeck" />
+
 		</span>
 		</li>`,
 	);

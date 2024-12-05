@@ -133,9 +133,6 @@ debug.log("Initializing server...", "Server / HTTP");
 io.on("connection", handleSock);
 
 function handleSock(socket) {
-  socket._originalOn = socket.on;
-  socket._originalEmit = socket.emit;
-
   /**
    * Send latest notification to Freedeck Client.
    * @param {Object} notification Notification data for Freedeck Client to parse.
@@ -162,25 +159,25 @@ function handleSock(socket) {
 
   NotificationManager.once("newNotification", sendNotification);
 
-  socket.on = (event, callback) => {
-    socket._originalOn(event, callback);
-    debug.log(picocolors.green(`Listening for event ${event}`), "Socket.IO API");
-  };
+  socket.onAny((event, ...args) => {
+    if (event !== eventNames.nbws.request)
+    debug.log(
+      `Received event ${event} with data ${args}`,
+      `Socket Server / ${socket.user ? socket.user : socket.id}`,
+    );
+  });
+  socket.onAnyOutgoing((event, args) => {
+    if (event !== eventNames.nbws.request &&
+        event !== eventNames.nbws.reply &&
+        event !== 'I'
+    ) debug.log(
+      `Emitted event ${event} with data ${JSON.stringify(args)}`,
+      `Socket Server / ${socket.user ? socket.user : socket.id}`,
+    );
 
-  socket.emit = (event, data) => {
-    socket._originalEmit(event, data);
-    if (event !== eventNames.nbws.reply && 
-        event !== eventNames.nbws.replyOnce &&
-        event !== eventNames.information)
-      debug.log(
-        picocolors.green(
-          `Emitted new event ${event}, data: ${JSON.stringify(data)}`,
-        ),
-        "Socket.IO API",
-      );
-  };
+    if(event === "I") debug.log("Emitted event I with server data", `Socket Server / ${socket.user ? socket.user : socket.id}`);
+  });
 
-  console.log("Client has connected");
   clients.push(socket);
 
   socket.on("disconnect", () => {
@@ -192,6 +189,7 @@ function handleSock(socket) {
   });
 
   try {
+    console.log()
     for (const handler of handlers.values()) {
       try {
         if(io.rpcClients?.includes(socket) && handler.name !== "RPC") continue;
@@ -200,8 +198,8 @@ function handleSock(socket) {
         debug.log(picocolors.red(e));
       }
       debug.log(
-        `${picocolors.cyan(`Added new handler ${handler.name}`)}- for ${socket._id}\n`,
-        "Socket.IO API",
+        `${picocolors.cyan(`Added new handler ${handler.name}`)} for ${socket.user ? socket.user : socket.id}`,
+        "Socket Server",
       );
     }
   } catch (e) {

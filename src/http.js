@@ -55,12 +55,14 @@ app.get("/slider-value-change/:sTU/:sV", (req, res) => {
   notifMan.add("handoff-api", `nb-slider-${req.params.sTU}-${req.params.sV}`);
 });
 
+const netAddresses = networkAddresses();
+
 server.listen(PORT, () => {
-  for (const netInterface of Object.keys(networkAddresses())) {
-    const ipPort = `${networkAddresses()[netInterface][0]}:${PORT}`;
+  for (const netInterface of Object.keys(netAddresses)) {
+    const ipPort = `${netAddresses[netInterface][0]}:${PORT}`;
     console.log(
       picocolors.bgBlue(
-        `Go to ${ipPort} on your mobile device [Interface ${netInterface}]`,
+        `Go to ${ipPort} on your mobile device (${netInterface})`,
       ),
     );
   }

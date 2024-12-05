@@ -5,7 +5,7 @@ const picocolors = require(path.resolve("./src/utils/picocolors.js"));
 module.exports = ({ debug, file, pl }) => {
   debug.log(
     "You're loading a single file plugin. Expect unexpected behavior.",
-    "Plugin Manager"
+    "Plugins"
   );
   const ipl = require(path.resolve(`./plugins/${file}`));
   const instantiated = new ipl();
@@ -23,5 +23,9 @@ module.exports = ({ debug, file, pl }) => {
     );
     pl._settings.set(instantiated.id, settings);
   }
-  debug.log(`Successfully loaded single file plugin ${file}`, "Plugin Manager");
-};
+  debug.log(
+    picocolors.green(
+      `Plugin loaded: ${instantiated.name} (${instantiated.id})`
+    ),
+    "Plugins / Single File"
+  );};

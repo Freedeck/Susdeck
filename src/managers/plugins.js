@@ -11,8 +11,10 @@ const pl = {
 	_ch: new Map(),
 	_settings: new Map(),
 	plugins: () => {
-		debug.log("Plugins accessed.", "Plugin Manager");
-		if (pl._plc.length >= 0) pl.update();
+		if (pl._plc.length >= 0) {
+			pl.update();
+			debug.log("Plugins updated.", "Plugins");
+		}
 		return pl._plc;
 	},
 	reload: async () => {
@@ -47,17 +49,17 @@ const pl = {
 				delete require.cache[key];
 			}
 		}
-		debug.log(picocolors.green(`Successfully unloaded plugin with ID ${id}`), "Plugin Manager");
+		debug.log(picocolors.green(`Successfully unloaded plugin with ID ${id}`), "Plugins");
 	},
 	reloadSinglePlugin: async (id) => {
 		const file = pl.plugins().get(id).file;
 		pl.unload(id);
 		if (fs.existsSync(path.resolve('./plugins', file)))
 		await pl.load(file);
-		debug.log(picocolors.green(`Successfully reloaded plugin with ID ${id}`), "Plugin Manager");
+		debug.log(picocolors.green(`Successfully reloaded plugin with ID ${id}`), "Plugins");
 	},
 	update: async () => {
-		debug.log("Rebuilding the plugin cache.", "Plugin Manager");
+		debug.log("Loading plugins.", "Plugins");
 		pl._disabled = [];
 		pl._plc.clear();
 		pl._tyc.clear();
@@ -115,7 +117,7 @@ const pl = {
 		} catch (err) {
 			console.log(
 				picocolors.red(`Error while trying to load plugin ${file}: ${err}`),
-				"Plugin Manager",
+				"Plugins",
 			);
 		}
 	},

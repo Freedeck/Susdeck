@@ -1,5 +1,6 @@
 const fs = require("node:fs");
 const path = require("node:path");
+const picocolors = require("./picocolors");
 const os = require("node:os");
 
 const dbg = {
@@ -11,7 +12,7 @@ const dbg = {
 	writeLogs: false,
 	log: (v, k = "_unset") => {
 		let strToBuild = "";
-		if (k !== "_unset") strToBuild += `[${k}] `;
+		if (k !== "_unset") strToBuild += `${picocolors.blue(k)} >> `;
 		strToBuild += `${v}`;
 		if (dbg.status)
 			console.secretDebugLogNoWriteToFileOnlyDoIfYouKnowWhatYoureDoing(

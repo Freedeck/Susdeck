@@ -16,11 +16,10 @@ module.exports = {
   name: "Main",
   id: "fd.handlers.main",
   exec: ({ socket, io, clients }) => {
-    socket._id = `${Math.random() * 2048}.fd`;
     socket.tempLoginID = `${Math.random() * 1024}.tlid.fd`;
     socket._clientInfo = {};
 
-    debug.log("Connected", `Socket.IO API / ${socket._id}`);
+    debug.log("Connected to server!", `Socket Server / ${socket.user ? socket.user : socket.id}`);
 
     socket.on("disconnect", () => {
       if (socket.user === "Main") {
@@ -30,7 +29,7 @@ module.exports = {
       if (socket.user === "Companion") tsm.delete("IC");
       debug.log(
         pc.red("Disconnected"),
-        `Socket.IO API / ${socket._id}`,
+        `Socket Server / ${socket.user ? socket.user : socket.id}`,
       );
     });
 
@@ -47,6 +46,7 @@ module.exports = {
       }
       for (const hook of instance.hooks) {
         if(hook.type === HookRef.types.socket) {
+          debug.log(`Running hook ${hook.file}`, `Socket Server / ${socket.user ? socket.user : socket.id}`);
           require(hook.file)(
             socket, io, instance
           )
@@ -54,15 +54,7 @@ module.exports = {
       }
     }
 
-    socket.onAny((event, ...args) => {
-      if (event !== eventNames.nbws.request)
-      debug.log(
-        `Received event ${event} with data ${args}`,
-        `Socket.IO API / ${socket._id}`,
-      );
-    });
-
-    debug.log("Created socket hooks.", `Socket.IO API / ${socket._id}`);
+    debug.log("Created socket hooks.", `Socket Server / ${socket.user? socket.user : socket.id}`);
 
     for (const event of Object.keys(eventNames.default)) {
       socket.on(eventNames.default[event], (data) => {
@@ -84,34 +76,30 @@ module.exports = {
       });
     }
     debug.log(
-      "Created all event listeners.",
-      `Socket.IO API / ${socket._id}`,
+      "Initialized event listeners.",
+      `Socket Server / ${socket.user ? socket.user : socket.id}`,
     );
 
     socket.on(eventNames.client_greet, (user) => {
       socket.user = user;
-      debug.log("Migrating to username.", `Socket.IO API / @${socket.user} ${socket._id}`);
+      debug.log("Migrating to username.", `Socket Server / ${socket.user}`);
       if (user === "Main") {
-        debug.log("Mobile device.", `Socket.IO API / @${socket.user} ${socket._id}`);
+        debug.log("Mobile device.", `Socket Server / ${socket.user}`);
         if (tsm.get("isMobileConnected") === undefined)
           tsm.set("isMobileConnected", false);
         io.emit(eventNames.user_mobile_conn, true);
         tsm.set("isMobileConnected", true);
       }
       if (user === "Companion") {
-        debug.log("Not a mobile device.", `Socket.IO API / @${socket.user} ${socket._id}`);
-        if (tsm.get("IC") === undefined) tsm.set("IC", socket._id);
-        if (tsm.get("IC") !== socket._id) {
+        debug.log("Not a mobile device.", `Socket Server / ${socket.user}`);
+        if (tsm.get("IC") === undefined) tsm.set("IC", socket.id);
+        if (tsm.get("IC") !== socket.id) {
           socket.emit(eventNames.companion.conn_fail);
           return;
         }
-        tsm.set("IC", socket._id);
+        tsm.set("IC", socket.id);
       }
-      console.log(`Client ${socket.user} has greeted server at ${new Date()}`);
-      console.log(
-        `There are ${io.engine.clientsCount} clients connected, server counted`,
-        clients.length,
-      );
+      console.log(`Freedeck ${socket.user} connected to server at ${new Date()}`);
       const pl = {};
       const plset = {};
       const plu = plugins.plugins();
@@ -121,14 +109,14 @@ module.exports = {
           plugin[1].instance.id,
         );
       }
-      debug.log("Fetched plugin information", `Socket.IO API / @${socket.user} ${socket._id}`);
+      debug.log("Fetched plugin information", `Socket Server / ${socket.user}`);
       cfg.update();
-      debug.log("Refreshed configuration", `Socket.IO API / @${socket.user} ${socket._id}`);
+      debug.log("Refreshed configuration", `Socket Server / ${socket.user}`);
       const isMobileConnected = tsm.get("isMobileConnected");
       const nbwsState = check();
 
       const serverInfo = {
-        id: socket._id,
+        id: socket.id,
         tempLoginID: socket.tempLoginID,
         NotificationManager,
         hostname: require("node:os").hostname(),
@@ -158,13 +146,13 @@ module.exports = {
         },
         config: cfg.settings(),
       };
-      debug.log("Setup serverInfo. GZipping.", `Socket.IO API / @${socket.user} ${socket._id}`);
+      debug.log("Setup serverInfo. GZipping.", `Socket Server / ${socket.user}`);
       zlib.gzip(JSON.stringify(serverInfo), (err, buffer) => {
         if (err) {
           console.error("Compression error:", err);
           return;
         }
-        debug.log("GZipped. Sending information.", `Socket.IO API / @${socket.user} ${socket._id}`);
+        debug.log("GZipped. Sending information.", `Socket Server / ${socket.user}`);
 
         socket.emit(eventNames.information, buffer);
       });
@@ -176,12 +164,12 @@ module.exports = {
       });
       debug.log(
         "Letting user know they're connected.",
-        `Socket.IO API / @${socket.user} ${socket._id}`
+        `Socket Server / ${socket.user}`
       );
 
       socket.on(eventNames.information, (data) => {
         socket._clientInfo = data;
-        debug.log(`Companion using APIv${data.apiVersion}`, `Socket.IO API / @${socket.user} ${socket._id}`);
+        debug.log(`Companion using APIv${data.apiVersion}`, `Socket Server / ${socket.user}`);
       });
     });
   },

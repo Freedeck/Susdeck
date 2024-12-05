@@ -42,7 +42,6 @@
     </div>
     <ul class="uisounds"></ul>
 </div>
-<h1>Tools</h1>
 <style>
     .experiments {
         display: flex;
@@ -108,56 +107,6 @@
         flex-wrap: wrap;
     }
 </style>
-<div class="flex-wrap-r">
-    <button onclick="universal.save('thanks', '\x9Eée');window.location.reload()">
-        Show changelog (Reloads)
-    </button>
-    <button onclick="universal.showBootLog()">
-        Show boot log
-    </button>
-    <button onclick="universal.sendToast('This is a test', 'Settings')">
-        Test Notification
-    </button>
-    <button onclick="universal.send(universal.events.default.recompile)">
-        Ask server to recompile Webpack bundles
-    </button>
-</div>
-<details>
-    <summary>
-        App Utilities
-    </summary>
-    <p>Prefix is freedeck://COMMAND/ARGS</p>
-    <div class="flex-wrap-r">
-        <button onclick="window.location.href='freedeck://startup'">
-            startup
-        </button>
-        <button onclick="window.location.href='freedeck://show'">
-            show
-        </button>
-        <button onclick="window.location.href='freedeck://hide'">
-            hide
-        </button>
-        <button onclick="window.location.href='freedeck://show/front'">
-            show/front
-        </button>
-    </div>
-    <h3>App Utilities - Plugin Management</h3>
-    <div class="flex-wrap-r">
-        <div><h3>Download Flow</h3>
-            <p>://download/ID/URL/DESCRIPTION/REPO_TITLE</p></div>
-            <br>
-        <button onclick="window.location.href='freedeck://download/ID/URL/DESCRIPTION/REPO_TITLE'">
-            Download Flow
-        </button>
-        <br>
-        <div><h3>Update Flow</h3>
-            <p>://update/ID/URL/DESCRIPTION/REPO_TITLE/FROM_V0/TO_V1</p></div>
-            <br>
-        <button onclick="window.location.href='freedeck://update/ID/URL/DESCRIPTION/REPO_TITLE/FROM_V0/TO_V1'">
-            Update Flow
-        </button>
-    </div>
-</details>
 <div class="settings"></div>
 <div class="cti">
     <h1>Freedeck</h1>
@@ -166,6 +115,56 @@
 </div>
 <details>
     <summary><strong>Developer Tools</strong></summary>
+    <div class="flex-wrap-r">
+        <button onclick="universal.save('thanks', '\x9Eée');window.location.reload()">
+            Show changelog (Reloads)
+        </button>
+        <button onclick="universal.showBootLog()">
+            Show boot log
+        </button>
+        <button onclick="universal.sendToast('This is a test', 'Settings')">
+            Test Notification
+        </button>
+        <button onclick="universal.send(universal.events.default.recompile)">
+            Ask server to recompile Webpack bundles
+        </button>
+    </div>
+    <details>
+        <summary>
+            App Utilities
+        </summary>
+        <p>Prefix is freedeck://COMMAND/ARGS</p>
+        <div class="flex-wrap-r">
+            <button onclick="window.location.href='freedeck://startup'">
+                startup
+            </button>
+            <button onclick="window.location.href='freedeck://show'">
+                show
+            </button>
+            <button onclick="window.location.href='freedeck://hide'">
+                hide
+            </button>
+            <button onclick="window.location.href='freedeck://show/front'">
+                show/front
+            </button>
+        </div>
+        <h3>App Utilities - Plugin Management</h3>
+        <div class="flex-wrap-r">
+            <div><h3>Download Flow</h3>
+                <p>://download/ID/URL/DESCRIPTION/REPO_TITLE</p></div>
+                <br>
+            <button onclick="window.location.href='freedeck://download/ID/URL/DESCRIPTION/REPO_TITLE'">
+                Download Flow
+            </button>
+            <br>
+            <div><h3>Update Flow</h3>
+                <p>://update/ID/URL/DESCRIPTION/REPO_TITLE/FROM_V0/TO_V1</p></div>
+                <br>
+            <button onclick="window.location.href='freedeck://update/ID/URL/DESCRIPTION/REPO_TITLE/FROM_V0/TO_V1'">
+                Update Flow
+            </button>
+        </div>
+    </details>
     <strong>Bug Report Tools</strong>
     <textarea name="bgrep" id="bgrep">Click "Generate Report"</textarea>
     <br>
@@ -232,10 +231,11 @@
     for (const flag of _flags) document.querySelector(".flags").appendChild(flag);
 
     const _views = [
-        settingsViewOpen("index.html", "open index"),
-        settingsViewOpen("setup", "open setup"),
-        settingsViewOpen("prompts", "open prompts"),
     ];
+    for(const view of universal.ctx.views) {
+        const button = settingsViewOpen(view, view);
+        _views.push(button);
+    }
     for (const view of _views) document.querySelector(".ctxl").appendChild(view);
 
     const setToLocalCfg = (key, value) => {

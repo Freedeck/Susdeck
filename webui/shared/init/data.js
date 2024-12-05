@@ -8,6 +8,7 @@ export default function dataHandler(universal, user) {
       "Incoming Data Handler",
       "Created promise, listening for Identify event.",
     );
+    universal.ui = UI;
     universal.on("I", async (gzipped) => {
       universal.CLU("Incoming Data Handler", "Caught Identify event.");
       universal.connected = true;
@@ -101,7 +102,8 @@ export default function dataHandler(universal, user) {
         universal.CLU("Incoming Data Handler", "Native handler created.");
         const isNbwsClosed = universal._information.nbws;
         if(isNbwsClosed) {
-          window.open(window.location.href.replace("?fdc=true", "open_native.html"), "_blank")
+          window.open("freedeck://startup", "_blank")
+          window.open("freedeck://hide", "_blank")
         }
       }
 

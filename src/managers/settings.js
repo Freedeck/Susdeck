@@ -1,12 +1,12 @@
 const fs = require("node:fs");
 const path = require("node:path");
 
+const picocolors = require(path.resolve("./src/utils/picocolors.js"));
 const debug = require(path.resolve("./src/utils/debug.js"));
 
 const sc = {
 	_cache: {},
 	settings: () => {
-		debug.log("Settings accessed.", "Settings Cache");
 		if (Object.keys(sc._cache).length === 0) {
 			sc.update();
 			debug.log("Settings updated.", "Settings Cache");
@@ -29,16 +29,17 @@ const sc = {
 		if (!fs.existsSync(path.resolve("./src/configs/style.json"))) {
 			const def = JSON.stringify(sc.styleSettings);
 			fs.writeFileSync(path.resolve("./src/configs/style.json"), def);
+			debug.log("Created style configuration file.", "Style / Migration");
 		} else {
 			const data = JSON.parse(fs.readFileSync(path.resolve("./src/configs/style.json")));
 			for (const key in sc.styleSettings) {
 				if (!data[key] || typeof data[key] !== typeof sc.styleSettings[key]) {
 					data[key] = sc.styleSettings[key];
-					debug.log(`Added ${key} to style.json`, "Style / Migration");
+					debug.log(`Added ${picocolors.yellow(key)} to style.json`, "Style / Migration");
 				}
 			}
 			fs.writeFileSync(path.resolve("./src/configs/style.json"), JSON.stringify(data));
-			debug.log("Completed preflight.", "Style / Migration");
+			debug.log("Loaded style configuration from file.", "Style / Migration");
 		}
 	},
 	update: () => {

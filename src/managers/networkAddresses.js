@@ -1,4 +1,5 @@
 const { networkInterfaces } = require("node:os");
+const debug = require("../utils/debug.js");
 
 const nets = networkInterfaces();
 const results = Object.create(null); // Or just '{}', an empty object
@@ -17,6 +18,7 @@ const getNetworkInterfaces = () => {
 			}
 		}
 	}
+	debug.log("Network interfaces loaded.", "Network");
 	return results;
 };
 

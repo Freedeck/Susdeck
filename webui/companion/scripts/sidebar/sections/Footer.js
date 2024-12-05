@@ -29,7 +29,7 @@ style.children.push(
   {
     build: () => {
       const elem = document.createElement("small");
-      elem.innerHTML = 'Freedeck is open-source and can be found on <a href="https://github.com/Freedeck/Freedeck" target="_blank">GitHub.</a>'
+      elem.innerHTML = 'Freedeck is open-source and can be found on <a href="https://github.com/Freedeck/Freedeck" target="_blank">GitHub.</a><br><br>Need help? <a href="https://wiki.freedeck.app" target="_blank">Check the Wiki!</a>'
       elem.style.textAlign = "center";
       return elem;
     }

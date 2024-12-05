@@ -6,14 +6,14 @@ const picocolors = require(path.resolve("./src/utils/picocolors.js"));
 module.exports = async ({ debug, file, pl }) => {
   const a = await AsarBundleRunner.extract(`./plugins/${file}`, false);
   const instantiated = await AsarBundleRunner.run(a);
-  console.log(picocolors.yellow(
-    `[Plugin Manager / ${file}] ASAR format plugins are being phased out. Please use .fdpackage plugins instead.`
-  ))
+  console.log(
+    `${picocolors.blue("Plugins")} >> ${picocolors.yellow(`${instantiated.name} is an ASAR bundle. This format is deprecated and will be removed in a future version.`)}`
+  )
   debug.log(
-    picocolors.yellow(
-      `Plugin initialized ${instantiated.name} - ID ${instantiated.id}`
+    picocolors.green(
+      `Plugin loaded: ${instantiated.name} (${instantiated.id})`
     ),
-    "Plugin Manager"
+    "Plugins / ASAR"
   );
   pl._plc.set(instantiated.id, { file, instance: instantiated });
   if (instantiated.disabled) {

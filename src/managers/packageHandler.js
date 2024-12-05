@@ -1,5 +1,6 @@
 const path = require('node:path');
 const tar = require('tar');
+const picocolors = require(path.resolve('./src/utils/picocolors.js'));
 const fs = require('node:fs');
 
 function openPackage(filePath, pluginManager) {
@@ -14,11 +15,11 @@ function openPackage(filePath, pluginManager) {
   const cfgPath = path.resolve(pathToEx, "package.json");
   const { main, name, description, author, version, freedeck } = require(cfgPath);
   if(!freedeck) {
-    console.error(`[Plugin Manager / FDPackage] Error: ${filePath} does not contain a Freedeck package definition.`);
+    console.error(`${picocolors.blue("Plugins / FDPackage")} >> ${picocolors.red(`Error: ${filePath} does not contain a Freedeck package definition.`)}`);
     return;
   }
   if(freedeck.package !== 'plugin' && freedeck.package !== 'theme') {
-    console.error(`[Plugin Manager / FDPackage] Error: ${freedeck.package} is not a valid Freedeck package type.`);
+    console.error(`${picocolors.blue("Plugins / FDPackage")} >> ${picocolors.red(`Error: ${freedeck.title} does not contain a valid Freedeck package type.`)}`);
     return;
   }
   if(freedeck.package === 'plugin') {
@@ -41,7 +42,7 @@ function openPackage(filePath, pluginManager) {
         pluginManager._settings.set(instantiated.id, settings);
       }
     } catch(er) {
-      console.error(`[Plugin Manager / FDPackage] Error while trying to load unpacked plugin ${filePath}: ${er}`);
+      console.error(`${picocolors.blue("Plugins / FDPackage")} >> ${picocolors.red(`Error loading ${filePath}: ${er.toString()}`)}`);
     }
   } else if(freedeck.package === 'theme') {
     if(!fs.existsSync(path.resolve(`webui/hooks/_themes/${name}`))) {
@@ -50,7 +51,7 @@ function openPackage(filePath, pluginManager) {
     if(freedeck.files) {
       for(const file of freedeck.files) {
         if(!fs.existsSync(path.resolve(pathToEx, file))) {
-          console.error(`[Plugin Manager / FDPackage] Error: ${file} does not exist in ${filePath}`);
+          console.error(`${picocolors.blue("Plugins / FDPackage")} >> ${picocolors.red(`Error adding theme file: ${file} does not exist.`)}`);
           continue;
         }
         const dest = path.resolve(`webui/hooks/_themes/${name}/${file}`);
@@ -67,7 +68,7 @@ function openPackage(filePath, pluginManager) {
 
     fs.appendFileSync(path.resolve(`webui/hooks/_themes/${name}.css`), fs.readFileSync(path.resolve(pathToEx, main)));
   }
-  console.log(`[Plugin Manager / FDPackage] Loaded ${freedeck.package} ${freedeck.title} - ID ${name}`);
+  console.log(`${picocolors.blue("Plugins / FDPackage")} >> ${picocolors.green(`${freedeck.type === 'plugin' ? "Plugin": "Theme"} loaded: ${freedeck.title} (${name})`)}`);
 }
 
 

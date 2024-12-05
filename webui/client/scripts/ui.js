@@ -339,6 +339,30 @@ function reloadSounds() {
 	// document.getElementById('keys').style.maxHeight = document.querySelectorAll('.k').length * (10*12)/window.innerWidth + '%';
 }
 
+function visualIdTileChangeText(tileId, text) {
+	for(const button of document.querySelectorAll(".button")) {
+		if (button.getAttribute("data-interaction")) {
+			const dat = JSON.parse(button.getAttribute("data-interaction"));
+			if (dat.uuid === tileId && button.id !== "editor-btn") {
+				const txt = button.querySelector(".button-text p");
+				txt.innerText = text;
+			}
+		}
+	};
+}
+
+function visualTypeTileChangeText(tileId, text) {
+	for(const button of document.querySelectorAll(".button")) {
+		if (button.getAttribute("data-interaction")) {
+			const dat = JSON.parse(button.getAttribute("data-interaction"));
+			if (dat.type === tileId && button.id !== "editor-btn") {
+				const txt = button.querySelector(".button-text p");
+				txt.innerText = text;
+			}
+		}
+	};
+}
+
 export const UI = {
 	reloadSounds,
 	reloadProfile,
@@ -348,5 +372,9 @@ export const UI = {
 	makeBootLog,
 	closeBootLog,
 	showBootLog,
+	visual: {
+		idChangeText: visualIdTileChangeText,
+		typeChangeText: visualTypeTileChangeText
+	},
 	reloadPluginViews
 };

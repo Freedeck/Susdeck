@@ -2,6 +2,7 @@ const { webpack } = require("webpack");
 const fs = require("node:fs");
 const path = require("node:path");
 const webpackConfig = require(path.resolve("webpack.config.js"));
+const picocolors = require(path.resolve("src/utils/picocolors.js"));
 const setWsStateHttp = require(path.resolve("src/routers/connect.js")).webpackState;
 let compileTime = 0;
 process.env.NODE_ENV = "production";
@@ -25,7 +26,7 @@ function runWebpack(webpackInstance) {
         reject(err);
       } else {
         compileTime = stats.endTime - stats.startTime;
-        console.log(`Compiled webpack bundles in ${compileTime}ms`);
+        console.log(picocolors.green(`Compiled webpack bundles in ${compileTime}ms`));
         resolve();
       }
     });

@@ -45,7 +45,7 @@ if (
 if (!DOES_SETTINGS_EXIST_YET && DOES_RUN_SERVER) {
   console.log(
     picocolors.bgRed(
-      "Settings do not exist yet. Please run the companion to create them.",
+      "Settings do not exist yet. Please run the App or 'npm run companion' to create a configuration.",
     ),
   );
   process.exit(1);
@@ -63,13 +63,13 @@ if (!DO_COMPANION && DOES_RUN_SERVER) {
     path.resolve("./FreedeckCore.log"),
     `S{${Date.now()}} New log.\n`,
   );
-  require("./server");
+  (async()=>require("./server"))();
 }
 if (DO_COMPANION) {
   const { app } = require("electron");
   app.whenReady().then(() => {
     require("./makeWindow")("webui/client/new-connect.html", true, 420, 525, false);
-    if (DOES_RUN_SERVER) require("./server");
+    if (DOES_RUN_SERVER) (async()=>require("./server"))();
   });
 }
 
@@ -97,9 +97,8 @@ function setupTerm() {
 
   for (const sig of signals) {
     process.on(sig, () => {
-      if (sig === "SIGINT") console.log("[Freedeck] Shutting down...");
+      if (sig === "SIGINT") console.log(`${picocolors.blue("Freedeck")} >> ${picocolors.red('Shutting down...')}`);
       terminator(sig);
-      debug.log(`Signal received: ${sig}`);
     });
   }
 
@@ -111,18 +110,18 @@ function setupTerm() {
           fs.rmSync(path.resolve("./webui/hooks", file), {
             recursive: true,
           });
-          console.log(`[Plugin Manager / Hooks] Unloaded ${file}`);
+          console.log(`${picocolors.blue("Freedeck")} >> ${picocolors.red(`Unloaded hook ${file}`)}`);
         }
 
-        console.log("[Plugin Manager] Hooks unloaded.");
+        console.log(`${picocolors.blue("Freedeck")} >> ${picocolors.red("Unloaded all hooks")}`);
       }
       if (fs.existsSync(path.resolve("./tmp"))) {
         fs.rmSync(path.resolve("./tmp"), { recursive: true });
-        console.log("[Plugin Manager] Plugin extractions unloaded.");
+        console.log(`${picocolors.blue("Freedeck")} >> ${picocolors.red("Unloaded plugin extractions")}`);
       }
 
       setTimeout(() => {
-        console.log("[Freedeck] Exiting...");
+        console.log(`${picocolors.blue("Freedeck")} >> ${picocolors.red("Exiting...")}`);
         process.exit(1);
       });
     }

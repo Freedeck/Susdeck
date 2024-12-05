@@ -44,15 +44,12 @@ function retryConnection() {
     nbws._socket.onopen = (event) => {
       nbws.connected = true;
       retryDelay = 1000;
-      console.log("WebSocket is open now.");
     };
     nbws._socket.onclose = (event) => {
       nbws.connected = false;
-      console.log("WebSocket is closed now.");
       setTimeout(() => {
         if (nbws._socket.readyState !== ws.OPEN) {
           retryConnection();
-          console.log("NBWS Reconnecting...");
         }
       }, retryDelay);
       retryDelay = Math.min(retryDelay * 2, 30000);

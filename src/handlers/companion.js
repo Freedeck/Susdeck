@@ -23,7 +23,7 @@ module.exports = {
 					}
 					if(flags.includes("RELOAD_CLIENTS")) {
 						for(const client of clients) {
-							if(client._id === socket._id) continue;
+							if(client._id === socket.id) continue;
 							client.emit(eventNames.default.reload);
 						}
 					}

@@ -23,6 +23,13 @@
 			<li>When you connect, press Share at the bottom</li>
 			<li>Press <i>Add To Home Screen</i></li>
 		</ul>
+		<details>
+			<summary>Manual Connection</summary>
+			<ul>
+				<li>Follow every instruction, but instead of going to <span class="local-ip"></span>, go to http://<span class="local-net"></span>:5754 on your device.</li>
+				<li>You won't need to press Connect, as this is directly taking you to your Freedeck.</li>
+			</ul>
+		</details>
 		<p>This will automatically close when your device is connected.</p>
 		<button onclick="document.querySelector('#later-button').click()">Connect Later</button>
 	</div>
@@ -34,6 +41,13 @@
  			<li>Click the three dots at the top right</li>
 			<li>Press <i>Add to Home Screen</i>
 		</ul>
+		<details>
+			<summary>Manual Connection</summary>
+			<ul>
+				<li>Follow every instruction, but instead of going to <span class="local-ip"></span>, go to http://<span class="local-net"></span>:5754 on your device.</li>
+				<li>You won't need to press Connect, as this is directly taking you to your Freedeck.</li>
+			</ul>
+		</details>
 		<p>This will automatically close when your device is connected.</p>
 		<button onclick="document.querySelector('#later-button').click()">Connect Later</button>
 	</div>
@@ -48,6 +62,7 @@
 	const ios = document.querySelector('#c0');
 	const android = document.querySelector('#c1');
 	const localIp = document.querySelectorAll('.local-ip');
+	const localNet = document.querySelectorAll('.local-net');
 	universal.uiSounds.playSound('step_1')
 	connectButton.onclick = () => {
 		universal.uiSounds.playSound('step_2')
@@ -76,6 +91,7 @@
 	}
 
 	fetch('/connect/local-ip').then(res => res.json()).then(data => {
+		localNet.forEach(e=>e.innerText=data.ip[Object.keys(data.ip)[0]][0]);
 		if(Object.keys(data.ip).length == 0) {
 			document.querySelectorAll('.mfa-code').forEach(e => e.innerText = "You are offline, please try again later.");
 			return;

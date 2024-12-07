@@ -594,6 +594,7 @@ window.onerror = (msg, url, linenumber, column, error) => {
 	alert(`Error message: ${msg}\nURL: ${url}\nLine Number: ${linenumber}`);
 	return true;
 };
+if(!universal.UI) universal.UI = UI;
 
 universal.listenFor(
 	"animate_page",

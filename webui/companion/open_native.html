@@ -32,8 +32,10 @@
 
 <script>
     window.location.href='freedeck://startup';
-    window.location.href='freedeck://hide';
-    window.close();
+    setTimeout(() => {
+        window.location.href='freedeck://hide';
+        window.close();
+    },250);
 </script>
 
 </html>

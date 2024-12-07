@@ -4,7 +4,8 @@ import { universal } from "../../shared/universal.js";
 import "./sidebar.js";
 import "../../shared/useAuthentication.js"; // Only for authenticated pages
 import "./uploadsHandler.js";
-import "./editorReactivity.js";
+import "./editor/loader.js";
+import "./contextMenu.js";
 import { makeThanks } from "./changelog/create.js";
 
 await universal.init("Companion");
@@ -13,13 +14,11 @@ universal.connectionTest = true;
 
 const editorButton = document.querySelector("#editor-btn");
 const view_audioOnly = document.querySelector("#audio-only");
+const view_macroOnly = document.querySelector("#macro-only");
 const view_pluginsOnly = document.querySelector("#plugins-only");
 const view_systemOnly = document.querySelector("#system-only");
 const view_noneOnly = document.querySelector("#none-only");
 const view_profileOnly = document.querySelector("#profile-only");
-
-const toggleSidebarContainer = document.querySelector(".toggle-sidebar");
-const toggleSidebarButton = document.querySelector(".toggle-sidebar button");
 
 gridItemDrag.setFilter("#keys .button");
 gridItemDrag.unmovableClass = ".builtin, .unset";
@@ -117,6 +116,8 @@ gridItemDrag.on("dragging", (e) => {
 });
 
 const leftSidebar = document.querySelector(".sidebar");
+const toggleSidebarContainer = document.querySelector(".toggle-sidebar");
+const toggleSidebarButton = document.querySelector(".toggle-sidebar button");
 
 toggleSidebarButton.onclick = (ev) => {
   if (leftSidebar.style.display === "flex") {
@@ -137,201 +138,6 @@ toggleSidebarButton.onclick = (ev) => {
   }
 };
 
-window["button-types"] = [
-  {
-    name: "Audio File",
-    type: "sound",
-  },
-  {
-    name: "Plugin",
-    type: "plugin",
-  },
-];
-
-window.oncontextmenu = (e) => {
-  const ctxMenu = document.querySelector(".contextMenu");
-  if (ctxMenu) ctxMenu.remove();
-  if (!e.srcElement.classList.contains("button")) return false;
-  if (e.srcElement.classList.contains("builtin")) return false;
-  if  (!e.srcElement.classList.contains("k")) return false;
-  const custMenu = document.createElement("div");
-  custMenu.className = "contextMenu";
-  custMenu.style.top = `${e.clientY - window.scrollY}px`;
-  custMenu.style.left = `${e.clientX - window.scrollX}px`;
-  custMenu.style.position = "absolute";
-  if (e.srcElement.dataset.name === undefined) e.srcElement.dataset.name = "";
-
-  let title =
-    e.srcElement.dataset.name !== "" ? e.srcElement.dataset.name : "nothing!";
-  if (e.srcElement.dataset.name === "" && e.srcElement.dataset.interaction)
-    title = "a tile with no name!";
-  const specialFlag = e.srcElement.classList.contains("unset");
-
-  const custMenuTitle = document.createElement("div");
-  custMenuTitle.innerText = `Editing ${title}`;
-  custMenuTitle.style.fontWeight = "bold";
-  custMenuTitle.style.marginBottom = "5px";
-  custMenu.appendChild(custMenuTitle);
-
-  let custMenuItems = [];
-  if (title !== "" && !specialFlag) {
-    custMenuItems = ["Edit Tile"].concat(custMenuItems);
-    custMenuItems.push("Remove Tile");
-  } else {
-    custMenuItems = ["New Tile", "Copy Tile Here"].concat(custMenuItems);
-  }
-
-  custMenuItems = custMenuItems.concat([
-    "",
-    "New Page",
-    `Folder: ${universal.config.profile}`,
-  ]);
-
-  for (const item of custMenuItems) {
-    const menuItem = document.createElement("div");
-    menuItem.innerText = item;
-    menuItem.className = "menuItem";
-    menuItem.onclick = () => {
-      // Handle menu item click
-      switch (item) {
-        case "New Page":
-          UI.Pages[Object.keys(UI.Pages).length] = [];
-          universal.page = Object.keys(UI.Pages).length - 1;
-          UI.reloadSounds();
-          universal.sendEvent("page_change");
-          break;
-        case "---":
-          break;
-        case `Folder: ${universal.config.profile}`:
-          showPick(
-            "Switch to another Folder:",
-            Object.keys(universal.config.profiles).map((profile) => {
-              return {
-                name: profile,
-              };
-            }),
-            (modal, value, feedback, title, button, content) => {
-              universal.page = 0;
-              universal.save("page", universal.page);
-              universal.send(
-                universal.events.companion.set_profile,
-                value.name
-              );
-            }
-          );
-          break;
-        case "Edit Tile":
-          // show a modal with the editor
-          editTile(e);
-          break;
-        case "New Tile": {
-          const pos =
-            Number.parseInt(
-              e.srcElement.className.split(" ")[1].split("-")[1]
-            ) +
-            (universal.page < 0 ? 1 : 0) +
-            (universal.page > 0
-              ? universal.config.iconCountPerPage * universal.page
-              : 0);
-          const uuid = `fdc.${Math.random() * 10000000}`;
-          UI.reloadProfile();
-          const interaction = {
-            type: "fd.none",
-            pos,
-            uuid,
-            data: {},
-          };
-          universal.send(universal.events.companion.new_key, {
-            "New Tile": interaction,
-          });
-          editTile({
-            srcElement: {
-              getAttribute: (attr) => {
-                return JSON.stringify(interaction);
-              },
-              dataset: {
-                name: "New Tile",
-                interaction: JSON.stringify(interaction),
-              },
-              className: "button k-0",
-            },
-          });
-          break;
-        }
-        case "Remove Tile":
-          UI.reloadProfile();
-          showPick(
-            `Are you sure you want to remove ${universal.cleanHTML(
-              e.srcElement.dataset.name
-            )}?`,
-            [
-              { name: "Yes", value: true },
-              { name: "No", value: false },
-            ],
-            (m, v) => {
-              if (v.value !== true) return;
-              universal.send(universal.events.companion.del_key, {
-                name: e.srcElement.dataset.name,
-                item: e.srcElement.getAttribute("data-interaction"),
-              });
-            }
-          );
-          break;
-        case "Copy Tile Here":
-          showReplaceGUI(e.srcElement);
-          break;
-        default:
-          break;
-      }
-    };
-    custMenu.appendChild(menuItem);
-  }
-  document.body.appendChild(custMenu);
-  return false; // cancel default menu
-};
-
-/**
- * @name showReplaceGUI
- * @param {HTMLElement} srcElement The element that you want to copy/replace.
- * @description Show the GUI for replacing a button with another from the universal.config.sounds context.
- */
-function showReplaceGUI(srcElement) {
-  UI.reloadProfile();
-  showPick(
-    "Copy from:",
-    universal.config.sounds.map((sound) => {
-      const k = Object.keys(sound)[0];
-      return {
-        name: k,
-        type: sound[k].type,
-      };
-    }),
-    (modal, value, feedback, title, button, content) => {
-      UI.reloadProfile();
-      const valueToo = universal.config.sounds.filter((sound) => {
-        const k = Object.keys(sound)[0];
-        return k === value.name;
-      })[0][value.name];
-      const pos =
-        Number.parseInt(srcElement.className.split(" ")[1].split("-")[1]) +
-        (universal.page < 0 ? 1 : 0) +
-        (universal.page > 0
-          ? universal.config.iconCountPerPage * universal.page
-          : 0);
-      // we need to clone value, and change the pos, and uuid, then make a new key.
-      universal.send(universal.events.companion.new_key, {
-        [value.name]: {
-          type: valueToo.type,
-          plugin: valueToo.plugin,
-          pos,
-          uuid: `fdc.${Math.random() * 10000000}`,
-          data: valueToo.data,
-        },
-      });
-      return true;
-    }
-  );
-}
 
 /**
  * Load data into editor
@@ -378,7 +184,7 @@ function setEditorData(key, value, int) {
 
 universal.setEditorData = setEditorData;
 
-const selectableViews = ["audio", "plugins", "system", "none", "profile"];
+const selectableViews = ["audio", "plugins", "system", "none", "profile", "macro"];
 
 const openViewCloseAll = (view) => {
   for (const v of selectableViews) {
@@ -448,6 +254,7 @@ function editTile(e) {
   view_systemOnly.style.display = "none";
   view_noneOnly.style.display = "none";
   view_profileOnly.style.display = "none";
+  view_macroOnly.style.display = "none";
   document.querySelector('.spi-actions-disabled').style.display = "none";
   document.querySelector('.spi-actions-notfound').style.display = "none";
   if (
@@ -494,6 +301,20 @@ function editTile(e) {
       }
     }
     openViewCloseAll("plugins");
+    if (interactionData.type === "fd.macro_text") {
+      openViewCloseAll("macro");
+      if(interactionData.data.macro) {
+        document.querySelector("#macro-type").value = 'text';
+        document.querySelector("#macro-macro").value = interactionData.data.macro;
+      }
+    }
+    if (interactionData.type === "fd.macro") {
+      openViewCloseAll("macro");
+      if(interactionData.data.macro) {
+        document.querySelector("#macro-type").value = 'macro';
+        document.querySelector("#macro-macro").value = interactionData.data.macro;
+      }
+    }
     if (interactionData.type.startsWith("fd.sys")) {
       openViewCloseAll("system");
 
@@ -596,6 +417,7 @@ document.querySelector("#editor-back").onclick = () => {
   view_systemOnly.style.display = "none";
   view_noneOnly.style.display = "none";
   view_profileOnly.style.display = "none";
+  view_macroOnly.style.display = "none";
   openViewCloseAll("none");
 };
 
@@ -885,7 +707,7 @@ universal.nbws.on("apps", (rawData) => {
     if (app.name === "_fd.System") friendly = "System Volume";
     option.innerText = friendly;
     option.value = app.name;
-    if (int.data?.app && int.data.app === app.name) option.selected = true;
+    if (int?.data?.app && int.data.app === app.name) option.selected = true;
     select.appendChild(option);
   }
 
@@ -926,6 +748,27 @@ document.querySelector("#none-system").onclick = (e) => {
   openViewCloseAll("system");
 };
 
+document.querySelector("#none-macro").onclick = (e) => {
+  const int = JSON.parse(editorButton.getAttribute("data-interaction"));
+  int.type = "fd.macro_text";
+  document.querySelector("#type").innerText = "fd.macro_text";
+  editorButton.setAttribute("data-interaction", JSON.stringify(int));
+  openViewCloseAll("macro")
+};
+
+document.querySelector("#macro-macro").onchange = (e) => {
+  const int = JSON.parse(editorButton.getAttribute("data-interaction"));
+  setEditorData("macro", e.srcElement.value, int);
+  int.data.macro = e.srcElement.value;
+}
+document.querySelector("#macro-type").onchange = (e) => {
+  const int = JSON.parse(editorButton.getAttribute("data-interaction"));
+  int.type = e.srcElement.value === "text" ? "fd.macro_text" : "fd.macro";
+  document.querySelector("#type").innerText = int.type;
+  editorButton.setAttribute("data-interaction", JSON.stringify(int));
+}
+
+
 document.querySelector("#none-plugin").onclick = (e) => {
   document.querySelector('label[for="plugin"]').style.display = "block";
   document.querySelector("#plugin").style.display = "block";
@@ -933,9 +776,7 @@ document.querySelector("#none-plugin").onclick = (e) => {
   int.type = "fd.select";
   document.querySelector("#type").innerText = "fd.select";
   editorButton.setAttribute("data-interaction", JSON.stringify(int));
-  view_audioOnly.style.display = "none";
-  view_pluginsOnly.style.display = "flex";
-  view_noneOnly.style.display = "none";
+  openViewCloseAll("plugins");
 };
 
 const setupLibraryFor = (type) => {

@@ -102,8 +102,7 @@ export default function dataHandler(universal, user) {
         universal.CLU("Incoming Data Handler", "Native handler created.");
         const isNbwsClosed = universal._information.nbws;
         if(isNbwsClosed) {
-          window.open("freedeck://startup", "_blank")
-          window.open("freedeck://hide", "_blank")
+          window.open("/companion/open_native.html", "_blank")
         }
       }
 

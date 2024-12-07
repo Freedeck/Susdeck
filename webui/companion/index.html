@@ -127,6 +127,17 @@
                     <select name="system-select" id="system-select"></select>
                 </div>
             </div>
+            <div style="display: none" id="macro-only" class="editor-section editor-section-bottom">
+                <h1>Macro <span class="tag-beta">BETA</span></h1>
+                <div id="sys-actions" class="plugin-items">
+                    <p>When pressed, this tile will type out:</p>
+                    <select name="macro-type" id="macro-type">
+                        <option value="text">Text (only text)</option>
+                        <option value="macro">Keypress (allows CTRL, ALT, etc...)</option>
+                    </select>
+                    <input type="text" name="macro-macro" id="macro-macro">
+                </div>
+            </div>
             <div style="display: none" id="profile-only" class="editor-section plugin-items editor-section-bottom">
                 <h1>Folder Switcher</h1>
                 <div class="plugin-items">
@@ -134,20 +145,34 @@
                 </div>
                 <select name="eprofile-select" id="eprofile-select"></select>
             </div>
-            <div style="display: none" id="none-only" class="plugin-view-listing editor-section editor-section-bottom">
+            <div style="display: none" id="none-only" class="plugin-view-listing editor-section editor-section-bottom" >
+                <h1>
+                    Select an action!
+                </h1>
                 <p>
-                    Select what this Tile should do.
+                    This tile does not have a function yet.
                 </p>
-                <div class="flex-wrap-r">
-                    <button id="none-audio">Audio</button>
-                <br />
-                <button id="none-plugin">Plugin</button>
-                <!-- <br /> -->
-                <button id="none-system">
-                    Application Volume
-                </button>
-                <br />
-                <button id="none-profiles">Folder Switch</button>
+                <div class="flex-wrap-r tile-selection">
+                    <button id="none-audio">
+                        <p>Audio</p>
+                        <img src="/common/icons/t_audio.svg" alt="Audio Tile">
+                    </button>
+                    <button id="none-plugin">
+                        <p>Plugin</p>
+                        <img src="/common/icons/t_plugin.svg" alt="Plugin Tile">
+                    </button>
+                    <button id="none-macro">
+                        <p>Macro</p>
+                        <img src="/common/icons/t_macro.svg" alt="Macro Tile">
+                    </button>
+                    <button id="none-system">
+                        <p>App Volume</p>
+                        <img src="/common/icons/t_app_volume.svg" alt="Application Volume Tile">
+                    </button>
+                    <button id="none-profiles">
+                        <p>Folder Changer</p>
+                        <img src="/common/icons/t_folder.svg" alt="Folder Changer Tile">
+                    </button>
                 </div>
             </div>
             <div id="advanced-view" style="display: none;">
@@ -188,10 +213,10 @@
     <div class="center">
         <div id="keys"></div>
     </div>
-    <div class="mt-next-page sal" style="display:none; opacity: 0; pointer-events: none;">
+    <div class="mt-next-page sal">
         <p>Move the tile here to drop it onto the next page</p>
     </div>
-    <div class="mt-prev-page sal" style="display:none;opacity: 0;pointer-events: none;">
+    <div class="mt-prev-page sal">
         <p>Move the tile here to drop it onto the previous page</p>
     </div>
     <script src="/common/error.js" type="module"></script>

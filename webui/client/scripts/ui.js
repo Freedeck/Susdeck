@@ -308,6 +308,14 @@ function reloadSounds() {
 				out += "<p>Opens folder:</p>";
 				out += `<code>${universal.cleanHTML(snd.data.profile, false)}</code>`;
 			}
+			if (snd.type === "fd.macro_text") {
+				out += "<p>Types out:</p>";
+				out += `<code>${universal.cleanHTML(snd.data.macro, false)}</code>`;
+			}
+			if (snd.type === "fd.macro") {
+				out += "<p>Presses:</p>";
+				out += `<code>${universal.cleanHTML(snd.data.macro, false)}</code>`;
+			}
 			if (snd.type === "fd.none") {
 				out += "<p>Does nothing.</p>";
 			} else if(snd.type === "fd.select") {

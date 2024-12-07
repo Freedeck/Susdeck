@@ -88,6 +88,12 @@ export function handler() {
 			universal.save("page", universal.page);
 			universal.send(universal.events.companion.set_profile, data.data.profile);
 		}
+		if(data.type === "fd.macro_text") {
+			universal.nbws.send("macro_text", data.data.macro);
+		}
+		if(data.type === "fd.macro") {
+			universal.nbws.send("macro", data.data.macro);
+		}
 		if(data.type === "fd.fullscreen") {
 			// request fullscreen
 			const elem = document.documentElement; // This can be any element

@@ -26,7 +26,13 @@ function runWebpack(webpackInstance) {
         reject(err);
       } else {
         compileTime = stats.endTime - stats.startTime;
-        console.log(picocolors.green(`Compiled webpack bundles in ${compileTime}ms`));
+        console.log(
+          stats.toString({
+            chunks: false,
+            colors: true,
+          }),
+          picocolors.green(`\nCompiled webpack bundles in ${compileTime}ms`)
+        );
         resolve();
       }
     });
@@ -42,6 +48,8 @@ async function compileWebpack() {
   const webpackInstance = webpack(webpackConfig);
   await runWebpack(webpackInstance).then(() => {
     setWsStateHttp(1);
+  }).catch((e) => {
+    console.error(e);
   });
 }
 

@@ -61,9 +61,8 @@ const eventNames = {
 	},
 
 	nbws: {
-		request: "n-r",
+		sendRequest: "n-r",
 		reply: "n-R",
-		replyOnce: "n-R1",
 	},
 
 	relay: {

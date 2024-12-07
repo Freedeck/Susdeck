@@ -10,12 +10,13 @@ const zlib = require("node:zlib");
 const { readFileSync, readdirSync, existsSync } = require("node:fs");
 
 const HookRef = require("../classes/HookRef");
-const { check } = require("./nbws.events/internalNBWSHandler");
+const { nbws, check } = require("./internalNBWSHandler");
 
 module.exports = {
   name: "Main",
   id: "fd.handlers.main",
   exec: ({ socket, io, clients }) => {
+    nbws._io = io;
     socket.tempLoginID = `${Math.random() * 1024}.tlid.fd`;
     socket._clientInfo = {};
 
@@ -31,6 +32,13 @@ module.exports = {
         pc.red("Disconnected"),
         `Socket Server / ${socket.user ? socket.user : socket.id}`,
       );
+    });
+
+    socket.on(eventNames.nbws.sendRequest, (data) => {
+      if (nbws.connected) {
+        nbws.send(data[0], ...data[1]);
+      } else {
+      }
     });
 
     for (const plugin of plugins.plugins()) {

@@ -26,28 +26,22 @@ export function grabAndHandle() {
 const nbws = {
 	cache: [],
 	send: (data, ...args) => {
-		universal.send(universal.events.nbws.request, [data, args]);
+		universal.send(universal.events.nbws.sendRequest, [data, args]);
 	},
 	on: (event, callback) => {
-		universal.send(universal.events.nbws.reply, event);
-		universal.on(universal.events.nbws.reply, (data) => {
-			if(data[0] === event) {
-				callback(data[1]);
-			}
+		universal.on(`NBWS_${event}`, (data) => {
+			callback(data);
 		});
 	},
 	once: (event, callback) => {
-		universal.send(universal.events.nbws.replyOnce, event);
-		universal.on(universal.events.nbws.replyOnce, (data) => {
-			if(data[0] === event) {
-				callback(data[1]);
-			}
+		universal.once(`NBWS_${event}`, (data) => {
+			callback(data);
 		});
 	},
 	setVolume: (app, volume) => {
 		nbws.send("set_volume", app, `${volume}`);
 		nbws.once("volume_set", (data) => {
-			nbws.cache = JSON.parse(data[0]);
+			nbws.cache = data;
 			updateKeys(nbws.cache);
 		});
 	}
@@ -58,12 +52,12 @@ export function generic() {
 	universal.nbws = nbws;
 
 	universal.nbws.on("error", (data) => {
-		universal.sendToast("Native WebSocket", data[0]);
+		universal.sendToast("Native WebSocket", data);
 	});
 
 	universal.nbws.on("apps", (data) => {
-		universal.nbws.cache = JSON.parse(data[0]);
-		updateKeys(JSON.parse(data[0]));
+		universal.nbws.cache = data;
+		updateKeys(data);
 	});
 
 	if(Object.values(universal.nbws.cache).length !== 0) updateKeys(universal.nbws.cache);

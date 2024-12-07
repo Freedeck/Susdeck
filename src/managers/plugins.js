@@ -2,7 +2,12 @@ const fs = require("node:fs");
 const path = require("node:path");
 const debug = require(path.resolve("./src/utils/debug.js"));
 const picocolors = require(path.resolve("./src/utils/picocolors.js"));
-const packageHandler = require(path.resolve("./src/managers/packageHandler.js"));
+
+const providerPackage = require(path.resolve("./src/managers/providers/package.js"));
+const singleFile = require(path.resolve("./src/managers/providers/singleFile.js"));
+const sourceFolder = require(path.resolve("./src/managers/providers/sourceFolder.js"));
+const asarBundle = require(path.resolve("./src/managers/providers/default.js"));
+
 
 const pl = {
 	_plc: new Map(),
@@ -84,36 +89,41 @@ const pl = {
 		if(pl._disabled.includes(file)) {
 			pl._disabled = pl._disabled.filter((value) => value !== file);
 		}
-		if (file.endsWith(".fdpackage")) {
-			packageHandler.openPackage(file, pl);
-			return;
-		}
 		if (file.includes(".disabled")) {
 			pl._disabled.push(file);
+			console.log(
+				picocolors.gray(`Plugin ${file} is disabled. Skipping.`),
+			)
 			return;
 		}
 		try {
 			if (file.endsWith(".fdr.js")) {
-				require(path.resolve("./src/managers/providers/singleFile.js"))({
+				singleFile({
 					debug,
 					file,
 					pl,
 				})
-				return;
-			}
-			if (file.endsWith(".src")) {
-				require(path.resolve("./src/managers/providers/sourceFolder.js"))({
+			} else if (file.endsWith(".src")) {
+				sourceFolder({
 					debug,
 					file,
 					pl,
 				})
-				return;
+			} else if (file.endsWith(".fdpackage")) {
+				providerPackage({
+					debug,
+					filePath: file,
+					pluginManager: pl
+				});
+			} else if (file.endsWith(".Freedeck")) {
+				asarBundle({
+					debug,
+					file,
+					pl,
+				});
+			} else {
+				console.log(picocolors.red(`Error: Couldn't find a suitable provider for ${file}.`), "Plugins");
 			}
-			require(path.resolve("./src/managers/providers/default.js"))({
-				debug,
-				file,
-				pl,
-			});
 		} catch (err) {
 			console.log(
 				picocolors.red(`Error while trying to load plugin ${file}: ${err}`),

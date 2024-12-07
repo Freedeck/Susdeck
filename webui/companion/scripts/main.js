@@ -499,7 +499,7 @@ function editTile(e) {
 
       universal.nbws.send("get_apps", "");
       universal.nbws.once("apps", (rawData) => {
-        const data = JSON.parse(rawData[0]);
+        const data = rawData;
         const int = JSON.parse(editorButton.getAttribute("data-interaction"));
 
         const select = document.querySelector("#system-select");
@@ -873,7 +873,7 @@ document.querySelector("#none-profiles").onclick = (e) => {
 };
 
 universal.nbws.on("apps", (rawData) => {
-  const data = JSON.parse(rawData[0]);
+  const data = rawData;
   const int = JSON.parse(editorButton.getAttribute("data-interaction"));
   const select = document.querySelector("#system-select");
   select.innerHTML = "";

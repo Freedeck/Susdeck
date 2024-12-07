@@ -160,15 +160,16 @@ function handleSock(socket) {
   NotificationManager.once("newNotification", sendNotification);
 
   socket.onAny((event, ...args) => {
-    if (event !== eventNames.nbws.request)
+    if (event !== eventNames.nbws.sendRequest)
     debug.log(
       `Received event ${event} with data ${args}`,
       `Socket Server / ${socket.user ? socket.user : socket.id}`,
     );
   });
   socket.onAnyOutgoing((event, args) => {
-    if (event !== eventNames.nbws.request &&
+    if (event !== eventNames.nbws.sendRequest &&
         event !== eventNames.nbws.reply &&
+        !event.startsWith("NBWS_") &&
         event !== 'I'
     ) debug.log(
       `Emitted event ${event} with data ${JSON.stringify(args)}`,

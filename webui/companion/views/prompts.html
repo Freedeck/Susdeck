@@ -1,86 +1,81 @@
-<modal>
-	<p class="dev-status">Status: Your device is not connected yet!</p>
-	<div class="modal-content">
-		<h1 id="prompt-title">Connect your other device to Freedeck</h1>
-		<p>Choose your device's OS:</p>
-		<div class="flc">
-			<select id="user-select">
-				<option value="0">iOS (iPhone, iPad, etc..)</option>
-				<option value="1">Android (Samsung, Pixel, etc..)</option>
-			</select>
-			<br/>
-			<div class="fla">
-				<button id="connect-button">View Connection Instructions</button>
-				<button id="later-button">Connect Later</button>
-			</div>
-		</div>
-	</div>
-	<div id="c0">
-		<h1>Connect to Freedeck on iOS</h1>
+<h1 class="settings-section-title">
+	Device Pairing <span><img src="/common/icons/pairing.svg" width="50" height="50"></span>
+</h1>
+<center class="dev-status">Status: Your device is not connected yet!</center>
+<br>
+<center>What device are you using?</center>
+<br>
+<div class="flc">
+	<button class="long" id="connect-button">
+		<img src="/common/icons/apple.svg" width="25" height="25">
+		<p>iOS (iPhone, iPad, etc..)</p>
+	</button>
+	<button class="long" id="connect-button-android">
+		<img src="/common/icons/android.svg" width="25" height="25">
+		Android (Samsung, Pixel, etc..)
+	</button>
+	<button id="later-button">Connect Later</button>
+</div>
+
+<div id="conn-content" style="display: none;">
+	<h1>Connect to Freedeck on <span class="osp-selected">iOS</span></h1>
+	<ul>
+		<li>Open <strong class="osp-browser">Safari</strong> and go to <i><strong>https://my.freedeck.app</strong></i></li>
+		<li>Type in code <i><span class="mfa-code"></span></i> and press Connect.</li>
+		<li>When you see your Freedeck, <span class="osp-add-to-home-screen">press Share at the bottom</span>.</li>
+		<li>Press <i>Add To Home Screen</i></li>
+	</ul>
+	<details>
+		<summary>Manual Connection</summary>
 		<ul>
-			<li>Open <strong>Safari</strong> and go to <i><strong><span class="local-ip"></span></strong></i></li>
-			<li>Type in code <i><span class="mfa-code"></span></i> and press Connect.</li>
-			<li>When you connect, press Share at the bottom</li>
-			<li>Press <i>Add To Home Screen</i></li>
+			<li>Follow every instruction, but instead of going to <span class="local-ip"></span>, go to http://<span
+					class="local-net"></span>:5754 on your device.</li>
+			<li>You won't need to press Connect, as this is directly taking you to your Freedeck.</li>
 		</ul>
-		<details>
-			<summary>Manual Connection</summary>
-			<ul>
-				<li>Follow every instruction, but instead of going to <span class="local-ip"></span>, go to http://<span class="local-net"></span>:5754 on your device.</li>
-				<li>You won't need to press Connect, as this is directly taking you to your Freedeck.</li>
-			</ul>
-		</details>
-		<p>This will automatically close when your device is connected.</p>
+	</details>
+	<p>This will automatically close when your device is connected.</p>
+	<div class="flex-wrap-r">
+		<button id="back">Back</button>
 		<button onclick="document.querySelector('#later-button').click()">Connect Later</button>
 	</div>
-	<div id="c1">
-		<h1>Connect to Freedeck on Android</h1>
-		<ul>
-			<li>Open <strong>your web browser (Example: Chrome)</strong> and go to <i><strong><span class="local-ip"></span></strong></i></li>
-			<li>Type in code <i><span class="mfa-code"></span></i> and press Connect.</li>
- 			<li>Click the three dots at the top right</li>
-			<li>Press <i>Add to Home Screen</i>
-		</ul>
-		<details>
-			<summary>Manual Connection</summary>
-			<ul>
-				<li>Follow every instruction, but instead of going to <span class="local-ip"></span>, go to http://<span class="local-net"></span>:5754 on your device.</li>
-				<li>You won't need to press Connect, as this is directly taking you to your Freedeck.</li>
-			</ul>
-		</details>
-		<p>This will automatically close when your device is connected.</p>
-		<button onclick="document.querySelector('#later-button').click()">Connect Later</button>
-	</div>
-</modal>
+</div>
 
 <script>
-	const modal = document.querySelector('modal');
-	const modalContent = document.querySelector('.modal-content');
-	const userSelect = document.querySelector('#user-select');
-	const connectButton = document.querySelector('#connect-button');
+	const selection = document.querySelector(".flc");
 	const laterButton = document.querySelector('#later-button');
-	const ios = document.querySelector('#c0');
-	const android = document.querySelector('#c1');
-	const localIp = document.querySelectorAll('.local-ip');
 	const localNet = document.querySelectorAll('.local-net');
-	universal.uiSounds.playSound('step_1')
+	const back = document.querySelector('#back');
+
+	back.onclick = () => {
+		document.querySelector('#conn-content').style.display = 'none';
+		selection.style.display = 'flex';
+	}
+
+	const placeholderOs = document.querySelector('.osp-selected');
+	const placeholderBrowser = document.querySelector('.osp-browser');
+	const placeholderAddToHomeScreen = document.querySelector('.osp-add-to-home-screen');
+
+	const connectButton = document.querySelector('#connect-button');
+	const connectButtonAndroid = document.querySelector('#connect-button-android');
+	const connContent = document.querySelector('#conn-content');
+	connectButtonAndroid.onclick = () => {
+		placeholderOs.innerText = 'Android';
+		placeholderBrowser.innerText = 'your web browser (Example: Chrome)';
+		placeholderAddToHomeScreen.innerText = 'click the three dots in the top right';
+		document.querySelector('#conn-content').style.display = 'block';
+		selection.style.display = 'none';
+	}
 	connectButton.onclick = () => {
-		universal.uiSounds.playSound('step_2')
-		modalContent.style.display = 'none';
-		if (userSelect.value === '0') {
-			ios.style.display = 'block';
-			android.style.display = 'none';
-		} else {
-			ios.style.display = 'none';
-			android.style.display = 'block';
-		}
+		placeholderOs.innerText = 'iOS';
+		placeholderBrowser.innerText = 'Safari';
+		placeholderAddToHomeScreen.innerText = 'press the share button at the bottom (or top right)';
+		document.querySelector('#conn-content').style.display = 'block';
+		selection.style.display = 'none';
 	}
-	userSelect.oninput = () => {
-		universal.uiSounds.playSound('fdc_slider')
-	}
+	universal.uiSounds.playSound('step_1')
+
 	laterButton.onclick = () => {
 		universal.uiSounds.playSound('step_1')
-		modal.style.display = 'none';
 		universal.sendEvent("finish_conn");
 		document.querySelector("#sidebar").style.right = "-20%";
 		universal.save("has_setup", true);
@@ -91,42 +86,37 @@
 	}
 
 	fetch('/connect/local-ip').then(res => res.json()).then(data => {
-		localNet.forEach(e=>e.innerText=data.ip[Object.keys(data.ip)[0]][0]);
-		if(Object.keys(data.ip).length == 0) {
+		localNet.forEach(e => e.innerText = data.ip[Object.keys(data.ip)[0]][0]);
+		if (Object.keys(data.ip).length == 0) {
 			document.querySelectorAll('.mfa-code').forEach(e => e.innerText = "You are offline, please try again later.");
 			return;
 		}
 		const ip = data.ip[Object.keys(data.ip)[0]][0];
-		let code = Math.random().toString(36).toUpperCase().split('.')[1].substring(0,5);
-		fetch('https://my.freedeck.app/api.php?code=' + code +'&name=' + universal._information.hostname +'&local_ip=' + ip, {
+		let code = Math.random().toString(36).toUpperCase().split('.')[1].substring(0, 5);
+		fetch('https://my.freedeck.app/api.php?code=' + code + '&name=' + universal._information.hostname + '&local_ip=' + ip, {
 			// mode: 'no-cors'
-		}).then((res)=>res.text()).then((res) => {
-			if(res.includes('EXISTS@')) code = res.split('EXISTS@')[1].split('@')[0]
+		}).then((res) => res.text()).then((res) => {
+			if (res.includes('EXISTS@')) code = res.split('EXISTS@')[1].split('@')[0]
 			document.querySelectorAll('.mfa-code').forEach(e => e.innerText = code);
 		})
 	});
-	localIp.forEach(e=>e.innerText='my.freedeck.app');
 
 	const poll = setInterval(() => {
-		fetch('/connect/dev-status').then(res=>res.json()).then(data => {
+		fetch('/connect/dev-status').then(res => res.json()).then(data => {
 			const status = data.message;
 			const devStatus = document.querySelectorAll('.dev-status');
 			devStatus.forEach(e => e.innerText = `Status: ${status}`);
 			if (data.state) {
 				devStatus.forEach(e => e.style.color = 'green');
 				document.querySelector('#later-button').innerText = 'Close';
-				if(document.querySelector('.modal-content').style.display =='none') {
-					clearInterval(poll);
-				setTimeout(() => {
-					universal.uiSounds.playSound('step_3');
-					document.querySelector('#later-button').click();
-				}, 1500);
-				}
+				clearInterval(poll);
+				universal.uiSounds.playSound('step_3');
+				document.querySelector('#later-button').click();
 			} else {
 				devStatus.forEach(e => e.style.color = 'red');
 			}
 		});
-	},500);
+	}, 500);
 </script>
 
 <style>
@@ -134,44 +124,23 @@
 		font-weight: bold;
 		font-size: 1.5rem;
 	}
+
 	.flc {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		gap: 1rem;
 	}
-	#c0,
-	#c1 {
-		display: none;
-	}
-	#connect-button {
-		background-color: #4CAF50;
-	}
-	#prompts body * > button {
-		width: 6rem;
-		height: 6rem;
-		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-		background-color: rgba(255, 0, 89, 1);
-		transition-duration: .125s;
-		border-radius: 1.5rem;
-		color: black;
-		border: 2px solid #f8f9fa;
-	}
-	.fla {
+
+	.flc button {
 		display: flex;
-		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		gap: 20px;
-
+		gap: 0.5rem;
 	}
-	.modal-content,
-	#c0,
-	#c1 {
-		background-color: transparent;
-		/* margin: 15% auto; */
-		padding: 5px;
-		border-radius: 1.5rem;
+	.flc button.long {
+		width: 75%;
 	}
 
 	.form {
@@ -181,14 +150,6 @@
 
 	.form button {
 		margin-top: 1rem;
-	}
-
-	.modal-content h1 {
-		margin-bottom: 1rem;
-	}
-
-	.modal-content input {
-		margin-bottom: 1rem;
 	}
 
 	button:active {

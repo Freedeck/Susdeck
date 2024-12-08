@@ -120,6 +120,7 @@ h1 {
     font-family: var(--font);
     color: var(--text-color);
     position: fixed;
+    top: 0;
     z-index: 9999;
     transition-duration: .5s;
     color: white;

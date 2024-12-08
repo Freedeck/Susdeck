@@ -1216,77 +1216,6 @@ if (editing) {
   }, 250);
 }
 
-const setupWizard = () => {
-  const sinks = {
-    null: "None",
-  };
-  const sources = { null: "None" };
-  navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
-    navigator.mediaDevices.enumerateDevices().then((devices) => {
-      for (const device of devices) {
-        if (device.kind === "audiooutput") {
-          if (!device.label.includes("Input"))
-            sinks[device.deviceId] = device.label;
-          if (device.label.includes("Input"))
-            sources[device.deviceId] = device.label;
-        }
-      }
-      showText(
-        "Setup Wizard",
-        "Welcome to the Freedeck setup wizard! This will help you set up Freedeck for the first time.",
-        () => {
-          showPick(
-            "Select a monitor device!",
-            Object.keys(sinks).map((data) => {
-              return {
-                sink: data,
-                name: sinks[data],
-              };
-            }),
-            (modal, data, feedback, title, button, content) => {
-              console.log(`User selected ${data.name}`);
-              universal.save("monitor.sink", data.sink);
-              showPick(
-                "Select your preferred VB-Cable!",
-                Object.keys(sources).map((data) => {
-                  return {
-                    sink: data,
-                    name: sources[data],
-                  };
-                }),
-                (modal, data, feedback, title, button, content) => {
-                  console.log(`User selected ${data.name}`);
-                  universal.save("vb.sink", data.sink);
-                  universal.save("pitch", 1);
-                  universal.save("vol", 1);
-                  showText(
-                    "Setup Wizard",
-                    "Audio setup is complete! Let's move on to connecting your device.",
-                    () => {
-                      universal.save("has_setup", true);
-                      if (!universal._information.mobileConnected)
-                        universal.connHelpWizard().then((e) => {
-                          universal.save("has_setup", true);
-                          makeThanks();
-                        });
-                    },
-                    false
-                  );
-                },
-                "This is where Freedeck will also send audio. If you do not have VB-Cable, install it from https://vb-audio.com/Cable/",
-                false
-              );
-            },
-            "This will be where you hear the sounds. If you are using a headset, select that. If you are using speakers, select those.",
-            false
-          );
-        },
-        false
-      );
-    });
-  });
-};
-
 if (universal.load("has_setup") === "false") {
   universal.ctx.destructiveView("setup");
   const view_container = document.querySelector(universal.ctx.view_container);
@@ -1339,4 +1268,4 @@ window.showText = showText;
 window.showYesNo = showYesNo;
 window.showEditModal = showEditModal;
 
-makeThanks();
+makeThanks(false);

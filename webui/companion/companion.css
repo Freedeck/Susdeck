@@ -599,6 +599,7 @@ input {
 	flex-direction: column;
 	text-align: center;
 	gap: 4px;
+	max-height: 85vh;
 }
 #thanks .modalContent details {
 	text-align: start;

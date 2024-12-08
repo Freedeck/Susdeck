@@ -1,5 +1,12 @@
 {
   "major": [
+    "**Introducing 2 new macro types: Application Volume and Macro (BETA)!!**",
+    [
+      "Application Volume: This macro type allows you to control the volume of a specific application on your computer. This is useful for when you want to control the volume of a specific application without affecting the system volume.",
+      "Macro (BETA): This macro type allows you to create a macro that can either type text, or press individual keys."
+    ],
+    "**A lot of views have gotten a visual refresh! Notice more icons, better colors, and more!**",
+    "**Some experiments from Settings have been moved to the main settings page!** These states have not been lost.",
     "**The splash screen has been improved!** The transition now feels much better, and there's a progress bar!",
     "**The editor has gotten a better redesign!** Everything feels modern, and the main content sticks out better.",
     "**Added support for .fdpackage bundles!** These are like .Freedeck files, but much, much smaller AND can now be used for themes!",
@@ -8,11 +15,13 @@
     "**Plugin [re]loading has been reworked and is now more efficient.**",
     "**NativeBridge support has been added. Keeping the Freedeck App (launcher) open in the background will allow you to control your computer with Freedeck like never before.**",
     "Official badges have been added to official Marketplace plugins!",
-    "During the startup animation, the app now shows you the current version!",
+    "The splash screen is now fast, has a progress bar, and now has a smooth transition!",
     "The sidebar has once again, gotten a few more design improvements!",
     "A lot of UI elements have now gotten a border!"
   ],
   "other": [
+    "This changelog dialog is now scrollable!",
+    "This changelog dialog can no longer be bypassed",
     "Fixed a bug where opening the plugin-type selector will cause the previously selected type to still be highlighted",
     "Fixed a bug where the plugin-type selector wouldn't work at all",
     "(WIP, but works) **Plugins can now add Editor views!**"

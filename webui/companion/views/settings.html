@@ -1,4 +1,5 @@
-<h1 class="settings-section-title">Settings <span><img src="/common/icons/settings.svg" width="50" height="50"></span></h1>
+<h1 class="settings-section-title">Settings <span><img src="/common/icons/settings.svg" width="50" height="50"></span>
+</h1>
 <details>
     <summary class="settings-section-title">
         Themes <span><img src="/common/icons/themes.svg" width="50" height="50"></span>
@@ -28,7 +29,7 @@
 <br>
 <details>
     <summary class="settings-section-title">
-        Experiments <span><img src="/common/icons/experi.svg" width="50" height="50"></span>     
+        Experiments <span><img src="/common/icons/experi.svg" width="50" height="50"></span>
     </summary>
     <div class="experiments">
         <div class="experiment">
@@ -49,7 +50,7 @@
         </div>
     </div>
 </details>
-<br>
+<br class="soundpack-br">
 <details class="experiment-exist soundpack">
     <summary class="settings-section-title">
         UI Sounds <span><img src="/common/icons/uisounds.svg" width="50" height="50"></span>
@@ -88,13 +89,15 @@
 
 </details>
 <style>
-    details > summary::marker {
+    details>summary::marker {
         display: none;
         content: "";
     }
-    details > summary:hover {
+
+    details>summary:hover {
         cursor: pointer;
     }
+
     .experiments {
         display: flex;
         flex-wrap: wrap;
@@ -153,10 +156,7 @@
         justify-content: center;
         position: fixed;
         bottom: 0;
-        left: calc(
-            50% - 50vw
-        )
-        transform: translateX(-50%);
+        left: calc(50% - 50vw) transform: translateX(-50%);
         background-color: rgba(0, 0, 0, 0.25);
         width: max-content;
         padding: 5px;
@@ -178,7 +178,10 @@
     </summary>
     <div class="flex-wrap-r">
         <button onclick="universal.save('thanks', '\x9Eée');window.location.reload()">
-            Show changelog (Reloads)
+            Show latest changelog (Reloads)
+        </button>
+        <button onclick="window._makeThanks(true)">
+            Show current changelog
         </button>
         <button onclick="universal.showBootLog()">
             Show boot log
@@ -212,16 +215,20 @@
         </div>
         <h3>App Utilities - Plugin Management</h3>
         <div class="flex-wrap-r">
-            <div><h3>Download Flow</h3>
-                <p>://download/ID/URL/DESCRIPTION/REPO_TITLE</p></div>
-                <br>
+            <div>
+                <h3>Download Flow</h3>
+                <p>://download/ID/URL/DESCRIPTION/REPO_TITLE</p>
+            </div>
+            <br>
             <button onclick="window.location.href='freedeck://download/ID/URL/DESCRIPTION/REPO_TITLE'">
                 Download Flow
             </button>
             <br>
-            <div><h3>Update Flow</h3>
-                <p>://update/ID/URL/DESCRIPTION/REPO_TITLE/FROM_V0/TO_V1</p></div>
-                <br>
+            <div>
+                <h3>Update Flow</h3>
+                <p>://update/ID/URL/DESCRIPTION/REPO_TITLE/FROM_V0/TO_V1</p>
+            </div>
+            <br>
             <button onclick="window.location.href='freedeck://update/ID/URL/DESCRIPTION/REPO_TITLE/FROM_V0/TO_V1'">
                 Update Flow
             </button>
@@ -327,7 +334,7 @@
 
     const _views = [
     ];
-    for(const view of universal.ctx.views) {
+    for (const view of universal.ctx.views) {
         const button = settingsViewOpen(view, view);
         _views.push(button);
     }
@@ -378,6 +385,10 @@
     document.querySelector("#uis").onchange = () => {
         universal.save("uiSounds", !universal.uiSounds.enabled());
         document.querySelector(".soundpack").style.display = universal.uiSounds
+            .enabled()
+            ? "block"
+            : "none";
+        document.querySelector(".soundpack-br").style.display = universal.uiSounds
             .enabled()
             ? "block"
             : "none";
@@ -738,6 +749,10 @@
     window.createSettingCategory = createSettingCategory;
 
     document.querySelector(".soundpack").style.display = universal.uiSounds
+        .enabled()
+        ? "block"
+        : "none";
+    document.querySelector(".soundpack-br").style.display = universal.uiSounds
         .enabled()
         ? "block"
         : "none";

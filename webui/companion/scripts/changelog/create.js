@@ -1,8 +1,10 @@
 import changes from './changes.json';
 
-const makeThanks = () => {
-  if(universal.load("thanks") === universal._information.version.raw) return;
-  if(universal.load("has_setup") === 'false') return;
+const makeThanks = (force=false) => {
+  if(!force) {
+    if(universal.load("thanks") === universal._information.version.raw) return;
+    if(universal.load("has_setup") === 'false') return;
+  }
   const {major, other, known} = changes;
   const container = document.createElement("dialog");
   container.classList.add("dialog");
@@ -14,6 +16,7 @@ const makeThanks = () => {
     document.querySelector("#thanks").style.display = "none";
     universal.uiSounds.playSound("welcome");
 		universal.save("thanks", universal._information.version.raw);
+    document.querySelector("#thanks").remove();
   }
   close.innerText = "OK";
 
@@ -30,7 +33,6 @@ const makeThanks = () => {
   majorDetails.appendChild(summaryMajor);
   const majorList = document.createElement("ul");
   for(const m of major) {
-    
     if(Array.isArray(m)) {
       makeNested(m, majorList);
     } else {
@@ -124,3 +126,4 @@ const makeNested = (data, parent) => {
 }
 
 export {makeThanks};
+window._makeThanks = makeThanks;

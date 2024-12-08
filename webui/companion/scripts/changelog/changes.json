@@ -5,6 +5,7 @@
       "Application Volume: This macro type allows you to control the volume of a specific application on your computer. This is useful for when you want to control the volume of a specific application without affecting the system volume.",
       "Macro (BETA): This macro type allows you to create a macro that can either type text, or press individual keys."
     ],
+    "**You are now able to use multiple audio devices at once!**",
     "**A lot of views have gotten a visual refresh! Notice more icons, better colors, and more!**",
     "**Some experiments from Settings have been moved to the main settings page!** These states have not been lost.",
     "**The splash screen has been improved!** The transition now feels much better, and there's a progress bar!",

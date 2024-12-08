@@ -113,7 +113,7 @@ window.oncontextmenu = (e) => {
         }
         case "Remove Tile":
           UI.reloadProfile();
-          if(universal.load("no_ask_to_delete") === true) {
+          if(universal.load("no_ask_to_delete") === "true") {
             universal.send(universal.events.companion.del_key, {
               name: e.srcElement.dataset.name,
               item: e.srcElement.getAttribute("data-interaction"),

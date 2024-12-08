@@ -138,7 +138,6 @@ toggleSidebarButton.onclick = (ev) => {
   }
 };
 
-
 /**
  * Load data into editor
  * @param {*} itm List of data objects (like {a:2,b:2})
@@ -184,7 +183,14 @@ function setEditorData(key, value, int) {
 
 universal.setEditorData = setEditorData;
 
-const selectableViews = ["audio", "plugins", "system", "none", "profile", "macro"];
+const selectableViews = [
+  "audio",
+  "plugins",
+  "system",
+  "none",
+  "profile",
+  "macro",
+];
 
 const openViewCloseAll = (view) => {
   for (const v of selectableViews) {
@@ -209,7 +215,7 @@ function editTile(e) {
   if (toggleSidebarContainer.style.left !== "0px") toggleSidebarButton.click();
   if (document.querySelector(".contextMenu"))
     document.querySelector(".contextMenu").style.display = "none";
-  for(const el of document.querySelectorAll(".plugin-view")) {
+  for (const el of document.querySelectorAll(".plugin-view")) {
     el.style.display = "none";
   }
   document.querySelector("#advanced-view").style.display = "none";
@@ -231,7 +237,7 @@ function editTile(e) {
   for (const a of document.querySelectorAll(".spiaction")) {
     a.style.display = "none";
     a.classList.remove("spi-active");
-    if(!interactionData.plugin) continue;
+    if (!interactionData.plugin) continue;
     if (a.dataset.plugin === interactionData.plugin) {
       if (a.dataset.type === interactionData.type)
         a.classList.add("spi-active");
@@ -255,8 +261,8 @@ function editTile(e) {
   view_noneOnly.style.display = "none";
   view_profileOnly.style.display = "none";
   view_macroOnly.style.display = "none";
-  document.querySelector('.spi-actions-disabled').style.display = "none";
-  document.querySelector('.spi-actions-notfound').style.display = "none";
+  document.querySelector(".spi-actions-disabled").style.display = "none";
+  document.querySelector(".spi-actions-notfound").style.display = "none";
   if (
     interactionData.type.includes("fd.") &&
     interactionData.type !== "fd.none"
@@ -280,17 +286,21 @@ function editTile(e) {
         el.style.display = "none";
       }
 
-      for(const el of document.querySelectorAll('.spi-actions-disabled-id')) {
+      for (const el of document.querySelectorAll(".spi-actions-disabled-id")) {
         el.innerText = interactionData.plugin;
       }
-      for(const el of document.querySelectorAll('.spi-actions-notfound-type')) {
+      for (const el of document.querySelectorAll(
+        ".spi-actions-notfound-type"
+      )) {
         el.innerText = interactionData.type;
       }
-      if(!document.querySelector(`.spi[data-type="${interactionData.type}"]`)) {
-        document.querySelector('.spi-actions-notfound').style.display = "block"; 
+      if (
+        !document.querySelector(`.spi[data-type="${interactionData.type}"]`)
+      ) {
+        document.querySelector(".spi-actions-notfound").style.display = "block";
       }
-      if(universal.plugins[interactionData.plugin] === undefined) {
-        document.querySelector('.spi-actions-disabled').style.display = "block";
+      if (universal.plugins[interactionData.plugin] === undefined) {
+        document.querySelector(".spi-actions-disabled").style.display = "block";
       }
     } else {
       for (const el of document.querySelectorAll(".spiaction, .spiback")) {
@@ -303,16 +313,18 @@ function editTile(e) {
     openViewCloseAll("plugins");
     if (interactionData.type === "fd.macro_text") {
       openViewCloseAll("macro");
-      if(interactionData.data.macro) {
-        document.querySelector("#macro-type").value = 'text';
-        document.querySelector("#macro-macro").value = interactionData.data.macro;
+      if (interactionData.data.macro) {
+        document.querySelector("#macro-type").value = "text";
+        document.querySelector("#macro-macro").value =
+          interactionData.data.macro;
       }
     }
     if (interactionData.type === "fd.macro") {
       openViewCloseAll("macro");
-      if(interactionData.data.macro) {
-        document.querySelector("#macro-type").value = 'macro';
-        document.querySelector("#macro-macro").value = interactionData.data.macro;
+      if (interactionData.data.macro) {
+        document.querySelector("#macro-type").value = "macro";
+        document.querySelector("#macro-macro").value =
+          interactionData.data.macro;
       }
     }
     if (interactionData.type.startsWith("fd.sys")) {
@@ -529,7 +541,7 @@ const generateProfileSelect = () => {
 };
 
 document.querySelector("#spiback").onclick = (e) => {
-  document.querySelector('.spi-actions-disabled').style.display = "none";
+  document.querySelector(".spi-actions-disabled").style.display = "none";
   for (const el of document.querySelectorAll(".spiaction, .spiback")) {
     el.style.display = "none";
   }
@@ -596,11 +608,16 @@ for (const type of universal._tyc.keys()) {
     const templateData = JSON.parse(e.target.getAttribute("data-template"));
 
     if (interaction.plugin) {
-      document
-        .querySelector(
+      if (
+        document.querySelector(
           `.spi[data-type="${interaction.type}"][data-plugin="${interaction.plugin}"]`
         )
-        .classList.remove("spi-active");
+      )
+        document
+          .querySelector(
+            `.spi[data-type="${interaction.type}"][data-plugin="${interaction.plugin}"]`
+          )
+          .classList.remove("spi-active");
     }
     interaction.type = type;
     interaction.plugin = plugin;
@@ -728,7 +745,6 @@ universal.nbws.on("apps", (rawData) => {
     setEditorData("direction", "vertical", int);
     editorButton.setAttribute("data-interaction", JSON.stringify(int));
   };
-
 });
 
 document.querySelector("#none-system").onclick = (e) => {
@@ -753,21 +769,20 @@ document.querySelector("#none-macro").onclick = (e) => {
   int.type = "fd.macro_text";
   document.querySelector("#type").innerText = "fd.macro_text";
   editorButton.setAttribute("data-interaction", JSON.stringify(int));
-  openViewCloseAll("macro")
+  openViewCloseAll("macro");
 };
 
 document.querySelector("#macro-macro").onchange = (e) => {
   const int = JSON.parse(editorButton.getAttribute("data-interaction"));
   setEditorData("macro", e.srcElement.value, int);
   int.data.macro = e.srcElement.value;
-}
+};
 document.querySelector("#macro-type").onchange = (e) => {
   const int = JSON.parse(editorButton.getAttribute("data-interaction"));
   int.type = e.srcElement.value === "text" ? "fd.macro_text" : "fd.macro";
   document.querySelector("#type").innerText = int.type;
   editorButton.setAttribute("data-interaction", JSON.stringify(int));
-}
-
+};
 
 document.querySelector("#none-plugin").onclick = (e) => {
   document.querySelector('label[for="plugin"]').style.display = "block";
@@ -1085,16 +1100,9 @@ function showPick(
 
   document.body.appendChild(modal);
   universal.uiSounds.playSound("int_prompt");
-
 }
 
-function showYesNo(
-  title,
-  content,
-  yesCallback,
-  noCallback,
-  closable = true
-)  {
+function showYesNo(title, content, yesCallback, noCallback, closable = true) {
   const modal = document.createElement("div");
   modal.className = "modal";
 
@@ -1228,8 +1236,7 @@ universal.on(universal.events.user_mobile_conn, (isConn) => {
   if (isConn) {
     document.querySelector(".mobd").style.display = "none";
     universal.uiSounds.playSound("mobile_connect");
-  }
-  else {
+  } else {
     document.querySelector(".mobd").style.display = "flex";
     universal.uiSounds.playSound("mobile_disconnect");
   }

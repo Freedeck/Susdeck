@@ -109,7 +109,7 @@ function fix() {
 	profileSelect.value = universal.config.profile;
 }
 fix();
-universal.listenFor("pageChanged", fix)
+universal.listenFor("page_change", fix)
 
 profileSelect.onchange = () => {
 	universal.page = 0;

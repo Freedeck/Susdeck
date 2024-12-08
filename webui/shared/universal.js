@@ -103,6 +103,23 @@ const universal = {
 	loadObj: (k) => {
 		return JSON.parse(atob(localStorage.getItem(btoa(`fd.${k}`))));
 	},
+	flags: {
+		_cache: {},
+		reload: () => {
+			universal.flags._cache = JSON.parse(universal.load("flags"));	
+		},
+		isEnabled: (flag) => {
+			return universal.flags._cache[flag] === "true";
+		},
+		set: (flag, value) => {
+			universal.flags._cache[flag] = value;
+			universal.save("flags", JSON.stringify(universal.flags._cache));
+		},
+		toggle: (flag) => {
+			universal.flags._cache[flag] = universal.flags._cache[flag] === "true" ? "false" : "true";
+			universal.save("flags", JSON.stringify(universal.flags._cache));
+		}
+	},
 	default: (k, v) => {
 		universal.CLU("Default", `Setting ${k} to ${v}`);
 		return universal.exists(k) ? universal.load(k) : universal.save(k, v);
@@ -588,12 +605,50 @@ const universal = {
 
 export { universal };
 window.universal = universal;
-window.onerror = (msg, url, linenumber, column, error) => {
-	console.log(msg, url, linenumber, column, error);
-	universal.ErrorLog.push({ msg, url, linenumber, column, error });
-	alert(`Error message: ${msg}\nURL: ${url}\nLine Number: ${linenumber}`);
-	return true;
+window.onerror = (message, source, lineno, colno, error) => {
+  if(window.location.href.includes("companion")) {
+    document.querySelector(".sidebar").style.display = "none";
+  }
+  document.querySelector("#keys").style.display = "none";
+  let modal = document.createElement("dialog");
+  if(!document.querySelector("#error-dialog")) {
+    modal.id = "error-dialog";
+    modal.classList.add("dialog");
+    const content = document.createElement("div");
+    content.innerHTML = `
+    <h1>Freedeck</h1>
+    <p>
+      Freedeck has encountered an error. This does not crash the app, but may cause unexpected behavior.
+    </p>
+    <details open>
+      <summary>Error Details</summary>
+      <small>
+        ${message} in ${source} at line ${lineno}:${colno}
+      </small>
+    </details>
+    <br>
+    <div class='flex-wrap-r'>
+    <a style='display:block;width:100%;font-size:1.5em;text-align:center;' href='javascript:window.ErrorIgnore();'>Ignore</a>
+    <a style='display:block;width:100%;font-size:1.5em;text-align:center;' href='javascript:window.location.reload();'>Reload</a>
+    </div>
+    <small>Ignoring the error may cause Freedeck to be unusable.</small>
+    `
+
+    modal.appendChild(content);
+    document.body.appendChild(modal);
+    modal.showModal();
+  } else modal = document.querySelector("#error-dialog");
+
+  console.log(message, source, lineno, colno, error);
 };
+
+window.ErrorIgnore = () => {
+  document.querySelector("#error-dialog").remove();
+  document.querySelector("#keys").style.display = "grid";
+  if(window.location.href.includes("companion")) {
+    document.querySelector(".sidebar").style.display = "flex";
+  }
+}
 if(!universal.UI) universal.UI = UI;
 
 universal.listenFor(

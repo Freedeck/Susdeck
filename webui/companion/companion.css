@@ -2,6 +2,13 @@ body {
 	color: var(--text-color);
 }
 
+.reset-button {
+	width: 30%;
+	height: 30%;
+	min-width: 30%;
+	min-height: 30%;
+}
+
 input {
 	background-color: var(--input-bg);
 	color: var(--input-color);

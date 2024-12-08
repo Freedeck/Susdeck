@@ -44,7 +44,7 @@ universal.reloadRight = () => {
 	}
 	if(universal.load("cte") === "true")
 		sidebar.push({'Themer': 'customtheme.html'});
-	if(universal.load("swc") === "true")
+	if(universal.flags.isEnabled("recompile-tab"))
 		sidebar.push({'Recompile': '+universal.send(universal.events.default.recompile)'})
 	sidebarUl.setHTML(
 		`<li style="font-size: .6em; background: none; margin: 0 auto;">

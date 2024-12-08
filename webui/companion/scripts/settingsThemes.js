@@ -1,8 +1,8 @@
 universal.listenFor("loadHooks", () => {
-	st_ldt();
+	loadThemeListing();
 });
 
-window.st_ldt = async () => {
+window.loadThemeListing = async () => {
 	document.querySelector(".themelist").innerHTML = "";
 	for (const id of universal.theming.listing) {
 		let theme = universal.theming.listingData[id];
@@ -24,7 +24,7 @@ window.st_ldt = async () => {
 			universal.theming.setTheme(
 				id, true
 			);
-			st_ldt();
+			loadThemeListing();
 		};
 		if (universal.load("theme") === id) {
 			title.innerText += " (Active)";

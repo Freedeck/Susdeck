@@ -205,6 +205,7 @@ export class SidebarSlider {
   build() {
     const container = document.createElement("div");
     container.classList.add("flex-wrap-r");
+    container.classList.add("alc");
     const inlineContainer = document.createElement("div");
     // inlineContainer.classList.add("flex-wrap-r")
     inlineContainer.classList.add("alc");
@@ -227,7 +228,8 @@ export class SidebarSlider {
     button.oninput = this.onClick;
 
     const resetButton = document.createElement("button");
-    resetButton.innerText = "Reset";
+    resetButton.classList.add("reset-button");
+    resetButton.innerHTML = `<img src="/common/icons/reset.svg" alt="Reset" width="25" height="25">`;
     resetButton.id = `${this.id}-reset`;
     resetButton.onclick = (e) => {
       this.onReset(e);

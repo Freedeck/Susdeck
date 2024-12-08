@@ -1,5 +1,4 @@
 function initialize() {
-  uiSoundEngine.enabled = () => universal.load("uiSounds") === "true";
   universal.CLU("Boot / UI Sounds", "Set enabled");
   uiSoundEngine.reload();
   universal.CLU("Boot / UI Sounds", "Reloaded sounds");
@@ -47,7 +46,7 @@ async function playSound(name) {
 }
 
 const uiSoundEngine = {
-  enabled: () => universal.load("uiSounds") === "true",
+  enabled: () => universal.flags.isEnabled("uiSounds"),
   currentSoundpack: "futuristic.soundpack",
   info: {},
   sounds: {},

@@ -7,14 +7,16 @@
 </p>
 <div class="item">
 	<h3>Monitor Device</h3>
-	<p>This will be where you hear the sounds. If you are using a headset, select that. If you are using speakers, select those.</p>
-	<select name="monitor" id="monitor"></select>
+	<p>This will be where you hear the sounds. Freedeck now supports playing through multiple devices at once, so pick as
+		many as you like.</p>
+	<div class="monitor-devices audio-device-picker"></div>
 </div>
 <br>
 <div class="item">
 	<h3>VB-Cable device</h3>
-	<p>This is where Freedeck will also send audio. If you do not have VB-Cable, install it from <a target="_blank" href="https://vb-audio.com/Cable/">https://vb-audio.com/Cable/</a></p>
-	<select name="vb" id="vb"></select>
+	<p>This is where Freedeck will also send audio. If you do not have VB-Cable, install it from <a target="_blank"
+			href="https://vb-audio.com/Cable/">https://vb-audio.com/Cable/</a></p>
+	<div class="vb-cables audio-device-picker"></div>
 </div>
 <br>
 <button id="nexta">
@@ -27,13 +29,37 @@
 	</summary>
 	<button id="bypass">Partial Setup Bypass</button>
 	<button id="bypasssi">Full Setup Bypass</button>
-	<p>If you bypass with sidebar, you will not be able to come back without resetting "has_setup" from the Settings tab.</p>
+	<p>If you bypass with sidebar, you will not be able to come back without resetting "has_setup" from the Settings tab.
+	</p>
 	<button id="recom">Toggle Recompile on Right</button>
 </details>
 
 <style>
+	.audio-device-picker {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+		gap: .5rem;
+		background-color: rgba(0, 0, 0, 0.25);
+		padding: .5rem;
+		border-radius: 1.5rem;
+	}
+
+	.audio-device label {
+		width: 100%;
+	}
+	.audio-device {
+		display: flex;
+		align-items: center;
+		justify-content: start;
+		padding: .25rem;
+		gap: .5rem;
+		border-radius: 1.5rem;
+		background-color: rgba(0, 0, 0, 0.25);
+	}
+
 	#fas {
-		background-color: rgba(0,0,0,0.25);
+		background-color: rgba(0, 0, 0, 0.25);
 		padding: 5px;
 		border-radius: 1.5rem;
 		display: flex;
@@ -42,25 +68,25 @@
 		justify-content: start;
 		display: none;
 	}
+
 	.item {
-		background-color: rgba(0,0,0,0.25);
+		background-color: rgba(0, 0, 0, 0.25);
 		padding: 5px;
 		border-radius: 1.5rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		justify-content: start;	
+		justify-content: start;
+		height: max-content;
 	}
 </style>
 
 <script>
 	universal.reloadRight();
 	document.querySelector("#nexta").onclick = (e) => {
-		universal.save("monitor", document.querySelector("#monitor").value);
-		universal.save("vb", document.querySelector("#vb").value);
 		universal.ctx.destructiveView("prompts");
 	}
-	
+
 	document.querySelector("#bypass").onclick = (e) => {
 		universal.vopen("index.html");
 	}
@@ -72,50 +98,85 @@
 	}
 
 	document.querySelector("#recom").onclick = (e) => {
-		universal.save("swc", universal.load("swc") == "true" ? "false" : "true");
+		universal.flags.toggle("recompile-tab");
 		universal.reloadRight();
 	}
 
 	let last = '';
 
 	function a(ev) {
-		if(last == 'f' && ev.key == 'd') {
+		if (last == 'f' && ev.key == 'd') {
 			document.querySelector("#fas").style.display = document.querySelector("#fas").style.display == "none" ? "block" : "none";
 		}
 		last = ev.key;
 	}
 	window.onkeydown = a;
-	  const sinks = {
-    null: "None",
-  };
-  const sources = { null: "None" };
-  navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
-    navigator.mediaDevices.enumerateDevices().then((devices) => {
-      for (const device of devices) {
-        if (device.kind === "audiooutput") {
-          if (!device.label.includes("Input"))
-            sinks[device.deviceId] = device.label;
-          if (device.label.includes("Input"))
-            sources[device.deviceId] = device.label;
-        }
-      }
-			const monitor = document.querySelector("#monitor");
-			const vb = document.querySelector("#vb");
-			for (const sink in sinks) {
-				const option = document.createElement("option");
-				option.value = sink;
-				option.innerText = sinks[sink];
-				monitor.appendChild(option);
+	async function getAudioOutputDevices(isCable = false) {
+		const devices = await navigator.mediaDevices.enumerateDevices();
+		const audioOutputs = devices
+			.filter(
+				(device) =>
+					device.kind === "audiooutput" &&
+					(isCable
+						? device.label.includes("VB-Audio")
+						: !device.label.includes("VB-Audio")),
+			)
+			.map((device) => ({
+				name: device.label || "Unknown Audio Output",
+				value: device.deviceId,
+			}));
+		return audioOutputs;
+	}
+	const outs = await getAudioOutputDevices();
+	const ins = await getAudioOutputDevices(true);
+	const monitor = document.querySelector(".monitor-devices");
+	const vbs = document.querySelector(".vb-cables");
+	outs.forEach((out) => {
+		const container = document.createElement("div");
+		container.classList.add("audio-device");
+		const input = document.createElement("input");
+		input.type = "checkbox";
+		input.name = "monitor";
+		input.value = out.value;
+		input.id = out.value;
+		input.checked = universal.audioClient.sinkManager.hasSink(out.value);
+		input.onchange = (e) => {
+			let isChecked = e.target.checked;
+			if (isChecked && !universal.audioClient.sinkManager.hasSink(out.value)) {
+				universal.audioClient.sinkManager.addSink(universal.audioClient.sinkManager.types.monitor, out.value);
+			} else if (!isChecked && universal.audioClient.sinkManager.hasSink(out.value)) {
+				universal.audioClient.sinkManager.removeSink(out.value);
 			}
-			for (const source in sources) {
-				const option = document.createElement("option");
-				option.value = source;
-				option.innerText = sources[source];
-				vb.appendChild(option);
+		};
+		const label = document.createElement("label");
+		label.htmlFor = out.value;
+		label.innerText = out.name;
+		container.appendChild(label);
+		container.appendChild(input);
+		monitor.appendChild(container);
+	});
+	ins.forEach((out) => {
+		const container = document.createElement("div");
+		container.classList.add("audio-device");
+		const input = document.createElement("input");
+		input.type = "checkbox";
+		input.name = "vb";
+		input.value = out.value;
+		input.id = out.value;
+		input.checked = universal.audioClient.sinkManager.hasSink(out.value);
+		input.onchange = (e) => {
+			let isChecked = e.target.checked;
+			if (isChecked && !universal.audioClient.sinkManager.hasSink(out.value)) {
+				universal.audioClient.sinkManager.addSink(universal.audioClient.sinkManager.types.vbcable, out.value);
+			} else if (!isChecked && universal.audioClient.sinkManager.hasSink(out.value)) {
+				universal.audioClient.sinkManager.removeSink(out.value);
 			}
-
-			monitor.value = universal.load("monitor") || null;
-			vb.value = universal.load("vb") || null;
-		});
+		};
+		const label = document.createElement("label");
+		label.htmlFor = out.value;
+		label.innerText = out.name;
+		container.appendChild(label);
+		container.appendChild(input);
+		vbs.appendChild(container);
 	});
 </script>

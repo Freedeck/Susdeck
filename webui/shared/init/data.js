@@ -41,12 +41,13 @@ export default function dataHandler(universal, user) {
       universal.default("playback-mode", "play_over");
       universal.default("vol", 1);
       universal.default("pitch", 1);
-      universal.default("monitor.sink", "default");
-      universal.default("vb.sink", "default");
+      universal.default("uiSounds", true);
+      universal.default("flags", JSON.stringify({}));
       universal.default("has_setup", "false");
       universal.default("theme", "default");
       universal.default("profile", "Default");
       universal.default("repos.community", JSON.stringify([]));
+      universal.flags.reload();
 
       if (!universal.load("welcomed")) {
         universal.sendToast("Welcome to Freedeck.");

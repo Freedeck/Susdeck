@@ -46,7 +46,7 @@ function closeBootLog() {
 			resolve(true);
 			bootLogContainer.style.scale='0';
 			openCloseBootLog.style.display = 'none';
-			if(universal.load("skipanim") === "true") {
+			if(universal.flags.isEnabled("skip-boot-animation")) {
 				bootLog.style.display = 'none';
 				if(window.splashScreen)
 					window.splashScreen.unsplash();

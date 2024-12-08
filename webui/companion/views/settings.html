@@ -9,6 +9,16 @@
 <br>
 <details>
     <summary class="settings-section-title">
+        Audio Devices <span><img src="/common/icons/audio.svg" width="50" height="50"></span>
+    </summary>
+    <p>Monitor Devices</p>
+    <div class="monitor-devices audio-device-picker"></div>
+    <p>VB-Cables</p>
+    <div class="vb-cables audio-device-picker"></div>
+</details>
+<br>
+<details>
+    <summary class="settings-section-title">
         General <span><img src="/common/icons/settings.svg" width="50" height="50"></span>
     </summary>
     <div class="experiments">
@@ -89,6 +99,25 @@
 
 </details>
 <style>
+    .audio-device-picker {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        background-color: rgba(0, 0, 0, 0.25);
+        padding: 5px;
+        border-radius: 1.5rem;
+    }
+
+    .audio-device {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 0.25rem;
+        border-radius: 1.5rem;
+        background-color: rgba(0, 0, 0, 0.25);
+    }
+
     details>summary::marker {
         display: none;
         content: "";
@@ -240,9 +269,12 @@
     <div class="ctxl"></div>
     <p id="ctx"></p>
     <h3>Be warned, you can reset your data from here. Tile configuration is NOT affected.</h3>
-    <strong>Flags</strong>
-    <div class="flags"></div>
-    <strong>Cfg</strong>
+    <details>
+        <summary>Local Storage Configuration</summary>
+        <div class="ls-reader">
+
+        </div>
+    </details>
     <div>
         <button id="fsw">Force setup-wizard</button>
         <details>
@@ -260,500 +292,129 @@
 <!-- <h2>This is the bottom of the Settings menu.</h2> -->
 <script type="module">
     import "/app/settingsThemes.js";
-    st_ldt();
+    loadThemeListing();
 
-    b("#fsw").onclick = () => {
+    async function getAudioOutputDevices(isCable = false) {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const audioOutputs = devices
+            .filter(
+                (device) =>
+                    device.kind === "audiooutput" &&
+                    (isCable
+                        ? device.label.includes("VB-Audio")
+                        : !device.label.includes("VB-Audio")),
+            )
+            .map((device) => ({
+                name: device.label || "Unknown Audio Output",
+                value: device.deviceId,
+            }));
+        return audioOutputs;
+    }
+    const outs = await getAudioOutputDevices();
+    const ins = await getAudioOutputDevices(true);
+    const monitor = document.querySelector(".monitor-devices");
+    const vbs = document.querySelector(".vb-cables");
+    outs.forEach((out) => {
+        const container = document.createElement("div");
+        container.classList.add("audio-device");
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.name = "monitor";
+        input.value = out.value;
+        input.id = out.value;
+        input.checked = universal.audioClient.sinkManager.hasSink(out.value);
+        input.onchange = (e) => {
+            let isChecked = e.target.checked;
+            if (isChecked && !universal.audioClient.sinkManager.hasSink(out.value)) {
+                universal.audioClient.sinkManager.addSink(universal.audioClient.sinkManager.types.monitor, out.value);
+            } else if (!isChecked && universal.audioClient.sinkManager.hasSink(out.value)) {
+                universal.audioClient.sinkManager.removeSink(out.value);
+            }
+        };
+        const label = document.createElement("label");
+        label.htmlFor = out.value;
+        label.innerText = out.name;
+        container.appendChild(label);
+        container.appendChild(input);
+        monitor.appendChild(container);
+    });
+    ins.forEach((out) => {
+        const container = document.createElement("div");
+        container.classList.add("audio-device");
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.name = "vb";
+        input.value = out.value;
+        input.id = out.value;
+        input.checked = universal.audioClient.sinkManager.hasSink(out.value);
+        input.onchange = (e) => {
+            let isChecked = e.target.checked;
+            if (isChecked && !universal.audioClient.sinkManager.hasSink(out.value)) {
+                universal.audioClient.sinkManager.addSink(universal.audioClient.sinkManager.types.vbcable, out.value);
+            } else if (!isChecked && universal.audioClient.sinkManager.hasSink(out.value)) {
+                universal.audioClient.sinkManager.removeSink(out.value);
+            }
+        };
+        const label = document.createElement("label");
+        label.htmlFor = out.value;
+        label.innerText = out.name;
+        container.appendChild(label);
+        container.appendChild(input);
+        vbs.appendChild(container);
+    });
+
+    const details = document.querySelector(".ls-reader");
+    appendDetails(details, localStorage, true);
+
+    getElement("#fsw").onclick = () => {
         universal.save("has_setup", false);
         window.location.reload();
     }
 
-    b("#genr").onclick = () => {
-        const bgrep = b("#bgrep");
+    getElement("#genr").onclick = () => {
+        const bgrep = getElement("#bgrep");
         const report = bgrep.value;
         bgrep.value = "Generating report...";
         const rep = universal.ExportReportData();
         bgrep.value = rep;
     }
 
-    b("#read-bgrep").onclick = () => {
-        const input = b("#input-bgrep");
+    getElement("#read-bgrep").onclick = () => {
+        const input = getElement("#input-bgrep");
         const report = input.value;
-        const details = b(".report-details");
+        const details = getElement(".report-details");
         details.innerHTML = "";
         const data = JSON.parse(report);
         appendDetails(details, data);
     }
 
-    function appendDetails(parent, data) {
-        Object.keys(data).forEach((key) => {
-            const detail = document.createElement("details");
-            const summary = document.createElement("summary");
-            summary.innerText = key;
-            detail.appendChild(summary);
+    settings_makeToggleFlag("#swc", "recompile-tab", () => { universal.reloadRight() });
+    settings_makeToggleFlag("#blvs", "skip-boot-animation");
+    settings_makeToggleFlag("#no_ask_to_delete", "no_ask_to_delete")
 
-            if (typeof data[key] === "object" && data[key] !== null) {
-                appendDetails(detail, data[key]);
-            } else {
-                const p = document.createElement("p");
-                p.innerText = key + ": " + data[key];
-                detail.appendChild(p);
-            }
+    settings_makeExternalStyleToggleFlag("#nbik", "nopreset")
+    settings_makeExternalStyleToggleFlag("#apc", "animation")
+    settings_makeExternalStyleToggleFlag("#cpm", "center")
 
-            parent.appendChild(detail);
-        });
-    }
-
-
-
-    function b(s) { return document.querySelector(s) }
-
-    function settingsViewMakeFlagButton(flag, name) {
-        const button = document.createElement("button");
-        button.innerText = name;
-        button.onclick = () => {
-            universal.save(flag, false);
-            universal.sendToast("Flag " + flag + " reset!");
-        };
-        return button;
-    }
-    function settingsViewOpen(view, name) {
-        const button = document.createElement("button");
-        button.innerText = name;
-        button.onclick = () => {
-            universal.vopen(view);
-        };
-        return button;
-    }
-
-    document.querySelector("#ctx").innerText = JSON.stringify(universal.ctx);
-    const _flags = [
-        settingsViewMakeFlagButton("has_setup", "set flag has_setup to false")
-    ]
-
-    for (const flag of _flags) document.querySelector(".flags").appendChild(flag);
-
-    const _views = [
-    ];
-    for (const view of universal.ctx.views) {
-        const button = settingsViewOpen(view, view);
-        _views.push(button);
-    }
-    for (const view of _views) document.querySelector(".ctxl").appendChild(view);
-
-    const setToLocalCfg = (key, value) => {
-        const cfg = universal.lclCfg();
-        cfg[key] = value;
-        return cfg;
-    }
-
-    window.settingsView_set = (k, v) => {
-        universal.send(
-            universal.events.default.config_changed,
-            setToLocalCfg(k, v)
-        );
-    }
-
-    window.settingsView_check = (k, v, a = () => { }) => {
-        document.querySelector(k).checked = universal.load(v) == "true";
-        document.querySelector(k).onchange = (ev) => {
-            universal.save(v, !(universal.load(v) == "true"));
-            a(ev);
-        }
-    }
-    window.settingsView_lcCheck = (k, v) => {
-        document.querySelector(k).checked = universal.lclCfg()[v] == true;
-
-        document.querySelector(k).onchange = () => {
-            window.settingsView_set(v, !(universal.lclCfg()[v] == true));
-        };
-    }
-
-    window.settingsView_createLSCheck = (id, label, description, changed) => {
-        const a = "";
-        window.settingsView_check("#" + id, id, changed);
-    }
-
-    window.settingsView_check("#swc", "swc", () => { universal.reloadRight() });
-    window.settingsView_check("#blvs", "skipanim");
-
-    window.settingsView_lcCheck("#nbik", "nopreset")
-    window.settingsView_lcCheck("#cpm", "center")
-    window.settingsView_check("#no_ask_to_delete", "no_ask_to_delete")
-    window.settingsView_lcCheck("#apc", "animation")
-
-    document.querySelector("#uis").checked = universal.uiSounds.enabled();
-    document.querySelector("#uis").onchange = () => {
-        universal.save("uiSounds", !universal.uiSounds.enabled());
-        document.querySelector(".soundpack").style.display = universal.uiSounds
-            .enabled()
+    settings_makeToggleFlag("#uis", "uiSounds", () => {
+        document.querySelector(".soundpack").style.display = universal.flags.isEnabled("uiSounds")
             ? "block"
             : "none";
-        document.querySelector(".soundpack-br").style.display = universal.uiSounds
-            .enabled()
+        document.querySelector(".soundpack-br").style.display = universal.flags.isEnabled("uiSounds")
             ? "block"
             : "none";
-    };
+    });
 
-    document.querySelector("#erals").onclick = () => {
+    getElement("#erals").onclick = () => {
         localStorage.clear();
         universal.sendToast("Erased all LocalStorage data! Cleaning up...", "Settings: Developer Tools");
         window.location.reload();
     }
 
-    /**
-     * Create a setting dynamically.
-     * @param {*} name The name of the setting.
-     * @param {*} id The ID of the setting.
-     * @param {*} value The option setter.
-     * @param {*} onLoad The default value.
-     * @param {*} goto The CSS selector to append to.
-     * @param {*} onChanged The function to call when the setting changes.
-     */
-    function createBooleanSetting(
-        name,
-        id,
-        value,
-        onLoad,
-        goto,
-        onChanged = () => { },
-    ) {
-        const div = document.createElement("div");
-        div.className = "flex-wrap-r";
-        const p = document.createElement("p");
-        p.innerText = name;
-        const input = document.createElement("input");
-        input.id = id;
-        input.type = "checkbox";
-        div.appendChild(p);
-        div.appendChild(input);
-
-        value(input).then(() => {
-            input.checked = onLoad;
-        });
-
-        input.onchange = () => {
-            console.log("Saving " + id + " as " + input.checked);
-            universal.save(id, input.checked);
-            universal.sendToast("Saved changes!");
-            onChanged(input.checked);
-        };
-
-        document.querySelector(goto).appendChild(div);
-    }
-
-    /**
-     * Create a setting dynamically.
-     * @param {String} name The name of the setting.
-     * @param {String} id The ID of the setting.
-     * @param {Function} value The option setter.
-     * @param {*} onLoad Default.
-     * @param {String} goto The CSS selector to append to.
-     * @param {Function} onChanged The function to call when the setting changes.
-     */
-    function createSelectSetting(
-        name,
-        id,
-        value,
-        onLoad,
-        goto,
-        onChanged = () => { },
-    ) {
-        const div = document.createElement("div");
-        div.className = "flex-wrap-r";
-        const p = document.createElement("p");
-        p.innerText = name;
-        const select = document.createElement("select");
-        select.id = id;
-        div.appendChild(p);
-        div.appendChild(select);
-
-        value(select).then(() => {
-            select.value = onLoad;
-        });
-
-        select.onchange = () => {
-            console.log("Saving " + id + " as " + select.value);
-            universal.save(id, select.value);
-            universal.sendToast("Saved changes!");
-            onChanged(select.value);
-        };
-
-        document.querySelector(goto).appendChild(div);
-    }
-
-    /**
-     * Create a setting category.
-     * @param {String} name The name of the category.
-     * @param {String} goto The class (goto for other functions) to append to.
-     * @param {Boolean} appendToIAS Append setting to in app settings
-     */
-    function createSettingCategory(name, goto, appendToIAS = false) {
-        const appendTo = document.querySelector(".settings");
-        const div = document.createElement("div");
-        div.className = goto;
-        appendTo.appendChild(div);
-        const h2 = document.createElement("h2");
-        h2.innerText = name;
-        if (name.split("$(").length > 1) {
-            const tag = document.createElement("span");
-            tag.className = "tag";
-            tag.innerText = name.split("$(")[1].split(")")[0];
-            h2.appendChild(tag);
-            name = name.split("$(")[0];
-            h2.innerText = name;
-        }
-        div.appendChild(h2);
-        appendTo.appendChild(div);
-    }
-
-    /**
-     * Create a setting dynamically.
-     * @param {*} name The name of the setting.
-     * @param {*} id The ID of the setting.
-     * @param {*} value The option setter.
-     * @param {*} onLoad The default value.
-     * @param {*} goto The CSS selector to append to.
-     * @param {*} onChanged The function to call when the setting changes.
-     */
-    function createInputSetting(
-        name,
-        id,
-        value,
-        onLoad,
-        goto,
-        onChanged = () => { },
-    ) {
-        const div = document.createElement("div");
-        div.className = "flex-wrap-r";
-        const p = document.createElement("p");
-        p.innerText = name;
-        const input = document.createElement("input");
-        input.id = id;
-        div.appendChild(p);
-        div.appendChild(input);
-
-        value(input).then(() => {
-            input.value = onLoad;
-        });
-
-        input.onchange = () => {
-            console.log("Saving " + id + " as " + input.value);
-            universal.save(id, input.value);
-            universal.sendToast("Saved changes!");
-            onChanged(input.value);
-        };
-
-        document.querySelector(goto).appendChild(div);
-    }
-
-    const setupWizard = () => {
-        const sinks = {};
-        const sources = {};
-        navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
-            navigator.mediaDevices.enumerateDevices().then((devices) => {
-                devices.forEach((device) => {
-                    if (device.kind == "audiooutput") {
-                        if (!device.label.includes("Input"))
-                            sinks[device.deviceId] = device.label;
-                        if (device.label.includes("Input"))
-                            sources[device.deviceId] = device.label;
-                    }
-                });
-                showText(
-                    "Setup Wizard",
-                    "Welcome to the Freedeck setup wizard! This will help you set up Freedeck for the first time.",
-                    () => {
-                        showPick(
-                            "Select a monitor device (where you will hear the sounds)",
-                            Object.keys(sinks).map((data) => {
-                                return {
-                                    sink: data,
-                                    name: sinks[data],
-                                };
-                            }),
-                            (modal, data, feedback, title, button, content) => {
-                                console.log("User selected " + data.name);
-                                universal.save("monitor.sink", data.sink);
-                                showPick(
-                                    "Select your VB-Cable device (where you will play the sounds through)",
-                                    Object.keys(sources).map((data) => {
-                                        return {
-                                            sink: data,
-                                            name: sources[data],
-                                        };
-                                    }),
-                                    (
-                                        modal,
-                                        data,
-                                        feedback,
-                                        title,
-                                        button,
-                                        content,
-                                    ) => {
-                                        console.log(
-                                            "User selected " + data.name,
-                                        );
-                                        universal.save("vb.sink", data.sink);
-                                        universal.save("pitch", 1);
-                                        universal.save("vol", 1);
-                                        showText(
-                                            "All done!",
-                                            "You're all set up! You can now use Freedeck.",
-                                            () => {
-                                                universal.sendToast(
-                                                    "All done, reloading...",
-                                                    "Setup complete!"
-                                                );
-                                                universal.save(
-                                                    "has_setup",
-                                                    true,
-                                                );
-                                                window.location.href =
-                                                    "/companion/index.html?err=last-step";
-                                            },
-                                        );
-                                    },
-                                );
-                            },
-                        );
-                    },
-                );
-            });
-        });
-    };
-
-    window.st_run_setup = setupWizard;
-
-    /**
-     * Create a list picker modal.
-     * @param {String} title The title of the modal
-     * @param {Array} listContent The content of the list
-     * @param {void} callback What to do when submitted
-     */
-    function showPick(title, listContent, callback) {
-        const modal = document.createElement("div");
-        modal.className = "modal";
-        modal.style.position = "fixed";
-        modal.style.top = "0";
-        modal.style.left = "0";
-        modal.style.width = "100vw";
-        modal.style.height = "100vh";
-        modal.style.background = "rgba(0,0,0,.75)";
-        modal.style.zIndex = "9999";
-        modal.style.display = "flex";
-        modal.style.alignItems = "center";
-        modal.style.justifyContent = "center";
-
-        const modalContent = document.createElement("div");
-        modalContent.className = "modalContent";
-
-        const modalTitle = document.createElement("h2");
-        modalTitle.innerText = title;
-        modalTitle.style.marginBottom = "20px";
-        modalContent.appendChild(modalTitle);
-
-        const modalFeedback = document.createElement("div");
-        modalFeedback.className = "modalFeedback";
-        modalFeedback.style.color = "red";
-        modalFeedback.style.marginBottom = "20px";
-        modalContent.appendChild(modalFeedback);
-
-        const modalList = document.createElement("select");
-        modalList.className = "modalList";
-        modalList.style.marginBottom = "20px";
-        modalContent.appendChild(modalList);
-
-        listContent.forEach((item) => {
-            const modalItem = document.createElement("option");
-            modalItem.className = "modalItem";
-            modalItem.setAttribute("value", JSON.stringify(item));
-            modalItem.innerText = item.name;
-            modalList.appendChild(modalItem);
-        });
-
-        const modalButton = document.createElement("button");
-        modalButton.innerText = "Save";
-        modalButton.onclick = () => {
-            const selectedItem = modalList.options[modalList.selectedIndex];
-            const returned = callback(
-                modal,
-                JSON.parse(selectedItem.getAttribute("value")),
-                modalFeedback,
-                modalTitle,
-                modalButton,
-                modalContent,
-            );
-            if (returned === false) return;
-            modal.remove();
-        };
-        modalContent.appendChild(modalButton);
-
-        modal.appendChild(modalContent);
-
-        document.body.appendChild(modal);
-    }
-
-    /**
-     * Show text in a simple modal.
-     * @param {String} title The title of the modal
-     * @param {String} txt The text to show on the modal
-     * @param {void} cb The callback to call when the modal is closed
-     */
-    function showText(title, txt, cb) {
-        const modal = document.createElement("div");
-        modal.className = "modal";
-
-        const modalContent = document.createElement("div");
-        modalContent.className = "modalContent";
-
-        const modalTitle = document.createElement("h2");
-        modalTitle.innerText = title;
-        modalTitle.style.marginBottom = "20px";
-        modalContent.appendChild(modalTitle);
-
-        const modalFeedback = document.createElement("div");
-        modalFeedback.className = "modalFeedback";
-        modalFeedback.style.color = "red";
-        modalFeedback.style.marginBottom = "20px";
-        modalContent.appendChild(modalFeedback);
-
-        const modalTxt = document.createElement("p");
-        modalTxt.innerText = txt;
-        modalTxt.style.marginBottom = "20px";
-        modalContent.appendChild(modalTxt);
-
-        const modalButton = document.createElement("button");
-        modalButton.innerText = "OK";
-        modalButton.onclick = () => {
-            cb();
-            modal.remove();
-        };
-        modalContent.appendChild(modalButton);
-
-        modal.appendChild(modalContent);
-
-        document.body.appendChild(modal);
-    }
-
-    const settingsHelpers = {
-        createBooleanSetting,
-        createSelectSetting,
-        createSettingCategory,
-        createInputSetting,
-    };
-
-    export { settingsHelpers };
-    window.settingsHelpers = settingsHelpers;
-    window.createSelectSetting = createSelectSetting;
-    window.createInputSetting = createInputSetting;
-    window.createSettingCategory = createSettingCategory;
-
-    document.querySelector(".soundpack").style.display = universal.uiSounds
-        .enabled()
+    document.querySelector(".soundpack").style.display = universal.flags.isEnabled("uiSounds")
         ? "block"
         : "none";
-    document.querySelector(".soundpack-br").style.display = universal.uiSounds
-        .enabled()
+    document.querySelector(".soundpack-br").style.display = universal.flags.isEnabled("uiSounds")
         ? "block"
         : "none";
     document.querySelector("#soundpack-id").innerText =
@@ -813,6 +474,81 @@
         };
         document.querySelector(".soundpacks").appendChild(li);
     });
+
+    function setToExternalStyle(k, v) {
+        universal.send(
+            universal.events.default.config_changed,
+            setToLocalCfg(k, v)
+        );
+    }
+
+    function settings_makeToggleFlag(k, v, a = () => { }) {
+        document.querySelector(k).checked = universal.flags.isEnabled(v);
+        document.querySelector(k).onchange = (ev) => {
+            universal.flags.toggle(v);
+            a(ev);
+        }
+    }
+    function settings_makeExternalStyleToggleFlag(k, v) {
+        document.querySelector(k).checked = universal.lclCfg()[v] == true;
+
+        document.querySelector(k).onchange = () => {
+            setToExternalStyle(v, !(universal.lclCfg()[v] == true));
+        };
+    }
+
+    function settingsView_createLSCheck(id, label, description, changed) {
+        const a = "";
+        settings_makeToggleFlag("#" + id, id, changed);
+    }
+
+    function appendDetails(parent, data, isUniversal = false) {
+        Object.keys(data).forEach((key) => {
+            const detail = document.createElement("details");
+            const summary = document.createElement("summary");
+            summary.innerText = key;
+            if (isUniversal) summary.innerText = atob(key);
+            detail.appendChild(summary);
+
+            if (typeof data[key] === "object" && data[key] !== null) {
+                appendDetails(detail, data[key]);
+            } else {
+                const p = document.createElement("p");
+                p.innerText = data[key];
+                if (isUniversal) p.innerText = atob(data[key]);
+                detail.appendChild(p);
+            }
+
+            parent.appendChild(detail);
+        });
+    }
+
+    function getElement(s) { return document.querySelector(s) }
+
+    function settingsViewOpen(view, name) {
+        const button = document.createElement("button");
+        button.innerText = name;
+        button.onclick = () => {
+            universal.vopen(view);
+        };
+        return button;
+    }
+
+    document.querySelector("#ctx").innerText = JSON.stringify(universal.ctx);
+
+    const _views = [
+    ];
+    for (const view of universal.ctx.views) {
+        const button = settingsViewOpen(view, view);
+        _views.push(button);
+    }
+    for (const view of _views) document.querySelector(".ctxl").appendChild(view);
+
+    function setToLocalCfg(key, value) {
+        const cfg = universal.lclCfg();
+        cfg[key] = value;
+        return cfg;
+    }
 
     loadSounds();
 </script>

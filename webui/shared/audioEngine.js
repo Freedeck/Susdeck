@@ -8,13 +8,67 @@ const UAE = {
 		universal.updatePlaying();
 	},
 	_player: {
-		sink: 0,
-		monitorPotential: [],
-		monitorSink: "default",
-		recsink: 0,
 		normalVol: 1,
 		monitorVol: 1,
 		pitch: 1,
+	},
+	sinkManager: {
+		types: {
+			monitor: 0,
+			vbcable: 1,
+		},
+		sinks: [],
+		devices: [],
+		reloadDevices: async () => {
+			if (!navigator.mediaDevices?.enumerateDevices) {
+				console.log("enumerateDevices() not supported.");
+			} else {
+				const devices = [];
+				navigator.mediaDevices
+					.enumerateDevices()
+					.then((devices) =>
+						devices.filter((device) => device.kind === "audiooutput"),
+					)
+					.catch((err) => {
+						console.error(err);
+					});
+				for (const device of devices) {
+					UAE.sinkManager.devices.push(device);
+					universal.CLU("Boot / Universal:AudioEngine", "Created monitor potential devices");
+				}
+			}
+		},
+		initialize: () => {
+			UAE.sinkManager.reloadDevices();
+			if(universal.exists("uae_sinkmanager")) {
+				UAE.sinkManager.sinks = universal.loadObj("uae_sinkmanager");
+				universal.CLU("Boot / Universal:AudioEngine", "Loaded uae_sinkmanager");
+			} else {
+				universal.CLU("Boot / Universal:AudioEngine", "No uae_sinkmanager found, creating new");
+				universal.save("uae_sinkmanager", JSON.stringify(UAE.sinkManager.sinks));
+			}
+		},
+		addAndRemoveSink: async (type, id, remove) => {
+				UAE.sinkManager.sinks = UAE.sinkManager.sinks.filter((sink) => sink.id !== remove);
+				universal.CLU("Boot / Universal:AudioEngine", "Removed sink");
+				UAE.sinkManager.addSink(type, id);
+		},
+		removeSink: async (id) => {
+			UAE.sinkManager.sinks = UAE.sinkManager.sinks.filter((sink) => sink.id !== id);
+			universal.CLU("Boot / Universal:AudioEngine", "Removed sink");
+			universal.save("uae_sinkmanager", JSON.stringify(UAE.sinkManager.sinks));
+		},
+		addSink: async (type, id) => {
+			UAE.sinkManager.sinks.push({ type, id });
+			universal.CLU("Boot / Universal:AudioEngine", "Added sink");
+			universal.save("uae_sinkmanager", JSON.stringify(UAE.sinkManager.sinks));
+		},
+		getSinksForType: (type) => {
+			return UAE.sinkManager.sinks.filter((sink) => sink.type === type);
+		},
+		hasSink: (id) => {
+			return UAE.sinkManager.sinks.some((sink) => sink.id === id);
+		}
 	},
 	stopAll: async () => {
 		for (const audio of universal.audioClient._nowPlaying) {
@@ -48,31 +102,21 @@ const UAE = {
 	sinks: [],
 	initialize: () => {
     universal.CLU("Boot / Universal:AudioEngine", "Initializing audio engine");
-    if (!navigator.mediaDevices?.enumerateDevices) {
-      console.log("enumerateDevices() not supported.");
-    } else {
-      const devices = [];
-      navigator.mediaDevices
-        .enumerateDevices()
-        .then((devices) =>
-          devices.filter((device) => device.kind === "audiooutput"),
-        )
-        .catch((err) => {
-          console.error(err);
-        });
-      for (const device of devices) {
-        universal.audioClient._player.monitorPotential.push(device);
-        universal.CLU("Boot / Universal:AudioEngine", "Created monitor potential devices");
-      }
-    }
-    if (universal.load("vb.sink"))
-      universal.audioClient._player.sink = universal.load("vb.sink");
-    universal.CLU("Boot / Universal:AudioEngine", "Loaded vb.sink");
-    if (universal.load("monitor.sink"))
-      universal.audioClient._player.monitorSink =
-        universal.load("monitor.sink");
-    else universal.audioClient._player.monitorSink = "default";
-    universal.CLU("Boot / Universal:AudioEngine", "Loaded monitor.sink");
+    UAE.sinkManager.initialize();
+		if (universal.exists("vb.sink")) {
+			universal.audioClient.sinkManager.addSink(
+				universal.audioClient.sinkManager.types.vbcable,
+				universal.load("vb.sink")
+			)
+			universal.remove("vb.sink");
+		}
+    if (universal.exists("monitor.sink")) {
+			universal.audioClient.sinkManager.addSink(
+				universal.audioClient.sinkManager.types.monitor,
+				universal.load("monitor.sink")
+			)
+			universal.remove("monitor.sink");
+		}
   },
 	play: async ({
 		file,
@@ -80,20 +124,50 @@ const UAE = {
 		stopPrevious = universal.load("playback-mode") === "stop_prev",
 		volume = universal.load("vol") || 1,
 		pitch = universal.load("pitch") || 1,
+		channel
+	}) => {
+		const sinks = [];
+		let vol = 1;
+		const ch = universal.audioClient.channels;
+		if (channel === ch.monitor || channel === ch.ui) {
+			for(const sink of UAE.sinkManager.getSinksForType(UAE.sinkManager.types.monitor)) {
+				sinks.push(sink.id);
+			};
+			vol = universal.audioClient._player.monitorVol;
+			if(channel === ch.ui) vol = volume;
+		} else {
+			for(const sink of UAE.sinkManager.getSinksForType(UAE.sinkManager.types.vbcable)) {
+				sinks.push(sink.id);
+			}
+			vol = universal.audioClient._player.normalVol;
+		}
+		for (const sink of sinks) {
+			await UAE._play({
+				file,
+				name,
+				stopPrevious,
+				volume: vol,
+				pitch,
+				channel,
+				sink,
+			});
+		}
+	},
+	_play: async ({
+		file,
+		name,
+		stopPrevious = universal.load("playback-mode") === "stop_prev",
+		volume = universal.load("vol") || 1,
+		pitch = universal.load("pitch") || 1,
 		channel,
+		sink,
 	}) => {
 		const ch = universal.audioClient.channels;
 		const audioInstance = new Audio();
 		audioInstance.src = file;
 		audioInstance.load();
 
-		if (channel === ch.monitor || channel === ch.ui) {
-			await UAE.useSinkIfExists(audioInstance, "monitor.sink", universal.audioClient._player.monitorSink)
-			audioInstance.volume = universal.audioClient._player.monitorVol;
-		} else {
-			await UAE.useSinkIfExists(audioInstance, "vb.sink", universal.audioClient._player.sink)
-			audioInstance.volume = universal.audioClient._player.normalVol;
-		}
+		await audioInstance.setSinkId(sink);
 
 		audioInstance.playbackRate = pitch;
 		audioInstance.volume = volume;

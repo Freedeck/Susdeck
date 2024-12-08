@@ -97,7 +97,9 @@ const profileTxt = document.createElement("span");
 
 const profileSelect = document.createElement("select");
 
+let beingEdited = false;
 function fix() {
+	beingEdited = true;
 	profileSelect.innerHTML = "";
 	for (const profile of Object.keys(universal.config.profiles)) {
 		const option = document.createElement("option");
@@ -107,15 +109,19 @@ function fix() {
 	}
 	profileTxt.innerHTML = `Current Folder:&nbsp<i>${universal.cleanHTML(universal.config.profile)}</i>`;
 	profileSelect.value = universal.config.profile;
+	profileSelect.onkeydown = (e) => {
+		return false;
+	}
+	profileSelect.onchange = () => {
+		if(beingEdited) return;
+		universal.page = 0;
+		universal.save("page", universal.page);
+		universal.send(universal.events.companion.set_profile, profileSelect.value);
+	};
+	beingEdited = false;
 }
 fix();
 universal.listenFor("page_change", fix)
-
-profileSelect.onchange = () => {
-	universal.page = 0;
-	universal.save("page", universal.page);
-	universal.send(universal.events.companion.set_profile, profileSelect.value);
-};
 
 universal.listenFor("profile", (data) => {
 	profileTxt.innerHTML = `Current Folder:&nbsp<i>${universal.cleanHTML(data)}</i>`;

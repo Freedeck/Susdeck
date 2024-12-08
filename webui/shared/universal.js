@@ -227,7 +227,9 @@ const universal = {
 		const client_nlog_dc = [];
 		for (const log of decodedNotifLog) {
 			if (!log) continue;
-			client_nlog_dc.push(JSON.parse(atob(log)));
+			try {
+				client_nlog_dc.push(JSON.parse(atob(log)));
+			} catch(e){}
 		}
 		console.log("<h3>Decoded Notification Log.</h3>");
 		console.log("<p>Now, we're putting it all together.</p>");

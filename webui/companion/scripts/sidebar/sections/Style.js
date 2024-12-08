@@ -11,11 +11,6 @@ const handleCheckFor = (e, property) => {
   universal.lclCfg()[property] = e.target.checked;
   UI.reloadSounds();
 }
-
-style.children.push(new SidebarCheck("Compact Mode", "es-center", (e) => handleCheckFor(e, "compact"), universal.lclCfg().compact));
-style.children.push(new SidebarCheck("Scroll Long Text", "es-scroll", (e) => handleCheckFor(e, "scroll"), universal.lclCfg().scroll));
-style.children.push(new SidebarCheck("Fill Tiles", "es-fill", (e) => handleCheckFor(e, "fill"), universal.lclCfg().fill));
-
 let fontSize = "25";
 if(universal.load("ebigt") === "true") fontSize = "50";
 

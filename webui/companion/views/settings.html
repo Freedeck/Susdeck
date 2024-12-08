@@ -2,8 +2,25 @@
 </h1>
 <details>
     <summary class="settings-section-title">
-        Themes <span><img src="/common/icons/themes.svg" width="50" height="50"></span>
+        Style <span><img src="/common/icons/style.svg" width="50" height="50"></span>
     </summary>
+    <br>
+    <div class="experiments">
+        <div class="experiment">
+            <label for="compact">Compact Mode</label>
+            <input type="checkbox" id="compact" />
+        </div>
+        <div class="experiment">
+            <label for="scroll-long-text">Scroll Long Text</label>
+            <input type="checkbox" id="scroll-long-text" />
+        </div>
+        <div class="experiment">
+            <label for="fill-tiles">Fill Tiles</label>
+            <input type="checkbox" id="fill-tiles" />
+        </div>
+    </div>
+    <br>
+    <h2 class="flex-wrap-r alc">Themes <span><img src="/common/icons/themes.svg" width="50" height="50"></span></h2>
     <div class="themelist"></div>
 </details>
 <br>
@@ -395,6 +412,12 @@
     settings_makeExternalStyleToggleFlag("#nbik", "nopreset")
     settings_makeExternalStyleToggleFlag("#apc", "animation")
     settings_makeExternalStyleToggleFlag("#cpm", "center")
+
+
+    settings_makeExternalStyleToggleFlag("#compact", "compact", () => {universal.UI.reloadSounds()})
+    settings_makeExternalStyleToggleFlag("#scroll-long-text", "scroll", () => {universal.UI.reloadSounds()})
+    settings_makeExternalStyleToggleFlag("#fill-tiles", "fill", () => {universal.UI.reloadSounds()})
+
 
     settings_makeToggleFlag("#uis", "uiSounds", () => {
         document.querySelector(".soundpack").style.display = universal.flags.isEnabled("uiSounds")

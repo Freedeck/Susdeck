@@ -113,7 +113,6 @@
 
         </div>
     </details>
-
 </details>
 <style>
     .audio-device-picker {
@@ -300,16 +299,21 @@
         </details>
     </div>
 </details>
-<br><br>
 <div class="cti">
     <h1>Freedeck</h1>
     <img src="/common/icons/fd.png" alt="Freedeck Logo" width="75" height="75">
     <p>is a project by <a href="https://aidens.dev" target="_blank">ia74 / Aiden S.</a></p>
 </div>
+<center>
+    <h2 class="version"></h2>
+</center>
+<br><br>
 <!-- <h2>This is the bottom of the Settings menu.</h2> -->
 <script type="module">
     import "/app/settingsThemes.js";
     loadThemeListing();
+
+    document.querySelector(".version").innerText = universal._information.version.human;
 
     async function getAudioOutputDevices(isCable = false) {
         const devices = await navigator.mediaDevices.enumerateDevices();

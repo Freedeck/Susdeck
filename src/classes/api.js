@@ -6,7 +6,7 @@ const pluginManager = require(path.resolve("./src/managers/plugins.js"));
 const fs = require("node:fs");
 const HookRef = require("./HookRef");
 
-class PluginV2 {
+class Plugin {
   v2 = true;
   name;
   author;
@@ -371,7 +371,8 @@ const intents = {
 }
 
 module.exports = {
-  PluginV2,
+  Plugin,
+  HookRef,
   events,
   intents,
   types

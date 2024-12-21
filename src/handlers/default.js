@@ -10,7 +10,7 @@ const zlib = require("node:zlib");
 const { readFileSync, readdirSync, existsSync } = require("node:fs");
 
 const HookRef = require("../classes/HookRef");
-const Pv2 = require("../classes/PluginV2");
+const Pv2 = require("../classes/api");
 const { nbws, check } = require("./internalNBWSHandler");
 
 const userThemesLocation = path.resolve("user-data/themes");

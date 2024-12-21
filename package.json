@@ -26,7 +26,8 @@
     "@root": "/",
 		"@src": "src",
 		"@public": "src/public",
-		"$": "src/utils"
+		"$": "src/utils",
+		"@freedeck": "src/classes"
   },
 	"author": "ia74",
 	"license": "ISC",

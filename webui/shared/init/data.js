@@ -108,7 +108,10 @@ export default function dataHandler(universal, user) {
         universal.CLU("Incoming Data Handler", "Native handler created.");
         const isNbwsClosed = universal._information.nbws;
         if(isNbwsClosed) {
-          window.open("/companion/open_native.html", "_blank")
+          const iframe = document.createElement("iframe");
+          iframe.src = "/companion/open_native.html";
+          iframe.style.display = "none";
+          document.body.appendChild(iframe);
         }
       }
 

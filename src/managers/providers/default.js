@@ -1,7 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const AsarBundleRunner = require("asar-bundle-runner");
-const picocolors = require(path.resolve("./src/utils/picocolors.js"));
+const picocolors = require("$/picocolors.js");
 
 module.exports = async ({ debug, file, pl }) => {
   const a = await AsarBundleRunner.extract(`./plugins/${file}`, false);

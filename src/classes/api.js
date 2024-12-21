@@ -1,8 +1,6 @@
 const path = require("node:path");
-const NotificationManager = require(
-  path.resolve("./src/managers/notifications.js"),
-);
-const pluginManager = require(path.resolve("./src/managers/plugins.js"));
+const NotificationManager = require("@managers/notifications.js");
+const pluginManager = require("@managers/plugins.js");
 const fs = require("node:fs");
 const HookRef = require("./HookRef");
 

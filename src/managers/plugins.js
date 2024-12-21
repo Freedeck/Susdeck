@@ -1,12 +1,12 @@
 const fs = require("node:fs");
 const path = require("node:path");
-const debug = require(path.resolve("./src/utils/debug.js"));
-const picocolors = require(path.resolve("./src/utils/picocolors.js"));
+const debug = require("$/debug");
+const picocolors = require("$/picocolors");
 
-const providerPackage = require(path.resolve("./src/managers/providers/package.js"));
-const singleFile = require(path.resolve("./src/managers/providers/singleFile.js"));
-const sourceFolder = require(path.resolve("./src/managers/providers/sourceFolder.js"));
-const asarBundle = require(path.resolve("./src/managers/providers/default.js"));
+const providerPackage = require("@managers/providers/package.js");
+const singleFile = require("@managers/providers/singleFile.js");
+const sourceFolder = require("@managers/providers/sourceFolder.js");
+const asarBundle = require("@managers/providers/default.js");
 
 
 const pl = {

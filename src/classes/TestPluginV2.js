@@ -1,4 +1,4 @@
-const Plugin = require("./PluginV2");
+const {Plugin} = require("./api");
 
 let socketIoServer;
 class TestPluginV2 extends Plugin {

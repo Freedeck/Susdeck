@@ -55,7 +55,7 @@ if (!DOES_SETTINGS_EXIST_YET && DOES_RUN_SERVER) {
 
 require("./migration");
 
-const settings = require("./managers/settings");
+const settings = require("@managers/settings");
 
 const appSettings = settings.settings();
 debug.writeLogs = appSettings.writeLogs;

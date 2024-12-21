@@ -1,7 +1,7 @@
 const path = require("node:path");
 const fs = require("node:fs");
 const crypto = require("node:crypto");
-const picocolors = require(path.resolve("./src/utils/picocolors"));
+const picocolors = require("$/picocolors");
 const createPasswordHash = (p) => `fd.${crypto.createHash("sha512").update(p).digest("hex")}`;
 
 const save = (

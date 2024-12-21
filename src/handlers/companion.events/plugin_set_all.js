@@ -1,4 +1,4 @@
-const plugins = require("../../managers/plugins");
+const plugins = require("@managers/plugins");
 const fs = require("node:fs");
 const eventNames = require("../eventNames");
 const path = require("node:path");

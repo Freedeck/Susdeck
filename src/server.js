@@ -1,24 +1,22 @@
 const socketIO = require("socket.io");
 const path = require("node:path");
 const fs = require("node:fs");
-const picocolors = require("./utils/picocolors");
-const debug = require("./utils/debug");
-const NotificationManager = require(
-  path.resolve("./src/managers/notifications"),
-);
-const eventNames = require(path.resolve("./src/handlers/eventNames"));
+const picocolors = require("$/picocolors");
+const debug = require("$/debug");
+const NotificationManager = require("@managers/notifications");
+const eventNames = require("@handlers/eventNames");
 const { server } = require("./http");
 const io = new socketIO.Server(server);
 
 const handlers = new Map();
-const pl = require(path.resolve("./src/managers/plugins"));
+const pl = require("@managers/plugins");
 const plugins = pl.plugins();
 
 for (const file of fs.readdirSync(path.resolve("./src/handlers"))) {
   if (fs.lstatSync(path.resolve(`./src/handlers/${file}`)).isDirectory()) {
     continue;
   }
-  const handler = require(`./handlers/${file}`);
+  const handler = require(`@handlers/${file}`);
   if (!handler.exec) continue;
   handlers.set(handler.name, handler);
 }

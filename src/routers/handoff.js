@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require('node:path');
-const notifMan = require(path.resolve("./src/managers/notifications"));
-const plugins = require(path.resolve("./src/managers/plugins"));
+const notifMan = require("@managers/notifications");
+const plugins = require("@managers/plugins");
 const router = express.Router();
 
 const handoffData = {

@@ -1,5 +1,5 @@
 const eventNames = require("../eventNames");
-const plugins = require("../../managers/plugins");
+const plugins = require("@managers/plugins");
 
 module.exports = ({ io }) => {
 	plugins.reload();

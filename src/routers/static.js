@@ -4,6 +4,7 @@ const path = require("node:path");
 const router = express.Router();
 
 // User data
+
 router.use("/sounds", express.static(path.resolve("user-data/sounds")));
 router.use("/icons", express.static(path.resolve("user-data/icons")));
 

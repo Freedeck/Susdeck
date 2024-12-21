@@ -10,7 +10,7 @@ const zlib = require("node:zlib");
 const { readFileSync, readdirSync, existsSync } = require("node:fs");
 
 const HookRef = require("../classes/HookRef");
-const Pv2 = require("../classes/api");
+const {intents, events} = require("../classes/api");
 const { nbws, check } = require("./internalNBWSHandler");
 
 const userThemesLocation = path.resolve("user-data/themes");
@@ -55,20 +55,20 @@ module.exports = {
     for (const plugin of plugins.plugins()) {
       const instance = plugin[1].instance;
       if(instance.v2) {
-        if(instance._intent.includes(Pv2.intents.IO)) {
+        if(instance._intent.includes(intents.IO)) {
           instance.io = io;
         }
-        if(instance._intent.includes(Pv2.intents.SOCKET)) {
+        if(instance._intent.includes(intents.SOCKET)) {
           instance.socket = socket;
         }
-        if(instance._intent.includes(Pv2.intents.CLIENTS)) {
+        if(instance._intent.includes(intents.CLIENTS)) {
           instance.clients = clients;
         }
-        instance.emit(Pv2.events.connection, {
+        instance.emit(events.connection, {
           active: true,
-          io: instance._intent.includes(Pv2.intents.IO) ? io : null,
-          socket: instance._intent.includes(Pv2.intents.SOCKET) ? socket : null,
-          clients: instance._intent.includes(Pv2.intents.CLIENTS) ? clients : null,
+          io: instance._intent.includes(intents.IO) ? io : null,
+          socket: instance._intent.includes(intents.SOCKET) ? socket : null,
+          clients: instance._intent.includes(intents.CLIENTS) ? clients : null,
         });
       } else {
         for (const hook of instance.hooks) {

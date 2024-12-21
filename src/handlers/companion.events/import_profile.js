@@ -1,4 +1,4 @@
-const config = require("../../managers/settings");
+const config = require("@managers/settings");
 const eventNames = require("../eventNames");
 
 module.exports = ({ io, data }) => {

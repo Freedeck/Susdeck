@@ -26,6 +26,8 @@
     "@root": "/",
 		"@src": "src",
 		"@public": "src/public",
+		"@managers": "src/managers",
+		"@handlers": "src/handlers",
 		"$": "src/utils",
 		"@freedeck": "src/classes"
   },

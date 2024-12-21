@@ -1,8 +1,8 @@
 const fs = require("node:fs");
 const path = require("node:path");
 
-const picocolors = require(path.resolve("./src/utils/picocolors.js"));
-const debug = require(path.resolve("./src/utils/debug.js"));
+const picocolors = require("$/picocolors.js");
+const debug = require("$/debug.js");
 
 const sc = {
 	_cache: {},

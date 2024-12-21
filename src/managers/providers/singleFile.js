@@ -1,6 +1,6 @@
 const fs = require("node:fs");
 const path = require("node:path");
-const picocolors = require(path.resolve("./src/utils/picocolors.js"));
+const picocolors = require("$/picocolors.js");
 
 module.exports = ({ debug, file, pl }) => {
   debug.log(

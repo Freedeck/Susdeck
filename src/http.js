@@ -5,8 +5,8 @@ const picocolors = require("./utils/picocolors");
 
 const app = express();
 const server = http.createServer(app);
-const config = require("./managers/settings");
-const notifMan = require("./managers/notifications");
+const config = require("@managers/settings");
+const notifMan = require("@managers/notifications");
 const { compileWebpack } = require("./webpack");
 
 /** ROUTERS */
@@ -18,7 +18,7 @@ const uploadRouter = require("./routers/uploads");
 const settings = config.settings();
 const PORT = settings.port || 5754;
 
-const networkAddresses = require("./managers/networkAddresses");
+const networkAddresses = require("@managers/networkAddresses");
 
 module.exports = {
   http,

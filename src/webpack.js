@@ -1,22 +1,29 @@
 const { webpack } = require("webpack");
 const fs = require("node:fs");
 const path = require("node:path");
-const webpackConfig = require(path.resolve("webpack.config.js"));
-const picocolors = require(path.resolve("src/utils/picocolors.js"));
-const setWsStateHttp = require(path.resolve("src/routers/connect.js")).webpackState;
+const picocolors = require("$/picocolors");
+
+const webpackConfigLocation = path.resolve("webpack.config.js");
+const webpackBuildLocation = path.resolve("webui/app");
+const connectRouterLocation = path.resolve("src/routers/connect.js");
+
+const webpackConfig = require(webpackConfigLocation);
+const setWsStateHttp = require(connectRouterLocation).webpackState;
+
 let compileTime = 0;
 process.env.NODE_ENV = "production";
+
 /**
  *  run webpack
  * @param {*} wp  a
  * @return {true}
  */
 function runWebpack(webpackInstance) {
-  if (!fs.existsSync(path.resolve("webui/app"))) {
+  if (!fs.existsSync(webpackBuildLocation)) {
     console.log(
       "Welcome to Freedeck! This is your first time running Freedeck, so it will take a moment to set up.",
     );
-    fs.mkdirSync(path.resolve("webui/app"));
+    fs.mkdirSync(webpackBuildLocation);
   }
 
   return new Promise((resolve, reject) => {

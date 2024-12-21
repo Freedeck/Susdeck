@@ -18,27 +18,25 @@ class PluginV2 {
   disabled = false;
   stopped = false;
   hasInit = false;
-  _hookLocation = "webui/hooks/";
+  popout = "<p>No popout code set. Edit this in your PluginV2 definition!</p>";
+  _hookLocation = "user-data/hooks/";
   _usesAsar = true;
   constructor() {
     this.name = "Loading...";
     this.author = "Loading...";
-    this.id = `loading-pl..${Math.random()}`;
+    this.id = `predropin-${Math.random().toString(36).substring(7)}`;
     this.disabled = false;
     this.types = [];
-    if (this.disabled) return;
-    this.hasInit = this.onInitialize();
-    if (!this.hasInit) {
-      console.log("Plugin didn't initialize?");
-    }
     this._callbacks = {};
     this._intent = [];
-    
-    
-    this.setup();
-    this.emit(events.ready);
   }
 
+  setPopout(popout) {
+    this.popout = popout;
+  }
+  hidePopout() {
+    this.popout = "";
+  }
   setName(name) {
     this.name = name;
   }
@@ -51,15 +49,25 @@ class PluginV2 {
   setDisabled(disabled) {
     this.disabled = disabled;
   }
-   
+  
+  _fd_dropin() {
+    if (this.disabled) return;
+    this.hasInit = this.onInitialize();
+    if (!this.hasInit) {
+      console.log("Plugin didn't initialize?");
+    }
+    
+    this.setup();
+    this.emit(events.ready);
+  }
   onInitialize() {
     return true;
   }
   onButton(e) {
-    this.emit(this.events.button, e);
+    this.emit(events.button, e);
   }
   onStopping() {
-    this.emit(this.events.stopping);
+    this.emit(events.stopping);
   }
 
   setup() {};
@@ -139,7 +147,7 @@ class PluginV2 {
   addView(view, file) {
     const viewFolder = `${file}.view`;
     this.views[view] = viewFolder;
-    const viewBase = "webui/hooks/_views/";
+    const viewBase = "user-data/plugin-views/";
     if(!fs.existsSync(path.resolve(viewBase, this.id))) fs.mkdirSync(path.resolve(viewBase, this.id), {recursive: true});
     this.internalAdd(HookRef.types.view, viewFolder, path.resolve(viewBase, this.id));
   }
@@ -173,7 +181,6 @@ class PluginV2 {
     }
 
     setImmediate(() => {
-  
       fs.cp(hp, path.resolve(destination, path.basename(hook)), dt, (err) => {
         if (err) {
           console.log(`Failed to copy hook: ${err}`);
@@ -189,10 +196,10 @@ class PluginV2 {
   addImport(file) {
     this.imports.push(file);
     this.tempImportPath = path.resolve(
-      `tmp/_e_._plugins_${this.id}.Freedeck`,
+      `tmp/_${this.id}.fdpackage`,
       file,
     );
-    fs.cpSync(this.tempImportPath, path.resolve(`webui/hooks/${file}`));
+    fs.cpSync(this.tempImportPath, path.resolve(`user-data/hooks/${file}`));
   }
 
   /**

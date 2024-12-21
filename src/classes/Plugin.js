@@ -39,7 +39,7 @@ module.exports = class Plugin {
     }
   }
 
-  _hookLocation = "webui/hooks/";
+  _hookLocation = "user-data/hooks/";
   _usesAsar = true;
   /**
    * @param {String} hook The JS file that will be loaded into the socket handler
@@ -65,7 +65,7 @@ module.exports = class Plugin {
   addView(view, file) {
     const viewFolder = `${file}.view`;
     this.views[view] = viewFolder;
-    const viewBase = "webui/hooks/_views/";
+    const viewBase = "user-data/plugin-views/";
     if(!fs.existsSync(path.resolve(viewBase, this.id))) fs.mkdirSync(path.resolve(viewBase, this.id), {recursive: true});
     this.internalAdd(HookRef.types.view, viewFolder, path.resolve(viewBase, this.id));
   }
@@ -118,7 +118,7 @@ module.exports = class Plugin {
       `tmp/_e_._plugins_${this.id}.Freedeck`,
       file,
     );
-    fs.cpSync(this.tempImportPath, path.resolve(`webui/hooks/${file}`));
+    fs.cpSync(this.tempImportPath, path.resolve(`user-data/hooks/${file}`));
   }
 
   /**

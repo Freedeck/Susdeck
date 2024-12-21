@@ -43,4 +43,6 @@ async function loadModulesSequentially(modules) {
   }
 }
 
-loadModulesSequentially(modules);
+export default async function() {
+  await loadModulesSequentially(modules);
+}

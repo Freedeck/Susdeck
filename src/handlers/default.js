@@ -10,7 +10,18 @@ const zlib = require("node:zlib");
 const { readFileSync, readdirSync, existsSync } = require("node:fs");
 
 const HookRef = require("../classes/HookRef");
+const Pv2 = require("../classes/PluginV2");
 const { nbws, check } = require("./internalNBWSHandler");
+
+const userThemesLocation = path.resolve("user-data/themes");
+const userSoundpacksLocation = path.resolve("user-data/soundpacks");
+
+const commonSoundpacks = path.resolve("webui/common/sounds");
+const commonThemes = path.resolve("webui/shared/theming");
+
+const localStyleLocation = path.resolve("./src/configs/style.json");
+
+const thisPackage = require(path.resolve("package.json"));
 
 module.exports = {
   name: "Main",
@@ -44,20 +55,29 @@ module.exports = {
     for (const plugin of plugins.plugins()) {
       const instance = plugin[1].instance;
       if(instance.v2) {
-        instance.emit(instance.events.connection, {
+        if(instance._intent.includes(Pv2.intents.IO)) {
+          instance.io = io;
+        }
+        if(instance._intent.includes(Pv2.intents.SOCKET)) {
+          instance.socket = socket;
+        }
+        if(instance._intent.includes(Pv2.intents.CLIENTS)) {
+          instance.clients = clients;
+        }
+        instance.emit(Pv2.events.connection, {
           active: true,
-          io: plugin._intents.includes(plugin.intents.IO) ? io : null,
-          socket: plugin._intents.includes(plugin.intents.SOCKET) ? socket : null,
-          clients: plugin._intents.includes(plugin.intents.CLIENTS) ? clients : null,
+          io: instance._intent.includes(Pv2.intents.IO) ? io : null,
+          socket: instance._intent.includes(Pv2.intents.SOCKET) ? socket : null,
+          clients: instance._intent.includes(Pv2.intents.CLIENTS) ? clients : null,
         });
-        return;
-      }
-      for (const hook of instance.hooks) {
-        if(hook.type === HookRef.types.socket) {
-          debug.log(`Running hook ${hook.file}`, `Socket Server / ${socket.user ? socket.user : socket.id}`);
-          require(hook.file)(
-            socket, io, instance
-          )
+      } else {
+        for (const hook of instance.hooks) {
+          if(hook.type === HookRef.types.socket) {
+            debug.log(`Running hook ${hook.file}`, `Socket Server / ${socket.user ? socket.user : socket.id}`);
+            require(hook.file)(
+              socket, io, instance
+            )
+          }
         }
       }
     }
@@ -112,7 +132,22 @@ module.exports = {
       const plset = {};
       const plu = plugins.plugins();
       for (const plugin of plu) {
-        pl[plugin[1].instance.id] = plugin[1].instance;
+        const { name, id, author, version, popout, types, imports, hooks, views, disabled, stopped } = plugin[1].instance;
+        pl[plugin[1].instance.id] = {
+          name,
+          id,
+          author,
+          version,
+          Settings: {},
+          popout,
+          types,
+          imports,
+          hooks,
+          views,
+          disabled,
+          stopped,
+        }
+
         plset[plugin[1].instance.id] = plugins._settings.get(
           plugin[1].instance.id,
         );
@@ -128,29 +163,29 @@ module.exports = {
         tempLoginID: socket.tempLoginID,
         NotificationManager,
         hostname: require("node:os").hostname(),
-        soundpacks: [...readdirSync(path.resolve("webui/common/sounds")).filter(
+        soundpacks: [...readdirSync(commonSoundpacks).filter(
           (e) => e.endsWith(".soundpack"),
-        ), ...readdirSync(path.resolve("webui/hooks/_sounds")).filter(
+        ), ...readdirSync(userSoundpacksLocation).filter(
                 (e) => e.endsWith(".soundpack"),
               ).map(e=>`${e}#`)
         ],
-        themes: [...readdirSync(path.resolve("webui/shared/theming")).filter(
+        themes: [...readdirSync(commonThemes).filter(
           (e) => e.endsWith(".css"),
-        ), ...readdirSync(path.resolve("webui/hooks/_themes")).filter(
+        ), ...readdirSync(userThemesLocation).filter(
                 (e) => e.endsWith(".css"),
               ).map(e=>`${e}#`)
         ],
         mobileConnected: isMobileConnected || false,
         style: JSON.parse(
-          readFileSync(path.resolve("./src/configs/style.json")),
+          readFileSync(localStyleLocation),
         ),
         plugins: pl,
         disabled: plugins._disabled,
         events: eventNames,
         nbws: nbwsState,
         version: {
-          raw: require(path.resolve("package.json")).version,
-          human: `Freedeck v${require(path.resolve("package.json")).version}`
+          raw: thisPackage.version,
+          human: `Freedeck v${thisPackage.version}`
         },
         config: cfg.settings(),
       };

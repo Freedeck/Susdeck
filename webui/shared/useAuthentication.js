@@ -21,8 +21,8 @@ universal.listenFor("init", () => {
 		document.querySelector("#sidebar > ul").appendChild(login);
 	}
 
-	if (universal.load("fd.passwd")) {
-		universal.login(universal.load("fd.passwd"));
+	if (universal.load("password")) {
+		universal.login(universal.load("password"));
 		document.querySelector("#login-dialog").style.display = "none";
 	} else {
 		document.querySelector("#login-dialog").style.display = "block";
@@ -31,19 +31,17 @@ universal.listenFor("init", () => {
 
 	universal.on(universal.events.login.login, (dat) => {
 		if (dat === true) {
-			document.querySelector("#login").remove();
 			if (universal.load("logintime") > Date.now())
 				universal.sendToast("Logged in!");
 			if (
 				document.querySelector("#password") &&
 				document.querySelector("#password").value !== ""
-			)
-				universal.save("fd.passwd", document.querySelector("#password").value);
+			) universal.save("password", document.querySelector("#password").value);
 			universal.save("logintime", Date.now());
 			document.querySelector("#login-div").style.opacity = "0";
 			document.querySelector("#login-dialog").style.opacity = "0";
 			setTimeout(() => {
-				document.querySelector("#login-dialog").style.display = "none";
+				document.querySelector("#login-dialog").remove();
 			}, 250);
 		} else {
 			document.querySelector("#login-msg").setHTML("Login failed.");

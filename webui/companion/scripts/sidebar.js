@@ -1,4 +1,3 @@
-import "./sidebar/sections/SidebarLoader.js";
 
 import contextual from "./lib/ctxl.js";
 universal.ctx = contextual;
@@ -31,11 +30,12 @@ universal.reloadRight = () => {
 	sidebar = [
 		{ Tiles: "index.html" },
 		{ Library: "library.html" },
-		{ Plugins: "plugins.html" },
 		{ Marketplace: "marketplace.html" },
 		{ Settings: "settings.html" },
-		{ Connect: "/new-connect.html?id=Companion&new_ip=true" },
 	];
+	if(universal.flags.isEnabled("connect-tab")) {
+		sidebar.push({ Connect: "/new-connect.html?id=Companion&new_ip=true" })
+	}
 	if(universal.load("has_setup") === "false") {
 		sidebar = [
 			{ "Setup": "setup.html" },

@@ -13,8 +13,9 @@ router.get("/user-report", (req, res) => {
   res.send({ report, time: Date.now() - start, start });
 })
 
-// Plugins
-router.use("/hooks", express.static(path.resolve("webui/hooks")));
+// User uploaded data
+router.use("/user-data", express.static(path.resolve("user-data")));
+
 
 // Front-end
 router.use("/", express.static(path.resolve("webui/client")));

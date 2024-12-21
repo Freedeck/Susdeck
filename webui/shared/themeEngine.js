@@ -3,9 +3,8 @@ const listingData = {};
 let currentTheme = {};
 
 function getPathFor(id) {
-	console.log(id)
 	if(id.endsWith("#")) {
-		return `/hooks/_themes/${id.split("#")[0]}`;
+		return `/user-data/themes/${id.split("#")[0]}`;
 	}
 	return `/app/shared/theming/${id}`;
 }

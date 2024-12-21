@@ -1,5 +1,7 @@
 import { UI } from "../../client/scripts/ui";
 import { generic, handler } from "../nativeHandler";
+import loadRightSidebar from "../../companion/scripts/sidebar/sections/SidebarLoader.js";
+import Pako from "pako";
 
 export default function dataHandler(universal, user) {
   universal.CLU("Incoming Data Handler", "Taking over for now.");
@@ -37,7 +39,7 @@ export default function dataHandler(universal, user) {
       // default setup
       universal.CLU("Incoming Data Handler", "Creating defaults.");
 
-      universal.default("notification_log", "");
+      universal.default("logs/notif", JSON.stringify([]));
       universal.default("playback-mode", "play_over");
       universal.default("vol", 1);
       universal.default("pitch", 1);
@@ -74,6 +76,9 @@ export default function dataHandler(universal, user) {
         );
         document.body.appendChild(universal.notibar);
       }
+
+      universal.CLU("Incoming Data Handler", "Setting up sidebar.");
+      loadRightSidebar();
 
       universal.send(universal.events.information, { apiVersion: "2" });
       universal.CLU(

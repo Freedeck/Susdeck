@@ -137,11 +137,11 @@ function reloadPluginViews() {
 			viewElement.style.display = "none";
 			viewElement.id = `plugin-view-${btoa(view).toLowerCase().split("=")[0]}`;
 			(async () => {
-				const data = await fetch(`/hooks/_views/${plugin.id}/${viewData}/view.html`);
+				const data = await fetch(`/user-data/plugin-views/${plugin.id}/${viewData}/view.html`);
 				const text = await data.text();
 				viewElement.innerHTML = text;
 				const script = document.createElement("script");
-				script.src = `/hooks/_views/${plugin.id}/${viewData}/script.js`;
+				script.src = `/user-data/plugin-views/${plugin.id}/${viewData}/script.js`;
 				script.type = "module";
 				document.body.appendChild(script);
 			})();
@@ -196,8 +196,7 @@ function reloadSounds() {
 	}
 	universal.config.iconCountPerPage = universal.lclCfg().iconCountPerPage;
 	universal.page =
-		universal.load("page") !== "\x9Eée"
-			? Number.parseInt(universal.load("page"))
+		universal.load("page") ? Number.parseInt(universal.load("page"))
 			: 0;
 	reloadProfile();
 	for (const key of document.querySelectorAll("#keys > .button")) {
@@ -233,6 +232,7 @@ function reloadSounds() {
 		try {
 			if (snd.pos >= universal.config.iconCountPerPage * (universal.page + 1))
 				continue;
+			console.log(keyObject, snd, universal.page)
 			keyObject.setAttribute("data-interaction", JSON.stringify(snd));
 			keyObject.setAttribute("data-name", k);
 			keyObject.classList.remove("unset");
@@ -336,9 +336,9 @@ function reloadSounds() {
 		} catch (e) {
 			console.log(
 				`while rendering sound: ${k}`,
-				sound[k].pos,
+				sound[k],
+				"on page",
 				universal.page,
-				sound[k].pos - universal.config.iconCountPerPage * universal.page,
 			);
 			console.error(e);
 		}

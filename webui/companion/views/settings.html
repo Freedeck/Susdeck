@@ -26,6 +26,25 @@
 <br>
 <details>
     <summary class="settings-section-title">
+        Plugins <span><img src="/common/icons/t_plugin.svg" width="50" height="50"></span>
+    </summary>
+    <br>
+    <div class="experiments">
+        <ul id="actl" class="btnlist"></ul>
+    </div>
+    <button id="upd">Reload All Plugins</button>
+        <div class="flex-wrap">
+            <h2>Disabled Plugins</h2>
+            <div id="disbl-list" class="row"></div>
+        </div>
+    <details id="tile-prev">
+        <summary><strong>Tile Previews</strong></summary>
+        <div class="btns"></div>
+    </details>
+</details>
+<br>
+<details>
+    <summary class="settings-section-title">
         Audio Devices <span><img src="/common/icons/audio.svg" width="50" height="50"></span>
     </summary>
     <p>Monitor Devices</p>
@@ -42,6 +61,10 @@
         <div class="experiment">
             <label for="no_ask_to_delete">Don't ask to delete Tiles</label>
             <input type="checkbox" id="no_ask_to_delete" />
+        </div>
+        <div class="experiment">
+            <label for="connect-tab">Show FDConnect as a tab</label>
+            <input type="checkbox" id="connect-tab" />
         </div>
         <div class="experiment">
             <label for="uis">UI Sounds</label>
@@ -115,6 +138,55 @@
     </details>
 </details>
 <style>
+    .disabledable,
+    #disbl-list {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btns {
+        display: flex;
+        gap: 0.5rem;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    center ul {
+        list-style-type: none;
+        padding: 0;
+        border-radius: 1.5rem;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .btnlist {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .btnlist li {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        color: var(--modal-item-text);
+        border: 1px solid #000;
+        border-radius: 1.5rem;
+        margin: 0.5rem 0;
+        gap: 0.25rem;
+        min-width: 150px;
+        height: max-content;
+        text-overflow: ellipsis;
+
+        background: var(--modal-item-bg);
+        background-size: var(--modal-item-bg-size);
+        animation: var(--modal-item-bg-anim);
+    }
+
     .audio-device-picker {
         display: flex;
         flex-direction: column;
@@ -222,7 +294,7 @@
         Developer Tools <span><img src="/common/icons/dev.svg" width="50" height="50"></span>
     </summary>
     <div class="flex-wrap-r">
-        <button onclick="universal.save('thanks', '\x9Eée');window.location.reload()">
+        <button onclick="universal.remove('thanks');window.location.reload()">
             Show latest changelog (Reloads)
         </button>
         <button onclick="window._makeThanks(true)">
@@ -312,6 +384,93 @@
 <script type="module">
     import "/app/settingsThemes.js";
     loadThemeListing();
+
+    const seen = {};
+
+    Object.keys(universal.plugins).forEach((plugin) => {
+        const req = universal.plugins[plugin];
+        const li = document.createElement('li');
+        li.setAttribute('hovereffect', 'yes');
+        li.style.cursor = 'default';
+        if (seen[req.name]) return;
+        seen[req.name] = true;
+
+        const nameEle = document.createElement('h3');
+        nameEle.innerText = req.name;
+        li.appendChild(nameEle);
+        const versionEle = document.createElement('p');
+        versionEle.innerText = req.version ? 'v' + req.version : '';
+        li.appendChild(versionEle);
+        const authorEle = document.createElement('p');
+        authorEle.innerText = 'by ' + req.author;
+        li.appendChild(authorEle);
+
+        if(req.popout) {
+            const popout = document.createElement('details');
+            popout.innerHTML = `<summary>Open</summary><div class='popout'>${req.popout}</div>`;
+            li.appendChild(popout);
+        }
+
+        const actionContainer = document.createElement('div');
+        actionContainer.classList.add('flex-wrap-r');
+        actionContainer.style.justifyContent = 'space-between';
+
+        const a = document.createElement('button');
+        a.innerText = 'Disable';
+        a.onclick = () => {
+            universal.uiSounds.playSound('int_confirm');
+            window.showPick('Are you sure you want to disable ' + req.name + '?', [{ name: 'Yes', value: true }, { name: 'No', value: false }], (m, v) => {
+                if (v.value == true) {
+                    universal.send(universal.events.default.disable_plugin, req.id);
+                }
+            });
+            // universal.send(universal.events.default.disable_plugin, req.id);
+        };
+        const b = document.createElement('button');
+        b.innerText = 'Reload';
+        b.onclick = () => {
+            universal.uiSounds.playSound('int_yes');
+            universal.send(universal.events.default.reload_single_plugin, req.id);
+        };
+        actionContainer.appendChild(a);
+        actionContainer.appendChild(b);
+        li.appendChild(actionContainer);
+        document.querySelector('#actl').appendChild(li);
+
+        const types = req.types;
+        types.forEach((dataObj) => {
+            const tmpBtn = document.createElement('button');
+            tmpBtn.innerText = dataObj.name + ': ' + dataObj.type;
+            tmpBtn.onclick = (ev) => {
+                universal.send(universal.events.keypress, { event: ev, btn: { uuid: 0, name: dataObj.name, type: dataObj.type } });
+            };
+            document.querySelector('.btns').appendChild(tmpBtn);
+        });
+    });
+
+    universal._information.disabled.forEach((plugin) => {
+        if (seen[plugin]) return;
+        seen[plugin] = true;
+        const a = document.createElement('button');
+        a.innerText = 'Enable ' + plugin.split('.disabled')[0].split(".")[0];
+        a.onclick = () => {
+            console.log(plugin);
+            universal.uiSounds.playSound('int_confirm');
+            universal.send(universal.events.default.enable_plugin, plugin);
+            if (!dialog.open) dialog.showModal();
+            dialog.innerHTML = `<p>Enabling ${plugin.split('.disabled')[0]}!</p>`;
+        };
+        document.querySelector('#disbl-list').appendChild(a);
+    });
+
+    document.querySelector('#upd').onclick = () => {
+        universal.uiSounds.playSound('int_yes');
+        universal.send(universal.events.default.update_plugins);
+        if (!dialog.open) dialog.showModal();
+        dialog.innerHTML = `<p>Reloading plugins!</p>`;
+    };
+    const dialog = document.querySelector('dialog') || document.createElement('dialog');
+    if (!document.querySelector('dialog')) document.body.appendChild(dialog);
 
     document.querySelector(".version").innerText = universal._information.version.human;
 
@@ -412,15 +571,16 @@
     settings_makeToggleFlag("#swc", "recompile-tab", () => { universal.reloadRight() });
     settings_makeToggleFlag("#blvs", "skip-boot-animation");
     settings_makeToggleFlag("#no_ask_to_delete", "no_ask_to_delete")
+    settings_makeToggleFlag("#connect-tab", "connect-tab", () => { universal.reloadRight() })
 
     settings_makeExternalStyleToggleFlag("#nbik", "nopreset")
     settings_makeExternalStyleToggleFlag("#apc", "animation")
     settings_makeExternalStyleToggleFlag("#cpm", "center")
 
 
-    settings_makeExternalStyleToggleFlag("#compact", "compact", () => {universal.UI.reloadSounds()})
-    settings_makeExternalStyleToggleFlag("#scroll-long-text", "scroll", () => {universal.UI.reloadSounds()})
-    settings_makeExternalStyleToggleFlag("#fill-tiles", "fill", () => {universal.UI.reloadSounds()})
+    settings_makeExternalStyleToggleFlag("#compact", "compact", () => { universal.UI.reloadSounds() })
+    settings_makeExternalStyleToggleFlag("#scroll-long-text", "scroll", () => { universal.UI.reloadSounds() })
+    settings_makeExternalStyleToggleFlag("#fill-tiles", "fill", () => { universal.UI.reloadSounds() })
 
 
     settings_makeToggleFlag("#uis", "uiSounds", () => {
@@ -534,7 +694,8 @@
             const detail = document.createElement("details");
             const summary = document.createElement("summary");
             summary.innerText = key;
-            if (isUniversal) summary.innerText = atob(key);
+            if (isUniversal) {
+            }
             detail.appendChild(summary);
 
             if (typeof data[key] === "object" && data[key] !== null) {
@@ -542,7 +703,7 @@
             } else {
                 const p = document.createElement("p");
                 p.innerText = data[key];
-                if (isUniversal) p.innerText = atob(data[key]);
+                if (isUniversal) p.innerText = data[key];
                 detail.appendChild(p);
             }
 

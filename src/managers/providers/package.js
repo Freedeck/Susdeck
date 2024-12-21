@@ -32,6 +32,12 @@ function openPackage({debug, filePath, pluginManager}) {
     try {
       entry.class._usesAsar = false;
       const instantiated = entry.exec();
+      instantiated.id = name;
+      instantiated.name = freedeck.title;
+      instantiated.author = author;
+      instantiated.version = version;
+      instantiated.disabled = freedeck.disabled;
+      instantiated._fd_dropin();
       pluginManager._plc.set(instantiated.id, { instance: instantiated });
       if (instantiated.disabled) {
         pluginManager._disabled.push(filePath);
@@ -49,8 +55,10 @@ function openPackage({debug, filePath, pluginManager}) {
       console.error(`${picocolors.blue("Plugins / FDPackage")} >> ${picocolors.red(`Error loading ${filePath}: ${er.toString()}`)}`);
     }
   } else if(freedeck.package === 'theme') {
-    if(!fs.existsSync(path.resolve(`webui/hooks/_themes/${name}`))) {
-      fs.mkdirSync(path.resolve(`webui/hooks/_themes/${name}`), { recursive: true });
+    const location = path.resolve(`user-data/themes/${name}`);
+    const themeFile = path.resolve(`user-data/themes/${name}.css`);
+    if(!fs.existsSync()) {
+      fs.mkdirSync(location, { recursive: true });
     }
     if(freedeck.files) {
       for(const file of freedeck.files) {
@@ -58,7 +66,7 @@ function openPackage({debug, filePath, pluginManager}) {
           console.error(`${picocolors.blue("Plugins / FDPackage")} >> ${picocolors.red(`Error adding theme file: ${file} does not exist.`)}`);
           continue;
         }
-        const dest = path.resolve(`webui/hooks/_themes/${name}/${file}`);
+        const dest = path.resolve(location, file);
         fs.copyFileSync(path.resolve(pathToEx, file), dest);
       }
     }
@@ -68,11 +76,11 @@ function openPackage({debug, filePath, pluginManager}) {
       --author: "${author}";
       --version: "${version}";
       }\n`;  
-    fs.appendFileSync(path.resolve(`webui/hooks/_themes/${name}.css`), themeMeta);
+    fs.appendFileSync(themeFile, themeMeta);
 
-    fs.appendFileSync(path.resolve(`webui/hooks/_themes/${name}.css`), fs.readFileSync(path.resolve(pathToEx, main)));
+    fs.appendFileSync(themeFile, fs.readFileSync(path.resolve(pathToEx, main)));
   }
-  console.log(`${picocolors.blue("Plugins / FDPackage")} >> ${picocolors.green(`${freedeck.type === 'plugin' ? "Plugin": "Theme"} loaded: ${freedeck.title} (${name})`)}`);
+  console.log(`${picocolors.blue("Plugins / FDPackage")} >> ${picocolors.green(`${freedeck.type == 'plugin' ? "Plugin": "Theme"} loaded: ${freedeck.title} (${name})`)}`);
 }
 
 

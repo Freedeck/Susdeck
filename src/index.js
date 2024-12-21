@@ -1,7 +1,9 @@
-const picocolors = require("./utils/picocolors");
+require('module-alias/register');
+
+const picocolors = require("$/picocolors");
 const fs = require("node:fs");
 const path = require("node:path");
-const debug = require("./utils/debug");
+const debug = require("$/debug");
 
 let DOES_RUN_SERVER = true;
 let DO_COMPANION = true;
@@ -51,7 +53,7 @@ if (!DOES_SETTINGS_EXIST_YET && DOES_RUN_SERVER) {
   process.exit(1);
 }
 
-require("./checkForDirectories");
+require("./migration");
 
 const settings = require("./managers/settings");
 
@@ -105,9 +107,10 @@ function setupTerm() {
   const terminator = (sig) => {
     if (typeof sig === "string") {
       // call your async task here and then call process.exit() after async task is done
-      if (fs.existsSync(path.resolve("./webui/hooks"))) {
-        for (const file of fs.readdirSync(path.resolve("./webui/hooks"))) {
-          fs.rmSync(path.resolve("./webui/hooks", file), {
+      const hookPath = path.resolve("./user-data/hooks");
+      if (fs.existsSync(hookPath)) {
+        for (const file of fs.readdirSync(hookPath)) {
+          fs.rmSync(path.resolve(hookPath, file), {
             recursive: true,
           });
           console.log(`${picocolors.blue("Freedeck")} >> ${picocolors.red(`Unloaded hook ${file}`)}`);

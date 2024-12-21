@@ -1,8 +1,4 @@
 window.onerror = (message, source, lineno, colno, error) => {
-  if(window.location.href.includes("companion")) {
-    document.querySelector(".sidebar").style.display = "none";
-  }
-  document.querySelector("#keys").style.display = "none";
   let modal = document.createElement("dialog");
   if(!document.querySelector("#error-dialog")) {
     modal.id = "error-dialog";
@@ -38,8 +34,4 @@ window.onerror = (message, source, lineno, colno, error) => {
 
 window.ErrorIgnore = () => {
   document.querySelector("#error-dialog").remove();
-  document.querySelector("#keys").style.display = "block";
-  if(window.location.href.includes("companion")) {
-    document.querySelector(".sidebar").style.display = "flex";
-  }
 }

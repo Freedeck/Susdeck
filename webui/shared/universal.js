@@ -89,19 +89,32 @@ const universal = {
 		? document.querySelector("#snackbar")
 		: document.createElement("div"),
 	save: (k, v) => {
-		return localStorage.setItem(btoa(`fd.${k}`), btoa(v));
+		return localStorage.setItem(universal.storage.prefix(k), v);
 	},
 	load: (k) => {
-		return atob(localStorage.getItem(btoa(`fd.${k}`)));
+		if(localStorage.getItem(btoa(`fd.${k}`))) {
+			const i = localStorage.getItem(btoa(`fd.${k}`));
+			localStorage.removeItem(btoa(`fd.${k}`));
+			universal.save(k, i);
+		}
+		const exists = localStorage.getItem(universal.storage.prefix(k));
+		return exists ? exists : null;
 	},
 	remove: (k) => {
-		return localStorage.removeItem(btoa(`fd.${k}`));
+		return localStorage.removeItem(universal.storage.prefix(k));
 	},
 	exists: (k) => {
-		return localStorage.getItem(btoa(`fd.${k}`)) != null;
+		return localStorage.getItem(universal.storage.prefix(k)) != null;
+	},
+	default: (k, v) => {
+		universal.CLU("Default", `Setting ${k} to ${v}`);
+		return universal.exists(k) ? universal.load(k) : universal.save(k, v);
 	},
 	loadObj: (k) => {
-		return JSON.parse(atob(localStorage.getItem(btoa(`fd.${k}`))));
+		return JSON.parse(universal.load(k));
+	},
+	saveObj: (k, v) => {
+		return universal.save(k, JSON.stringify(v));
 	},
 	flags: {
 		_cache: {},
@@ -120,27 +133,18 @@ const universal = {
 			universal.save("flags", JSON.stringify(universal.flags._cache));
 		}
 	},
-	default: (k, v) => {
-		universal.CLU("Default", `Setting ${k} to ${v}`);
-		return universal.exists(k) ? universal.load(k) : universal.save(k, v);
-	},
 	storage: {
+		prefix: (k) => `freedeck:${k}`,
 		keys: () => {
 			const _keys = [];
-			for (let key of Object.keys(localStorage)) {
-				key = atob(key);
-				if (key.startsWith("fd.")) {
-					_keys.push(key);
-				}
+			for (const key of Object.keys(localStorage)) {
+				_keys.push(key);
 			}
 			return _keys;
 		},
 		reset: () => {
 			for (let key of Object.keys(localStorage)) {
-				key = atob(key);
-				if (key.startsWith("fd.")) {
-					localStorage.removeItem(key);
-				}
+				localStorage.removeItem(key);
 				location.reload();
 			}
 		},
@@ -219,18 +223,11 @@ const universal = {
 		const erdStart = Date.now();
 		console.log("<h2>Exporting..</h2>");
 		console.log("<h3>Decoding Notification Log</h3>");
-		const decodedNotifLog = universal.load("notification_log").split(",");
+		const decodedNotifLog = universal.loadObj("logs/notif");
 		console.log(
 			"<p>The notification log can get large, so this may take some time.</p>",
 		);
 		console.log(`<p>Your log is ${decodedNotifLog.length} items long.</p>`);
-		const client_nlog_dc = [];
-		for (const log of decodedNotifLog) {
-			if (!log) continue;
-			try {
-				client_nlog_dc.push(JSON.parse(atob(log)));
-			} catch(e){}
-		}
 		console.log("<h3>Decoded Notification Log.</h3>");
 		console.log("<p>Now, we're putting it all together.</p>");
 		const state = {};
@@ -242,8 +239,7 @@ const universal = {
 			time: Date.now(),
 			page: window.location.pathname,
 			state,
-			client_nlog: universal.load("notification_log"),
-			client_nlog_dc,
+			client_nlog: decodedNotifLog,
 			client_cfg: universal.lclCfg(),
 			errLog: universal.ErrorLog,
 			client_bootlog: universal.CLUL,
@@ -263,6 +259,15 @@ const universal = {
 		universal.CLUL.push([elem.innerText, Date.now()]);
 		document.querySelector("#boot-log").appendChild(elem);
 	},
+	doInitialize: (fn, systemData, ...args) => {
+		try {
+			universal.CLU(`Systems/${systemData.name}`, `Initializing ${systemData.name}...`);
+			fn(...args);
+			universal.CLU(`Systems/${systemData.name}`, `Initialized ${systemData.name}!`);
+		} catch(e) {
+			universal.CLU(`Systems/${systemData.name}`, `Error while initializing system: ${e}`);
+		}
+	},
 	init: (user) =>
 		new Promise((resolve, reject) => {
 			UI.makeBootLog();
@@ -273,18 +278,10 @@ const universal = {
 				universal._initFn(user).then(async () => {
 					universal.CLU("Boot", `Received full configuration (${Object.keys(universal.config).length} objects translated from ${Object.keys(universal._information).length})`);
 					universal.CLU("Boot", "Running post-init tasks");
-					universal.CLU("Systems", "Initializing Theme Engine");
-					universal.theming.initialize();
-					universal.CLU("Systems", "Theme Engine initialized.");
-					universal.CLU("Systems", "Initializing UI");
-					UI.initialize(); 
-					universal.CLU("Systems", "UI initialized.");
-					universal.CLU("Systems", "Initializing Audio Engine");
-					universal.audioClient.initialize(); 
-					universal.CLU("Systems", "Audio Engine initialized.");
-					universal.CLU("Systems", "Initializing UISound Engine");
-					universal.uiSounds.initialize(); 
-					universal.CLU("Systems", "UISound Engine initialized.");
+					universal.doInitialize(universal.theming.initialize, {name: "Theme Engine"}, universal);
+					universal.doInitialize(UI.initialize, {name: "UI"}, universal);
+					universal.doInitialize(universal.audioClient.initialize, {name: "Audio Engine"}, universal);
+					universal.doInitialize(universal.uiSounds.initialize, {name: "UI Sounds"}, universal);
 					universal.CLU("Boot", "Post-init tasks completed.");
 					UI.closeBootLog().then(() => {
 						universal.CLU("Boot", "Boot log closed.");
@@ -479,17 +476,15 @@ const universal = {
 				s.remove();
 			}, 500); 
 		}, 3000);
-		universal.save(
-			"notification_log",
-			`${universal.load("notification_log")},${btoa(
-				JSON.stringify({
-					timestamp: new Date(),
-					time: new Date().toTimeString(),
-					page: window.location.pathname,
-					message,
-				}),
-			)}`,
-		);
+		const logIn = {
+			timestamp: new Date(),
+			time: new Date().toTimeString(),
+			page: window.location.pathname,
+			message,
+		};
+		const log = universal.loadObj("logs/notif");
+		log.push(logIn);
+		universal.saveObj("logs/notif", log);
 	},
 	send: (event, value) => {
 		universal._socket.emit(event, value);

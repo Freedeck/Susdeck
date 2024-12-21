@@ -8,9 +8,7 @@ tmp/
 # User data
 src/configs/*
 src/public/*
-user-data/sounds/*
-user-data/icons/*
-user-data/hooks/*
+user-data/*
 
 # WebUI Webpacked resources
 webui/app/*

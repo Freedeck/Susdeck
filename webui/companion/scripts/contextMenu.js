@@ -120,7 +120,7 @@ window.oncontextmenu = (e) => {
             });
             return;
           }
-          showPick(
+          window.showPick(
             `Are you sure you want to remove ${universal.cleanHTML(
               e.srcElement.dataset.name
             )}?`,

@@ -194,7 +194,7 @@ export default function eventsHandler(universal, user) {
 				(ref) => ref.type === (universal.name === "Main" ? 1 : 0),
 			)) {
 				const scr = document.createElement("script");
-				scr.src = `/hooks/${hook.name}`;
+				scr.src = `/user-data/hooks/${hook.name}`;
 				universal.CLU("Event Handler", `Loaded ${hookType} hook: ${hook.name}`);
 				hookCount++;
 				document.body.appendChild(scr);

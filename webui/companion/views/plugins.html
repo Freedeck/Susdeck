@@ -3,7 +3,6 @@
 <button id="upd">Reload All Plugins</button>
 
 <center>
-    <ul id="actl" class="btnlist"></ul>
 </center>
 <details id="tile-prev">
     <summary><strong>Tile Previews</strong></summary>
@@ -12,57 +11,6 @@
 
 <h2>Disabled Plugins</h2>
 <div id="disbl-list" class="row"></div>
-<style>
-    
-    .disabledable,
-    #disbl-list {
-        display: flex;
-        gap: 0.5rem;
-    }
-
-    .btns {
-        display: flex;
-        gap: 0.5rem;
-        width: 100%;
-        flex-wrap: wrap;
-    }
-
-    center ul {
-        list-style-type: none;
-        padding: 0;
-        border-radius: 1.5rem;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .btnlist {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-
-    .btnlist li {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem;
-        color: var(--modal-item-text);
-        border: 1px solid #000;
-        border-radius: 1.5rem;
-        margin: 0.5rem 0;
-        gap: 0.25rem;
-        min-width: 150px;
-        height: max-content;
-        text-overflow: ellipsis;
-
-        background: var(--modal-item-bg);
-        background-size: var(--modal-item-bg-size);
-        animation: var(--modal-item-bg-anim);
-    }
-</style>
 
 <script type="module">
     const seen = {};

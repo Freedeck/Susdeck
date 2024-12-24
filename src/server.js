@@ -139,7 +139,7 @@ function handleSock(socket) {
     if (notification.sender === "handoff-api") {
       switch (notification.data) {
         case "reload-plugins":
-          io.emit(eventNames.default.plugins_updated);
+          io.emit(eventNames.default.reload);
           break;
       }
       if (notification.data.startsWith("nb-slider-")) {

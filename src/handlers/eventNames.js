@@ -31,7 +31,6 @@ const eventNames = {
 		disable_plugin: "dBP",
 		reload_single_plugin: "dRSP",
 		enable_plugin: "dEP",
-		plugins_updated: "dPU",
 		update_plugins: "dUP",
 		config_changed: "dCC",
 		slider_update: "sU",

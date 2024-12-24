@@ -907,13 +907,6 @@ let tc = "repeat(5, 2fr)";
 if (lcfg.tileCols) tc = tc.replace("5", lcfg.tileCols);
 document.documentElement.style.setProperty("--tile-columns", tc);
 
-universal.on(universal.events.default.plugins_updated, () => {
-  const dialog = document.querySelector("dialog");
-  if (!dialog.open) dialog.showModal();
-  universal.uiSounds.playSound("int_prompt");
-  window.location.reload();
-});
-
 universal.listenFor("audio-end", (data) => {
   const filname = data.name.replace(/[^a-zA-Z0-9]/g, "");
   if (document.querySelector(`.s-${filname}`))

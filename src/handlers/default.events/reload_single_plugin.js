@@ -4,5 +4,5 @@ const plugins = require("@managers/plugins");
 module.exports = ({ io, data }) => {
 	
 	plugins.reloadSinglePlugin(data);
-	io.emit(eventNames.default.plugins_updated);
+	io.emit(eventNames.default.reload);
 };

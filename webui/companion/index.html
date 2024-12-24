@@ -12,32 +12,38 @@
 </head>
 
 <body style="overflow: hidden">
-    <dialog style="display: none" class="dialog" id="login-dialog">
-        <div id="login-div">
-            <h1 id="login-msg">Companion</h1>
+    <div style="display: none; z-index: 10200" class="modal" id="login-dialog">
+        <div id="login-div" class="modalContent">
+            <h1 id="login-msg">Welcome to your Freedeck.</h1>
             <p>Enter the password to connect to the server</p>
             <input type="password" id="password" />
-            <button onclick="universal.login(document.getElementById('password').value)">
-                Login
-            </button>
-            <button onclick="window.location.reload();">Reload</button>
+            <br/>
+            <div class="flex-wrap-r">
+                <button onclick="universal.login(document.getElementById('password').value)">
+                    Login
+                </button>
+                <button onclick="window.location.reload();">Reload</button>
+            </div>
         </div>
-    </dialog>
+    </div>
     <dialog id="editor">
         <div id="editor-div">
             <div class="x" id="editor-close">Close</div>
             <div class="editor-section editor-info">
-                <div class="button" id="editor-btn">Not Loaded</div>
+                <div data-state="not" class="button" id="editor-btn">Not Loaded</div>
                 <div class="flex-wrap-r alc">
-                    <label for="name">Name</label>
+                    <label for="name">Title</label>
                     <input type="text" id="name" value="Not Loaded" />
+                </div>
+                <div class="button" style="height:30px;min-height:30px;" id="upload-icon">
+                    Set Icon
                 </div>
                 <details>
                     <summary>
-                        <strong>Style</strong>
+                        <strong>Appearance</strong>
                     </summary>
                     <div class="flex-wrap-r alc">
-                        <label for="color">Color</label>
+                        <label for="color">Background</label>
                         <input type="color" id="color" data-has_set="false" value="#000" />
                     </div>
                     <div class="flex-wrap-r alc">
@@ -57,33 +63,40 @@
                         <input class="fdc-checkbox" type="checkbox" id="nsh" />
                     </div>
                 </details>
-                <div class="flex-wrap-r alc">
-                    <label for="lp">Long Press</label>
-                    <input class="fdc-checkbox" type="checkbox" id="lp" />
-                </div>
-                <div class="flex-wrap-r alc">
-                    <label for="orl">On release?</label>
-                    <input class="fdc-checkbox" type="checkbox" id="orl" />
-                </div>
-                <div class="flex-wrap-r alc" style="display:none;">
-                    <label for="type">Type</label>
-                    <input type="text" id="type" value="fd.sound" disabled />
-                </div>
-                <div class="flex-wrap-r alc" style="display:none;">
-                    <label for="plugin">Plugin</label>
-                    <input type="text" id="plugin" value="Freedeck" disabled />
-                </div>
+                <details>
+                    <summary>
+                        <strong>Controls</strong>
+                    </summary>
+                    <div class="flex-wrap-r alc">
+                        <label for="lp">Long Press</label>
+                        <input class="fdc-checkbox" type="checkbox" id="lp" />
+                    </div>
+                    <div class="flex-wrap-r alc">
+                        <label for="orl">On release?</label>
+                        <input class="fdc-checkbox" type="checkbox" id="orl" />
+                    </div>
+                </details>
+                <details>
+                    <summary><strong>Advanced</strong></summary>
+                    <div class="flex-wrap-r alc">
+                        <label for="type">Type</label>
+                        <input style="color:white;" type="text" id="type" value="fd.sound" disabled />
+                    </div>
+                    <div class="flex-wrap-r alc">
+                        <label for="plugin">Plugin</label>
+                        <input style="color:white;" type="text" id="plugin" value="Freedeck" disabled />
+                    </div>
+                    <div class="horizontal-seperator"></div>
+                    <div class="flex-wrap-r" id="editor-data"></div>
+                </details>
                 <br />
-                <div class="flex-wrap-r">
-                    <div class="button" id="upload-icon">Set Icon</div>
-                </div>
             </div>
             <div style="display: none" id="plugins-only" class="editor-section plugin-items editor-section-bottom">
-                <div class="information">
-                    <h1>Plugins</h1>
-                    <p>Select the plugin this tile will control</p>
-                </div>
                 <div id="spi-actions" class="plugin-items">
+                    <div class="information">
+                        <h3>Plugin</h3>
+                        <p>Select a plugin to control this Tile</p>
+                    </div>
                     <div class="spi-actions-disabled">
                         <h1><span class="spi-actions-disabled-id"></span> is uninstalled, disabled, or failed to load!</h1>
                         <p>
@@ -109,13 +122,13 @@
             </div>
             <div style="display: none" id="audio-only" class="editor-section plugin-items editor-section-bottom">
                 <div class="information">
-                    <h1>Audio</h1>
+                    <h3>Audio</h3>
+                    <p>Play any audio file you want!</p>
                 </div>
                 <div class="flex-wrap-r alc">
                     <p>This tile will play&nbsp;</p>
-                    <h2 id="audio-file">AUDIOFILE.MP3</h2>
+                    <h2 id="audio-file" class="information">AUDIOFILE.MP3</h2>
                 </div>
-                <br />
                 <div class="button" id="upload-sound">Change</div>
             </div>
             <!-- <p>from</p> -->
@@ -127,14 +140,18 @@
                     <select name="system-select" id="system-select"></select>
                 </div>
             </div>
-            <div style="display: none" id="macro-only" class="editor-section editor-section-bottom">
-                <h1>Macro <span class="tag-beta">BETA</span></h1>
+            <div style="display: none" id="macro-only" class="plugin-items editor-section editor-section-bottom">
+                <div class="information">
+                    <h3>Macro<span class="tag-beta">BETA</span></h3>
+                    <p>Type or press a key combination!</p>
+                </div>
                 <div id="sys-actions" class="plugin-items">
-                    <p>When pressed, this tile will type out:</p>
+                    <p>When pressed, this tile will perform a</p>
                     <select name="macro-type" id="macro-type">
                         <option value="text">Text (only text)</option>
                         <option value="macro">Keypress (allows CTRL, ALT, etc...)</option>
                     </select>
+                    <p>macro, which will type</p>
                     <input type="text" name="macro-macro" id="macro-macro">
                 </div>
             </div>
@@ -145,14 +162,12 @@
                 </div>
                 <select name="eprofile-select" id="eprofile-select"></select>
             </div>
-            <div style="display: none" id="none-only" class="plugin-view-listing editor-section editor-section-bottom" >
-                <h1>
-                    Select an action!
-                </h1>
-                <p>
-                    This tile does not have a function yet.
-                </p>
-                <div class="flex-wrap-r tile-selection">
+            <div style="display: none" id="none-only" class="plugin-items editor-section editor-section-bottom" >
+                <div class="information">
+                    <h3>No Action!</h3>
+                    <p>What should this tile do?</p>
+                </div>
+                <div class="flex-wrap-r plugin-view-listing tile-selection">
                     <button id="none-audio">
                         <p>Audio</p>
                         <img src="/common/icons/t_audio.svg" alt="Audio Tile">
@@ -191,7 +206,6 @@
                     <div class="esection" id="tiledata">
                         <h2>Tile Data</h2>
                         <p>These are advanced settings!</p>
-                        <div class="flex-wrap-r" id="editor-data"></div>
                     </div>
                 </div>
             </div>

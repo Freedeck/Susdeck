@@ -63,7 +63,7 @@ window.oncontextmenu = (e) => {
                 name: profile,
               };
             }),
-            (modal, value, feedback, title, button, content) => {
+            ({value}) => {
               universal.page = 0;
               universal.save("page", universal.page);
               universal.send(
@@ -97,17 +97,19 @@ window.oncontextmenu = (e) => {
           universal.send(universal.events.companion.new_key, {
             "New Tile": interaction,
           });
-          universal.editTile({
-            srcElement: {
-              getAttribute: (attr) => {
-                return JSON.stringify(interaction);
-              },
-              dataset: {
-                name: "New Tile",
-                interaction: JSON.stringify(interaction),
-              },
-              className: "button k-0",
-            },
+          universal.listenForOnce("page_change", () => {
+            universal.editTile({
+              srcElement: {
+                getAttribute: (attr) => {
+                  return JSON.stringify(interaction);
+                },
+                dataset: {
+                  name: "New Tile",
+                  interaction: JSON.stringify(interaction),
+                },
+                className: "button k-0 k",
+              }
+            });
           });
           break;
         }
@@ -128,13 +130,14 @@ window.oncontextmenu = (e) => {
               { name: "Yes", value: true },
               { name: "No", value: false },
             ],
-            (m, v) => {
-              if (v.value !== true) return;
+            ({value}) => {
+              if (value.value !== true) return;
               universal.send(universal.events.companion.del_key, {
                 name: e.srcElement.dataset.name,
                 item: e.srcElement.getAttribute("data-interaction"),
               });
-            }
+            },
+            "This cannot be undone!"
           );
           break;
         case "Copy Tile Here":
@@ -166,7 +169,7 @@ function showReplaceGUI(srcElement) {
         type: sound[k].type,
       };
     }),
-    (modal, value, feedback, title, button, content) => {
+    ({value}) => {
       UI.reloadProfile();
       const valueToo = universal.config.sounds.filter((sound) => {
         const k = Object.keys(sound)[0];

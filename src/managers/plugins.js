@@ -17,7 +17,7 @@ const pl = {
 	_settings: new Map(),
 	plugins: () => {
 		if (pl._plc.length >= 0) {
-			pl.update();
+			(async () => await pl.update())();
 			debug.log("Plugins updated.", "Plugins");
 		}
 		return pl._plc;

@@ -9,7 +9,6 @@
 <div class="marketplace">
     <p>Loading Marketplace...</p>
 </div>
-<div id="dialog-conta"></div>
 
 <style>
     .disabledable {
@@ -91,23 +90,36 @@
 </style>
 
 <script type="module">
-    const dialogC = document.createElement('dialog');
-    dialogC.classList.add('dialog');
-    dialogC.classList.add('full-center')
-    const dialog = document.createElement('div');
-    dialog.classList.add("flex-wrap")
-    dialog.classList.add("special-lineheight")
-    dialogC.appendChild(dialog)
-    function Show() {
-        dialogC.style.display = 'block';
-        dialog.style.display = 'flex';
+    if(document.querySelector('#add-repo')) {
+        document.querySelector('#add-repo').remove();
     }
-    function Hide() {
-        dialogC.style.display = 'none';
-        dialog.style.display = 'none';
-    }
-    Hide();
-    document.querySelector("#dialog-conta").appendChild(dialogC)
+    const dialog = universal.UI.makeGenericModal("Add Repository", "Enter the information for the repository.", [], true, `
+        <small class="add-msg"></small>
+        <details>
+            <summary>Presets</summary>
+            <div class="flex-wrap-r">
+                <button class="repo-preset" data-repo='{"t":"freedeck.app","y":"new","u":"https://releases.freedeck.app/index.json"}'>Official Repository</button>
+                <button class="repo-preset" data-repo='{"t":"FreedeckEx","u":"https://freedeckex.moonprod.me/manifest.json","y":"new"}'>FreedeckEx Repository</button>
+            </div>
+            <small>Want to add your own repository? <a href="https://wiki.freedeck.app/marketplace/custom_repo" target="_blank">Learn how</a></small>
+        </details>
+        <label for="title">Title</label><input type="text" id="title" placeholder="freedeck.app">
+        <label for="url">URL</label><input type="text" id="url" placeholder="https://releases.freedeck.app/index.json">
+        <label for="mktr_type">Type</label>
+        <select id="mktr_type" value="new">
+            <option value="new" selected>Marketplace V3 (.json)</option>    
+            <option value="legacy">Old Manifest Type (.fdr.txt)</option>    
+        </select>
+        <br>
+        <div class="flex-wrap-r space-evenly">
+        <button class="tint-green" id="submit">Add</button>
+        </div>
+    `, true);
+    dialog.modal.id = "add-repo";
+    dialog.forceHide();
+    const dialogC = dialog.content;
+    dialogC.style.alignItems = 'start';
+    document.body.appendChild(dialog.modal)
 
     const loadRepo = (repo, isUnofficial = false) => {
         document.querySelector('.message').innerHTML = 'Fetching Marketplace repository: ' + repo.title;
@@ -185,10 +197,8 @@
                             // create a yes/no modal
                             universal.uiSounds.playSound('int_confirm');
                             window.showYesNo("Before you install " + req.title +"...", req.message, (yes) => {
-                                if(yes) {
-                                    window.location.href = file.dataset.HandoffUrl;
+                                window.location.href = file.dataset.HandoffUrl;
                                     universal.uiSounds.playSound('step_2');
-                                }
                             }, ()=>{});
                         } else {
                             window.location.href = file.dataset.HandoffUrl;
@@ -310,31 +320,14 @@
     };
     loadRepos();
     function addRepo() {
-        universal.uiSounds.playSound('int_confirm');
-        dialog.innerHTML = `
-            <h1>Adding Repository</h1>
-                <p class="add-msg">Enter the information for the repository.</p>
-                <details>
-                    <summary>Presets</summary>
-                    <div class="flex-wrap-r">
-                        <button class="repo-preset" data-repo='{"t":"freedeck.app","y":"new","u":"https://releases.freedeck.app/index.json"}'>Official Repository</button>
-                        <button class="repo-preset" data-repo='{"t":"FreedeckEx","u":"https://freedeckex.moonprod.me/manifest.json","y":"new"}'>FreedeckEx Repository</button>
-                    </div>
-                    <small>Want to add your own repository? <a href="https://wiki.freedeck.app/marketplace/custom_repo" target="_blank">Learn how</a></small>
-                </details>
-                <label for="title">Title</label><input type="text" id="title" placeholder="freedeck.app">
-                <label for="url">URL</label><input type="text" id="url" placeholder="https://releases.freedeck.app/index.json">
-                <label for="mktr_type">Type</label>
-                <select id="mktr_type">
-                    <option value="new" selected>Marketplace V3 (.json)</option>    
-                    <option value="legacy">Old Manifest Type (.fdr.txt)</option>    
-                </select>
-                <br>
-                <div class="flex-wrap-r space-evenly">
-                <button class="tint-green" id="submit">Add</button>
-                <button id="cancel">Cancel</button>
-                </div>
-        `;
+        universal.uiSounds.playSound('int_prompt');
+        dialog.content.querySelector("#title").value = "";
+        dialog.content.querySelector("#url").value = "";
+        dialog.content.querySelector("#mktr_type").value = "";
+        dialog.content.querySelector("#submit").disabled = false;
+        dialog.content.querySelector("#submit").innerText = "Add";
+        dialog.content.querySelector('.add-msg').innerText = '';
+        dialog.show();
 
         document.querySelectorAll('.repo-preset').forEach((ele) => {
             ele.onclick = () => {
@@ -344,39 +337,29 @@
                 document.querySelector('#mktr_type').value = data.y;
             }
         });
-
-        Show()
         const submit = document.querySelector('#submit');
-        const cancel = document.querySelector('#cancel');
         const selected = document.querySelector('#mktr_type');
-        cancel.onclick = () => {
-            Hide();
-            universal.uiSounds.playSound('int_no');
-        };
-        dialog.querySelector('#submit').onclick = () => {
+        dialog.content.querySelector('#submit').onclick = () => {
             submit.disabled = true;
 
             submit.innerText = "Downloading content...";
 
-            const title = dialog.querySelector('#title').value;
-            const url = dialog.querySelector('#url').value;
+            const title = dialog.content.querySelector('#title').value;
+            const url = dialog.content.querySelector('#url').value;
 
             if (url == "https://freedeck.app/_fd/repository.php") {
                 document.querySelector('.add-msg').innerText = 'The old repository is being phased out! No need to add it.';
                 submit.disabled = false;
-                cancel.disabled = false;
                 submit.innerText = "Add";
                 return;
             }
 
             document.querySelector('.add-msg').innerText = 'Fetching repository from ' + url + '...';
 
-            universal.uiSounds.playSound('int_prompt');
             fetch(url, { method: 'GET' }).then(res => {
                 if (res.status != 200) {
                     document.querySelector('.add-msg').innerText = 'Failed to fetch repository from ' + url + '. Is the URL correct?';
                     submit.disabled = false;
-                    cancel.disabled = false;
                     submit.innerText = "Add";
                     return;
                 }
@@ -392,7 +375,7 @@
                     if (universal.load('repos.community') != 'ée') curr = JSON.parse(universal.load('repos.community'))
                     curr.push({ title, who: desc, link: url })
                     universal.save('repos.community', JSON.stringify(curr))
-                    Hide()
+                    dialog.close();
                     universal.repositoryManager.unofficial = curr;
                     loadRepos();
                 } else {
@@ -406,109 +389,36 @@
                         title: "Repository Channel",
                         message: "Please select the channel of the repository you are adding.",
                         options
-                    }, (selectedElement) => {
-                        if(selectedElement.value == "main" && url == "https://releases.freedeck.app/index.json") {
+                    }, ({value}) => {
+                        if(value.id == "main" && url == "https://releases.freedeck.app/index.json") {
                             document.querySelector('.add-msg').innerText = 'You can\'t re-add the main repository!';
-                            mod.Show();
                             submit.disabled = false;
-                            cancel.disabled = false;
                             submit.innerText = "Add";
                             return;
                         }
                         const curr = JSON.parse(universal.load('repos.community'))
-                        const chn = selectedElement.value;
+                        const chn = value.id;
                         curr.push({ added: Date.now(), type:"v3", title, url: url, channel: chn })
                         universal.save('repos.community', JSON.stringify(curr))
-                        Hide()
                         universal.repositoryManager.unofficial = curr;
                         loadRepos();
-                    }, submit, cancel)
+                        mod.close();
+                        dialog.hide();
+                    }, submit)
                 }
             }).catch(err => {
                 document.querySelector('.add-msg').innerHTML = 'Failed to fetch repository from ' + url + '.<br>' + err;
                 if (err.toString().includes("Failed to fetch"))
                     document.querySelector('.add-msg').innerHTML += `<br>(Could not reach site, is the internet down?)`;
                 submit.disabled = false;
-                cancel.disabled = false;
                 submit.innerText = "Add";
             });
         }
     }
 
-    function selectModal(opt, cb, submit, cancel) {
-        const modal = document.createElement('dialog');
-        modal.classList.add('dialog');
-        modal.classList.add('full-center')
-        const dialog = document.createElement('div');
-        dialog.classList.add("flex-wrap")
-        dialog.classList.add("special-lineheight")
-        modal.appendChild(dialog)
-        function Show() {
-            modal.style.display = 'block';
-            dialog.style.display = 'flex';
-        }
-        function Hide() {
-            modal.style.display = 'none';
-            dialog.style.display = 'none';
-        }
-        Hide();
-        document.querySelector("#dialog-conta").appendChild(modal)
-        const dialogOptions = document.createElement('select');
-        const title = document.createElement('h1');
-        const message = document.createElement('p');
-        title.innerText = opt.title;
-        message.innerText = opt.message;
-        dialog.appendChild(title);
-        dialog.appendChild(message);
-        
-        for(const option of opt.options) {
-            const opt = document.createElement('option');
-            opt.value = option.id;
-            opt.innerText = option.display;
-            dialogOptions.appendChild(opt);
-        }
-
-        dialog.appendChild(dialogOptions);
-
-        const container = document.createElement('div');
-        container.classList.add('flex-wrap-r');
-        container.classList.add('space-evenly');
-
-        const newsubmit = document.createElement('button');
-        newsubmit.innerText = "Add";
-        newsubmit.classList.add('tint-green');
-
-        const newcancel = document.createElement('button');
-        newcancel.innerText = "Cancel";
-        
-        container.appendChild(newsubmit);
-        container.appendChild(newcancel);
-        
-        dialog.appendChild(container);
-
-        Show()
-
-        newcancel.onclick = () => {
-            submit.disabled = false;
-            cancel.disabled = false;
-            submit.innerText = "Add";
-            Hide();
-            universal.uiSounds.playSound('int_no');
-        };
-        newsubmit.onclick = () => {
-            newsubmit.disabled = true;
-            newcancel.disabled = true;
-            
-            newsubmit.innerText = "Downloading content...";
-            universal.uiSounds.playSound('int_prompt');
-            cb({
-                value: dialogOptions.value,
-            });
-            Hide();
-            newsubmit.disabled = false;
-            newcancel.disabled = false;
-        }
-        return { Show, Hide }
+    function selectModal(opt, cb, submit) {
+        const modal = showPick(opt.title, opt.options, cb, opt.message);
+        return modal;
     }
 
     universal.mkp_addRepo = addRepo;

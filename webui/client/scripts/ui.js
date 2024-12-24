@@ -2,6 +2,62 @@ const Pages = {};
 
 import otherHandler from "./ui/otherHandler.js";
 
+function makeGenericModal(title, content, buttons, closable, rawHtml="", hidesInsteadOfClose=false) {
+	const modal = document.createElement("div");
+	modal.classList.add("modal");
+	modal.innerHTML = `<div class="modalContent"><div class="modal-header"><h2 class="modal-title" style="text-align:left;">${title}</h2><span class="close modal-close">&times;</span></div><div class="modal-body"><p class="modal-description" style="text-align:left;width:100%;">${content}</p>${rawHtml}</div><div class="modal-footer"></div></div>`;
+	const footer = modal.querySelector(".modal-footer");
+	if(!closable) modal.querySelector(".modal-close").style.display = "none";
+	for (const button of buttons) {
+		const btn = document.createElement("button");
+		btn.innerText = button.text;
+		btn.onclick = button.onclick;
+		footer.appendChild(btn);
+	}
+	document.body.appendChild(modal);
+	modal.querySelector(".close").onclick = () => {
+		if(hidesInsteadOfClose) {
+			modal.classList.add("closing");
+			modal.querySelector(".modal-body").classList.add("closing");
+			setTimeout(() => {
+				modal.style.display = "none";
+			}, 250);
+			return;
+		}
+		modal.classList.add("closing");
+		modal.querySelector(".modal-body").classList.add("closing");
+		setTimeout(() => {
+			modal.remove();
+		}, 250);
+	};
+	return {
+		modal,
+		content: modal.querySelector(".modal-body"),
+		close: () => {
+			modal.classList.add("closing");
+			modal.querySelector(".modal-body").classList.add("closing");
+			setTimeout(() => {
+				modal.remove();
+			}, 250);
+		},
+		hide: () => {
+			modal.classList.add("closing");
+			modal.querySelector(".modal-body").classList.add("closing");
+			setTimeout(() => {
+				modal.style.display = "none";
+			}, 250);
+		},
+		forceHide: () => {
+			modal.style.display = "none";
+		},
+		show: () => {
+			modal.classList.remove("closing");
+			modal.querySelector(".modal-body").classList.remove("closing");
+			modal.style.display = "flex";
+		}
+	}
+}
+
 /**
  * @name quickActions
  * @param {*} e The event that was triggered
@@ -16,12 +72,18 @@ let bootLogContainer;
 function makeBootLog() {
 	const thisbootLog = document.createElement("div");
 	thisbootLog.id = "boot-log-div";
-	thisbootLog.innerHTML = "<img src='/logo_big.png' class='n-icon'><h1>Freedeck</h1><div style='display:none;' id='boot-log'></div><center class='oclb'><button style='display:none;' id='oclb'>Close Boot Log</button></center>";
+	thisbootLog.innerHTML = "<img src='/logo_big.png' class='n-icon'><h1>Freedeck</h1><div style='display:none;' id='boot-log'><center class='oclb'><button id='oclb'>Close Boot Log</button><button onclick='universal.storage.reset()'>Reset Storage</button></center></div>";
 	document.body.appendChild(thisbootLog);
 	bootLog = thisbootLog;
 	bootLogCenter = document.querySelector("#boot-log-div > center");
 	bootLogContainer = document.querySelector("#boot-log");
 	bootLogContainer.style.display = 'none';
+	thisbootLog.addEventListener("click", () => {
+		bootLogContainer.style.display = 'block';
+	})
+	thisbootLog.addEventListener("touchstart", () => {
+		bootLogContainer.style.display = 'block';
+	})
 	openCloseBootLog = document.querySelector("#oclb");
 	openCloseBootLog.style.display = 'none';
 	openCloseBootLog.addEventListener("click", () => {
@@ -42,8 +104,7 @@ function showBootLog() {
 
 function closeBootLog() {
 	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			resolve(true);
+		resolve(true);
 			bootLogContainer.style.scale='0';
 			openCloseBootLog.style.display = 'none';
 			if(universal.flags.isEnabled("skip-boot-animation")) {
@@ -65,7 +126,6 @@ function closeBootLog() {
 						},200);
 			}, 499);
 			}
-		}, 250); 
 	})
 }
 
@@ -232,7 +292,6 @@ function reloadSounds() {
 		try {
 			if (snd.pos >= universal.config.iconCountPerPage * (universal.page + 1))
 				continue;
-			console.log(keyObject, snd, universal.page)
 			keyObject.setAttribute("data-interaction", JSON.stringify(snd));
 			keyObject.setAttribute("data-name", k);
 			keyObject.classList.remove("unset");
@@ -277,6 +336,7 @@ function reloadSounds() {
 			}
 
 			if (universal.name !== "Companion") continue;
+
 			let out = "";
 			out += `<h4>${universal.cleanHTML(k, false)}</h4>`;
 			
@@ -369,17 +429,19 @@ function reloadSounds() {
 			universal.send(universal.events.companion.new_key, {
 				"New Tile": interaction,
 			});
-			universal.editTile({
-				srcElement: {
-					getAttribute: (attr) => {
-						return JSON.stringify(interaction);
-					},
-					dataset: {
-						name: "New Tile",
-						interaction: JSON.stringify(interaction),
-					},
-					className: "button k-0",
-				}
+			universal.listenForOnce("page_change", () => {
+				universal.editTile({
+					srcElement: {
+						getAttribute: (attr) => {
+							return JSON.stringify(interaction);
+						},
+						dataset: {
+							name: "New Tile",
+							interaction: JSON.stringify(interaction),
+						},
+						className: "button k-0 k",
+					}
+				});
 			});
 		})
 	}
@@ -423,5 +485,6 @@ export const UI = {
 		idChangeText: visualIdTileChangeText,
 		typeChangeText: visualTypeTileChangeText
 	},
+	makeGenericModal,
 	reloadPluginViews
 };

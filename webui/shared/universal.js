@@ -95,7 +95,8 @@ const universal = {
 		if(localStorage.getItem(btoa(`fd.${k}`))) {
 			const i = localStorage.getItem(btoa(`fd.${k}`));
 			localStorage.removeItem(btoa(`fd.${k}`));
-			universal.save(k, i);
+			universal.CLU("Storage", `Migrated ${k} to new storage format.`);
+			universal.save(k, atob(i));
 		}
 		const exists = localStorage.getItem(universal.storage.prefix(k));
 		return exists ? exists : null;
@@ -110,8 +111,13 @@ const universal = {
 		universal.CLU("Default", `Setting ${k} to ${v}`);
 		return universal.exists(k) ? universal.load(k) : universal.save(k, v);
 	},
-	loadObj: (k) => {
-		return JSON.parse(universal.load(k));
+	loadObj: (k, d={}) => {
+		try {
+			return JSON.parse(universal.load(k)) || d;
+		} catch(e) {
+			console.error("Error while loading object", k,e);
+			return d;
+		}
 	},
 	saveObj: (k, v) => {
 		return universal.save(k, JSON.stringify(v));
@@ -119,7 +125,7 @@ const universal = {
 	flags: {
 		_cache: {},
 		reload: () => {
-			universal.flags._cache = JSON.parse(universal.load("flags"));	
+			universal.flags._cache = universal.loadObj("flags") || {};
 		},
 		isEnabled: (flag) => {
 			return universal.flags._cache[flag] === "true";
@@ -143,11 +149,28 @@ const universal = {
 			return _keys;
 		},
 		reset: () => {
-			for (let key of Object.keys(localStorage)) {
+			for (const key of Object.keys(localStorage)) {
 				localStorage.removeItem(key);
 				location.reload();
 			}
 		},
+	},
+	waitForElement: (selector, callback) => {
+		const elem = document.querySelector(selector);
+		if (elem) {
+			callback(elem);
+		} else {
+			const observer = new MutationObserver((mutations) => {
+				if (document.querySelector(selector)) {
+					observer.disconnect();
+					callback(document.querySelector(selector));
+				}
+			});
+			observer.observe(document.body, {
+				childList: true,
+				subtree: true,
+			});
+		}
 	},
 	showSpinner: (e = document.body) => {
 		const elem = document.createElement("div");
@@ -239,6 +262,10 @@ const universal = {
 			time: Date.now(),
 			page: window.location.pathname,
 			state,
+			ls: {
+				keys: universal.storage.keys(),
+				ls: localStorage,
+			},
 			client_nlog: decodedNotifLog,
 			client_cfg: universal.lclCfg(),
 			errLog: universal.ErrorLog,
@@ -273,6 +300,8 @@ const universal = {
 			UI.makeBootLog();
 			universal.CLU("Boot", "(PRE LOG CREATION) Init promise created");
 			universal.CLU("Boot", "Boot log created"); 
+			universal.CLU("Boot", "Attempting to run LS migrations"); 
+			
 			try {
 				universal.CLU("Boot", "Pre-init");
 				universal._initFn(user).then(async () => {
@@ -379,6 +408,13 @@ const universal = {
 	listenFor: (ev, cb) => {
 		universal._cb.push([ev, cb]);
 	},
+	listenForOnce: (ev, cb) => {
+		const fn = (...args) => {
+			cb(...args);
+			universal._cb = universal._cb.filter((c) => c[0] !== ev);
+		};
+		universal._cb.push([ev, fn]);
+	},
 	sendEvent: (ev, ...data) => {
 		for (const cb of universal._cb) {
 			if (cb[0] === ev) cb[1](...data);
@@ -430,8 +466,6 @@ const universal = {
 						window.location.reload();
 						return;
 					}
-					universal.CLU("InitFN", "Sent Identify packet");
-					universal.send(0x00, user);
 					universal.CLU("InitFN", "Starting dataHandler");
 					dataHandler(universal, user).then(() => {
 						universal.CLU("InitFN", "Starting eventsHandler");
@@ -603,20 +637,18 @@ const universal = {
 export { universal };
 window.universal = universal;
 window.onerror = (message, source, lineno, colno, error) => {
-  if(window.location.href.includes("companion")) {
-    document.querySelector(".sidebar").style.display = "none";
-  }
   document.querySelector("#keys").style.display = "none";
   let modal = document.createElement("dialog");
   if(!document.querySelector("#error-dialog")) {
     modal.id = "error-dialog";
-    modal.classList.add("dialog");
+    modal.classList.add("modal");
     const content = document.createElement("div");
     content.innerHTML = `
     <h1>Freedeck</h1>
     <p>
       Freedeck has encountered an error. This does not crash the app, but may cause unexpected behavior.
     </p>
+		<small>Handler: universal</small>
     <details open>
       <summary>Error Details</summary>
       <small>

@@ -209,17 +209,24 @@ function editTile(e) {
   const interactionData = JSON.parse(
     e.srcElement.getAttribute("data-interaction")
   );
-  editorButton.dataset.state = "opening";
-  if (toggleSidebarContainer.style.left !== "0px")
-    toggleSidebarButton.dataset.nosound = "true";
-  if (toggleSidebarContainer.style.left !== "0px") toggleSidebarButton.click();
+  editorButton.dataset.state = "init";
+  universal.keys.classList.add("smaller")
+  for(const el of document.querySelectorAll(".k")) {
+    el.classList.add("smaller");
+    el.classList.add("blur");
+  }
+  const realEle = document.querySelector(`.k[data-interaction='${e.srcElement.getAttribute("data-interaction")}']`);
+  realEle.classList.remove("smaller");
+  // if (toggleSidebarContainer.style.left !== "0px")
+  //   toggleSidebarButton.dataset.nosound = "true";
+  // if (toggleSidebarContainer.style.left !== "0px") toggleSidebarButton.click();
   if (document.querySelector(".contextMenu"))
     document.querySelector(".contextMenu").style.display = "none";
   for (const el of document.querySelectorAll(".plugin-view")) {
     el.style.display = "none";
   }
   document.querySelector("#advanced-view").style.display = "none";
-  document.querySelector("#sidebar").style.right = "-20%";
+  // document.querySelector("#sidebar").style.right = "-20%";
   document.querySelector("#editor").style.display = "block";
   editorButton.innerText = e.srcElement.dataset.name;
   editorButton.style.backgroundImage = "";
@@ -413,8 +420,8 @@ function editTile(e) {
   document.querySelector('label[for="lp"]').style.display =
     interactionData.renderType === "slider" ? "none" : "block";
   // make it fade in
-  document.querySelector("#editor-div").style.animation =
-    "editor-pull-down 0.5s";
+  document.querySelector("#editor-div").style.animationName ="editor-pull-down";
+  universal.keys.parentElement.style.transform = "translate(-50%, -115%)" 
   toggleSidebarButton.style.display = "none";
 
   universal.sendEvent("editTile", interactionData);
@@ -668,7 +675,7 @@ document.querySelector("#upload-sound").onclick = () => {
         setupLibraryFor("");
       };
       universal._libraryOnpaint = undefined;
-      universal.vclose();
+      universal.vopen("index.html");
     };
   };
   universal._Uploads_Select = (itm) => {
@@ -873,7 +880,7 @@ document.querySelector("#upload-icon").onclick = (e) => {
         setupLibraryFor("");
       };
       universal._libraryOnpaint = undefined;
-      universal.vclose();
+      universal.vopen("index.html");
     };
   };
   universal._Uploads_Select = (itm) => {
@@ -890,20 +897,28 @@ document.querySelector("#upload-icon").onclick = (e) => {
 
 document.querySelector("#editor-close").onclick = () => {
   universal.uiSounds.playSound("int_no");
-  document.querySelector("#editor-div").style.animation = "editor-pull-up 0.5s";
-  document.querySelector("#editor").style.animation = "real-fade-out 0.5s";
+  for(const el of document.querySelectorAll(".k")) {
+    el.classList.remove("smaller");
+    el.classList.remove("blur");
+  }
+  universal.keys.classList.remove("smaller")
+  document.querySelector("#editor-div").style.animationName ="editor-pull-up";
+  document.querySelector("#editor").style.animation = "real-fade-out 0.25s";
+  // universal.keys.parentElement.style.transform = "translate(-50%, -50%)";
+  // do that, but also tilt it slightly down ad forward in 3d
+  universal.keys.parentElement.style.transform = "translate(-50%, -50%)";
   document.querySelector("#sidebar").style.right = "0";
+  editorButton.dataset.state = "not";
   toggleSidebarButton.style.display = "block";
   if (toggleSidebarContainer.style.left === "0px") toggleSidebarButton.click();
   setTimeout(() => {
     document.querySelector("#editor").style.animation = "";
     document.querySelector("#editor").style.display = "none";
-    document.querySelector("#editor-div").style.animation =
-      "editor-pull-down 0.5s";
+    document.querySelector("#editor-div").style.animationName ="editor-pull-down";
     document.querySelector("#color").value = "#000000";
     document.querySelector("#color").dataset.has_set = "false";
     editorButton.style.backgroundColor = "";
-  }, 499);
+  }, 249);
 };
 
 document.querySelector("#editor-save").onclick = () => {
@@ -917,7 +932,6 @@ document.querySelector("#editor-save").onclick = () => {
     oldName: editorButton.getAttribute("data-pre-edit"),
     interaction: interaction,
   });
-
   document.querySelector("#editor-close").click();
 };
 
@@ -1029,36 +1043,27 @@ function showPick(
   title,
   listContent,
   callback,
-  extraM = null,
+  extraM = "",
   closable = true
 ) {
-  const modal = document.createElement("div");
-  modal.className = "modal";
+  const modal = UI.makeGenericModal(title, extraM, [{
+    text: "Save",
+    onclick: () => {
+      const selectedItem = modalList.options[modalList.selectedIndex];
+      const returned = callback(
+       {
+        modal,
+        value:JSON.parse(selectedItem.getAttribute("value")),
+        modalFeedback,
+        modalContent
+       }
+      );
+      if (returned === false) return;
+      modal.close();
+    },
+  }], closable);
 
-  const modalContent = document.createElement("div");
-  modalContent.classList.add("modalContent");
-
-  if (closable) {
-    const modalClose = document.createElement("button");
-    modalClose.innerText = "Close";
-    modalClose.onclick = () => {
-      modal.remove();
-    };
-    modalClose.classList.add("modalClose");
-    modalContent.appendChild(modalClose);
-  }
-
-  const modalTitle = document.createElement("h2");
-  modalTitle.innerText = title;
-  modalTitle.classList.add("modalTitle");
-  modalContent.appendChild(modalTitle);
-
-  if (extraM != null) {
-    const modalTitlet = document.createElement("p");
-    modalTitlet.innerText = extraM;
-    modalTitlet.classList.add("modalText");
-    modalContent.appendChild(modalTitlet);
-  }
+  const modalContent = modal.content;
 
   const modalFeedback = document.createElement("div");
   modalFeedback.classList.add("modalFeedback");
@@ -1069,88 +1074,36 @@ function showPick(
   modalList.style.marginBottom = "20px";
   modalContent.appendChild(modalList);
 
-  // const selectedItem = null;
-
   for (const item of listContent) {
     const modalItem = document.createElement("option");
     modalItem.className = "modalItem";
     modalItem.setAttribute("value", JSON.stringify(item));
-    modalItem.innerText = item.name;
+    modalItem.innerText = item.name || item.display;
     modalList.appendChild(modalItem);
   }
 
-  const modalButton = document.createElement("button");
-  modalButton.innerText = "Save";
-  modalButton.onclick = () => {
-    const selectedItem = modalList.options[modalList.selectedIndex];
-    const returned = callback(
-      modal,
-      JSON.parse(selectedItem.getAttribute("value")),
-      modalFeedback,
-      modalTitle,
-      modalButton,
-      modalContent
-    );
-    if (returned === false) return;
-    modal.remove();
-  };
-  modalContent.appendChild(modalButton);
-
-  modal.appendChild(modalContent);
-
-  document.body.appendChild(modal);
+  document.body.appendChild(modal.modal);
   universal.uiSounds.playSound("int_prompt");
+  return modal;
 }
 
-function showYesNo(title, content, yesCallback, noCallback, closable = true) {
-  const modal = document.createElement("div");
-  modal.className = "modal";
-
-  const modalContent = document.createElement("div");
-  modalContent.classList.add("modalContent");
-
-  if (closable) {
-    const modalClose = document.createElement("button");
-    modalClose.innerText = "Close";
-    modalClose.onclick = () => {
-      modal.remove();
-    };
-    modalClose.classList.add("modalClose");
-    modalContent.appendChild(modalClose);
-  }
-
-  const modalTitle = document.createElement("h2");
-  modalTitle.innerText = title;
-  modalTitle.classList.add("modalTitle");
-  modalContent.appendChild(modalTitle);
-
-  const modalTextContent = document.createElement("div");
-  modalTextContent.innerText = content;
-  modalTextContent.classList.add("modalTextContent");
-  modalContent.appendChild(modalTextContent);
+function showYesNo(title, content, yesCallback, closable = true) {
+  const modal = universal.UI.makeGenericModal(title, content, [], closable);
+  const modalContent = modal.content;
 
   const yesnoc = document.createElement("div");
   yesnoc.classList.add("flex-wrap-r");
 
   const modalButton = document.createElement("button");
-  modalButton.innerText = "Yes";
+  modalButton.innerText = "Proceed";
   modalButton.onclick = () => {
-    modal.remove();
+    modal.close();
     yesCallback();
   };
   yesnoc.appendChild(modalButton);
 
-  const modalButtonNo = document.createElement("button");
-  modalButtonNo.innerText = "No";
-  modalButtonNo.onclick = () => {
-    modal.remove();
-    noCallback();
-  };
-  yesnoc.appendChild(modalButtonNo);
-
   modalContent.appendChild(yesnoc);
-  modal.appendChild(modalContent);
-  document.body.appendChild(modal);
+  document.body.appendChild(modal.modal);
   universal.uiSounds.playSound("int_confirm");
 }
 
@@ -1171,6 +1124,7 @@ window.onclick = (e) => {
 };
 
 document.addEventListener("keydown", (ev) => {
+  if (editorButton.dataset.state != "not") return;
   if (ev.key === "ArrowLeft") {
     if (UI.Pages[universal.page - 1]) {
       universal.page--;
@@ -1233,17 +1187,17 @@ if (universal.load("has_setup") === "false") {
 
 universal.on(universal.events.user_mobile_conn, (isConn) => {
   if (universal.load("has_setup") === "false") return;
-  if (isConn) {
-    document.querySelector(".mobd").style.display = "none";
-    universal.uiSounds.playSound("mobile_connect");
-  } else {
-    document.querySelector(".mobd").style.display = "flex";
-    universal.uiSounds.playSound("mobile_disconnect");
-  }
+  universal.waitForElement(".mobd", (ele) => {
+    ele.style.display = isConn ? "none" : "flex";
+  })
+  universal.uiSounds.playSound(`mobile_${isConn ? "dis" : ""}connected`);
 });
 
-if (universal._information.mobileConnected)
-  document.querySelector(".mobd").style.display = "none";
+if (universal._information.mobileConnected) {
+  universal.waitForElement(".mobd", (ele) => {
+    ele.style.display = "none";
+  })
+}
 
 const setToLocalCfg = (key, value) => {
   const cfg = universal.lclCfg();

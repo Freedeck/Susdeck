@@ -6,26 +6,20 @@ const makeThanks = (force=false) => {
     if(universal.load("has_setup") === 'false') return;
   }
   const {major, other, known} = changes;
-  const container = document.createElement("dialog");
-  container.classList.add("dialog");
-  container.id = "thanks";
-  const content = document.createElement("div");
-  content.classList.add("modalContent");
+  
+  const container = universal.UI.makeGenericModal("Thank you for using Freedeck!", "A lot has changed since the previous update, so here are the changes.", []);
+  container.modal.id = "thanks";
+  
+  const content = container.content;
+
   const close = document.createElement("button");
   close.onclick = () => {
-    document.querySelector("#thanks").style.display = "none";
     universal.uiSounds.playSound("welcome");
 		universal.save("thanks", universal._information.version.raw);
-    document.querySelector("#thanks").remove();
+    container.close();
   }
   close.innerText = "OK";
 
-  const title = document.createElement("h1");
-  title.innerText = "Thank you for using Freedeck!";
-  content.appendChild(title);
-  const description = document.createElement("p");
-  description.innerText = "A lot has changed since the previous update, so here are the changes."
-  content.appendChild(description);
 
   const majorDetails = document.createElement("details");
   const summaryMajor = document.createElement("summary");
@@ -95,6 +89,9 @@ const makeThanks = (force=false) => {
   content.appendChild(close);
   container.appendChild(content);
   document.body.appendChild(container);
+  document.querySelector(".modal-title").style.textAlign = "center";
+  document.querySelector(".modal-title").style.width = "100%";
+  document.querySelector(".modal-description").style.textAlign = "center";
 }
 
 const formatting = (data) => {

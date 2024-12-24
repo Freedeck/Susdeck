@@ -22,6 +22,8 @@ const commonThemes = path.resolve("webui/shared/theming");
 const localStyleLocation = path.resolve("./src/configs/style.json");
 
 const thisPackage = require(path.resolve("package.json"));
+const os = require("node:os");
+const hostname = os.hostname()
 
 module.exports = {
   name: "Main",
@@ -162,7 +164,7 @@ module.exports = {
         id: socket.id,
         tempLoginID: socket.tempLoginID,
         NotificationManager,
-        hostname: require("node:os").hostname(),
+        hostname,
         soundpacks: [...readdirSync(commonSoundpacks).filter(
           (e) => e.endsWith(".soundpack"),
         ), ...readdirSync(userSoundpacksLocation).filter(

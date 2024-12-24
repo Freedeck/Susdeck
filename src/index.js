@@ -61,9 +61,12 @@ const appSettings = settings.settings();
 debug.writeLogs = appSettings.writeLogs;
 
 if (!DO_COMPANION && DOES_RUN_SERVER) {
-  fs.writeFileSync(
+  fs.writeFile(
     path.resolve("./FreedeckCore.log"),
     `S{${Date.now()}} New log.\n`,
+    (err) => {
+      if (err)console.error(err);
+    },
   );
   (async()=>require("./server"))();
 }

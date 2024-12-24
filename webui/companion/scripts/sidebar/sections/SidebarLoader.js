@@ -11,7 +11,9 @@ function loadModule(module) {
   return new Promise((resolve) => {
     const sidebar = document.querySelector('.sidebar');
     if (!sidebar) {
-      throw new Error('Sidebar element not found');
+      console.error('Sidebar element not found');
+      resolve();
+      return;
     }
 
     const observer = new MutationObserver((mutations, obs) => {

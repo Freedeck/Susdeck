@@ -7,6 +7,10 @@ if (!HTMLElement.prototype.setHTML) {
 }
 
 universal.listenFor("init", () => {
+	if (universal._information.config.useAuthentication === false) {
+		universal._authStatus = true;
+		return;
+	};
 	if (!universal._authStatus) {
 		const login = document.createElement("li");
 		login.style.display = "none";
@@ -25,7 +29,7 @@ universal.listenFor("init", () => {
 		universal.login(universal.load("password"));
 		document.querySelector("#login-dialog").style.display = "none";
 	} else {
-		document.querySelector("#login-dialog").style.display = "block";
+		document.querySelector("#login-dialog").style.display = "flex";
 		document.querySelector("#login-div").style.opacity = "1";
 	}
 

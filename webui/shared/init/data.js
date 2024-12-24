@@ -86,9 +86,11 @@ export default function dataHandler(universal, user) {
         "Identified ourselves as Companion APIv2.",
       );
 
-      universal.repositoryManager.unofficial =
-        universal.loadObj("repos.community") || [];
+      if(universal.name === "Companion") {
+        universal.repositoryManager.unofficial =
+        universal.loadObj("repos.community", []) || [];
       universal.CLU("Incoming Data Handler", "Setup unofficial repositories.");
+      }
 
       universal.CLU("Incoming Data Handler", "Setting up plugins for Tile Editor.");
       for (const plugin of Object.keys(universal.plugins)) {
@@ -122,5 +124,7 @@ export default function dataHandler(universal, user) {
       );
       ress(true);
     });
+    universal.CLU("Incoming Data Handler", "Sent Identify packet");
+    universal.send(0x00, user);
   });
 }

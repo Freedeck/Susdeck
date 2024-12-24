@@ -27,6 +27,7 @@ const sidebarUl = document.createElement("ul");
 sidebarEle.appendChild(sidebarUl);
 let sidebar = [];
 universal.reloadRight = () => {
+	universal.flags.reload();
 	sidebar = [
 		{ Tiles: "index.html" },
 		{ Library: "library.html" },

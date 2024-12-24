@@ -22,3 +22,116 @@
 	--modal-bg: rgba(0,0,255,0.84);
 	--modal-color: green;
 }
+
+@keyframes editor-pull-down {
+	0% {
+		transform: translateY(-100%) scale(0) perspective(1000px) rotateX(0deg);
+	}
+	100% {
+		transform: translateY(0) scale(1) perspective(1000px) rotateX(3000deg);
+	}
+}
+
+@keyframes editor-pull-up {
+	0% {
+		transform: translateY(0) scale(1) perspective(1000px) rotateX(3000deg);
+	}
+	100% {
+		transform: translateY(-100%) scale(0.5) perspective(1000px) rotateX(0deg);
+	}
+}
+
+@keyframes modal_content_showing {
+	0% {
+		transform: perspective(1000px) rotateX(90deg);
+	}
+	100% {
+		transform: perspective(1000px) rotateX(0deg);
+	}
+}
+
+@keyframes modal_content_hiding {
+	0% {
+		transform: perspective(1000px) rotateX(0deg);
+	}
+	100% {
+		transform: perspective(1000px) rotateX(364deg);
+	}
+}
+
+@keyframes pull-down {
+	0% {
+		transform: scale(0.1) translateY(-100%) perspective(1000px) rotateY(2000deg);
+	}
+	100% {
+		transform: scale(0.9999999) perspective(1000px) rotateY(4000deg);
+	}
+}
+
+@keyframes pull-up {
+	0% {
+		transform: scale(0.9) perspective(1000px) rotateY(3500deg);
+	}
+	100% {
+		transform: scale(0) translateY(-100%) perspective(1000px) rotateY(0deg);
+	}
+}
+
+.smaller {
+	filter: blur(10px) brightness(30%) contrast(30%);
+}
+
+
+#sidebar ul {
+	width: max-content;
+	height: max-content;
+
+	display: flex;
+	/* flex-direction: row; */
+	justify-content: center;
+
+	background-color: transparent;
+}
+
+#sidebar {
+	transform: perspective(1000px) rotateY(0deg) rotate(30deg);
+	animation: 1s rotateY linear infinite;
+}
+
+#sidebar:hover {
+	animation: none;
+	transform: perspective(1000px) rotateY(0deg) rotate(0deg);
+}
+
+#sidebar ul li {
+	list-style-type: none;
+	margin: 0 10px;
+	border-radius: 1.5rem;
+}
+
+#sidebar ul li span img {
+	rotate: 30deg;
+	animation: 1s weee linear infinite;
+}
+
+@keyframes rotateY {
+	0% {
+		transform: perspective(1000px) rotateY(0deg) rotate(30deg);
+	}
+	100% {
+		transform: perspective(1000px) rotateY(360deg) rotate(40deg);
+	}
+}
+
+@keyframes weee {
+	0% {
+		transform: rotate(0deg) perspective(1000px) rotateY(0deg) scale(1);
+	}
+	100% {
+		transform: rotate(180deg) perspective(500px) rotateY(1000deg);
+	}
+}
+
+button:hover, a:hover, h1:hover,div:hover, details:hover, summary:hover {
+	animation: 60s weee cubic-bezier(0.1, 0.7, 1.0, 0.1) infinite;
+}

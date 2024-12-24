@@ -91,7 +91,7 @@ export default function eventsHandler(universal, user) {
 							name: "Deny",
 						},
 					],
-					(modal, value, feedback, title, button, input, content) => {
+					({value}) => {
 						universal.send(
 							universal.events.rpc.reply,
 							JSON.stringify({
@@ -176,7 +176,7 @@ export default function eventsHandler(universal, user) {
 			if (auth === false) {
 				universal.sendToast("Incorrect password!");
 				if (document.querySelector("#login-dialog"))
-					document.querySelector("#login-dialog").style.display = "block";
+					document.querySelector("#login-dialog").style.display = "flex";
 			} else {
 			}
 			universal.sendEvent("auth", auth);

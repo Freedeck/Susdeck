@@ -30,7 +30,7 @@
 		"@handlers": "src/handlers",
 		"$": "src/utils",
 		"@freedeck": "src/classes"
-  },
+	},
 	"author": "ia74",
 	"license": "ISC",
 	"dependencies": {

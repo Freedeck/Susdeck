@@ -1,119 +1,27 @@
-import gridItemDrag from "./lib/gridItemDrag.js";
 import { UI } from "../../client/scripts/ui.js";
 import { universal } from "../../shared/universal.js";
+import "./dragHandler.js";
+import {openViewTop, closeAllViews} from "./editor/viewEngine.js";
+import {loadData, setTileData} from "./editor/data.js";
 import "./sidebar.js";
 import "../../shared/useAuthentication.js"; // Only for authenticated pages
 import "./uploadsHandler.js";
 import "./editor/loader.js";
 import "./contextMenu.js";
 import { makeThanks } from "./changelog/create.js";
+import Sound from "./editor/viewLogic/sound.js";
+import System from "./editor/viewLogic/system.js";
+import EditorViewLogic from "./editor/viewLogic/EditorViewLogic.js";
+import Macro from "./editor/viewLogic/macro.js";
+import Profile from "./editor/viewLogic/profile.js";
 
 await universal.init("Companion");
 
 universal.connectionTest = true;
 
 const editorButton = document.querySelector("#editor-btn");
-const view_audioOnly = document.querySelector("#audio-only");
-const view_macroOnly = document.querySelector("#macro-only");
-const view_pluginsOnly = document.querySelector("#plugins-only");
-const view_systemOnly = document.querySelector("#system-only");
-const view_noneOnly = document.querySelector("#none-only");
-const view_profileOnly = document.querySelector("#profile-only");
-
-gridItemDrag.setFilter("#keys .button");
-gridItemDrag.unmovableClass = ".builtin, .unset";
-gridItemDrag.setContext(universal.keys);
-universal.listenFor("page_change", () => {
-  gridItemDrag.setContext(universal.keys);
-});
-const mtNextPage = document.querySelector(".mt-next-page");
-const mtPrevPage = document.querySelector(".mt-prev-page");
-gridItemDrag.on("drop", (event, origIndex, targIndex) => {
-  mtNextPage.style.display = "none";
-  mtPrevPage.style.display = "none";
-
-  if (
-    event.target.classList.contains("mt-next-page") ||
-    event.target.classList.contains("mt-prev-page")
-  ) {
-    const wanted = event.target.classList.contains("mt-next-page");
-    // true -> next, false -> prev
-
-    universal.page += wanted ? 1 : -1;
-    universal.save("page", universal.page);
-    universal.sendEvent("page_change");
-
-    // BUT, we need to move the item to the highest or lowest index
-    const originalIndex =
-      Number.parseInt(origIndex) +
-      (universal.page < 0 ? 1 : 0) +
-      (universal.page > 0
-        ? universal.config.iconCountPerPage * universal.page
-        : 0);
-    let targetIndex = 0;
-
-    if (wanted) {
-      // We need to find the first empty slot
-      for (const item of universal.config.profiles[universal.config.profile]) {
-        if (item.pos === targetIndex) {
-          targetIndex++;
-        } else {
-          break;
-        }
-      }
-
-      // We need to move the item to the targetIndex
-    } else {
-      // todo
-    }
-
-    const changed = document.querySelector(`#keys .button.k-${origIndex}`);
-
-    universal.send(universal.events.companion.move_key, {
-      name: changed.getAttribute("data-name"),
-      item: changed.getAttribute("data-interaction"),
-      newIndex: targetIndex,
-      oldIndex: originalIndex,
-    });
-
-    UI.reloadSounds();
-
-    return;
-  }
-
-  const originalIndex =
-    Number.parseInt(origIndex) +
-    universal.page * Number.parseInt(universal.config.iconCountPerPage);
-  const targetIndex =
-    Number.parseInt(targIndex) +
-    universal.page * Number.parseInt(universal.config.iconCountPerPage);
-  const ev = universal.page < 0 ? 1 : 0;
-
-  const changed = document.querySelector(`#keys .button.k-${origIndex}`);
-  changed.classList.remove(`k-${origIndex}`);
-  changed.classList.add(`k-${targIndex}`);
-  event.target.classList.remove(`k-${targIndex}`);
-  event.target.classList.add(`k-${origIndex}`);
-
-  const targetInter = JSON.parse(changed.getAttribute("data-interaction"));
-  universal.send(universal.events.companion.move_key, {
-    name: changed.getAttribute("data-name"),
-    item: changed.getAttribute("data-interaction"),
-    newIndex: targetIndex + ev,
-    oldIndex: originalIndex + ev,
-  });
-  changed.pos = targetIndex;
-  changed.setAttribute("data-interaction", JSON.stringify(targetInter));
-});
-
-gridItemDrag.on("dragging", (e) => {
-  document.querySelector("#keys").appendChild(mtNextPage.cloneNode(true));
-  document.querySelector("#keys").appendChild(mtPrevPage.cloneNode(true));
-  // copy the next and prev buttons to the keys container
-
-  mtNextPage.style.display = "flex";
-  mtPrevPage.style.display = "flex";
-});
+const editorContainer = document.querySelector("#editor");
+const editorDiv = document.querySelector("#editor-div");
 
 const leftSidebar = document.querySelector(".sidebar");
 const toggleSidebarContainer = document.querySelector(".toggle-sidebar");
@@ -138,67 +46,16 @@ toggleSidebarButton.onclick = (ev) => {
   }
 };
 
-/**
- * Load data into editor
- * @param {*} itm List of data objects (like {a:2,b:2})
- */
-function loadData(itm) {
-  document.querySelector("#editor-data").innerHTML = "";
-  document.querySelector("#system-select").innerHTML = "";
-  for (const key of Object.keys(itm)) {
-    const elem = document.createElement("input");
-    elem.type = "text";
-    elem.placeholder = key;
-    elem.value = itm[key];
-    elem.className = "editor-data";
-    elem.id = key;
-    const label = document.createElement("label");
-    label.class = "editordata-removable";
-    label.innerText = key;
-    label.appendChild(elem);
-    document.querySelector("#editor-data").appendChild(label);
-  }
-}
-
-universal.loadEditorData = loadData;
-
-function setEditorData(key, value, int) {
-  if (document.querySelector(`.editor-data#${key}`)) {
-    document.querySelector(`.editor-data#${key}`).value = value;
-  } else {
-    const elem = document.createElement("input");
-    elem.type = "text";
-    elem.placeholder = key;
-    elem.value = value;
-    elem.className = "editor-data";
-    elem.id = key;
-    const label = document.createElement("label");
-    label.class = "editordata-removable";
-    label.innerText = key;
-    label.appendChild(elem);
-    document.querySelector("#editor-data").appendChild(label);
-  }
-  int.data[key] = value;
-}
-
-universal.setEditorData = setEditorData;
-
-const selectableViews = [
-  "audio",
-  "plugins",
-  "system",
-  "none",
-  "profile",
-  "macro",
-];
-
-const openViewCloseAll = (view) => {
-  for (const v of selectableViews) {
-    document.querySelector(`#${v}-only`).style.display = "none";
-  }
-  document.querySelector(`#${view}-only`).style.display = "flex";
-  editorButton.dataset.state = `o ${view}`;
-};
+const editorViewLogics = new Map(
+  [
+    ["audio", new Sound()],
+    ["system", new System()],
+    ["plugin", new EditorViewLogic()],
+    ["macro", new Macro()],
+    ["profile", new Profile()],
+    ["none", new EditorViewLogic()],
+  ]
+)
 
 /**
  * Edit a tile
@@ -217,25 +74,16 @@ function editTile(e) {
   }
   const realEle = document.querySelector(`.k[data-interaction='${e.srcElement.getAttribute("data-interaction")}']`);
   realEle.classList.remove("smaller");
-  // if (toggleSidebarContainer.style.left !== "0px")
-  //   toggleSidebarButton.dataset.nosound = "true";
-  // if (toggleSidebarContainer.style.left !== "0px") toggleSidebarButton.click();
+
   if (document.querySelector(".contextMenu"))
     document.querySelector(".contextMenu").style.display = "none";
   for (const el of document.querySelectorAll(".plugin-view")) {
     el.style.display = "none";
   }
   document.querySelector("#advanced-view").style.display = "none";
-  // document.querySelector("#sidebar").style.right = "-20%";
-  document.querySelector("#editor").style.display = "block";
-  editorButton.innerText = e.srcElement.dataset.name;
-  editorButton.style.backgroundImage = "";
-  if (interactionData.data.icon)
-    editorButton.style.backgroundImage = `url("${interactionData.data.icon}")`;
-  if (interactionData.data.color)
-    editorButton.style.backgroundColor = interactionData.data.color;
-  document.querySelector("#color").value = interactionData.data.color;
-  document.querySelector("#name").value = e.srcElement.dataset.name;
+  
+  editorContainer.style.display = "block";
+
   editorButton.setAttribute("data-pre-edit", e.srcElement.dataset.name);
   editorButton.setAttribute(
     "data-interaction",
@@ -251,7 +99,7 @@ function editTile(e) {
       a.style.display = "block";
     }
   }
-  document.querySelector("#type").value = interactionData.type;
+
   if (interactionData.plugin === "Freedeck" || !interactionData.plugin) {
     document.querySelector("#plugin").style.display = "none";
     document.querySelector('label[for="plugin"]').style.display = "none";
@@ -261,134 +109,62 @@ function editTile(e) {
     document.querySelector("#plugin").value =
       interactionData.plugin || "Freedeck";
   }
-  document.querySelector("#editor-back").style.display = "none";
-  view_audioOnly.style.display = "none";
-  view_pluginsOnly.style.display = "none";
-  view_systemOnly.style.display = "none";
-  view_noneOnly.style.display = "none";
-  view_profileOnly.style.display = "none";
-  view_macroOnly.style.display = "none";
+  document.querySelector("#editor-back").style.display = "block";
+  
+  closeAllViews();
   document.querySelector(".spi-actions-disabled").style.display = "none";
   document.querySelector(".spi-actions-notfound").style.display = "none";
-  if (
-    interactionData.type.includes("fd.") &&
-    interactionData.type !== "fd.none"
-  ) {
-    document.querySelector("#editor-back").style.display = "";
-  } else document.querySelector("#editor-back").style.display = "none";
-  if (interactionData.type === "fd.sound") {
-    document.querySelector("#audio-file").innerText = interactionData.data.file;
-    // document.querySelector("#audio-path").innerText = interactionData.data.path;
-    openViewCloseAll("audio");
+
+  if (!interactionData.type.startsWith("fd.")) {
+    for (const el of document.querySelectorAll(".spiaction")) {
+      if (el.classList.contains(`pl-${interactionData.plugin}`))
+        el.style.display = "block";
+    }
+    for (const el of document.querySelectorAll(".spiback")) {
+      el.style.display = "block";
+    }
+    for (const el of document.querySelectorAll(".spiplugin")) {
+      el.style.display = "none";
+    }
+
+    for (const el of document.querySelectorAll(".spi-actions-disabled-id")) {
+      el.innerText = interactionData.plugin;
+    }
+    for (const el of document.querySelectorAll(
+      ".spi-actions-notfound-type"
+    )) {
+      el.innerText = interactionData.type;
+    }
+    if (
+      !document.querySelector(`.spi[data-type="${interactionData.type}"]`)
+    ) {
+      document.querySelector(".spi-actions-notfound").style.display = "block";
+    }
+    if (universal.plugins[interactionData.plugin] === undefined) {
+      document.querySelector(".spi-actions-disabled").style.display = "block";
+    }
+    openViewTop("plugins");
   } else {
-    if (!interactionData.type.startsWith("fd.")) {
-      for (const el of document.querySelectorAll(".spiaction")) {
-        if (el.classList.contains(`pl-${interactionData.plugin}`))
-          el.style.display = "block";
-      }
-      for (const el of document.querySelectorAll(".spiback")) {
-        el.style.display = "block";
-      }
-      for (const el of document.querySelectorAll(".spiplugin")) {
-        el.style.display = "none";
-      }
-
-      for (const el of document.querySelectorAll(".spi-actions-disabled-id")) {
-        el.innerText = interactionData.plugin;
-      }
-      for (const el of document.querySelectorAll(
-        ".spi-actions-notfound-type"
-      )) {
-        el.innerText = interactionData.type;
-      }
-      if (
-        !document.querySelector(`.spi[data-type="${interactionData.type}"]`)
-      ) {
-        document.querySelector(".spi-actions-notfound").style.display = "block";
-      }
-      if (universal.plugins[interactionData.plugin] === undefined) {
-        document.querySelector(".spi-actions-disabled").style.display = "block";
-      }
-    } else {
-      for (const el of document.querySelectorAll(".spiaction, .spiback")) {
-        el.style.display = "none";
-      }
-      for (const el of document.querySelectorAll(".spiplugin")) {
-        el.style.display = "block";
-      }
+    for (const el of document.querySelectorAll(".spiaction, .spiback")) {
+      el.style.display = "none";
     }
-    openViewCloseAll("plugins");
-    if (interactionData.type === "fd.macro_text") {
-      openViewCloseAll("macro");
-      if (interactionData.data.macro) {
-        document.querySelector("#macro-type").value = "text";
-        document.querySelector("#macro-macro").value =
-          interactionData.data.macro;
-      }
+    for (const el of document.querySelectorAll(".spiplugin")) {
+      el.style.display = "block";
     }
-    if (interactionData.type === "fd.macro") {
-      openViewCloseAll("macro");
-      if (interactionData.data.macro) {
-        document.querySelector("#macro-type").value = "macro";
-        document.querySelector("#macro-macro").value =
-          interactionData.data.macro;
-      }
+  }
+  if (interactionData.type === "fd.none") {
+    openViewTop("none");
+    document.querySelector("#editor-back").style.display = "none";
+  } else {
+    for(const v of editorViewLogics) {
+      v[1].forwardRunningEvent(interactionData.type, () => {
+        openViewTop(v[1].view);
+      }, {interactionData});
     }
-    if (interactionData.type.startsWith("fd.sys")) {
-      openViewCloseAll("system");
-
-      universal.nbws.send("get_apps", "");
-      universal.nbws.once("apps", (rawData) => {
-        const data = rawData;
-        const int = JSON.parse(editorButton.getAttribute("data-interaction"));
-
-        const select = document.querySelector("#system-select");
-        select.innerHTML = "";
-
-        for (const app of data) {
-          const option = document.createElement("option");
-          let friendly =
-            app.friendly !== "" ? `${app.friendly} (${app.name})` : app.name;
-          if (app.name === "_fd.System") friendly = "System Volume";
-          option.innerText = friendly;
-          option.value = app.name;
-          if (int.data?.app && int.data.app === app.name)
-            option.selected = true;
-          select.appendChild(option);
-        }
-        select.onchange = (e) => {
-          const dt =
-            e.srcElement.value !== "_fd.System"
-              ? "fd.sys.volume"
-              : "fd.sys.volume.sys";
-          document.querySelector("#type").value = dt;
-          int.type = dt;
-          int.renderType = "slider";
-          setEditorData("app", e.srcElement.value, int);
-          setEditorData("min", 0, int);
-          setEditorData("max", 100, int);
-          setEditorData("value", 50, int);
-          setEditorData("format", "%", int);
-          setEditorData("direction", "vertical", int);
-          editorButton.setAttribute("data-interaction", JSON.stringify(int));
-        };
-      });
-      if (interactionData.type.startsWith("fd.sys.volume")) {
-        document.querySelector("#system-select").value =
-          interactionData.data.app;
-      }
-    }
-    if (interactionData.type === "fd.profile") {
-      generateProfileSelect();
-      document.querySelector("#eprofile-select").value =
-        interactionData.data.profile;
-      openViewCloseAll("profile");
-    }
-    if (interactionData.type === "fd.none") {
-      openViewCloseAll("none");
-    } else if (interactionData.plugin) {
-      loadSettings(interactionData.plugin);
-    }
+  } 
+  
+  if (interactionData.plugin) {
+    loadSettings(interactionData.plugin);
   }
   if (interactionData.data) {
     const itm = interactionData.data;
@@ -420,24 +196,18 @@ function editTile(e) {
   document.querySelector('label[for="lp"]').style.display =
     interactionData.renderType === "slider" ? "none" : "block";
   // make it fade in
-  document.querySelector("#editor-div").style.animationName ="editor-pull-down";
+  editorDiv.style.animationName ="editor-pull-down";
   universal.keys.parentElement.style.transform = "translate(-50%, -115%)" 
   toggleSidebarButton.style.display = "none";
 
-  universal.sendEvent("editTile", interactionData);
+  universal.sendEvent("editTile", interactionData, e.srcElement.dataset.name);
 }
 
 universal.editTile = editTile;
 
 document.querySelector("#editor-back").onclick = () => {
   document.querySelector("#editor-back").style.display = "none";
-  view_audioOnly.style.display = "none";
-  view_pluginsOnly.style.display = "none";
-  view_systemOnly.style.display = "none";
-  view_noneOnly.style.display = "none";
-  view_profileOnly.style.display = "none";
-  view_macroOnly.style.display = "none";
-  openViewCloseAll("none");
+  openViewTop("none");
 };
 
 function setCheck(id, key, interaction) {
@@ -546,6 +316,7 @@ const generateProfileSelect = () => {
     loadData(int.data);
   };
 };
+universal.generateProfileSelect = generateProfileSelect;
 
 document.querySelector("#spiback").onclick = (e) => {
   document.querySelector(".spi-actions-disabled").style.display = "none";
@@ -695,28 +466,18 @@ document.querySelector("#upload-sound").onclick = () => {
   };
 };
 
-document.querySelector("#none-audio").onclick = (e) => {
-  const int = JSON.parse(editorButton.getAttribute("data-interaction"));
-  int.type = "fd.sound";
-  int.data.file = "Unset.mp3";
-  int.data.path = "/sounds/";
-  editorButton.setAttribute("data-interaction", JSON.stringify(int));
-  document.querySelector("#audio-file").innerText = "Unset.mp3";
-  document.querySelector("#type").value = "fd.sound";
-  // document.querySelector("#audio-path").innerText = "/sounds/";
-  openViewCloseAll("audio");
-};
+editorViewLogics.forEach((logic, k) => {
+  console.log("Setting up", k);
+  if(!document.querySelector(`#none-${k}`)) return;
+  document.querySelector(`#none-${k}`).onclick = (e) => {
+    e.preventDefault();
+    openViewTop(k);
+    logic.onFirstSetup({
+      interactionData: JSON.parse(editorButton.getAttribute("data-interaction")),
+    })
+  };
+})
 
-document.querySelector("#none-profiles").onclick = (e) => {
-  const int = JSON.parse(editorButton.getAttribute("data-interaction"));
-  int.type = "fd.profile";
-  int.data.profile = "Default";
-  editorButton.setAttribute("data-interaction", JSON.stringify(int));
-  document.querySelector("#type").value = "fd.profile";
-  generateProfileSelect();
-  document.querySelector("#eprofile-select").value = int.data.profile;
-  openViewCloseAll("profile");
-};
 
 universal.nbws.on("apps", (rawData) => {
   const data = rawData;
@@ -744,44 +505,19 @@ universal.nbws.on("apps", (rawData) => {
     document.querySelector("#type").value = dt;
     int.type = dt;
     int.renderType = "slider";
-    setEditorData("app", e.srcElement.value, int);
-    setEditorData("min", 0, int);
-    setEditorData("max", 100, int);
-    setEditorData("value", 50, int);
-    setEditorData("format", "%", int);
-    setEditorData("direction", "vertical", int);
+    setTileData("app", e.srcElement.value, int);
+    setTileData("min", 0, int);
+    setTileData("max", 100, int);
+    setTileData("value", 50, int);
+    setTileData("format", "%", int);
+    setTileData("direction", "vertical", int);
     editorButton.setAttribute("data-interaction", JSON.stringify(int));
   };
 });
 
-document.querySelector("#none-system").onclick = (e) => {
-  universal.nbws.send("get_apps", "");
-  const int = JSON.parse(editorButton.getAttribute("data-interaction"));
-
-  int.type = "fd.sys.volume.sys";
-  int.renderType = "slider";
-  int.data.app = "_fd.System";
-  int.data.min = 0;
-  int.data.max = 100;
-  int.data.value = 50;
-  int.data.format = "%";
-  int.data.direction = "vertical";
-  editorButton.setAttribute("data-interaction", JSON.stringify(int));
-  document.querySelector("#type").value = "fd.sys.volume.sys";
-  openViewCloseAll("system");
-};
-
-document.querySelector("#none-macro").onclick = (e) => {
-  const int = JSON.parse(editorButton.getAttribute("data-interaction"));
-  int.type = "fd.macro_text";
-  document.querySelector("#type").innerText = "fd.macro_text";
-  editorButton.setAttribute("data-interaction", JSON.stringify(int));
-  openViewCloseAll("macro");
-};
-
 document.querySelector("#macro-macro").onchange = (e) => {
   const int = JSON.parse(editorButton.getAttribute("data-interaction"));
-  setEditorData("macro", e.srcElement.value, int);
+  setTileData("macro", e.srcElement.value, int);
   int.data.macro = e.srcElement.value;
 };
 document.querySelector("#macro-type").onchange = (e) => {
@@ -798,10 +534,10 @@ document.querySelector("#none-plugin").onclick = (e) => {
   int.type = "fd.select";
   document.querySelector("#type").innerText = "fd.select";
   editorButton.setAttribute("data-interaction", JSON.stringify(int));
-  openViewCloseAll("plugins");
+  openViewTop("plugins");
 };
 
-const setupLibraryFor = (type) => {
+function setupLibraryFor(type){
   if (type === "icon") {
     document.querySelector("#library-view-sounds").style.display = "none";
     document.querySelector("#library-view-icons").style.display = "block";
@@ -893,46 +629,6 @@ document.querySelector("#upload-icon").onclick = (e) => {
     loadData(interaction.data);
     universal.uiSounds.playSound("uploaded");
   };
-};
-
-document.querySelector("#editor-close").onclick = () => {
-  universal.uiSounds.playSound("int_no");
-  for(const el of document.querySelectorAll(".k")) {
-    el.classList.remove("smaller");
-    el.classList.remove("blur");
-  }
-  universal.keys.classList.remove("smaller")
-  document.querySelector("#editor-div").style.animationName ="editor-pull-up";
-  document.querySelector("#editor").style.animation = "real-fade-out 0.25s";
-  // universal.keys.parentElement.style.transform = "translate(-50%, -50%)";
-  // do that, but also tilt it slightly down ad forward in 3d
-  universal.keys.parentElement.style.transform = "translate(-50%, -50%)";
-  document.querySelector("#sidebar").style.right = "0";
-  editorButton.dataset.state = "not";
-  toggleSidebarButton.style.display = "block";
-  if (toggleSidebarContainer.style.left === "0px") toggleSidebarButton.click();
-  setTimeout(() => {
-    document.querySelector("#editor").style.animation = "";
-    document.querySelector("#editor").style.display = "none";
-    document.querySelector("#editor-div").style.animationName ="editor-pull-down";
-    document.querySelector("#color").value = "#000000";
-    document.querySelector("#color").dataset.has_set = "false";
-    editorButton.style.backgroundColor = "";
-  }, 249);
-};
-
-document.querySelector("#editor-save").onclick = () => {
-  const name = document.querySelector("#name").value;
-  const interaction = JSON.parse(editorButton.getAttribute("data-interaction"));
-  for (const input of document.querySelectorAll(".editor-data")) {
-    interaction.data[input.id] = input.value;
-  }
-  universal.send(universal.events.companion.edit_key, {
-    name: name,
-    oldName: editorButton.getAttribute("data-pre-edit"),
-    interaction: interaction,
-  });
-  document.querySelector("#editor-close").click();
 };
 
 /**

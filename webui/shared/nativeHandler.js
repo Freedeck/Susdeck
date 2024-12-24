@@ -9,7 +9,7 @@ const updateKeys = (data) => {
 		if (el.id === "editor-btn") continue;
 		let interact = el.getAttribute("data-interaction");
 		interact = JSON.parse(interact);
-		if (interact.data.app && formatted[interact.data.app]) {
+		if (interact.renderType === 'slider' && interact.data.app && formatted[interact.data.app]) {
 			interact.data.value = formatted[interact.data.app][1] * 100;
 			el.setAttribute("data-interaction", JSON.stringify(interact));
 			el.querySelector(".slider-container").dataset.value =

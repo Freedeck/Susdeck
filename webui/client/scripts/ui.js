@@ -216,7 +216,7 @@ function reloadPluginViews() {
 				const editor = document.querySelector("#editor-btn");
 				const int = JSON.parse(editor.getAttribute("data-interaction"));
 				int.data._view = btoa(view).toLowerCase().split("=")[0];
-				universal.setEditorData("_view", btoa(view).toLowerCase().split("=")[0], int);
+				universal.setTileData("_view", btoa(view).toLowerCase().split("=")[0], int);
 				editor.setAttribute("data-interaction", JSON.stringify(int));
 				document.querySelector(`#plugin-view-${btoa(view).toLowerCase().split("=")[0]}`).style.display = "block";
 			}
@@ -290,6 +290,7 @@ function reloadSounds() {
 			snd.pos = newPos + universal.config.iconCountPerPage * universal.page;
 		}
 		try {
+			if(keyObject?.querySelector(".slider-container")) keyObject.querySelector(".slider-container").remove();
 			if (snd.pos >= universal.config.iconCountPerPage * (universal.page + 1))
 				continue;
 			keyObject.setAttribute("data-interaction", JSON.stringify(snd));

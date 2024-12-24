@@ -83,9 +83,14 @@ export default function (data, keyObject, raw) {
 		});
 	};
 
-	setInterval(() => {
+	const i = setInterval(() => {
 		// sync slider value with data
 		if (sliderContainer.dataset.value === data.data.value) return;
+		if (isDragging) return;
+		if (!document.body.contains(sliderContainer)) {
+			clearInterval(i);
+			return;
+		}
 
 		data.data.value = sliderContainer.dataset.value;
 		const min = data.data.min;

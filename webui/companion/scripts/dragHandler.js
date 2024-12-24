@@ -48,7 +48,7 @@ gridItemDrag.on("drop", (event, origIndex, targIndex) => {
 
     const changed = document.querySelector(`#keys .button.k-${origIndex}`);
 
-    universal.send(universal.events.companion.move_key, {
+    universal.send(universal.events.companion.move_tile, {
       name: changed.getAttribute("data-name"),
       item: changed.getAttribute("data-interaction"),
       newIndex: targetIndex,
@@ -73,7 +73,7 @@ gridItemDrag.on("drop", (event, origIndex, targIndex) => {
   event.target.classList.add(`k-${origIndex}`);
 
   const targetInter = JSON.parse(changed.getAttribute("data-interaction"));
-  universal.send(universal.events.companion.move_key, {
+  universal.send(universal.events.companion.move_tile, {
     name: changed.getAttribute("data-name"),
     item: changed.getAttribute("data-interaction"),
     newIndex: targetIndex + ev,

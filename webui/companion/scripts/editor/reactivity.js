@@ -122,7 +122,7 @@ editorSave.onclick = () => {
   for (const input in tileData) {
     interaction.data[input] = tileData[input];
   }
-  universal.send(universal.events.companion.edit_key, {
+  universal.send(universal.events.companion.edit_tile, {
     name: tileName,
     oldName: editorButton.getAttribute("data-pre-edit"),
     interaction: interaction,

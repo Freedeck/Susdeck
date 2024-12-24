@@ -1,7 +1,10 @@
 const eventNames = {
+	/* These shouldn't be changed */
 	client_greet: 0x00,
 	information: "I",
-	keypress: "K",
+	/* These shouldn't be changed */ 
+
+	keypress: 0,
 	user_mobile_conn: "U",
 	login: {
 		login_data: "lD",
@@ -22,8 +25,6 @@ const eventNames = {
 
 		plugin_info: "dP",
 
-		channel_send: "dcO",
-		channel_listening: "dcI",
 		reload: "dR",
 		reload_sounds: "dRS",
 		recompile: "dC",
@@ -39,10 +40,10 @@ const eventNames = {
 	companion: {
 		tile_update: "cTu",
 		conn_fail: "cF",
-		new_key: "ckN",
-		del_key: "ckD",
-		edit_key: "ckE",
-		move_key: "ckM",
+		new_tile: "ckN",
+		del_tile: "ckD",
+		edit_tile: "ckE",
+		move_tile: "ckM",
 		set_profile: "cpS",
 		add_profile: "cpA",
 		dup_profile: "cpD",

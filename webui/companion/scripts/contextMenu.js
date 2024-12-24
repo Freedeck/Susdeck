@@ -94,7 +94,7 @@ window.oncontextmenu = (e) => {
             uuid,
             data: {},
           };
-          universal.send(universal.events.companion.new_key, {
+          universal.send(universal.events.companion.new_tile, {
             "New Tile": interaction,
           });
           universal.listenForOnce("page_change", () => {
@@ -116,7 +116,7 @@ window.oncontextmenu = (e) => {
         case "Remove Tile":
           UI.reloadProfile();
           if(universal.flags.isEnabled("no_ask_to_delete")) {
-            universal.send(universal.events.companion.del_key, {
+            universal.send(universal.events.companion.del_tile, {
               name: e.srcElement.dataset.name,
               item: e.srcElement.getAttribute("data-interaction"),
             });
@@ -132,7 +132,7 @@ window.oncontextmenu = (e) => {
             ],
             ({value}) => {
               if (value.value !== true) return;
-              universal.send(universal.events.companion.del_key, {
+              universal.send(universal.events.companion.del_tile, {
                 name: e.srcElement.dataset.name,
                 item: e.srcElement.getAttribute("data-interaction"),
               });
@@ -182,7 +182,7 @@ function showReplaceGUI(srcElement) {
           ? universal.config.iconCountPerPage * universal.page
           : 0);
       // we need to clone value, and change the pos, and uuid, then make a new key.
-      universal.send(universal.events.companion.new_key, {
+      universal.send(universal.events.companion.new_tile, {
         [value.name]: {
           type: valueToo.type,
           plugin: valueToo.plugin,

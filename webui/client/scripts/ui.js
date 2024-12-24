@@ -427,7 +427,7 @@ function reloadSounds() {
             data: {},
           };
 		e.addEventListener("click", (v) => {
-			universal.send(universal.events.companion.new_key, {
+			universal.send(universal.events.companion.new_tile, {
 				"New Tile": interaction,
 			});
 			universal.listenForOnce("page_change", () => {

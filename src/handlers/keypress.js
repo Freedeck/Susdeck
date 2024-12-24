@@ -6,12 +6,9 @@ const cfg = settings.settings();
 module.exports = {
 	name: "Keypress Handler",
 	id: "fd.handlers.keypress",
+	flags: ["AUTH"],
 	exec: ({ socket, types, plugins, io }) => {
 		socket.on(eventNames.keypress, (ev) => {
-			if (socket.auth !== true && cfg.useAuthentication) {
-				socket.emit(eventNames.default.not_auth);
-				return;
-			}
 			try {
 				if (ev.isSlider) {
 					callPlugin(types, plugins, ev);
@@ -35,10 +32,6 @@ module.exports = {
 						io.emit(eventNames.keypress, {
 							sound: { name: "Stop All", type: "fd.sound" },
 						});
-					return;
-				}
-				if (!ev.event.isTrusted) {
-					socket.emit(eventNames.default.not_trusted);
 					return;
 				}
 				io.emit(eventNames.keypress, ev.btn);

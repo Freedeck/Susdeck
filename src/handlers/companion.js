@@ -13,7 +13,7 @@ module.exports = {
 					if(flags.includes("AUTH")) {
           	socket.emit(eventNames.default.notif, {sender: "Server", data: "Performing authenticated action."});
 						if(!socket.auth) {
-							socket.emit(eventNames.default.not_auth);
+							socket.emit(eventNames.login.unauthorized);
 							return;
 						}
 					}

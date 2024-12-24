@@ -18,7 +18,7 @@ module.exports = {
 		});
 		socket.on(eventNames.login.login, (data) => {
 			if (!socket.tlidMatch) {
-				socket.emit(eventNames.default.not_match);
+				socket.emit(eventNames.login.session_validation_failure);
 				return;
 			}
 			if (debug.status || sec.match("password", data.passwd)) {

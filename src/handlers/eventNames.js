@@ -10,13 +10,10 @@ const eventNames = {
 		login_data: "lD",
 		login: "lL",
 		login_data_ack: "lDA",
+		session_validation_failure: "daMF",
+		unauthorized: "daCF",
 	},
-	default: {
-		no_init_info: "dNI",
-
-		not_trusted: "dtF",
-		not_auth: "daCF",
-		not_match: "daMF",
+	default: {		
 		set_theme: "dT",
 
 		notif: "dN",

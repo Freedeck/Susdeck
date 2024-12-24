@@ -3,29 +3,16 @@ import { UI } from "../../client/scripts/ui";
 export default function eventsHandler(universal, user) {
 	return new Promise((resolve, reject) => {
 		universal.CLU("Event Handler", "Creating event handlers...");
-		universal.on(universal.events.default.not_trusted, () =>
-			universal.sendToast("Not trusted to do this action."),
-		);
 
-		universal.on(universal.events.default.not_auth, () =>
+		universal.on(universal.events.login.unauthorized, () =>
 			universal.sendToast("You are not authenticated!"),
 		);
 
-		universal.on(universal.events.default.not_match, () =>
+		universal.on(universal.events.login.session_validation_failure, () =>
 			universal.sendToast(
 				"Login not allowed! Session could not be verified against server.",
 			),
 		);
-
-		universal.on(universal.events.default.no_init_info, (data) => {
-			const parsedToo = JSON.parse(data);
-			universal._information = JSON.parse(data);
-			universal.events = parsedToo.events;
-			universal.config = parsedToo.config;
-			universal.plugins = parsedToo.plugins;
-			universal._serverRequiresAuth = universal.config.useAuthentication;
-			universal.sendEvent("new-info");
-		});
 
 		universal.on(universal.events.companion.set_theme, (theme) => {
 			universal.theming.setTheme(theme, false);

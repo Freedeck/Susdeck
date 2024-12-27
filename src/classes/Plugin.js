@@ -27,7 +27,7 @@ module.exports = class Plugin {
   constructor(name, author, id, disabled = false) {
     this.name = name;
     this.author = author;
-    this.id = id;
+    this.id = id.toLowerCase();
     this.disabled = disabled;
     this.types = [];
     if (this.disabled) return;

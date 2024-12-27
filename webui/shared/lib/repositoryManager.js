@@ -14,7 +14,7 @@ const repom = {
 
 async function getV3Repository(repoData) {
   const plugins = [];
-  const res = await fetch(repoData.url).catch((err) => {
+  const res = await fetch(`${repoData.url}?time=${Date.now()}` ).catch((err) => {
     return err;
   });
   const data = await res.json();

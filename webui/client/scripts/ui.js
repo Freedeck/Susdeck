@@ -278,6 +278,7 @@ function reloadSounds() {
 	for (const sound of universal.config.sounds) {
 		const k = Object.keys(sound)[0];
 		const snd = sound[k];
+		if(snd.plugin) snd.plugin = snd.plugin.toLowerCase();
 		let keyObject = document.querySelector(`.k-${snd.pos}`);
 
 		if (snd.pos < universal.config.iconCountPerPage * universal.page) continue;
@@ -351,7 +352,7 @@ function reloadSounds() {
 
 			if (snd.plugin) {
 				if(universal.plugins[snd.plugin])
-					out += `<p>This tile uses ${universal.cleanHTML(snd.plugin, false)}.</p>`;
+					out += `<p>This tile uses ${universal.cleanHTML(universal.plugins[snd.plugin].name, false)}.</p>`;
 				else
 					out += `<p>${universal.cleanHTML(snd.plugin, false)} could not be found.</p>`
 				for (const i of Array.from(universal._tyc.keys())) {

@@ -6,6 +6,7 @@ const picocolors = require("$/picocolors.js");
 module.exports = async ({ debug, file, pl }) => {
   const a = await AsarBundleRunner.extract(`./plugins/${file}`, false);
   const instantiated = await AsarBundleRunner.run(a);
+  instantiated.id = instantiated.id.toLowerCase();
   console.log(
     `${picocolors.blue("Plugins")} >> ${picocolors.yellow(`${instantiated.name} is an ASAR bundle. This format is deprecated and will be removed in a future version.`)}`
   )

@@ -1,6 +1,6 @@
 const path = require('node:path');
 const tar = require('tar');
-const picocolors = require(path.resolve('./src/utils/picocolors.js'));
+const picocolors = require("$/picocolors");
 const fs = require('node:fs');
 
 function openPackage({debug, filePath, pluginManager}) {
@@ -80,7 +80,7 @@ function openPackage({debug, filePath, pluginManager}) {
 
     fs.appendFileSync(themeFile, fs.readFileSync(path.resolve(pathToEx, main)));
   }
-  console.log(`${picocolors.blue("Plugins / FDPackage")} >> ${picocolors.green(`${freedeck.type == 'plugin' ? "Plugin": "Theme"} loaded: ${freedeck.title} (${name})`)}`);
+  console.log(`${picocolors.blue("Plugins / FDPackage")} >> ${picocolors.green(`${freedeck.type === 'plugin' ? "Plugin": "Theme"} loaded: ${freedeck.title} (${name})`)}`);
 }
 
 

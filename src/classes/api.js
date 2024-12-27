@@ -4,6 +4,9 @@ const pluginManager = require("@managers/plugins.js");
 const fs = require("node:fs");
 const HookRef = require("./HookRef");
 
+const picocolors = require("$/picocolors");
+const debug = require("$/debug");
+
 class Plugin {
   v2 = true;
   name;
@@ -18,8 +21,12 @@ class Plugin {
   hasInit = false;
   popout = "<p>No popout code set. Edit this in your PluginV2 definition!</p>";
   _hookLocation = "user-data/hooks/";
-  _usesAsar = true;
+  _usesAsar = false;
+  _customLog(...msg) {
+    debug.log(msg.join(" "), picocolors.yellow(`Plugin / Verbose ${this.id || "Class"}`));
+  }
   constructor() {
+    this._customLog("Plugin class constructor hit.");
     this.name = "Loading...";
     this.author = "Loading...";
     this.id = `predropin-${Math.random().toString(36).substring(7)}`;
@@ -27,44 +34,60 @@ class Plugin {
     this.types = [];
     this._callbacks = {};
     this._intent = [];
+    this._customLog("Plugin class constructor finished.");
   }
 
   setPopout(popout) {
+    this._customLog("Setting custom popout content.");
     this.popout = popout;
   }
   hidePopout() {
+    this._customLog("Plugin class constructor hit.");
     this.popout = "";
   }
   setName(name) {
+    this._customLog("Set plugin name.");
     this.name = name;
   }
   setAuthor(author) {
+    this._customLog("Set plugin author.");
     this.author = author;
   }
   setID(id) {
+    this._customLog("Set plugin ID.");
     this.id = id;
   }
   setDisabled(disabled) {
+    this._customLog("Set plugin disabled.");
     this.disabled = disabled;
   }
   
   _fd_dropin() {
+    this._customLog("FD DropIn hit. (Post constructor, pre-init)");
     if (this.disabled) return;
     this.hasInit = this.onInitialize();
     if (!this.hasInit) {
       console.log("Plugin didn't initialize?");
     }
+    this._customLog("Initialized plugin.");
     
     this.setup();
+    
+    this._customLog("Called setup.");
+
     this.emit(events.ready);
+
+    this._customLog("Emitted ready.");
   }
   onInitialize() {
     return true;
   }
   onButton(e) {
+    this._customLog("Forwarding press interaction from v1->v2");
     this.emit(events.button, e);
   }
   onStopping() {
+    this._customLog("Forwarding stopping interaction from v1->v2");
     this.emit(events.stopping);
   }
 
@@ -75,6 +98,7 @@ class Plugin {
   requestIntent(intent) {
     if(!Object.values(intents).includes(intent)) return;
     if(this._intent.includes(intent)) return;
+    this._customLog(`Intent requested: ${Object.keys(intents)[intent]}`);
     this._intent.push(intent);
   }
 
@@ -83,11 +107,13 @@ class Plugin {
   }
 
   on(ev, cb) {
+    this._customLog(`Listening for ${ev} (${Object.keys(events)[ev]}) on v2-line`);
     if(!this._callbacks[ev]) this._callbacks[ev] = [];
     this._callbacks[ev].push(cb);
   }
 
   emit(ev, ...args) {
+    this._customLog(`Emitting ${ev} (${Object.keys(events)[ev]})`);
     if(!this._callbacks[ev]) return;
     for(const cb of this._callbacks[ev]) {
       cb(...args);
@@ -100,6 +126,7 @@ class Plugin {
    * @param {PathLike} file 
    */
   add(type, file) {
+    this._customLog(`Adding ${Object.keys(HookRef.types)[type]} hook: ${file}`);
     switch(type) {
       case HookRef.types.client:
         this.setJSClientHook(file);
@@ -117,7 +144,7 @@ class Plugin {
         this.addView(file);
         break;
       case HookRef.types.import:
-        this.imports.push(file);
+        this.addImport(file);
         break;
     }
   }

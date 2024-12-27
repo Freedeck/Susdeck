@@ -32,9 +32,12 @@
 
 <script>
     window.location.href = "freedeck://startup";
-    setTimeout(() => {
+    const conn = new WebSocket("ws://localhost:5756");
+    conn.onopen = () => {
+        conn.send("open");
+        conn.close();
         window.close();
-    },250);
+    };
 </script>
 
 </html>

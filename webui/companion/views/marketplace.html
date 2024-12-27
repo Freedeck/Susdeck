@@ -167,6 +167,7 @@
                 data.plugins.forEach((plugin) => {
                     if (plugin.visible && plugin.visible == 'false') return;
                     const req = plugin;
+                    req.id = req.id.toLowerCase();
                     const li = document.createElement('div');
                     li.setAttribute('hovereffect', 'yes');
                     li.style.cursor = 'default';
@@ -195,7 +196,6 @@
                     file.onclick = () => {
                         if(req.message) {
                             // create a yes/no modal
-                            universal.uiSounds.playSound('int_confirm');
                             window.showYesNo("Before you install " + req.title +"...", req.message, (yes) => {
                                 window.location.href = file.dataset.HandoffUrl;
                                     universal.uiSounds.playSound('step_2');

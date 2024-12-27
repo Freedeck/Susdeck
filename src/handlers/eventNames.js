@@ -4,7 +4,7 @@ const eventNames = {
 	information: "I",
 	/* These shouldn't be changed */ 
 
-	keypress: 0,
+	keypress: "k",
 	user_mobile_conn: "U",
 	login: {
 		login_data: "lD",

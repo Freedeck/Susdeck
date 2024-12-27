@@ -886,7 +886,7 @@ universal.on(universal.events.user_mobile_conn, (isConn) => {
   universal.waitForElement(".mobd", (ele) => {
     ele.style.display = isConn ? "none" : "flex";
   })
-  universal.uiSounds.playSound(`mobile_${isConn ? "dis" : ""}connected`);
+  universal.uiSounds.playSound(`mobile_${isConn ? "" : "dis"}connect`);
 });
 
 if (universal._information.mobileConnected) {

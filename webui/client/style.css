@@ -8,6 +8,7 @@
     --main-bg-size: 400% 400%;
     --main-bg: linear-gradient(105deg, rgba(255, 0, 89, 1) 0%, rgb(0, 179, 255) 33%, rgba(255, 0, 89, 1) 66%, rgba(0, 179, 255, 1) 100%);
                                 
+    --generic-border: 1px solid rgba(255,255,255,0.125);
     --modal-bg: #17212a;
     --modal-color: white;
 
@@ -223,7 +224,7 @@ summary ::-webkit-details-marker {
 .themelist .theme {
     padding: 5px;
     background-color: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255,255,255,0.125);
+    border: var(--generic-border);
     color: white;
     min-height: 5rem;
     min-width: 10rem;
@@ -571,10 +572,12 @@ input:disabled {
 
 .modal-body {
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
     width: 100%;
+    max-height: none;
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
 
 .modal.closing {
@@ -653,7 +656,7 @@ dialog > div:not(#editor-div):not(#login-div) {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	border: 1px solid rgba(255,255,255,0.125);
+	border: var(--generic-border);
 	border-radius: 1.5rem;
 	padding: 20px;
 	transition-duration: .25s;
@@ -871,7 +874,7 @@ a:hover {
     animation: fade-in 0.5s;
 }
 
-.glow {
+.glow, .glow-tile {
     animation: glow 1s infinite alternate;
 }
 

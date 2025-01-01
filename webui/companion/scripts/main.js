@@ -1,6 +1,5 @@
 import { UI } from "../../client/scripts/ui.js";
 import { universal } from "../../shared/universal.js";
-import "./dragHandler.js";
 import {openViewTop, closeAllViews} from "./editor/viewEngine.js";
 import {loadData, setTileData} from "./editor/data.js";
 import "./sidebar.js";
@@ -14,6 +13,7 @@ import System from "./editor/viewLogic/system.js";
 import EditorViewLogic from "./editor/viewLogic/EditorViewLogic.js";
 import Macro from "./editor/viewLogic/macro.js";
 import Profile from "./editor/viewLogic/profile.js";
+import "./dragHandler.js";
 
 await universal.init("Companion");
 

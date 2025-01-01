@@ -87,8 +87,7 @@ const makeThanks = (force=false) => {
   content.appendChild(bb);
 
   content.appendChild(close);
-  container.appendChild(content);
-  document.body.appendChild(container);
+  document.body.appendChild(container.modal);
   document.querySelector(".modal-title").style.textAlign = "center";
   document.querySelector(".modal-title").style.width = "100%";
   document.querySelector(".modal-description").style.textAlign = "center";

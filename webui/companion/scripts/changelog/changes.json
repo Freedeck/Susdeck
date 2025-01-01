@@ -21,6 +21,7 @@
     "A lot of UI elements have now gotten a border!"
   ],
   "other": [
+    "Fixed the issue where after selecting a Library upload, grid dragging would not work",
     "This changelog dialog is now scrollable!",
     "This changelog dialog can no longer be bypassed",
     "Fixed a bug where opening the plugin-type selector will cause the previously selected type to still be highlighted",

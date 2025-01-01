@@ -7,7 +7,7 @@ const gridItemDrag = {
   _targetIndex: null,
   no: '.builtin',
   unmovableClass: 'unmovable',
-  selectedGlowClass: 'glow',
+  selectedGlowClass: 'glow-tile',
   movingElementClass: 'moving',
   secondaryAllow: ".sal",
   setFilter: (filter) => {

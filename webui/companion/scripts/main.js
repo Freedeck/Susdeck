@@ -742,14 +742,22 @@ function showPick(
   extraM = "",
   closable = true
 ) {
+  const modalFeedback = document.createElement("div");
+  modalFeedback.classList.add("modalFeedback");
+  
+  const modalList = document.createElement("select");
+  modalList.className = "modalList";
+  modalList.style.marginBottom = "20px";
+
   const modal = UI.makeGenericModal(title, extraM, [{
     text: "Save",
     onclick: () => {
       const selectedItem = modalList.options[modalList.selectedIndex];
+      const value = JSON.parse(selectedItem.value);
       const returned = callback(
        {
         modal,
-        value:JSON.parse(selectedItem.getAttribute("value")),
+        value,
         modalFeedback,
         modalContent
        }
@@ -761,13 +769,7 @@ function showPick(
 
   const modalContent = modal.content;
 
-  const modalFeedback = document.createElement("div");
-  modalFeedback.classList.add("modalFeedback");
   modalContent.appendChild(modalFeedback);
-
-  const modalList = document.createElement("select");
-  modalList.className = "modalList";
-  modalList.style.marginBottom = "20px";
   modalContent.appendChild(modalList);
 
   for (const item of listContent) {

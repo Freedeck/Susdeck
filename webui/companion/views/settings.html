@@ -425,8 +425,8 @@
         a.innerText = 'Disable';
         a.onclick = () => {
             universal.uiSounds.playSound('int_confirm');
-            window.showPick('Are you sure you want to disable ' + req.name + '?', [{ name: 'Yes', value: true }, { name: 'No', value: false }], (m, v) => {
-                if (v.value == true) {
+            window.showPick('Are you sure you want to disable ' + req.name + '?', [{ name: 'Yes', value: true }, { name: 'No', value: false }], ({modal, value}) => {
+                if (value.value == true) {
                     universal.send(universal.events.default.disable_plugin, req.id);
                 }
             });

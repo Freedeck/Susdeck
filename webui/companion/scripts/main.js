@@ -343,6 +343,7 @@ document.querySelector("#spiav").onclick = () => {
 const spiContainer = document.querySelector("#spi-actions");
 for (const type of universal._tyc.keys()) {
   if (!document.querySelector(`.rpl-${type.pluginId}`)) {
+    if(type.hidden) continue;
     const element = document.createElement("div");
     element.classList.add(`rpl-${type.pluginId}`);
     element.classList.add("plugin-item");

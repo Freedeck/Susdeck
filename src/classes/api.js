@@ -323,22 +323,31 @@ class Plugin {
    * @param {String} renderType The type of button to render
    */
   registerNewType(name, type, templateData = {}, renderType = "button") {
-    this.types.push({
-      name,
+    return this.register({
+      display: name,
       type,
-      renderType,
       templateData,
-      pluginId: this.id,
-      display: this.name,
+      renderType,
     });
-    return pluginManager
-      .types()
-      .set(type, { instance: this, display: name, renderType, templateData });
   }
 
   register(opt={display:"abc",type:"abc",templateData:{},renderType:types.button}) {
     if (!opt.display || !opt.type) return false;
-    return this.registerNewType(opt.display, opt.type, opt.templateData, opt.renderType);
+    const basic = {
+      type: opt.type,
+      renderType: opt.renderType,
+      templateData: opt.templateData,
+    }
+    this.types.push({
+      ...basic,
+      name: opt.display,
+      pluginId: this.id,
+      hidden: opt.hidden? opt.hidden : false,
+      display: this.name,
+    });
+    return pluginManager
+      .types()
+      .set(opt.type, { instance: this, ...basic, display: opt.display });
   }
 
   /**

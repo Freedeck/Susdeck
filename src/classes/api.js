@@ -210,14 +210,23 @@ class Plugin {
       dt.recursive = true; 
     }
 
-    setImmediate(() => {
+    let _count = 0;
+    function _retry() {
       fs.cp(hp, path.resolve(destination, path.basename(hook)), dt, (err) => {
         if (err) {
+          _count++;
           console.log(`Failed to copy hook: ${err}`);
+          if(_count < 5) {
+            console.log('Retrying....')
+            _retry();
+          } else {
+            console.log(`Not retrying. Failed to copy hook: ${err}`);
+          }
         } else {
         }
       });
-    });
+    }
+    _retry();
   }
 
   /**

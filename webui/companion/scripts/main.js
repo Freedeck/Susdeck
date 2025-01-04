@@ -152,7 +152,7 @@ function editTile(e) {
       el.style.display = "block";
     }
   }
-  if (interactionData.type === "fd.none") {
+  if (interactionData.type === "fd.none" && !interactionData.data._view) {
     openViewTop("none");
     document.querySelector("#editor-back").style.display = "none";
   } else {

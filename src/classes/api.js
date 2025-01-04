@@ -84,7 +84,12 @@ class Plugin {
   }
   onButton(e) {
     this._customLog("Forwarding press interaction from v1->v2");
-    this.emit(events.button, e);
+    this.emit(events.button, {
+      interaction: e,
+      io: this.io,
+      socket: this.socket,
+      clients: this.clients,
+    });
   }
   onStopping() {
     this._customLog("Forwarding stopping interaction from v1->v2");
@@ -141,7 +146,7 @@ class Plugin {
         console.log("!!! You need to request the intent: intents.CLIENTS for the clients.");
         break;
       case HookRef.types.view:
-        this.addView(file);
+        this.addView(file, file);
         break;
       case HookRef.types.import:
         this.addImport(file);

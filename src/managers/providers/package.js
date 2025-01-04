@@ -3,15 +3,19 @@ const tar = require('tar');
 const picocolors = require("$/picocolors");
 const fs = require('node:fs');
 
-function openPackage({debug, filePath, pluginManager}) {
+function openPackage({debug, filePath, pluginManager, overrideExtractionPath}) {
   const resolved = path.resolve(`./plugins/${filePath}`);
-  const pathToEx = path.resolve(`./tmp/_${filePath.replaceAll("/", "_")}`);
-  fs.mkdirSync(pathToEx, { recursive: true });
-  tar.x({
-    file: resolved,
-    cwd: pathToEx,
-    sync: true
-  });
+  let pathToEx = path.resolve(`./tmp/_${filePath.replaceAll("/", "_")}`);
+  if(!overrideExtractionPath) {
+    fs.mkdirSync(pathToEx, { recursive: true });
+    tar.x({
+      file: resolved,
+      cwd: pathToEx,
+      sync: true
+    });
+  } else {
+    pathToEx = overrideExtractionPath;
+  }
   const cfgPath = path.resolve(pathToEx, "package.json");
   const { main, name, description, author, version, freedeck } = require(cfgPath);
   if(!freedeck) {

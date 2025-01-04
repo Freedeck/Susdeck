@@ -495,6 +495,11 @@ input {
 	pointer-events: none;
 }
 
+.plugin-view {
+	overflow-y: scroll;
+	scrollbar-width: none;
+}
+
 .plugin-items {
 	display: flex;
 	flex-direction: column;

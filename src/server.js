@@ -160,7 +160,7 @@ function handleSock(socket) {
   socket.onAny((event, ...args) => {
     if (event !== eventNames.nbws.sendRequest)
     debug.log(
-      `Received event ${event} with data ${args}`,
+      `Received event ${event} with data ${JSON.stringify(args)}`,
       `Socket Server / ${socket.user ? socket.user : socket.id}`,
     );
   });
@@ -188,7 +188,6 @@ function handleSock(socket) {
   });
 
   try {
-    console.log()
     for (const handler of handlers.values()) {
       try {
         if(io.rpcClients?.includes(socket) && handler.name !== "RPC") continue;

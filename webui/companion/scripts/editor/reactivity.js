@@ -67,7 +67,7 @@ universal.listenFor("editTile", (d, tileName) => {
   if (data.color)
     editorButton.style.backgroundColor = data.color;
 
-  type.value = data.type || "fd.none";
+  type.value = d.type || "fd.none";
 
   for(const w of wants) {
     if(data[w.data] === 'true') editorButton.classList.add(w.class);

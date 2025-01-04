@@ -1,12 +1,33 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const picocolors = require("$/picocolors.js");
+const openPackage = require("@managers/providers/package")
 
 module.exports = ({debug, file, pl}) => {
   debug.log(
     "Loading unpacked plugin. Keep in mind disabling/enabling will not work.",
     "Plugins"
   );
+  const pkg = path.resolve(`./plugins/${file}/package.json`);
+  if(fs.existsSync(pkg)) {
+    const configPackage = require(pkg);
+    if(configPackage.freedeck) {
+      // It's a fdpackage, just source folder.
+      debug.log(
+        picocolors.yellow(`Initializing  Freedeck package ${file}`),
+        "Plugins"
+      );
+      const packagefied = path.resolve(`./tmp/_${file.replaceAll("/", "_")}`).replace(".src", ".fdpackage");
+      fs.mkdirSync(packagefied, { recursive: true });
+      fs.cpSync(path.resolve(`./plugins/${file}`), packagefied, { recursive: true });
+      openPackage({
+        debug,
+        filePath: path.resolve(`./tmp/_${file.replaceAll("/", "_")}`),
+        pluginManager: pl,
+        overrideExtractionPath: path.resolve(`./plugins/${file}`)});
+      return;
+    }
+  }
   const newPath = path.resolve(`./plugins/${file}`);
   const cfgPath = path.resolve(newPath, "config.js");
   try {
@@ -25,6 +46,7 @@ module.exports = ({debug, file, pl}) => {
     );
     debug.log("Executing plugin...", "Plugins");
     const instantiated = entry.exec();
+    instantiated.id = instantiated.id.toLowerCase();
     pl._plc.set(instantiated.id, { file, instance: instantiated });
     if (instantiated.disabled) {
       pl._disabled.push(file);

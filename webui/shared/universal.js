@@ -6,6 +6,7 @@ import { UI } from "../client/scripts/ui";
 import audioEngine from "./audioEngine";
 import themeEngine from "./themeEngine";
 import uiSounds from "./uiSounds";
+import {doLocalization} from "./localization";
 
 /**
  * Open the settings menu (on clients only)
@@ -312,6 +313,8 @@ const universal = {
 					universal.doInitialize(universal.audioClient.initialize, {name: "Audio Engine"}, universal);
 					universal.doInitialize(universal.uiSounds.initialize, {name: "UI Sounds"}, universal);
 					universal.CLU("Boot", "Post-init tasks completed.");
+					universal.CLU("Boot", "Attempting to run localization.");
+					doLocalization();
 					UI.closeBootLog().then(() => {
 						universal.CLU("Boot", "Boot log closed.");
 						resolve(true);

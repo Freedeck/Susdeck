@@ -29,6 +29,12 @@ input {
 	gap: 1rem;
 }
 
+.settings-section-title span {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .tag-beta {
 	background-color: rgba(0, 0, 0, 0.25);
 	border-radius: 1.5rem;

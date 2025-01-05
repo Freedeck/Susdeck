@@ -1,3 +1,4 @@
+import {translatePage} from "../../../shared/localization";
 
 const editorButton = document.querySelector("#editor-btn");
 const view_audioOnly = document.querySelector("#audio-only");
@@ -20,6 +21,7 @@ const openViewTop = (view) => {
   for (const v of selectableViews) {
     document.querySelector(`#${v}-only`).style.display = "none";
   }
+  translatePage();
   document.querySelector(`#${view}-only`).style.display = "flex";
   editorButton.dataset.state = `o ${view}`;
 };

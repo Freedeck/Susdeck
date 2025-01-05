@@ -1,4 +1,5 @@
 
+import { translatePage } from "../../shared/localization.js";
 import contextual from "./lib/ctxl.js";
 universal.ctx = contextual;
 
@@ -61,15 +62,16 @@ universal.reloadRight = () => {
 		const page = pages.find((p) => val.includes(p)) || val;
 		if (val.startsWith("+")) {
 			const ele = document.createElement("li");
-			ele.setHTML(`<a onclick="${val.substring(1)}">${name}</a>`);
+			ele.setHTML(`<a data-i18n-key="sidebar.${name}" onclick="${val.substring(1)}">${name}</a>`);
 			sidebarUl.appendChild(ele);
 			break;
 		}
 		const ele = document.createElement("li");
 		ele.setAttribute("hovereffect", "yes");
-		ele.setHTML(`<a onclick="universal.vopen('${page}')">${name}</a>`);
+		ele.setHTML(`<a data-i18n-key="sidebar.${name}" onclick="universal.vopen('${page}')">${name}</a>`);
 		sidebarUl.appendChild(ele);
 	}
+	translatePage(sidebarUl);
 }
 
 universal.reloadRight();
@@ -103,6 +105,9 @@ universal.vopen = (v) => {
 	if(leftSidebar.style.display === 'flex') document.querySelector(".toggle-sidebar button").click();
 	universal.ctx.destructiveView(v);
 	setAnim(view_container, "pull-down 0.5s");
+	setTimeout(() => {
+		translatePage(view_container);
+	},500);
 };
 
 function setDisplay(ele, val) {

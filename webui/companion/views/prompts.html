@@ -84,6 +84,8 @@
 		universal.vopen("index");
 		document.querySelector("#sidebar").style.right = "0";
 	}
+	let code = 'A code could not be generated.';
+	let ip;
 
 	fetch('/connect/local-ip').then(res => res.json()).then(data => {
 		localNet.forEach(e => e.innerText = data.ip[Object.keys(data.ip)[0]][0]);
@@ -91,15 +93,25 @@
 			document.querySelectorAll('.mfa-code').forEach(e => e.innerText = "You are offline, please try again later.");
 			return;
 		}
-		const ip = data.ip[Object.keys(data.ip)[0]][0];
-		let code = Math.random().toString(36).toUpperCase().split('.')[1].substring(0, 5);
+		ip = data.ip[Object.keys(data.ip)[0]][0];
+		code = Math.random().toString(36).toUpperCase().split('.')[1].substring(0, 5);
+		const m =window.showYesNo("By pressing Accept, you are willing to share:",  "- your local IP (" + ip + ")<br>- your PC's hostname (" + universal._information.hostname + ")<br><br>with Freedeck.app servers.<br><br><a target='_blank' href='https://freedeck.app/data'>Read the Freedeck data policy to learn more.</a>", (yes) => {
+			submitAndRequestCode();
+		}, false);
+
+		setTimeout(() => {
+			m.modal.querySelector(".modal-close").style.display = "block";
+		}, 1500);
+	});
+
+	function submitAndRequestCode() {
 		fetch('https://my.freedeck.app/api.php?code=' + code + '&name=' + universal._information.hostname + '&local_ip=' + ip, {
 			// mode: 'no-cors'
 		}).then((res) => res.text()).then((res) => {
 			if (res.includes('EXISTS@')) code = res.split('EXISTS@')[1].split('@')[0]
 			document.querySelectorAll('.mfa-code').forEach(e => e.innerText = code);
 		})
-	});
+	}
 
 	const poll = setInterval(() => {
 		fetch('/connect/dev-status').then(res => res.json()).then(data => {
@@ -139,6 +151,7 @@
 		justify-content: center;
 		gap: 0.5rem;
 	}
+
 	.flc button.long {
 		width: 75%;
 	}

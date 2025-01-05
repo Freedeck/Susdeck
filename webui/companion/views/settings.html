@@ -1,77 +1,85 @@
-<h1 class="settings-section-title">Settings <span><img src="/common/icons/settings.svg" width="50" height="50"></span>
+<h1 class="settings-section-title"><span data-i18n-key="settings.title">Settings</span> <span><img src="/common/icons/settings.svg" width="50" height="50"></span>
 </h1>
 <details>
     <summary class="settings-section-title">
-        Style <span><img src="/common/icons/style.svg" width="50" height="50"></span>
+        <span data-i18n-key="settings.sections.style">Style</span> <span><img src="/common/icons/style.svg" width="50" height="50"></span>
     </summary>
     <br>
     <div class="experiments">
         <div class="experiment">
-            <label for="compact">Compact Mode</label>
+            <label for="compact" data-i18n-key="settings.sections.style.compact">Compact Mode</label>
             <input type="checkbox" id="compact" />
         </div>
         <div class="experiment">
-            <label for="scroll-long-text">Scroll Long Text</label>
+            <label for="scroll-long-text" data-i18n-key="settings.sections.style.scroll">Scroll Long Text</label>
             <input type="checkbox" id="scroll-long-text" />
         </div>
         <div class="experiment">
-            <label for="fill-tiles">Fill Tiles</label>
+            <label for="fill-tiles" data-i18n-key="settings.sections.style.fill">Fill Tiles</label>
             <input type="checkbox" id="fill-tiles" />
         </div>
     </div>
     <br>
-    <h2 class="flex-wrap-r alc">Themes <span><img src="/common/icons/themes.svg" width="50" height="50"></span></h2>
+    <h2 class="flex-wrap-r alc"><span data-i18n-key="settings.sections.style.themes">Themes</span> <span><img src="/common/icons/themes.svg" width="50" height="50"></span></h2>
     <div class="themelist"></div>
 </details>
 <br>
 <details>
     <summary class="settings-section-title">
-        Plugins <span><img src="/common/icons/t_plugin.svg" width="50" height="50"></span>
+        <span data-i18n-key="settings.sections.language">Language</span> <span><img src="/common/icons/language.svg" width="50" height="50"></span>
+    </summary>
+    <br>
+    <div id="language-list"></div>
+</details>
+<br>
+<details>
+    <summary class="settings-section-title">
+        <span data-i18n-key="settings.sections.plugins">Plugins</span> <span><img src="/common/icons/t_plugin.svg" width="50" height="50"></span>
     </summary>
     <br>
     <div class="experiments">
         <ul id="actl" class="btnlist"></ul>
     </div>
-    <button id="upd">Reload All Plugins</button>
+    <button id="upd" data-i18n-key="settings.sections.plugins.reload_all">Reload All Plugins</button>
         <div class="flex-wrap">
-            <h2>Disabled Plugins</h2>
+            <h2 data-i18n-key="settings.sections.plugins.disabled.title">Disabled Plugins</h2>
             <div id="disbl-list" class="row"></div>
         </div>
     <details id="tile-prev">
-        <summary><strong>Tile Previews</strong></summary>
+        <summary><strong data-i18n-key="settings.sections.plugins.tile_previews">Tile Previews</strong></summary>
         <div class="btns"></div>
     </details>
 </details>
 <br>
 <details>
     <summary class="settings-section-title">
-        Audio Devices <span><img src="/common/icons/audio.svg" width="50" height="50"></span>
+        <span data-i18n-key="settings.sections.audio_devices">Audio Devices</span> <span><img src="/common/icons/audio.svg" width="50" height="50"></span>
     </summary>
-    <p>Monitor Devices</p>
+    <p data-i18n-key="settings.sections.audio_devices.monitor">Monitor Devices</p>
     <div class="monitor-devices audio-device-picker"></div>
-    <p>VB-Cables</p>
+    <p data-i18n-key="settings.sections.audio_devices.vb">VB-Cables</p>
     <div class="vb-cables audio-device-picker"></div>
 </details>
 <br>
 <details>
     <summary class="settings-section-title">
-        General <span><img src="/common/icons/settings.svg" width="50" height="50"></span>
+        <span data-i18n-key="settings.sections.general">General</span> <span><img src="/common/icons/settings.svg" width="50" height="50"></span>
     </summary>
     <div class="experiments">
         <div class="experiment">
-            <label for="no_ask_to_delete">Don't ask to delete Tiles</label>
+            <label for="no_ask_to_delete" data-i18n-key="settings.sections.general.dont_ask">Don't ask to delete Tiles</label>
             <input type="checkbox" id="no_ask_to_delete" />
         </div>
         <div class="experiment">
-            <label for="connect-tab">Show FDConnect as a tab</label>
+            <label for="connect-tab" data-i18n-key="settings.sections.general.fdc_tab">Show FDConnect as a tab</label>
             <input type="checkbox" id="connect-tab" />
         </div>
         <div class="experiment">
-            <label for="uis">UI Sounds</label>
+            <label for="uis" data-i18n-key="settings.sections.general.ui_sounds">UI Sounds</label>
             <input type="checkbox" id="uis" />
         </div>
         <div class="experiment">
-            <label for="cpm">Center Mode <span class="tag-beta">BETA</span></label>
+            <label for="cpm"><span data-i18n-key="settings.sections.general.center_mode">Center Mode</span> <span class="tag-beta">BETA</span></label>
             <input type="checkbox" id="cpm" />
         </div>
     </div>
@@ -79,7 +87,7 @@
 <br>
 <details>
     <summary class="settings-section-title">
-        Experiments <span><img src="/common/icons/experi.svg" width="50" height="50"></span>
+        <span data-i18n-key="settings.sections.experiments">Experiments</span> <span><img src="/common/icons/experi.svg" width="50" height="50"></span>
     </summary>
     <div class="experiments">
         <div class="experiment">
@@ -103,12 +111,12 @@
 <br class="soundpack-br">
 <details class="experiment-exist soundpack">
     <summary class="settings-section-title">
-        UI Sounds <span><img src="/common/icons/uisounds.svg" width="50" height="50"></span>
+        <span data-i18n-key="settings.sections.uis">UI Sounds</span> <span><img src="/common/icons/uisounds.svg" width="50" height="50"></span>
     </summary>
     <div>
-        <h4>Soundpacks</h4>
+        <h4 data-i18n-key="settings.sections.uis.soundpacks">Soundpacks</h4>
         <ul class="soundpacks"></ul>
-        <h2>Current Soundpack</h2>
+        <h2 data-i18n-key="settings.sections.uis.soundpacks.current">Current Soundpack</h2>
         <div class="experiment-exist">
             <h3 id="soundpack-title">Soundpack</h3>
             <span>(<span id="soundpack-id">id.soundpack</span>)
@@ -121,17 +129,18 @@
 <br>
 <details>
     <summary class="settings-section-title">
-        Bug Report <span><img src="/common/icons/bugs.svg" width="50" height="50"></span>
+        <span data-i18n-key="settings.sections.bug">Bug Report</span> <span><img src="/common/icons/bugs.svg" width="50" height="50"></span>
     </summary>
-    <textarea name="bgrep" id="bgrep">Click "Generate Report"</textarea>
+    <textarea name="bgrep" id="bgrep" data-i18n-key="settings.sections.bug.request_generate">Click "Generate Report"</textarea>
+    <p id="hostname">Your hostname here</p>
     <br>
-    <button id="genr">Generate Report</button>
+    <button id="genr" data-i18n-key="settings.sections.bug.generate">Generate Report</button>
     <details>
-        <summary>
+        <summary data-i18n-key="settings.sections.bug.report_reader">
             Report Reader
         </summary>
         <textarea name="input-bgrep" id="input-bgrep" class="input-bgrep"></textarea>
-        <button id="read-bgrep">Read Report</button>
+        <button id="read-bgrep" data-i18n-key="settings.sections.bug.report_reader.read">Read Report</button>
         <div class="report-details">
 
         </div>
@@ -380,7 +389,7 @@
 <div class="cti">
     <h1>Freedeck</h1>
     <img src="/common/icons/fd.png" alt="Freedeck Logo" width="75" height="75">
-    <p>is a project by <a href="https://aidens.dev" target="_blank">ia74 / Aiden S.</a></p>
+    <p><span data-i18n-key="settings.footer.by">is a project by</span> <a href="https://aidens.dev" target="_blank">ia74 / Aiden S.</a></p>
 </div>
 <center>
     <h2 class="version"></h2>
@@ -389,7 +398,19 @@
 <!-- <h2>This is the bottom of the Settings menu.</h2> -->
 <script type="module">
     import "/app/settingsThemes.js";
+
+    import {locales, setLocale} from "/app/shared/localization.js"
+    Object.keys(locales).forEach((locale) => {
+        const li = document.createElement("li");
+        li.innerText = locales[locale];
+        li.onclick = () => {
+            setLocale(locale);
+        };
+        document.querySelector("#language-list").appendChild(li);
+    });
+
     loadThemeListing();
+    document.querySelector("#hostname").innerText = "Hostname: " + universal._information.hostname;
 
     const seen = {};
 

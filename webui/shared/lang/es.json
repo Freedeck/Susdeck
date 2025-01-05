@@ -1,0 +1,56 @@
+{
+  "locale.display": "Español",
+  "sidebar.Tiles": "Cuadrículas",
+  "sidebar.Library": "Biblioteca",
+  "sidebar.Marketplace": "Mercado",
+  "sidebar.Settings": "Configuración",
+  "sidebar.Connect": "Conectar",
+  "sidebar.Recompile": "Recompilar",
+  "sidebar.Setup": "Configuración",
+  "sidebar.Pair Device": "Emparejar Dispositivo",
+  "sidebar.Themer": "Temas",
+  
+  "editor.sections.no_action": "¡Sin Acción!",
+
+  "settings.title": "Configuración",
+
+  "settings.sections.style": "Estilo",
+  "settings.sections.style.compact": "Modo Compacto",
+  "settings.sections.style.scroll": "Desplazar Texto Largo",
+  "settings.sections.style.fill": "Rellenar Cuadrículas",
+  "settings.sections.style.themes": "Temas",
+
+  "settings.sections.language": "Idioma",
+
+  "settings.sections.plugins": "Complementos",
+  "settings.sections.plugins.reload_all": "Recargar Todos los Plugins",
+  "settings.sections.plugins.single.disable": "Desactivar",
+  "settings.sections.plugins.single.reload": "Recargar",
+  "settings.sections.plugins.disabled.title": "Plugins Desactivados",
+  "settings.sections.plugins.disabled.enable": "Activar",
+  "settings.sections.plugins.tile_previews": "Previsualización de Cuadrículas",
+
+  "settings.sections.audio_devices": "Dispositivos de Audio",
+  "settings.sections.audio_devices.monitor": "Dispositivos de Monitor",
+  "settings.sections.audio_devices.vb": "Dispositivos VB-Cable",
+
+  "settings.sections.general": "General",
+  "settings.sections.general.dont_ask": "No preguntar para eliminar Cuadrículas",
+  "settings.sections.general.fdc_tab": "Mostrar FDConnect como una pestaña",
+  "settings.sections.general.ui_sounds": "Sonidos de Interfaz",
+  "settings.sections.general.center_mode": "Modo Centrado",
+
+  "settings.sections.experiments": "Experimentos",
+
+  "settings.sections.uis": "Sonidos de Interfaz",
+  "settings.sections.uis.soundpacks": "Paquetes de Sonidos",
+  "settings.sections.uis.soundpacks.current": "Paquete de Sonidos Actual",
+
+  "settings.sections.bug": "Informe de Errores",
+  "settings.sections.bug.request_generate": "Haz clic en \"Generar Informe\"",
+  "settings.sections.bug.generate": "Generar Informe",
+  "settings.sections.bug.report_reader": "Lector de Informes",
+  "settings.sections.bug.report_reader.read": "Leer Informe",
+
+  "settings.footer.by": "es un proyecto de"
+}

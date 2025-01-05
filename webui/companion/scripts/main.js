@@ -804,6 +804,7 @@ function showYesNo(title, content, yesCallback, closable = true) {
   modalContent.appendChild(yesnoc);
   document.body.appendChild(modal.modal);
   universal.uiSounds.playSound("int_confirm");
+  return modal;
 }
 
 window.UniversalUI = {

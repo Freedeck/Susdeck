@@ -1,5 +1,6 @@
 const Pages = {};
 
+import { translationKey } from "../../shared/localization.js";
 import otherHandler from "./ui/otherHandler.js";
 
 function makeGenericModal(title, content, buttons, closable, rawHtml="", hidesInsteadOfClose=false) {
@@ -269,7 +270,7 @@ function reloadSounds() {
 	}
 	if (document.querySelector(".cpage")) {
 		document.querySelector(".cpage").innerText =
-			`Page: ${universal.page + 1}/${Object.keys(Pages).length}`;
+			`${translationKey("lside.pages.page")}${universal.page + 1}/${Object.keys(Pages).length}`;
 	}
 	universal.keySet();
 	for (const el of document.querySelectorAll(".tile-tooltip")) {

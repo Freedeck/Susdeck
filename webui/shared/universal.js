@@ -299,10 +299,10 @@ const universal = {
 	init: (user) =>
 		new Promise((resolve, reject) => {
 			UI.makeBootLog();
+			doLocalization();
 			universal.CLU("Boot", "(PRE LOG CREATION) Init promise created");
 			universal.CLU("Boot", "Boot log created"); 
 			universal.CLU("Boot", "Attempting to run LS migrations"); 
-			
 			try {
 				universal.CLU("Boot", "Pre-init");
 				universal._initFn(user).then(async () => {
@@ -314,9 +314,9 @@ const universal = {
 					universal.doInitialize(universal.uiSounds.initialize, {name: "UI Sounds"}, universal);
 					universal.CLU("Boot", "Post-init tasks completed.");
 					universal.CLU("Boot", "Attempting to run localization.");
-					doLocalization();
 					UI.closeBootLog().then(() => {
 						universal.CLU("Boot", "Boot log closed.");
+						doLocalization();
 						resolve(true);
 					})
 				});

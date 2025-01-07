@@ -10,6 +10,18 @@
   "sidebar.Pair Device": "Pair Device",
   "sidebar.Themer": "Themer",
   
+  "lside.mobd": "Mobile Device",
+  "lside.mobd.pair": "Pair Mobile Device",
+
+  "lside.pages.page": "Page: ",
+  "lside.pages.previous": "Previous Page",
+  "lside.pages.next": "Next Page",
+
+  "lside.footer.thanks": "Thank you for using Freedeck!",
+  "lside.footer.github_pre": "Freedeck is open-source and can be found on",
+  "lside.footer.need_help": "Need help?",
+  "lside.footer.need_help.wiki": "Check the Wiki!",
+
   "editor.sections.no_action": "No Action!",
 
   "settings.title": "Settings",

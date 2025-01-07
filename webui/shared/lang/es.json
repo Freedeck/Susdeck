@@ -10,6 +10,13 @@
   "sidebar.Pair Device": "Emparejar Dispositivo",
   "sidebar.Themer": "Temas",
   
+  "lside.mobd": "Dispositivo Móvil",
+  "lside.mobd.pair": "Emparejar Dispositivo Móvil",
+
+  "lside.pages.page": "Página: ",
+  "lside.pages.previous": "Página Anterior",
+  "lside.pages.next": "Página Siguiente",
+
   "editor.sections.no_action": "¡Sin Acción!",
 
   "settings.title": "Configuración",

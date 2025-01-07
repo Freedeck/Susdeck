@@ -22,7 +22,7 @@ export class SidebarSection {
     if (this.name !== "") {
       const title = document.createElement("h1");
       title.classList.add("sidebar-section-title");
-      title.innerText = this.name;
+      title.innerHTML = this.name;
 
       section.appendChild(title);
     }

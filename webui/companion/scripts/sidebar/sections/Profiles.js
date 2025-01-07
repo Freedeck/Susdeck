@@ -1,4 +1,5 @@
 import { SidebarSection, SidebarSvgButton } from "../SidebarSection";
+import { translationKey } from "../../../../shared/localization";
 
 const style = new SidebarSection("Folders", "Profiles");
 

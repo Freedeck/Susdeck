@@ -1,10 +1,13 @@
 import { SidebarSection, SidebarButton } from "../SidebarSection";
+import { translationKey } from "../../../../shared/localization";
 
-const style = new SidebarSection("Mobile Device", "MobileDevice", ["mobd", "rem-mobd"]);
+const style = new SidebarSection(translationKey("lside.mobd"), "MobileDevice", ["mobd", "rem-mobd"]);
 
-style.children.push(new SidebarButton("Pair Mobile Device", (e) => {
+style.children.push(new SidebarButton(translationKey("lside.mobd.pair"), (e) => {
   universal.connHelpWizard();
 }, 'mobd-conn'));
 
 
-document.querySelector(".sidebar").appendChild(style.build());
+export default function () {
+  document.querySelector(".sidebar").appendChild(style.build());
+}

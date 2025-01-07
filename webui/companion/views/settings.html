@@ -26,9 +26,10 @@
 <br>
 <details>
     <summary class="settings-section-title">
-        <span data-i18n-key="settings.sections.language">Language</span> <span><img src="/common/icons/language.svg" width="50" height="50"></span>
+        <span><span data-i18n-key="settings.sections.language">Language </span>&nbsp;<span class="tag-beta">ALPHA</span></span><span><img src="/common/icons/language.svg" width="50" height="50"></span>
     </summary>
     <br>
+    <p id="clang">Loading...</p>
     <div id="language-list"></div>
 </details>
 <br>
@@ -399,12 +400,14 @@
 <script type="module">
     import "/app/settingsThemes.js";
 
-    import {locales, setLocale} from "/app/shared/localization.js"
+    import {locales, setLocale, translationKey} from "/app/shared/localization.js"
+    document.querySelector("#clang").innerText = "Current Language: " + locales[universal.load("locale")]
     Object.keys(locales).forEach((locale) => {
         const li = document.createElement("li");
         li.innerText = locales[locale];
         li.onclick = () => {
             setLocale(locale);
+            window.location.reload();
         };
         document.querySelector("#language-list").appendChild(li);
     });

@@ -107,7 +107,7 @@ universal.vopen = (v) => {
 	setAnim(view_container, "pull-down 0.5s");
 	setTimeout(() => {
 		translatePage(view_container);
-	},500);
+	},250);
 };
 
 function setDisplay(ele, val) {

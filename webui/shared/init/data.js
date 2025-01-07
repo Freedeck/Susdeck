@@ -41,7 +41,8 @@ export default function dataHandler(universal, user) {
 
       universal.default("logs/notif", JSON.stringify([]));
       universal.default("playback-mode", "play_over");
-      universal.default("vol", 1);
+      universal.default("vol-0", 1);
+      universal.default("vol-1", 1);
       universal.default("pitch", 1);
       universal.default("uiSounds", true);
       universal.default("flags", JSON.stringify({}));

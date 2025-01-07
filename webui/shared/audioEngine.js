@@ -87,12 +87,14 @@ const UAE = {
 		}
 		universal.save("pitch", pitch);
 	},
-	setVolume: (vol) => {
-		universal.audioClient._player.normalVol = vol;
+	setVolume: (vol, forChannel=UAE.channels.cable) => {
+		if(forChannel === UAE.channels.monitor) universal.audioClient._player.monitorVol = vol;
+		else universal.audioClient._player.normalVol = vol;
 		for (const audio of universal.audioClient._nowPlaying) {
+			if (audio.dataset.channel !== forChannel.toString()) continue;
 			audio.volume = vol;
 		}
-		universal.save("vol", vol);
+		universal.save(`vol-${forChannel}`, vol);
 	},
 	channels: {
 		cable: 0,
@@ -122,7 +124,7 @@ const UAE = {
 		file,
 		name,
 		stopPrevious = universal.load("playback-mode") === "stop_prev",
-		volume = universal.load("vol") || 1,
+		volume = universal.load("vol-0F") || 1,
 		pitch = universal.load("pitch") || 1,
 		channel
 	}) => {
@@ -157,7 +159,7 @@ const UAE = {
 		file,
 		name,
 		stopPrevious = universal.load("playback-mode") === "stop_prev",
-		volume = universal.load("vol") || 1,
+		volume = universal.load("vol-0") || 1,
 		pitch = universal.load("pitch") || 1,
 		channel,
 		sink,

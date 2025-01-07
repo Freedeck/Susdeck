@@ -2,24 +2,30 @@ const fs = require("node:fs");
 const path = require("node:path");
 const debug = require(path.resolve("./src/utils/debug.js"));
 
-if (!fs.existsSync("plugins")) {
-  debug.log("Creating plugins directory...", "Migration");
-  fs.mkdirSync("plugins");
+function makeIfNotExists(path) {
+  if(!fs.existsSync(path)) {
+    fs.mkdirSync(path, { recursive: true });
+  }
+  debug.log(`Created ${path}`, "Migration");
 }
 
-
-if(fs.existsSync("src/public/dist")) {
-  debug.log("Found old webpack build. Cleaning up...", "Migration");
-  fs.rmSync("src/public/dist", { recursive: true });
+function removeIfExists(path) {
+  if(fs.existsSync(path)) {
+    fs.rmSync(path, { recursive: true });
+  }
+  debug.log(`Removed ${path}`, "Migration");
 }
 
-if(fs.existsSync("src/public/companion") && fs.existsSync("src/public/companion/dist")) {
-  debug.log("Found old companion build. Cleaning up...", "Migration");
-  fs.rmSync("src/public/companion/dist", { recursive: true });
-}
+makeIfNotExists("plugins");
+removeIfExists("src/public/dist");
+removeIfExists("src/public/companion/dist");
 
-if(!fs.existsSync(path.resolve("webui/hooks"))) fs.mkdirSync(path.resolve("webui/hooks"));
-if(!fs.existsSync(path.resolve("webui/hooks/_themes"))) fs.mkdirSync(path.resolve("webui/hooks/_themes"));
-if(!fs.existsSync(path.resolve("webui/hooks/_sounds"))) fs.mkdirSync(path.resolve("webui/hooks/_sounds"));
+makeIfNotExists("webui/hooks");
+makeIfNotExists("webui/hooks/_themes");
+makeIfNotExists("webui/hooks/_sounds");
+
+makeIfNotExists("user-data");
+makeIfNotExists("user-data/sounds");
+makeIfNotExists("user-data/icons");
 
 debug.log("Migration complete.", "Migration");

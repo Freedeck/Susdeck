@@ -298,6 +298,11 @@ const universal = {
 	},
 	init: (user) =>
 		new Promise((resolve, reject) => {
+			fetch("/connect/webpack").then((res) => res.json()).then((data) => {
+				if(data.compiled !== 1) {
+					window.location.href = `/new-connect.html?id=${user}`;
+				}
+			})
 			UI.makeBootLog();
 			doLocalization();
 			universal.CLU("Boot", "(PRE LOG CREATION) Init promise created");

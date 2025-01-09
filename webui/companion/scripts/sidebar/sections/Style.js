@@ -121,13 +121,18 @@ style.children.push(new SidebarSlider("Hold Time", "es-lp", " sec", "2", "6", "3
 
 document.querySelector(".sidebar").appendChild(style.build());
 
-universal.listenFor("loadHooks", () => {
+
+universal.listenFor("launch", update);
+update();
+
+function update() {
+	console.log(universal.lclCfg());
   setValue("#es-fs", universal.lclCfg()["font-size"]);
   setValue("#es-bs", universal.lclCfg().buttonSize);
   setValue("#es-tc", universal.lclCfg().iconCountPerPage);
   setValue("#es-tr", universal.lclCfg().tileCols);
   setValue("#es-lp", universal.lclCfg().longPressTime);
-})
+}
 
 const setToLocalCfg = (key, value) => {
 	const cfg = universal.lclCfg();

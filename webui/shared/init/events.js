@@ -136,20 +136,23 @@ export default function eventsHandler(universal, user) {
 				"--font-size",
 				`${e["font-size"]}px`,
 			);
-			document.documentElement.style.setProperty(
-				"--tile-width",
-				`${e.buttonSize}rem`,
-			);
-			document.documentElement.style.setProperty(
-				"--tile-height",
-				`${e.buttonSize}rem`,
-			);
+			if(universal.name !== "Companion") {
+				document.documentElement.style.setProperty(
+					"--tile-width",
+					`${e.buttonSize}rem`,
+				);
+				document.documentElement.style.setProperty(
+					"--tile-height",
+					`${e.buttonSize}rem`,
+				);
+			}
 			let tc = "repeat(5, 2fr)";
 			if (e.tileCols) tc = tc.replace("5", e.tileCols);
 			universal.save("nopreset", e.nopreset);
 			document.documentElement.style.setProperty("--tile-columns", tc);
 			universal.lclCfg = () => e;
 			universal.lclCfg().iconCountPerPage = Number.parseInt(e.iconCountPerPage);
+			universal.sendEvent("local-config", e);
 			UI.reloadSounds();
 		});
 

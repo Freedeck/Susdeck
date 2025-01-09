@@ -314,6 +314,7 @@ const universal = {
 					universal.doInitialize(universal.uiSounds.initialize, {name: "UI Sounds"}, universal);
 					universal.CLU("Boot", "Post-init tasks completed.");
 					universal.CLU("Boot", "Attempting to run localization.");
+					universal.sendEvent("launch");
 					UI.closeBootLog().then(() => {
 						universal.CLU("Boot", "Boot log closed.");
 						doLocalization();

@@ -1,27 +1,16 @@
 const path = require("node:path");
 const eventNames = require("../eventNames");
 const fs = require("node:fs");
+const { settings } = require("../../managers/settings");
+
+const styleLocation = path.resolve("./src/configs/style.json");
 
 module.exports = ({ io, data }) => {
-	if (!fs.existsSync(path.resolve("./src/configs/style.json"))) {
-		fs.writeFileSync(
-			path.resolve("./src/configs/style.json"),
-			JSON.stringify({
-				scroll: false,
-				center: true,
-				fill: false,
-				"font-size": 15,
-				nopreset: false,
-				buttonSize: 6,
-				iconCountPerPage: 12,
-				longPressTime: 3,
-				tileCols: 5,
-				compact: false,
-			}),
-		);
+	if(!fs.existsSync(styleLocation)) {
+		settings.checkStyle();
 	}
 	fs.writeFileSync(
-		path.resolve("./src/configs/style.json"),
+		styleLocation,
 		JSON.stringify(data),
 	);
 	io.emit(eventNames.default.config_changed, data);

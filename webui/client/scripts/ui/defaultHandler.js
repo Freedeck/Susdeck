@@ -61,7 +61,7 @@ export default function (snd, keyObject, raw) {
 		};
 	} else {
 		if(universal.load("cct") === "true") return;
-		if(universal.user === "Companion") {
+		if(universal.name === "Companion") {
 			keyObject.onpointerup = (ev) => {
 				if (ev.which !== 1) return;
 				universal.send(universal.events.keypress, {

@@ -21,6 +21,7 @@
     "A lot of UI elements have now gotten a border!"
   ],
   "other": [
+    "Fixed an issue where the UI would not size or load properly.",
     "Fixed the issue where after selecting a Library upload, grid dragging would not work",
     "This changelog dialog is now scrollable!",
     "This changelog dialog can no longer be bypassed",

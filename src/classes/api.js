@@ -344,8 +344,8 @@ class Plugin {
     if (!opt.display || !opt.type) return false;
     const basic = {
       type: opt.type,
-      renderType: opt.renderType,
-      templateData: opt.templateData,
+      renderType: opt.renderType || types.button,
+      templateData: opt.templateData || {},
     }
     this.types.push({
       ...basic,

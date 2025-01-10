@@ -4,6 +4,8 @@ const audioFile = document.querySelector("#audio-file");
 const type = document.querySelector("#type");
 const editorButton = document.querySelector("#editor-btn");
 
+const playbackSoundView = document.querySelector(".view_nested_playback");
+
 class Sound extends EditorViewLogic {
   constructor() {
     super("audio", "fd.sound");

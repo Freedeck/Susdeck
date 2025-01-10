@@ -138,10 +138,6 @@ input {
 	border-block-end-color: rgba(255,255,255,0.125);
 }
 
-.alc {
-	align-items: center;
-}
-
 .sidebar {
 	display: flex;
 	flex-direction: column;

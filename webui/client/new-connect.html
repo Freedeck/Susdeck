@@ -215,7 +215,7 @@
       document.querySelector("progress").style.opacity = '0';
       
       setText(`Redirecting to ${whereToGo}`);
-      window.location.href = whereToGo;
+      window.location.replace(whereToGo);
     }
     setInterval(() => {
       if (isTryingToConnect) return;

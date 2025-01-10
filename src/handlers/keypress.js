@@ -30,7 +30,8 @@ module.exports = {
 				if (ev.builtIn) {
 					if (ev.data === "stop-all")
 						io.emit(eventNames.keypress, {
-							sound: { name: "Stop All", type: "fd.sound" },
+							type: "fd.stopall",
+							sound: { name: "Stop All" },
 						});
 					return;
 				}

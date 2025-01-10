@@ -123,10 +123,6 @@ module.exports = {
       if (user === "Companion") {
         debug.log("Not a mobile device.", `Socket Server / ${socket.user}`);
         if (tsm.get("IC") === undefined) tsm.set("IC", socket.id);
-        if (tsm.get("IC") !== socket.id) {
-          socket.emit(eventNames.companion.conn_fail);
-          return;
-        }
         tsm.set("IC", socket.id);
       }
       console.log(`Freedeck ${socket.user} connected to server at ${new Date()}`);

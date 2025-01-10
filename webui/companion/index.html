@@ -126,17 +126,34 @@
             </div>
             <div style="display: none" id="audio-only" class="editor-section plugin-items editor-section-bottom">
                 <div class="information">
-                    <h3>Audio</h3>
-                    <p>Play any audio file you want!</p>
+                    <h3>Soundboard</h3>
+                    <p>Control your Freedeck soundboard!</p>
+                    <select id="at-type">
+                        <option value="fd.sound">Playback Audio</option>
+                        <option value="fd.sb.mv">Monitor Volume</option>
+                        <option value="fd.sb.ov">Output Volume</option>
+                        <option value="fd.sb.pt">Pitch</option>
+                        <option value="fd.stopall">Stop All</option>
+                    </select>
                 </div>
-                <div class="flex-wrap-r alc">
-                    <p>This tile will play&nbsp;</p>
-                    <h2 id="audio-file" class="information">AUDIOFILE.MP3</h2>
+                <div class="view_nested_playback">
+                    <div class="flex-wrap-r alc">
+                        <p>This tile will play&nbsp;</p>
+                        <h2 id="audio-file" class="information">AUDIOFILE.MP3</h2>
+                    </div>
+                    <div class="button" id="upload-sound">Change</div>
                 </div>
-                <div class="button" id="upload-sound">Change</div>
+                <div class="view_nested_audio_control">
+                    <div class="flex-wrap-r alc">
+                        <p>This tile will control the <span class="at_audio_control">monitor volume</span>.
+                    </div>
+                </div>
+                <div class="view_nested_stop_all">
+                    <div class="flex-wrap-r alc">
+                        <p>This tile will stop all playing sounds.
+                    </div>
+                </div>
             </div>
-            <!-- <p>from</p> -->
-            <!-- <span id="audio-path">/sounds/</span> -->
             <div style="display: none" id="system-only" class="editor-section editor-section-bottom">
                 <h1>App Volume</h1>
                 <div id="sys-actions" class="plugin-items">

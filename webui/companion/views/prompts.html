@@ -95,13 +95,26 @@
 		}
 		ip = data.ip[Object.keys(data.ip)[0]][0];
 		code = Math.random().toString(36).toUpperCase().split('.')[1].substring(0, 5);
-		const m =window.showYesNo("By pressing Accept, you are willing to share:",  "- your local IP (" + ip + ")<br>- your PC's hostname (" + universal._information.hostname + ")<br><br>with Freedeck.app servers.<br><br><a target='_blank' href='https://freedeck.app/data'>Read the Freedeck data policy to learn more.</a>", (yes) => {
+		const m =window.showYesNo("By pressing Accept, you are willing to share:",  "- your local IP (" + ip + ")<br>- your PC's hostname (" + universal._information.hostname + ")<br><br>with Freedeck.app servers.<br><br><a target='_blank' href='https://freedeck.app/data'>Read the Freedeck data policy to learn more.</a><br><br><span class='mayclose'>You may close this popup in <span class='realtimetc'>5</span> seconds</span>", (yes) => {
 			submitAndRequestCode();
 		}, false);
+		let count = 5;
 
+		setInterval(() => {
+			count--;
+			m.modal.querySelector(".realtimetc").innerText = count;
+			if(count == 0) m.modal.querySelector(".mayclose").style.display = "none";
+		}, 1000);
+		
 		setTimeout(() => {
+			m.modal.querySelector(".modal-close").onclick = () => {
+				laterButton.click();
+				m.modal.remove();
+				universal.vopen("index.html");
+				universal.vclose();
+			}
 			m.modal.querySelector(".modal-close").style.display = "block";
-		}, 1500);
+		}, 5000);
 	});
 
 	function submitAndRequestCode() {

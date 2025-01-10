@@ -27,7 +27,7 @@ export default function eventsHandler(universal, user) {
 
 		universal.on(universal.events.keypress, (interaction) => {
 			if (!user.includes("Companion")) return;
-			if ("sound" in interaction && interaction.sound.name === "Stop All") {
+			if (interaction.type === "fd.stopall") {
 				universal.audioClient.stopAll();
 				return;
 			}

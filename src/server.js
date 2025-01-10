@@ -167,7 +167,7 @@ function handleSock(socket) {
   socket.onAnyOutgoing((event, args) => {
     if (event !== eventNames.nbws.sendRequest &&
         event !== eventNames.nbws.reply &&
-        !event.startsWith("NBWS_") &&
+        !new String(event).startsWith("NBWS_") &&
         event !== 'I'
     ) debug.log(
       `Emitted event ${event} with data ${JSON.stringify(args)}`,

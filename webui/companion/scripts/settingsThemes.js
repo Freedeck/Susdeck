@@ -1,4 +1,4 @@
-universal.listenFor("loadHooks", () => {
+universal.listenFor("launch", () => {
 	loadThemeListing();
 });
 

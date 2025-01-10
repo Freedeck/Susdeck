@@ -4,7 +4,7 @@ const tsm = require("../managers/temporarySettings");
 const networkAddresses = require("../managers/networkAddresses");
 const router = express.Router();
 
-let iwebpackState = 1;
+let iwebpackState = 0;
 
 const webpackState = (i) => {
   iwebpackState = i;

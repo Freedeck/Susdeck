@@ -6,6 +6,10 @@ import Pako from "pako";
 export default function dataHandler(universal, user) {
   universal.CLU("Incoming Data Handler", "Taking over for now.");
   return new Promise((ress, rejj) => {
+    universal.on(0x01, (reason) => {
+      universal.CLU("Incoming Data Handler", `Connection failed. Retrying. Reason: ${reason}`);
+      universal.send(0x00, user);
+    })
     universal.CLU(
       "Incoming Data Handler",
       "Created promise, listening for Identify event.",

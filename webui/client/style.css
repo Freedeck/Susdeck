@@ -793,8 +793,8 @@ a:hover {
     border: 1px solid black;
     color: white;
     border-radius: var(--tile-radius);
-    width: calc(var(--tile-width) / 3);
-    height: calc(var(--tile-height) / 3);
+    width: calc(var(--tile-width) / 4);
+    height: calc(var(--tile-height) / 4);
     /* bottom right of parent */
     position: absolute;
     right: 5px;
@@ -806,13 +806,13 @@ a:hover {
     border-color: rgba(0, 0, 0, 0.5);
     border: 1px solid black;
     color: white;
-    padding: 0.5rem;    
-    border-radius: 1.5rem;
-    margin: 0.5rem;
+    border-radius: var(--tile-radius);
+    width: calc(var(--tile-width) / 4);
+    height: calc(var(--tile-height) / 4);
     /* bottom right of parent */
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: 5px;
+    bottom: 5px;
     z-index: 9999;
 }
 .indicator-red {
@@ -820,13 +820,13 @@ a:hover {
     border-color: rgba(0, 0, 0, 0.5);
     border: 1px solid black;
     color: white;
-    padding: 0.5rem;
-    border-radius: 1.5rem;
-    margin: 0.5rem;
+    border-radius: var(--tile-radius);
+    width: calc(var(--tile-width) / 4);
+    height: calc(var(--tile-height) / 4);
     /* bottom right of parent */
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: 5px;
+    bottom: 5px;
     z-index: 9999;
 }
 

@@ -367,10 +367,16 @@ class Plugin {
   deregisterType(type) {
     if (pluginManager.types().has(type)) {
       pluginManager.types().delete(type);
-      this.types = this.pluginManager.filter((t) => t.type !== type);
+      this.types = this.types.filter((t) => t.type !== type);
       return true;
     }
     return false;
+  }
+
+  deregisterAllTypes() {
+    for (const type of this.types) {
+      this.deregisterType(type.type);
+    }
   }
 
   /**

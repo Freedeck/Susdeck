@@ -407,6 +407,7 @@ function reloadSounds() {
 		}
 	}
 	universal.sendEvent("page_change");
+	if(universal.name !== "Companion") return;
 	for(const e of document.querySelectorAll(".unset")) {
 		let out = "<h4>Nothing!</h4>";
 			 out += "<p>Click this space to create a new Tile here.</p>";

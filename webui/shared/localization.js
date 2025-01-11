@@ -78,6 +78,7 @@ function translationKey(key, defaultValue="{{key}} not found in locale.") {
     "lside.mobd.pair": "Pair Mobile Device",
   
     "lside.pages.page": "Page: ",
+    "lside.pages.try": "Try Tiles",
     "lside.pages.previous": "Previous Page",
     "lside.pages.next": "Next Page",
   

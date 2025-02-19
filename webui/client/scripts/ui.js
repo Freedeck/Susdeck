@@ -158,18 +158,20 @@ function initialize() {
  * @description Reload the current profile
  */
 function reloadProfile() {
-	universal.config.sounds = universal.config.profiles[universal.config.profile];
+	universal.app_sounds = [];
+	try {universal.app_sounds = universal.config.profiles[universal.config.profile];}
+	catch(e) {console.log(e)}
 	let max = 0;
 	for (
 		let i = 0;
-		i < universal.config.sounds.length / universal.config.iconCountPerPage;
+		i < universal.app_sounds.length / universal.config.iconCountPerPage;
 		i++
 	) {
 		Pages[i] = true;
 		max++;
 	}
 
-	for (const sound of universal.config.sounds) {
+	for (const sound of universal.app_sounds) {
 		const k = Object.keys(sound)[0];
 		const snd = sound[k];
 		if (snd.pos >= max * universal.config.iconCountPerPage) {
@@ -276,7 +278,7 @@ function reloadSounds() {
 	for (const el of document.querySelectorAll(".tile-tooltip")) {
 		el.remove();
 	}
-	for (const sound of universal.config.sounds) {
+	for (const sound of universal.app_sounds) {
 		const k = Object.keys(sound)[0];
 		const snd = sound[k];
 		if(snd.plugin) snd.plugin = snd.plugin.toLowerCase();
@@ -326,7 +328,7 @@ function reloadSounds() {
 			}
 
 			// check if two sounds share the same pos, if they do make this button color yellow
-			const sounds = universal.config.sounds.filter((sound) => {
+			const sounds = universal.app_sounds.filter((sound) => {
 				const ev = universal.page > 0 ? 1 : 0;
 				const k = Object.keys(sound)[0];
 				return (

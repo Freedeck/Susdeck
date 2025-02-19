@@ -854,7 +854,7 @@ const editing = universal.load("now-editing");
 
 if (editing) {
   setTimeout(() => {
-    const interaction = universal.config.sounds.filter((sound) => {
+    const interaction = universal.app_sounds.filter((sound) => {
       const k = Object.keys(sound)[0];
       return sound[k].uuid === editing;
     })[0];

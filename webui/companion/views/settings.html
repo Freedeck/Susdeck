@@ -83,6 +83,10 @@
             <label for="cpm"><span data-i18n-key="settings.sections.general.center_mode">Center Mode</span> <span class="tag-beta">BETA</span></label>
             <input type="checkbox" id="cpm" />
         </div>
+        <div class="experiment">
+            <label for="notl"><span data-i18n-key="settings.sections.general.notification_log">Notification Log</span></label>
+            <input type="checkbox" id="notl" />
+        </div>
     </div>
 </details>
 <br>
@@ -283,7 +287,8 @@
         justify-content: center;
         position: fixed;
         bottom: 0;
-        left: calc(50% - 50vw) transform: translateX(-50%);
+        left: calc(50% - 50vw); 
+        transform: translateX(4%);
         background-color: rgba(0, 0, 0, 0.25);
         width: max-content;
         padding: 5px;
@@ -600,6 +605,7 @@
 
     settings_makeToggleFlag("#swc", "recompile-tab", () => { universal.reloadRight() });
     settings_makeToggleFlag("#blvs", "skip-boot-animation");
+    settings_makeToggleFlag("#notl", "notification-log");
     settings_makeToggleFlag("#no_ask_to_delete", "no_ask_to_delete")
     settings_makeToggleFlag("#connect-tab", "connect-tab", () => { universal.reloadRight() })
 

@@ -404,11 +404,11 @@ const universal = {
 	},
 	Pages: {},
 	reloadProfile: () => {
-		universal.config.sounds =
+		universal.app_sounds =
 			universal.config.profiles[universal.config.profile];
 		for (
 			let i = 0;
-			i < universal.config.sounds.length / universal.config.iconCountPerPage;
+			i < universal.app_sounds.length / universal.config.iconCountPerPage;
 			i++
 		) {
 			universal.Pages[i] = true;
@@ -521,13 +521,18 @@ const universal = {
 		}, 3000);
 		const logIn = {
 			timestamp: new Date(),
-			time: new Date().toTimeString(),
 			page: window.location.pathname,
 			message,
 		};
-		const log = universal.loadObj("logs/notif");
-		log.push(logIn);
-		universal.saveObj("logs/notif", log);
+		if(universal.loadObj("logs/notif").length > 0 && !universal.flags.isEnabled("notification-log")) universal.saveObj("logs/notif", []);
+		else {
+			if(universal.loadObj("logs/notif").length > 128) universal.saveObj("logs/notif", []);
+			if(universal.flags.isEnabled("notification-log")) {
+				const log = universal.loadObj("logs/notif");
+				log.push(logIn);
+				universal.saveObj("logs/notif", log);
+			}
+		}
 	},
 	send: (event, value) => {
 		universal._socket.emit(event, value);

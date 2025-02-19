@@ -50,7 +50,7 @@
 	}
 }
 
-@keyframes modal_content_hiding {
+@keyframes modal_content_closing {
 	0% {
 		transform: perspective(1000px) rotateX(0deg);
 	}

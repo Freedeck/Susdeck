@@ -31,7 +31,8 @@ export default function dataHandler(universal, user) {
       universal.CLU("Incoming Data Handler:Setup", "Set events");
       universal.config = parsed.config;
       universal.CLU("Incoming Data Handler:Setup", "Set Config");
-      universal.config.sounds = parsed.config.profiles[parsed.config.profile];
+      console.log(parsed)
+      universal.app_sounds = parsed.config.profiles[parsed.config.profile];
       universal.CLU("Incoming Data Handler:Setup", "Set Config Sounds");
       universal.plugins = parsed.plugins;
       universal.CLU("Incoming Data Handler:Setup", "Set plugins");

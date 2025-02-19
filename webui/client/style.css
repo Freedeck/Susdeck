@@ -234,6 +234,38 @@ summary ::-webkit-details-marker {
     }
 }
 
+@keyframes pull-up {
+    from{
+        height: 100%;
+    }
+
+    to {
+        height: 0;
+    }
+}
+
+@keyframes fade-out {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+}
+
+@keyframes real-fade-out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
 @keyframes pull-left {
     from{
         width: 0;
@@ -288,38 +320,6 @@ summary ::-webkit-details-marker {
 	flex-direction: row;
 	justify-content: space-between;
 	height: 100%;
-}
-
-@keyframes pull-up {
-    from{
-        height: 100%;
-    }
-
-    to {
-        height: 0;
-    }
-}
-
-@keyframes fade-out {
-    from {
-        transform: scale(1);
-        opacity: 1;
-    }
-
-    to {
-        transform: scale(0.9);
-        opacity: 0;
-    }
-}
-
-@keyframes real-fade-out {
-    from {
-        opacity: 1;
-    }
-
-    to {
-        opacity: 0;
-    }
 }
 
 #snackbar {

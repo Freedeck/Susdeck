@@ -77,7 +77,7 @@ universal.reloadRight = () => {
 universal.reloadRight();
 universal.vclose = () => {
 	const view_container = document.querySelector(universal.ctx.view_container);
-	setAnim(view_container, "pull-up 0.5s");
+	setAnim(view_container, "view-out 0.5s");
 	setTimeout(() => {
 		setDisplay(view_container, "none");
 	}, 500);
@@ -93,7 +93,7 @@ universal.vopen = (v) => {
 
 	if (!pages.includes(v)) {
 		if(leftSidebar.style.display === 'none') document.querySelector(".toggle-sidebar button").click();
-		setAnim(view_container, "pull-up 0.5s");
+		setAnim(view_container, "view-out 0.5s");
 		setTimeout(() => {
 			setDisplay(view_container, "none");
 		}, 500);
@@ -104,7 +104,7 @@ universal.vopen = (v) => {
 	setDisplay(view_container, "block");
 	if(leftSidebar.style.display === 'flex') document.querySelector(".toggle-sidebar button").click();
 	universal.ctx.destructiveView(v);
-	setAnim(view_container, "pull-down 0.5s");
+	setAnim(view_container, "view-in 0.5s");
 	setTimeout(() => {
 		translatePage(view_container);
 	},250);

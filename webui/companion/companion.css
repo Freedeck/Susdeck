@@ -361,6 +361,30 @@ input {
 	}
 }
 
+@keyframes view-in {
+	from{
+		width: 0;
+		left: 100%;
+	}
+
+	to {
+			width: 100%;
+			left: 0;
+	}
+}
+
+@keyframes view-out {
+	from{
+		width: 100%;
+		left: 0;
+	}
+
+	to {
+			width: 0;
+			left: 100%;
+	}
+}
+
 .toggle-sidebar {
 	transition-duration: .25s;
 	position: fixed;

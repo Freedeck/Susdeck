@@ -128,31 +128,12 @@
                 <div class="information">
                     <h3>Soundboard</h3>
                     <p>Control your Freedeck soundboard!</p>
-                    <select id="at-type">
-                        <option value="fd.sound">Playback Audio</option>
-                        <option value="fd.sb.mv">Monitor Volume</option>
-                        <option value="fd.sb.ov">Output Volume</option>
-                        <option value="fd.sb.pt">Pitch</option>
-                        <option value="fd.stopall">Stop All</option>
-                    </select>
                 </div>
-                <div class="view_nested_playback">
-                    <div class="flex-wrap-r alc">
-                        <p>This tile will play&nbsp;</p>
-                        <h2 id="audio-file" class="information">AUDIOFILE.MP3</h2>
-                    </div>
-                    <div class="button" id="upload-sound">Change</div>
+                <div class="flex-wrap-r alc">
+                    <p>This tile will play&nbsp;</p>
+                    <h2 id="audio-file" class="information">AUDIOFILE.MP3</h2>
                 </div>
-                <div class="view_nested_audio_control">
-                    <div class="flex-wrap-r alc">
-                        <p>This tile will control the <span class="at_audio_control">monitor volume</span>.
-                    </div>
-                </div>
-                <div class="view_nested_stop_all">
-                    <div class="flex-wrap-r alc">
-                        <p>This tile will stop all playing sounds.
-                    </div>
-                </div>
+                <div class="button" id="upload-sound">Change</div>
             </div>
             <div style="display: none" id="system-only" class="editor-section editor-section-bottom">
                 <h1>App Volume</h1>
@@ -190,7 +171,7 @@
                 </div>
                 <div class="flex-wrap-r plugin-view-listing tile-selection">
                     <button id="none-audio">
-                        <p>Audio</p>
+                        <p>Soundboard</p>
                         <img src="/common/icons/t_audio.svg" alt="Audio Tile">
                     </button>
                     <button id="none-plugin">

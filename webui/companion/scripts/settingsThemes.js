@@ -9,6 +9,7 @@ window.loadThemeListing = async () => {
 		if (!theme) {
 			theme = await universal.theming.fetchAndParse(id);
 		}
+		if(theme.showing && theme.showing === "false") continue;
 		const element = document.createElement("div");
 		element.className = "theme";
 		const title = document.createElement("h2");
